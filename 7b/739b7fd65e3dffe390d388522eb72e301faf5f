@@ -1,0 +1,159 @@
+aika_hunt_app/preload.cjs
+  s_edfc50aef2ee58::t_c0fe207f27de44 3
+  s_edfc50aef2ee58::t_2e53ad018025f6 1-2,4-9
+aika_hunt_app/index.html
+  s_edfc50aef2ee58::t_c0fe207f27de44 33-39
+  s_edfc50aef2ee58::t_c04cfb9bcbf536 1-32,40-48
+aika_hunt_app/package.json
+  s_edfc50aef2ee58::t_c0fe207f27de44 3-74
+  s_edfc50aef2ee58::t_5d5cd8a8334d8a 1-2
+aika_hunt_app/renderer.js
+  s_edfc50aef2ee58::t_c0fe207f27de44 73-76
+  s_edfc50aef2ee58::t_48dd5e28df4f94 1-72
+package.json
+  s_edfc50aef2ee58::t_c0fe207f27de44 1-15
+aika_hunt_app/main.cjs
+  s_edfc50aef2ee58::t_c0fe207f27de44 1-112
+  s_edfc50aef2ee58::t_8a994b270980c8 113-116
+test_monitor_lifecycle.cjs
+  s_edfc50aef2ee58::t_c0fe207f27de44 14
+  s_edfc50aef2ee58::t_9ad1cb5713c910 1-13,15-28
+.gitattributes
+  s_edfc50aef2ee58::t_787c85031cf758 1-9
+.github/workflows/ci.yml
+  s_edfc50aef2ee58::t_f2858548c41e91 1-21
+.github/workflows/release.yml
+  s_edfc50aef2ee58::t_be02e6aac930ac 1-39
+.gitignore
+  s_edfc50aef2ee58::t_724f6ce0066b30 1-24
+CHANGELOG.md
+  s_edfc50aef2ee58::t_d316af77b52d82 1-12
+README.md
+  s_edfc50aef2ee58::t_cb5335038280ef 1-46
+RELEASE_NOTES.md
+  s_edfc50aef2ee58::t_a86518e604f0b0 1-7
+aika_hunt_app/package-lock.json
+  s_edfc50aef2ee58::t_c6358863b7f0a4 1-182
+aika_hunt_app/runtime.cjs
+  s_edfc50aef2ee58::t_1fcb2c4f21d3c5 1-13
+aika_hunt_app/style.css
+  s_edfc50aef2ee58::t_9610e82efee8d0 1-3
+aika_hunt_app/updates.cjs
+  s_edfc50aef2ee58::t_90b9574f4dd81c 1-31
+aviso_elter.py
+  s_edfc50aef2ee58::t_5f693ad23d9e54 1-30
+avisos_hunt.py
+  s_edfc50aef2ee58::t_bb79916aadd3f4 1-53
+cancelamento_normal.py
+  s_edfc50aef2ee58::t_1b9c0deca3c867 1-73
+captura_aika.py
+  s_edfc50aef2ee58::t_e9fde3b3be7c0f 1-27
+config_nativa.py
+  s_edfc50aef2ee58::t_7b3287a09f6ed2 1-11
+cura_prioritaria.py
+  s_edfc50aef2ee58::t_bbeb56cc794534 1-40
+dados_internos.py
+  s_edfc50aef2ee58::t_c6c84ebb3b2afa 1-174
+entrada_segura.py
+  s_edfc50aef2ee58::t_cd30a0692904ec 1-10
+hunt_bridge.py
+  s_edfc50aef2ee58::t_47172ed41293bf 1-68
+hunt_core.py
+  s_edfc50aef2ee58::t_0184a2daf8cfa9 1-87
+hunt_native.py
+  s_edfc50aef2ee58::t_746a5c6857934e 1-496
+native_layout.json
+  s_edfc50aef2ee58::t_7987dcb92c0d67 1-15
+navegacao_grade.py
+  s_edfc50aef2ee58::t_cb0515b467f784 1-101
+navegador_local.py
+  s_edfc50aef2ee58::t_025ac0f00d237a 1-42
+package-lock.json
+  s_edfc50aef2ee58::t_674d8d8e003a4e 1-4040
+perfil_hunt.py
+  s_edfc50aef2ee58::t_efe6a8e90e2b9c 1-73
+recargas_barra.py
+  s_edfc50aef2ee58::t_07f8c2b4a5c43d 1-20
+recuperacao_alvo.py
+  s_edfc50aef2ee58::t_6990aa2920f985 1-17
+requirements-build.txt
+  s_edfc50aef2ee58::t_3904302ff65468 1-2
+requirements.txt
+  s_edfc50aef2ee58::t_49a17e1b38a5c9 1-5
+selecao_regional.py
+  s_edfc50aef2ee58::t_e06eca28d5cedf 1-77
+test_aviso_elter.py
+  s_edfc50aef2ee58::t_e2e1162265b136 1-28
+test_avisos_hunt.py
+  s_edfc50aef2ee58::t_1984225ed69cee 1-36
+test_busca_buffs_individuais.py
+  s_edfc50aef2ee58::t_af69861fdaebcf 1-96
+test_cadencia_rapida.py
+  s_edfc50aef2ee58::t_8194dc6077af88 1-33
+test_cancelamento_normal.py
+  s_edfc50aef2ee58::t_e6520fc3e7015c 1-54
+test_combo_w.py
+  s_edfc50aef2ee58::t_4abe769fb894a9 1-83
+test_cura_prioritaria.py
+  s_edfc50aef2ee58::t_6b28f451aefd14 1-67
+test_entrada_segura.py
+  s_edfc50aef2ee58::t_4e1a985ca42f20 1-23
+test_estados_controle.py
+  s_edfc50aef2ee58::t_5af97bbd9828e3 1-38
+test_hunt_app.py
+  s_edfc50aef2ee58::t_d25c8bbee6813f 1-107
+test_morte_selecao.py
+  s_edfc50aef2ee58::t_b0674d7c8fe68c 1-72
+test_native_startup.py
+  s_edfc50aef2ee58::t_bd25273c2cdd19 1-13
+test_navegacao_grade.py
+  s_edfc50aef2ee58::t_2afe0d206e7e27 1-33
+test_navegador_local.py
+  s_edfc50aef2ee58::t_a09be2670edf73 1-34
+test_reaproximacao.py
+  s_edfc50aef2ee58::t_ff817f9cb30c7a 1-55
+test_rebuff.py
+  s_edfc50aef2ee58::t_5abb38bbba1a32 1-47
+test_recargas_barra.py
+  s_edfc50aef2ee58::t_eb2948aa3da2d5 1-57
+test_recuperacao_alvo.py
+  s_edfc50aef2ee58::t_ac2e5daf909012 1-53
+test_retorno_fora_area.py
+  s_edfc50aef2ee58::t_1fac04e309c349 1-75
+test_retorno_native.py
+  s_edfc50aef2ee58::t_5bdc346b4b7e1f 1-41
+test_runtime.cjs
+  s_edfc50aef2ee58::t_da4a94dffb8291 1-13
+test_selecao_regional.py
+  s_edfc50aef2ee58::t_c6ec6397ce347c 1-92
+test_updates.cjs
+  s_edfc50aef2ee58::t_ccf06b04f9b1f4 1-20
+test_vigia_ataque.py
+  s_edfc50aef2ee58::t_ef5c3e5779d7a7 1-72
+tools/build_backend.py
+  s_edfc50aef2ee58::t_9eed5a8ba2a49e 1-9
+tools/check_version.py
+  s_edfc50aef2ee58::t_d18d150d145155 1-7
+tools/smoke_backend.py
+  s_edfc50aef2ee58::t_2ad5d7707a4cb4 1-8
+vigia_ataque.py
+  s_edfc50aef2ee58::t_2e9a9596bef23b 1-21
+vigiar_janelas.py
+  s_edfc50aef2ee58::t_65cac6cae29052 1-46
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.6",
+  "base_commit_sha": "7b739b7fd65e3dffe390d388522eb72e301faf5f",
+  "prompts": {},
+  "sessions": {
+    "s_edfc50aef2ee58": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "01a1e01c-4c9b-7e00-b2fb-9c7ef8050eed",
+        "model": "unknown"
+      },
+      "human_author": "Gabriel Renovato <86806861+GabrielRenovato@users.noreply.github.com>"
+    }
+  }
+}
