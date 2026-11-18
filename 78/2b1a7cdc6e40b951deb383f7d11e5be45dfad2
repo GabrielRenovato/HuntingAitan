@@ -1,0 +1,23 @@
+package.json
+  s_edfc50aef2ee58::t_79d80dec507e2e 8
+tools/check_version.py
+  s_edfc50aef2ee58::t_668b9275661018 8-12
+.github/workflows/release.yml
+  s_edfc50aef2ee58::t_eae14717a19c76 39-40
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.6",
+  "base_commit_sha": "782b1a7cdc6e40b951deb383f7d11e5be45dfad2",
+  "prompts": {},
+  "sessions": {
+    "s_edfc50aef2ee58": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "01a1e01c-4c9b-7e00-b2fb-9c7ef8050eed",
+        "model": "unknown"
+      },
+      "human_author": "Gabriel Renovato <86806861+GabrielRenovato@users.noreply.github.com>"
+    }
+  }
+}
