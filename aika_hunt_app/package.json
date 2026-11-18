@@ -39,7 +39,6 @@
       "signAndEditExecutable": true,
       "icon": "assets/app.ico"
     },
-    "electronDist": "../node_modules/electron/dist",
     "electronVersion": "39.8.10",
     "npmRebuild": false,
     "nodeGypRebuild": false,
