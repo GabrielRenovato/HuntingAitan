@@ -1,0 +1,20 @@
+const assert=require('node:assert/strict');
+const {EventEmitter}=require('node:events');
+const setup=require('./aika_hunt_app/updates.cjs');
+const tick=()=>new Promise(r=>setImmediate(r));
+(async()=>{
+ const updater=new EventEmitter(),events=[],logs=[];let hunting=true,installed=0,calls=0;
+ updater.checkForUpdates=async()=>{calls++;};updater.quitAndInstall=()=>installed++;
+ const config={app:{isPackaged:true,getVersion:()=> '0.1.0-beta.1'},send:e=>events.push(e),isHunting:()=>hunting,getWindow:()=>null,log:(...e)=>logs.push(e),updater,dialog:{showMessageBox:async()=>({response:0})}};
+ const service=setup(config);await service.check();assert.equal(calls,1);assert.equal(updater.autoDownload,true);assert.equal(updater.channel,'beta');
+ updater.emit('update-downloaded',{version:'0.1.0-beta.2'});await tick();assert.equal(installed,0,'Nao pode instalar durante a caca');
+ assert.equal((await service.check()).ready,true);
+ hunting=false;updater.emit('update-downloaded',{version:'0.1.0-beta.2'});await tick();assert.equal(installed,1);
+ updater.emit('error',new Error('offline'));assert.equal(events.at(-1).state,'error');
+ const rejected=new EventEmitter();rejected.checkForUpdates=async()=>{throw Error('offline');};
+ const offline=setup({...config,updater:rejected});assert.equal((await offline.check()).error,true);
+ const concurrent=new EventEmitter();concurrent.checkForUpdates=()=>new Promise(r=>setImmediate(r));
+ const c=setup({...config,updater:concurrent});const waiting=c.check();assert.equal((await c.check()).checking,true);await waiting;
+ assert.equal((await setup({...config,app:{isPackaged:false}}).check()).development,true);
+ console.log('OK: atualizador, canal beta, download, falha offline e protecao da caca.');
+})().catch(e=>{console.error(e);process.exitCode=1;});

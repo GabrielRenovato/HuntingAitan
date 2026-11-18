@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="UTF-8"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Caça automática</title><link rel="stylesheet" href="style.css"></head>
+<body><main class="frame">
+<header class="titlebar"><h1>Caça automática</h1><span class="lock" title="Configurações locais">▣</span><button id="close" class="close" aria-label="Fechar">×</button></header>
+<nav class="tabs" aria-label="Configuração"><button class="active" data-tab="basic">Básico</button><button data-tab="extension">Extensão</button><button data-tab="behavior">Comportamento</button></nav>
+<div class="content">
+<section id="basic" class="tab-panel">
+<div class="supply-line"><fieldset class="supplies"><legend>Suprimentos de batalha</legend>
+<div class="supply-row"><label>HP <input id="hp-percent" type="number" min="1" max="99" aria-label="Porcentagem de HP"><span>%</span></label><div id="hp-slots" class="supplies-slots"></div></div>
+<div class="supply-row"><label>MP <input id="mp-percent" type="number" min="1" max="99" aria-label="Porcentagem de MP"><span>%</span></label><div id="mp-slots" class="supplies-slots"></div></div>
+</fieldset><fieldset class="return-slot"><legend>Devolver Artigo</legend><button id="return-slot" class="slot" title="Configurar item de retorno"><span class="key"></span></button></fieldset></div>
+<fieldset class="skills-field"><legend>Configuração de habilidades</legend><div id="skills" class="slot-grid"></div></fieldset>
+<fieldset class="items-field"><legend>Configuração do artigo</legend><div id="items" class="slot-grid"></div></fieldset>
+<div class="metrics"><span>Tempo livre : <b id="time-left">240min</b></span><span>Tempo de recarga: <b id="action-gap">1,4seg</b></span></div>
+</section>
+<section id="extension" class="tab-panel hidden">
+<fieldset><legend>Configurações de extensão</legend><p>Os 10 espaços de habilidades e os 5 de itens são editáveis. Clique no ícone da aba Básico para escolher a tecla e o intervalo.</p>
+<div class="setting"><label for="gap">Intervalo entre habilidades</label><div><input id="gap" type="number" min="0.4" max="10" step="0.1"> seg</div></div>
+<div class="setting"><label for="attack">Ataque normal</label><input id="attack" class="key-input" maxlength="4"></div>
+<div class="setting"><label for="duration">Tempo de caça</label><div><input id="duration" type="number" min="0" max="1440"> min</div></div><p class="muted">Tempo 0 mantém a caça até você parar.</p>
+</fieldset>
+<fieldset><legend>Rebuff automático</legend><label class="check"><input id="buff-enabled" type="checkbox"> Renovar os cinco buffs</label><div class="setting"><label for="buff-minutes">Renovar a cada</label><div><input id="buff-minutes" type="number" min="1" max="120"> min</div></div><div class="setting"><label for="buff-gap">Intervalo entre buffs</label><div><input id="buff-gap" type="number" min="0.5" max="10" step="0.5"> seg</div></div><div class="buff-keys"><label>Buff 1<input id="buff-key-0" maxlength="6" aria-label="Atalho do buff 1"></label><label>Buff 2<input id="buff-key-1" maxlength="6" aria-label="Atalho do buff 2"></label><label>Buff 3<input id="buff-key-2" maxlength="6" aria-label="Atalho do buff 3"></label><label>Buff 4<input id="buff-key-3" maxlength="6" aria-label="Atalho do buff 4"></label><label>Buff 5<input id="buff-key-4" maxlength="6" aria-label="Atalho do buff 5"></label></div><div class="reading"><span>Próximo rebuf</span><b id="buff-next">Após 9 minutos</b></div><p class="muted">A contagem começa ao iniciar. Se estiver lutando quando vencer, aplica a sequência após terminar o alvo.</p></fieldset>
+<fieldset><legend>Dados do assistente do Aika</legend><p>Importe um arquivo AHI do cliente para carregar alcance, percentuais e intervalos salvos.</p><button id="import-native" class="wide">Importar configuração nativa</button><p class="muted">Os IDs das skills não são teclas. Após importar, defina os atalhos nos slots antes de ativá-los.</p></fieldset>
+<fieldset><legend>Dados internos do Aika</legend><div class="reading"><span>Fonte</span><b id="data-source">Memória do cliente</b></div><div class="reading"><span>Alvo atual</span><b id="target-read">Sem alvo</b></div><div class="reading"><span>Mobs válidos na região</span><b id="mobs-read">—</b></div><div class="reading"><span>Posição</span><b id="position-read">—</b></div><div class="reading"><span>HP / MP</span><b id="vitals-read">— / —</b></div><button id="read-data" class="wide">Ler dados do Aika</button></fieldset>
+</section>
+<section id="behavior" class="tab-panel hidden">
+<fieldset><legend>Área de caça · dados internos</legend><label class="check"><input type="checkbox" id="auto-base"> Capturar minha posição ao começar</label>
+<div class="reading base-reading"><span>Base atual</span><b id="base-value">Automática</b></div><div id="manual-base" class="setting"><label>Coordenadas</label><div><input id="base-x" type="number" min="0" max="9999" aria-label="Coordenada X"><input id="base-y" type="number" min="0" max="9999" aria-label="Coordenada Y"></div></div>
+<div class="setting"><label for="radius">Distância máxima</label><div><input id="radius" type="number" min="10" max="30"> unidades</div></div>
+<div class="setting"><label for="target">Alvos</label><select id="target"><option value="qualquer">Qualquer mob hostil</option><option value="verit">Verit Mutante</option><option value="penza">Penza Poderosa Mutante</option><option value="croshu">Croshu Mutante das Cinzas</option><option value="tet">Tet das Chamas</option></select></div>
+</fieldset>
+<fieldset><legend>Cura prioritária</legend><label class="check"><input type="checkbox" id="heal-enabled"> Usar habilidade de cura</label><div class="setting"><label for="heal-key">Tecla da cura</label><input id="heal-key" type="text" maxlength="3"></div><p>Usa o limite de HP configurado na aba Básico. Confira a tecla na sua própria barra.</p></fieldset>
+<fieldset><legend>Ataque normal</legend><label class="check"><input type="checkbox" id="cancel-normal"> W+ataque e skill+W (experimental)</label><p>Combina W com ataque e habilidades ofensivas após confirmar dano, com alvo perto. Ganho de velocidade ainda não validado.</p></fieldset>
+<fieldset><legend>Retorno e recuperação</legend><p>Mata os mobs próximos em sequência. Retorna à base quando não consegue causar dano ou quando ultrapassa a área.</p>
+<div class="setting"><label for="no-damage">Retornar após ficar sem dano</label><div><input id="no-damage" type="number" min="1" max="60"> seg</div></div>
+<div class="setting"><label for="stationary">Detectar personagem travado</label><div><input id="stationary" type="number" min="1" max="20"> seg</div></div>
+<div class="setting"><label for="unstuck">Tecla para destravar</label><input id="unstuck" class="key-input" maxlength="4"></div>
+</fieldset><label class="check bottom-check"><input type="checkbox" id="minimize-start"> Minimizar o painel ao começar</label><div class="hint">F12 para a caça e libera as teclas.<br>Trocar para outra janela pausa as ações no jogo.<br>Com o painel aberto, convites e conversas também são fechados quando a caça está parada.</div>
+<fieldset><legend>Atualizações</legend><p id="app-version">HuntingAitan</p><p id="update-status">Verificação automática ao abrir a versão instalada.</p><button id="check-updates" class="wide">Verificar atualizações</button></fieldset>
+</section>
+</div>
+<div class="state-area" aria-live="polite"><span id="state-dot" class="dot"></span><div><b id="state-label">Pronto para configurar</b><p id="state-detail">A posição inicial será capturada ao começar.</p></div></div>
+<footer class="toolbar"><button id="reset">Reiniciar</button><button id="minimize">Minimizar</button><button id="save">Salvar configuração</button><button id="start" class="primary">Começar</button></footer>
+<div class="running-tools hidden" id="running-tools"><button id="pause">Pausar</button><button id="stop" class="danger">Parar · F12</button></div>
+<button id="show-log" class="log-link">Ver atividade</button><section id="activity" class="activity hidden"><div><b>Atividade da caça</b><button id="hide-log" aria-label="Fechar atividade">×</button></div><pre id="log-lines">Os eventos aparecerão aqui.</pre></section>
+</main>
+<dialog id="slot-dialog"><form id="slot-form"><h2 id="slot-title">Configurar habilidade</h2><p id="slot-native" class="muted"></p><label class="check"><input id="slot-enabled" type="checkbox"> Ativar este espaço</label><label>Tecla na barra <input id="slot-key" class="key-input" maxlength="4" placeholder="2"></label><label id="slot-seconds-row">Intervalo <span><input id="slot-seconds" type="number" min="0.4" max="86400" step="0.1"> segundos</span></label><p class="muted">Use a tecla que já está configurada no jogo. F8 e F12 ficam reservados.</p><div class="dialog-actions"><button type="button" id="slot-cancel">Cancelar</button><button type="submit" class="primary">Aplicar</button></div></form></dialog>
+<script src="renderer.js"></script></body></html>

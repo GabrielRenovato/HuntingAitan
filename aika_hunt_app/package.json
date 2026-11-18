@@ -1,0 +1,74 @@
+{
+  "name": "aika-caca-automatica",
+  "version": "0.1.0-beta.1",
+  "description": "HuntingAitan — caca automatica experimental para Aika",
+  "main": "main.cjs",
+  "author": "Gabriel Renovato",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --win dir"
+  },
+  "build": {
+    "appId": "local.aika.caca",
+    "productName": "HuntingAitan",
+    "directories": {
+      "output": "../release"
+    },
+    "files": [
+      "main.cjs",
+      "preload.cjs",
+      "renderer.js",
+      "index.html",
+      "style.css",
+      "assets/**/*",
+      "package.json",
+      "runtime.cjs",
+      "updates.cjs"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "requestedExecutionLevel": "requireAdministrator",
+      "signAndEditExecutable": true,
+      "icon": "assets/app.ico"
+    },
+    "electronDist": "../node_modules/electron/dist",
+    "electronVersion": "39.8.10",
+    "npmRebuild": false,
+    "nodeGypRebuild": false,
+    "extraResources": [
+      {
+        "from": "../build/backend/hunt_backend",
+        "to": "backend"
+      }
+    ],
+    "artifactName": "HuntingAitan-Setup-${version}-${arch}.${ext}",
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "deleteAppDataOnUninstall": false
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "GabrielRenovato",
+        "repo": "HuntingAitan"
+      }
+    ],
+    "generateUpdatesFilesForAllChannels": true
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/GabrielRenovato/HuntingAitan.git"
+  },
+  "dependencies": {
+    "electron-updater": "6.8.11"
+  }
+}

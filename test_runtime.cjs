@@ -1,0 +1,13 @@
+const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),os=require('node:os');
+const resolve=require('./aika_hunt_app/runtime.cjs');
+const dirname=path.join(__dirname,'aika_hunt_app');
+const dev=resolve({app:{isPackaged:false},dirname});
+assert.equal(dev.root,__dirname);assert.equal(dev.args[1],path.join(__dirname,'hunt_bridge.py'));
+const testRoot=fs.mkdtempSync(path.join(os.tmpdir(),'huntingaitan-runtime-'));
+const resources=path.join(testRoot,'resources');fs.mkdirSync(path.join(resources,'backend'),{recursive:true});
+process.resourcesPath=resources;
+assert.throws(()=>resolve({app:{isPackaged:true,getPath:()=>testRoot},dirname}),/Motor ausente/);
+fs.writeFileSync(path.join(resources,'backend','hunt_backend.exe'),'');
+const packaged=resolve({app:{isPackaged:true,getPath:()=>testRoot},dirname});
+assert.equal(packaged.dataRoot,testRoot);assert.deepEqual(packaged.args,[]);assert.ok(packaged.command.endsWith('hunt_backend.exe'));
+console.log('OK: caminhos portateis, backend empacotado e dados separados da instalacao.');

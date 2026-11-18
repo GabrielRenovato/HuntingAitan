@@ -1,0 +1,15 @@
+{
+  "sha256": "a378297211a51bd0032975b2263c78b962a3a734caf5705a80319d129d246a3b",
+  "preferred_base": 4194304,
+  "context_rva": 45724128,
+  "scene_offset": 578224,
+  "scene_vtable_rva": 3325916,
+  "player_offset": 260,
+  "target_offset": 144,
+  "active_scene_rva": 45723976,
+  "scene_reference": "active_global_confirmed_at_0x44c774",
+  "entity_manager_offset": 148,
+  "entity_array_offset": 24,
+  "entity_stride": 14780,
+  "entity_count_rva": 3487284
+}
