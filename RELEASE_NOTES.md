@@ -1,7 +1,11 @@
-Primeira beta do HuntingAitan para testes acompanhados.
+Calibracao do ataque e das habilidades a partir das demonstracoes.
 
-Baixe **HuntingAitan-Setup-0.1.0-beta.1-x64.exe**. Python e motor já estão incluídos. Abra como administrador, use a versão compatível do Aika indicada no README e confira os atalhos da sua barra antes de começar.
+- Padrao: ataque primeiro e W aproximadamente 3 ms depois, com cerca de 65 ms de pressao.
+- Skill observada na tecla 4 (ID 177): W antes da skill por aproximadamente 3,5 ms.
+- Skill observada na tecla 5 (ID 273): W antes da skill por aproximadamente 25 ms.
+- Sem W automatico nas skills 3/6, na cura 7 ou em habilidades nao calibradas.
+- Cadencia minima de 170 ms no modo calibrado, mantendo a recarga real e as protecoes de alvo/alcance.
 
-O aplicativo instalado verifica atualizações ao abrir e a cada 30 minutos. Preserva as configurações e não reinicia para instalar enquanto a caça estiver ativa.
+Ative **Timing calibrado por habilidade** em Comportamento. Os IDs impedem que outra habilidade no mesmo atalho receba o cancelamento indevidamente. Detalhes em docs/CALIBRACAO.md.
 
-Esta versão ainda pode falhar no combate; não deixe o personagem sem acompanhamento durante o teste. Informe a versão e o trecho do diagnóstico ao reportar problemas. Resoluções e escalas de HUD diferentes ainda precisam de validação dos detectores visuais.
+Baixe HuntingAitan-Setup-0.1.0-beta.2-x64.exe ou use a verificacao de atualizacoes da beta anterior. As configuracoes sao preservadas. Nao houve validacao de ganho de dano em combate real; a versao continua experimental.

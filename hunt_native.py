@@ -7,7 +7,7 @@ from recuperacao_alvo import RecuperacaoAlvo
 from selecao_regional import BuscaRegional
 from entrada_segura import liberar_tecla,liberar_mouse
 from navegador_local import NavegadorLocal
-from cancelamento_normal import CancelamentoNormal,executar_combo
+from cancelamento_normal import CancelamentoNormal,executar_combo,perfil_combo,duracao_tecla
 from cura_prioritaria import CuraPrioritaria
 from vigia_ataque import VigiaAtaque
 from hunt_core import CadenciaCombate,erro_angular,VerificadorMovimento,AgendaBuffs,executar_buff
@@ -73,7 +73,10 @@ def main(profile,event_sink,control):
             return True
     def esperar(s):
         ate=time.monotonic()+s
-        while ativo() and time.monotonic()<ate:time.sleep(.005)
+        while ativo():
+            restante=ate-time.monotonic()
+            if restante<=0:break
+            time.sleep(min(.005,restante))
     def pulso(k,s=.045):
         if not k or not ativo():return False
         if not segurar(k):return False
@@ -248,7 +251,7 @@ def main(profile,event_sink,control):
                 # Independente de mob, dano recente, alcance e fila ofensiva.
                 # Os bloqueios reais de stun e casting ja foram respeitados acima.
                 soltar();navegador.suspender(pos,agora)
-                if pulso(tecla_cura):
+                if pulso(tecla_cura,duracao_tecla((recarga_cura or {}).get('skill'))):
                     cura.enviada(time.monotonic(),hp_atual)
                     cadencia.livre_em=max(cadencia.livre_em,time.monotonic()+p['action_gap'])
                     cancelamento.acao(False,agora,cadencia.livre_em)
@@ -448,17 +451,21 @@ def main(profile,event_sink,control):
                         if v['enabled'] and agora>=item_em.get(v['key'],0):
                             if pulso(v['key']):item_em[v['key']]=agora+v['seconds'];cadencia.registrar('8',agora);cancelamento.acao(False,agora,agora+1.4);item=True
                             break
-                combo=bool(tecla and not item and cancelamento.permitir_combo(target,pos,progresso.id,progresso.dano))
+                real=cc.get('recargas_atalhos',{}).get(tecla)
+                skill_id=cc.get('normal_skill') if tecla=='1' else (real or {}).get('skill')
+                timing=perfil_combo(tecla,tecla=='1',skill_id)
+                combo=bool(tecla and not item and timing and cancelamento.permitir_combo(target,pos,progresso.id,progresso.dano))
                 if cc.get('tipos_atalhos',{}).get(tecla,2)!=2:combo=False
                 enviada=False
+                inicio_envio=time.monotonic()
                 if tecla and not item:
                     atalho=p['attack_key'] if tecla=='1' else tecla
-                    if combo:enviada,combo=executar_combo(segurar,liberar,esperar,ativo,atalho,tecla=='1')
-                    else:enviada=pulso(atalho)
+                    if combo:enviada,combo=executar_combo(segurar,liberar,esperar,ativo,atalho,tecla=='1',skill_id=skill_id)
+                    else:enviada=pulso(atalho,duracao_tecla(skill_id))
                 if enviada:
                     real=cc.get('recargas_atalhos',{}).get(tecla)
-                    event_sink(dict(event='action',key=p['attack_key'] if tecla=='1' else tecla,kind='normal' if tecla=='1' else 'skill',target_id=target['id'],normal_cooldown=cc.get('normal_cooldown'),skill_state=real,combo_w=('w+ataque' if tecla=='1' else 'skill+w') if combo else None))
-                    cadencia.registrar(tecla,time.monotonic())
+                    event_sink(dict(event='action',key=p['attack_key'] if tecla=='1' else tecla,kind='normal' if tecla=='1' else 'skill',target_id=target['id'],normal_cooldown=cc.get('normal_cooldown'),skill_state=real,combo_w=timing['ordem'] if combo else None,combo_timing=timing if combo else None))
+                    cadencia.registrar(tecla,inicio_envio if combo and tecla=='1' else time.monotonic(),intervalo_normal=.17 if combo and tecla=='1' else None)
                     if tecla=='1':vigia_ataque.enviado()
                     cancelamento.acao(tecla=='1',time.monotonic(),cadencia.livre_em)
                     if tecla!='1':log('Tecla de habilidade enviada.',tecla=tecla,intervalo=cadencia.recargas[tecla],recarga_real=real)

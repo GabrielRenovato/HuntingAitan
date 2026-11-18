@@ -31,9 +31,9 @@ O Python no PATH é usado no desenvolvimento. Para outro interpretador, defina `
 ## Publicar uma correção
 
 1. Faça a alteração, atualize `CHANGELOG.md` e rode `npm test`.
-2. Ajuste a mesma versão nos dois `package.json` e nos respectivos lockfiles. Exemplo: `0.1.0-beta.2` para a próxima beta.
+2. Ajuste a mesma versão nos dois `package.json` e nos respectivos lockfiles. Exemplo: `0.1.0-beta.3` para a próxima beta.
 3. Atualize `RELEASE_NOTES.md`, faça commit e push.
-4. Crie a tag correspondente e envie: `git tag v0.1.0-beta.2` e `git push origin v0.1.0-beta.2`.
+4. Crie a tag correspondente e envie: `git tag v0.1.0-beta.3` e `git push origin v0.1.0-beta.3`.
 
 O workflow verifica a versão, executa os testes, empacota o backend, gera o instalador NSIS e publica instalador, blockmap e metadados YAML na release. O token vem do GitHub Actions; não deve ser colocado no aplicativo. O workflow falha sem publicar se um desses passos falhar. Tags com sufixo beta são publicadas como pré-release.
 
@@ -44,3 +44,5 @@ Para gerar o instalador localmente: `npm run build`. Saída em `release/`. O tes
 Código, testes e recortes genéricos da interface usados pelo painel/detector. Não inclui o executável do jogo, contas, conversas, capturas de sessões, logs, credenciais, perfis pessoais ou scripts históricos de outras rotas. A instalação distribuída contém apenas o motor por dados internos; o modo visual legado não faz parte desta release.
 
 Para reportar um problema, informe a versão mostrada no painel e envie apenas o trecho relevante do diagnóstico, revisando os dados pessoais antes de compartilhar. Recursos e marcas do Aika pertencem aos respectivos titulares; este é um projeto independente.
+
+A calibração do cancelamento e suas limitações estão em [docs/CALIBRACAO.md](docs/CALIBRACAO.md). Ative **Timing calibrado por habilidade** na aba Comportamento para usar esse modo.
