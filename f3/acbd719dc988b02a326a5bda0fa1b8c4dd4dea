@@ -1,0 +1,45 @@
+aika_hunt_app/package.json
+  s_edfc50aef2ee58::t_e3e43eb140473a 3
+package.json
+  s_edfc50aef2ee58::t_e3e43eb140473a 3
+README.md
+  s_edfc50aef2ee58::t_e3e43eb140473a 34,36,47-48
+RELEASE_NOTES.md
+  s_edfc50aef2ee58::t_e3e43eb140473a 1,3-7,9,11
+aika_hunt_app/index.html
+  s_edfc50aef2ee58::t_e3e43eb140473a 33
+aika_hunt_app/package-lock.json
+  s_edfc50aef2ee58::t_ff1404f24d9795 3,9
+cancelamento_normal.py
+  s_edfc50aef2ee58::t_b333fdc1651beb 4-19,76-78,80-94,96-107,109-112
+hunt_core.py
+  s_edfc50aef2ee58::t_5926767b6b77e9 31,37
+hunt_native.py
+  s_edfc50aef2ee58::t_ba1f2e3e912017 10,76-79,254,454-457,460,463-464,467-468
+package-lock.json
+  s_edfc50aef2ee58::t_22acd6600ff643 3,9
+test_combo_w.py
+  s_edfc50aef2ee58::t_69f23a360cfc4e 4,13-16,19-20,22-23,25,29,31,34-35,40-45,55,66-67,77,82-112
+CHANGELOG.md
+  s_edfc50aef2ee58::t_0c6946490f5a83 3-13
+docs/CALIBRACAO.md
+  s_edfc50aef2ee58::t_6e4470f300dbf0 1-19
+test_cadencia_calibrada.py
+  s_edfc50aef2ee58::t_cbe336a07dac10 1-22
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.6",
+  "base_commit_sha": "f3acbd719dc988b02a326a5bda0fa1b8c4dd4dea",
+  "prompts": {},
+  "sessions": {
+    "s_edfc50aef2ee58": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "01a1e01c-4c9b-7e00-b2fb-9c7ef8050eed",
+        "model": "unknown"
+      },
+      "human_author": "Gabriel Renovato <86806861+GabrielRenovato@users.noreply.github.com>"
+    }
+  }
+}
