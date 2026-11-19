@@ -136,7 +136,8 @@ def main(profile,event_sink,control,percurso=None):
             navegador=NavegadorLocal(leitor=lambda leitor,posicao:percurso.geometria.aplicar(ler_grade(leitor,posicao)))
         else:navegador=NavegadorLocal()
         cc={};cc_em=0.;cc_desde=None;cc_log=False;cc_motivo=None;nav_log_em=-100.;aprox_pos=None;reaprox_id=None
-        regional=BuscaRegional();indisponiveis={};mobs_regiao=None;pool_em=0.;nativo_em=0.;nativo_pausou=False;pool_erro_em=-100.
+        regional=BuscaRegional(prazo_aproximar=2.5,prazo_trocar=2.,intervalo_tab=.2,intervalo_giro=.35) if mina else BuscaRegional()
+        indisponiveis={};mobs_regiao=None;pool_em=0.;nativo_em=0.;nativo_pausou=False;pool_erro_em=-100.
         busca_destino=None;busca_ate=0.;reconhecer_buff_ate=0.;retorno_busca=False;buff_pausa_desde=None
         recuperacao=RecuperacaoAlvo()
         cancelamento=CancelamentoNormal(p['cancel_normal'])
@@ -417,7 +418,9 @@ def main(profile,event_sink,control,percurso=None):
                     if passo['estado'].startswith('aguardar'):soltar();esperar(.03);continue
                     nav=seguir_grade(passo['destino'],passo['chave'],.9)
                     if nav in ['sem_caminho','bloqueado','aguardar_grade']:
-                        circuito_replanejar_em=agora+2
+                        if mina and nav in ['sem_caminho','bloqueado'] and circuito.replanejar_passagem(pos):
+                            navegador.invalidar();log('Passagem da Mina recalculada; aproximando o proximo ponto da rota.',posicao=pos)
+                        circuito_replanejar_em=agora+(.25 if mina else 2)
                         log('Passagem do circuito indisponivel na grade atual; aguardando nova leitura sem avancar o ponto.',ponto=passo['ponto'])
                     esperar(.015);continue
                 if estado=='percorrer':
@@ -447,9 +450,13 @@ def main(profile,event_sink,control,percurso=None):
                         log('Tres aproximacoes sem alvo; voltando a base para recomecar a busca.')
                         continue
                     if acao=='aproximar':
+                        if mina and not any(nome_normal(m['name']).startswith('malik') for m in mobs_regiao):
+                            for m in mobs_regiao:indisponiveis[m['id']]=agora+6
+                            mobs_regiao=[];pool_em=0.;estado='percorrer';regional.confirmar_alvo();navegador.invalidar()
+                            log('Sem selecao em 2.5s; seguindo a rota antes de tentar esses IDs novamente.');continue
                         soltar();busca_destino=valor;busca_ate=agora+3
                         navegador.invalidar();estado='aproximar_busca'
-                        log('Busca sem alvo por 8s; aproximando de candidato por caminho validado.',alvo_id=valor['id'])
+                        log('Busca sem alvo; aproximando de candidato por caminho validado.',alvo_id=valor['id'])
                         continue
                     if acao=='orientar':
                         soltar();tecla,tempo=valor

@@ -1,5 +1,12 @@
 # Alterações
 
+## 0.1.0-beta.17 — 2026-11-19
+
+- Busca sem seleção de hostis comuns na Mina limitada a 2,5 segundos antes de retomar o percurso.
+- TAB e orientação com intervalos menores na Mina; luta já iniciada e prioridade de Malik preservadas.
+- Bloqueio da rota interna recalcula o trecho com destino mais próximo, sem espera repetida de dois segundos.
+- Buffs exclusivos e confirmação final continuam com suas esperas necessárias.
+
 ## 0.1.0-beta.16 — 2026-11-19
 
 - Libera o mob hostil colado ao portal antes da tentativa de entrada, sem exigir dano recebido.

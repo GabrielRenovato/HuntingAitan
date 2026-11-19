@@ -1,5 +1,5 @@
 """Percurso unico da primeira Mina, com combate e conclusao por abates confirmados."""
-import hashlib,heapq,json,math,struct,unicodedata
+import copy,hashlib,heapq,json,math,struct,unicodedata
 from functools import lru_cache
 from pathlib import Path
 from navegacao_grade import Grade
@@ -18,8 +18,9 @@ class MinaLenfer:
     def __init__(self,pos):
         d=plano_mina()
         if not dentro_mina(pos):raise RuntimeError('Mina LEnfer: entre na primeira area antes de iniciar o caminho para Malik.')
-        self.inicio=tuple(pos);self.trechos=d['trechos'];self.pontos=d['pontos'];self.trecho=0;self.indice=0;self.voltas=0
+        self.inicio=tuple(pos);self.trechos=copy.deepcopy(d['trechos']);self.pontos=d['pontos'];self.trecho=0;self.indice=0;self.voltas=0
         self.espera_ate=None;self.abates={};self.grade=None;self.custo_origem=None;self.custos={};self.concluida=False
+        self.revisao=0;self.antecipacao=8.;self.replanejado_em=None
         self.rota_planejada=self.trechos[0]['caminho'];self.indice=min(range(len(self.rota_planejada)),key=lambda i:math.dist(pos,self.rota_planejada[i]))
 
     def conferir(self,pasta):
@@ -68,6 +69,14 @@ class MinaLenfer:
 
     def combate_ativo(self):self.espera_ate=None
 
+    def replanejar_passagem(self,pos):
+        if self.grade is None or self.replanejado_em is not None and math.dist(pos,self.replanejado_em)<.6:return False
+        rota=self.grade.caminho(pos,self.pontos[-1]['pos'],max_nos=65536)
+        if not rota:return False
+        self.rota_planejada=rota;self.trechos[0]['caminho']=rota;self.indice=0
+        self.antecipacao=2.5;self.replanejado_em=tuple(pos);self.revisao+=1
+        return True
+
     def registrar_abate(self,id_,nome,pos,agora):
         if normalizar(nome).startswith('malik') and dentro_mina(pos):
             self.abates['malik']=dict(id=id_,nome=nome,pos=pos,tempo=agora)
@@ -95,5 +104,6 @@ class MinaLenfer:
         proximo=min(range(max(0,self.indice-8),len(rota)),key=lambda i:math.dist(pos,rota[i]))
         self.indice=max(self.indice,proximo) if math.dist(pos,rota[proximo])<=4 else proximo
         alvo=self.indice;dist=0.
-        while alvo+1<len(rota) and dist<8:dist+=math.dist(rota[alvo],rota[alvo+1]);alvo+=1
-        return dict(estado='andar',destino=tuple(rota[alvo]),chave=('circuito',self.trecho),ponto=p['id'],voltas=0)
+        if self.replanejado_em is not None and math.dist(pos,self.replanejado_em)>4:self.antecipacao=8.
+        while alvo+1<len(rota) and dist<self.antecipacao:dist+=math.dist(rota[alvo],rota[alvo+1]);alvo+=1
+        return dict(estado='andar',destino=tuple(rota[alvo]),chave=('circuito',self.trecho,self.revisao),ponto=p['id'],voltas=0)

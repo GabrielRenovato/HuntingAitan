@@ -4,8 +4,10 @@ A rota segue o eixo da estrada e evita o pátio das caixas. A ocupação cruza a
 
 O retorno continua ignorando os mobs do caminho. Entrada Elite, repetição e cura permanecem incluídas.
 
-Instalador: HuntingAitan-Setup-0.1.0-beta.16-x64.exe.
+Instalador: HuntingAitan-Setup-0.1.0-beta.17-x64.exe.
 
 A grade usada durante a condução também recebe a ocupação dos objetos, evitando atalhos nas curvas que cortem as pedras.
 
 Antes de entrar, verifica hostis vivos colados à porta: até três unidades do personagem e seis do portal. Combate esses IDs e retoma a entrada; no restante do trajeto continua ignorando os mobs.
+
+Na Mina, uma busca sem seleção de hostil comum retoma a rota após 2,5 segundos e permite tentar o ID novamente depois. Malik não é descartado por essa regra, e uma luta já iniciada é preservada. Passagens internas bloqueadas recalculam a aproximação com um ponto mais próximo. Buffs e confirmação final não foram encurtados.

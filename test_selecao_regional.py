@@ -33,6 +33,18 @@ class ListaTeste(unittest.TestCase):
   self.assertEqual(d.listar_mobs((0,0),30,dict(height=0,position=(0,0))),[])
 
 class EscolhaTeste(unittest.TestCase):
+ def test_mina_nao_espera_oito_segundos_para_reavaliar_busca(self):
+  b=BuscaRegional(prazo_aproximar=2.5,prazo_trocar=2.,intervalo_tab=.2,intervalo_giro=.35)
+  m=dict(id=3,hp=50,position=(5,0));b.atualizar([m])
+  self.assertEqual(b.decidir(0,None,None,pos=(0,0))[0],'tab')
+  self.assertEqual(b.decidir(.2,None,None,pos=(0,0))[0],'tab')
+  self.assertEqual(b.decidir(2.5,None,None,pos=(0,0))[0],'aproximar')
+  self.assertEqual(b.decidir(3,m,None,pos=(0,0))[0],'aceitar')
+ def test_busca_padrao_preserva_os_prazos_anteriores(self):
+  b=BuscaRegional();b.atualizar([dict(id=3,hp=50,position=(5,0))])
+  b.decidir(0,None,None,pos=(0,0))
+  self.assertNotEqual(b.decidir(2.5,None,None,pos=(0,0))[0],'aproximar')
+  self.assertEqual(b.decidir(8,None,None,pos=(0,0))[0],'aproximar')
  def test_aceita_alvo_valido_sem_tab_adicional(self):
   b=BuscaRegional();m=dict(id=3,hp=50,position=(5,0));b.atualizar([m])
   self.assertEqual(b.decidir(0,m,None)[0],'aceitar')

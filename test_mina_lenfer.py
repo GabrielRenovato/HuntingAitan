@@ -7,6 +7,20 @@ from perfil_hunt import validar,DEFAULT
 from test_navegacao_grade import grade
 
 class MinaTeste(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        from controle_avisos import preparar_runtime_visual
+        preparar_runtime_visual()
+
+    def test_replanejar_usa_ponto_proximo_e_nao_repete_sem_movimento(self):
+        m=MinaLenfer((2850,3344));m.grade=grade(20,8)
+        m.pontos=[dict(id=15,pos=(18.5,1.5),chefe='malik',espera=15)]
+        self.assertTrue(m.replanejar_passagem((1.5,1.5)))
+        passo=m.destino((1.5,1.5),0)
+        self.assertLessEqual(math.dist((1.5,1.5),passo['destino']),3.5)
+        self.assertEqual(passo['chave'],('circuito',0,1))
+        self.assertFalse(m.replanejar_passagem((1.5,1.5)))
+        self.assertTrue(m.replanejar_passagem((3.5,1.5)))
     def test_hostil_distante_nao_interrompe_rota_mas_malik_preserva_alcance(self):
         m=MinaLenfer((2850,3344));m.grade=grade(45,8);m.rota_planejada=[(1.5,1.5),(40.5,1.5)]
         mobs=[dict(id=1,name='Soldado',position=(6.5,1.5)),dict(id=2,name='Soldado',position=(21.5,1.5))]
