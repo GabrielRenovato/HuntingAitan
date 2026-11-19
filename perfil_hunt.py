@@ -3,6 +3,7 @@ from pathlib import Path
 
 DEFAULT={
  'version':3,'data_source':'native','auto_base':True,'base':[2767,846],'radius':20,'no_damage_seconds':5,'patrol_mode':'base',
+ 'mina_repeat':False,'mina_cycles':0,
  'cancel_normal':False,'stationary_seconds':3,'unstuck_key':"'",'attack_key':'1','action_gap':.7,
  'hp_percent':40,'mp_percent':40,'hp_keys':['8','',''],'mp_keys':['','',''],
  'heal_enabled':True,'heal_key':'7',
@@ -32,7 +33,9 @@ def validar(dados):
  if p['data_source'] not in ['native','visual']:raise ValueError('Fonte de dados invalida')
  p['base']=[int(x) for x in p['base']]
  if len(p['base'])!=2 or any(not 0<=x<=9999 for x in p['base']):raise ValueError('Base invalida')
- for k in ['auto_base','minimize_on_start','buffs_enabled','cancel_normal','heal_enabled']:
+ if isinstance(p['mina_cycles'],bool) or not isinstance(p['mina_cycles'],(int,float)) or not 0<=p['mina_cycles']<=9999 or int(p['mina_cycles'])!=p['mina_cycles']:raise ValueError('Quantidade de ciclos da Mina invalida')
+ p['mina_cycles']=int(p['mina_cycles'])
+ for k in ['auto_base','minimize_on_start','buffs_enabled','cancel_normal','heal_enabled','mina_repeat']:
   if not isinstance(p[k],bool):raise ValueError('Opcao invalida: '+k)
  for k in ['hp_keys','mp_keys']:
   if len(p[k])!=3:raise ValueError('Sao necessarios tres slots')
@@ -45,8 +48,9 @@ def validar(dados):
  if any(not re.fullmatch(r'ctrl\+[1-8]',v) for v in p['buff_keys']):raise ValueError('Buffs precisam de atalhos Ctrl+1 a Ctrl+8')
  if len(set(p['buff_keys']))!=5:raise ValueError('Os cinco buffs precisam de atalhos diferentes')
  if p['target'] not in ['qualquer','verit','penza','croshu','tet']:raise ValueError('Filtro de alvo invalido')
- if p['patrol_mode'] not in ['base','termes_penza']:raise ValueError('Circuito invalido')
+ if p['patrol_mode'] not in ['base','termes_penza','mina_lenfer']:raise ValueError('Circuito invalido')
  if p['patrol_mode']=='termes_penza':p.update(target='penza',data_source='native')
+ if p['patrol_mode']=='mina_lenfer':p.update(target='qualquer',data_source='native')
  usadas=set([p['attack_key']]+[v for k in ['hp_keys','mp_keys'] for v in p[k] if v])
  for campo,n in [('skills',10),('items',5)]:
   if len(p[campo])!=n:raise ValueError('Quantidade de slots invalida')

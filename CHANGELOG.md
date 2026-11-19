@@ -1,5 +1,16 @@
 # Alterações
 
+## 0.1.0-beta.9 — 2026-11-19
+
+- Modo Mina L’Enfer → Malik: caminho direto da posição atual até a sala final, com combate no trajeto.
+- Rota derivada dos arquivos de colisão e altura, com grade da entrada conferida ao vivo em 2.009 células.
+- Alvos laterais são filtrados pela faixa e distância caminhável; Malik recebe prioridade quando reconhecido.
+- Conclusão exige o abate confirmado de Malik e verificação da área final. Não depende de capturas do minimapa.
+- Repetição opcional no Elite: sair do grupo, confirmar, retornar do save ao portal e conferir a nova entrada.
+- Limite de DGs por sessão, contagem apenas após Malik confirmado e agenda de buffs preservada nas transições.
+- Abate de Malik, saída, retorno ao portal e nova entrada Elite validados em testes ao vivo separados.
+- Cura, buffs exclusivos, recargas, avisos e movimento suave mantidos.
+
 ## 0.1.0-beta.8 — 2026-11-19
 
 - Movimento contínuo nas curvas suaves, com conferência de colisão e limites à frente.

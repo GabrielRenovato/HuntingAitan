@@ -1,12 +1,12 @@
 const $=id=>document.getElementById(id);
 let profile=null,running=false,paused=false,editing=null,lastError=false;
 const lines=[];let startedAt=null;
-const names={percorrer:'Percorrendo circuito de Termes',aviso:'Fechando aviso',rebufar:'Renovando os cinco buffs',initializing:'Inicializando dados internos',inicio:'Confirmando posição',buscar:'Procurando alvo',combater:'Em combate',retornar:'Voltando à base',waiting:'Aguardando o Aika',paused:'Pausado',stopped:'Parado'};
+const names={percorrer:'Percorrendo rota',aviso:'Fechando aviso',rebufar:'Renovando os cinco buffs',initializing:'Inicializando dados internos',inicio:'Confirmando posição',buscar:'Procurando alvo',combater:'Em combate',retornar:'Voltando à base',waiting:'Aguardando o Aika',paused:'Pausado',stopped:'Parado'};
 function message(title,detail='',type='idle'){$('state-label').textContent=title;$('state-detail').textContent=detail;$('state-dot').className='dot '+type;}
 function fail(e){lastError=true;message('Confira a configuração',String(e.message||e).replace(/^Error invoking remote method '[^']+': Error: /,''),'error');}
 async function action(fn){try{await fn();}catch(e){fail(e);}}
 function log(text){lines.push(new Date().toLocaleTimeString('pt-BR')+' · '+text);if(lines.length>120)lines.shift();$('log-lines').textContent=lines.join('\n');$('log-lines').scrollTop=$('log-lines').scrollHeight;}
-function baseLabel(){if(profile.patrol_mode==='termes_penza'){$('base-value').textContent='Circuito de ida e volta';$('manual-base').classList.add('hidden');return;}const p=profile.base;$('base-value').textContent=profile.auto_base?(startedAt?`${Math.round(p[0])}, ${Math.round(p[1])}`:'Capturada ao começar'):`${Math.round(p[0])}, ${Math.round(p[1])}`;$('manual-base').classList.toggle('hidden',profile.auto_base);}
+function baseLabel(){if(profile.patrol_mode!=='base'){$('base-value').textContent=profile.patrol_mode==='mina_lenfer'?'Mina L’Enfer → Malik':'Circuito de ida e volta';$('manual-base').classList.add('hidden');return;}const p=profile.base;$('base-value').textContent=profile.auto_base?(startedAt?`${Math.round(p[0])}, ${Math.round(p[1])}`:'Capturada ao começar'):`${Math.round(p[0])}, ${Math.round(p[1])}`;$('manual-base').classList.toggle('hidden',profile.auto_base);}
 function slotButton(kind,index,icon,key,enabled=true){const b=document.createElement('button');b.className='slot'+(enabled?'':' inactive');b.type='button';b.title=(kind==='skills'?'Habilidade '+(index+1):kind==='items'?'Item '+(index+1):kind.toUpperCase()+' '+(index+1))+' · clique para configurar';if(icon){const img=document.createElement('img');img.src='assets/'+icon;img.alt='';b.append(img);}const k=document.createElement('span');k.className='key';k.textContent=key?key.toUpperCase():'';b.append(k);b.addEventListener('click',()=>openSlot(kind,index));return b;}
 function renderSlots(){
  for(const kind of ['hp','mp']){const box=$(kind+'-slots');box.replaceChildren();profile[kind+'_keys'].forEach((key,i)=>box.append(slotButton(kind,i,i===0?kind+'.png':null,key,!!key)));}
@@ -14,7 +14,8 @@ function renderSlots(){
  $('return-slot').querySelector('.key').textContent=profile.return_key.toUpperCase();
 }
 function render(){
- $('target').disabled=profile.patrol_mode==='termes_penza';$('patrol-mode').value=profile.patrol_mode||'base';$('patrol-hint').classList.toggle('hidden',profile.patrol_mode!=='termes_penza');
+ $('mina-repeat').checked=!!profile.mina_repeat;$('mina-cycles').value=profile.mina_cycles||0;
+ $('target').disabled=profile.patrol_mode!=='base';$('patrol-mode').value=profile.patrol_mode||'base';$('patrol-hint').classList.toggle('hidden',profile.patrol_mode!=='termes_penza');$('mina-hint').classList.toggle('hidden',profile.patrol_mode!=='mina_lenfer');
  $('cancel-normal').checked=!!profile.cancel_normal;
  $('heal-enabled').checked=profile.heal_enabled;$('heal-key').value=profile.heal_key;
  $('buff-enabled').checked=profile.buffs_enabled;$('buff-minutes').value=profile.buff_minutes;$('buff-gap').value=profile.buff_gap;profile.buff_keys.forEach((k,i)=>$('buff-key-'+i).value=k);$('buff-next').textContent=profile.buffs_enabled?'Ao iniciar e a cada '+profile.buff_minutes+' minutos':'Desativado';
@@ -26,12 +27,14 @@ function render(){
 function collect(){
  if(!profile)throw new Error('Aguarde a configuração carregar.');
  profile.patrol_mode=$('patrol-mode').value;
+ profile.mina_repeat=$('mina-repeat').checked;profile.mina_cycles=Number($('mina-cycles').value);
  profile.cancel_normal=$('cancel-normal').checked;
  profile.heal_enabled=$('heal-enabled').checked;profile.heal_key=$('heal-key').value.trim().toLowerCase();
  profile.buffs_enabled=$('buff-enabled').checked;profile.buff_minutes=Number($('buff-minutes').value);profile.buff_gap=Number($('buff-gap').value);profile.buff_keys=Array.from({length:5},(_,i)=>$('buff-key-'+i).value.trim().toLowerCase());
  profile.hp_percent=Number($('hp-percent').value);profile.mp_percent=Number($('mp-percent').value);
  for(const [id,key] of Object.entries({gap:'action_gap',duration:'duration_minutes',radius:'radius','no-damage':'no_damage_seconds',stationary:'stationary_seconds'}))profile[key]=Number($(id).value);
  if(profile.patrol_mode==='termes_penza')$('target').value='penza';
+ if(profile.patrol_mode==='mina_lenfer')$('target').value='qualquer';
  profile.attack_key=$('attack').value.trim().toLowerCase();profile.unstuck_key=$('unstuck').value.trim().toLowerCase();profile.target=$('target').value;profile.auto_base=$('auto-base').checked;profile.minimize_on_start=$('minimize-start').checked;
  if(!profile.auto_base)profile.base=[Number($('base-x').value),Number($('base-y').value)];
  return structuredClone(profile);
@@ -51,7 +54,7 @@ $('slot-form').addEventListener('submit',e=>{e.preventDefault();const {kind,inde
 });
 $('slot-cancel').addEventListener('click',()=>$('slot-dialog').close());$('return-slot').addEventListener('click',()=>openSlot('return'));
 for(const b of document.querySelectorAll('[data-tab]'))b.addEventListener('click',()=>{document.querySelectorAll('[data-tab]').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.tab-panel').forEach(x=>x.classList.toggle('hidden',x.id!==b.dataset.tab));});
-$('patrol-mode').addEventListener('change',()=>{collect();baseLabel();$('target').disabled=profile.patrol_mode==='termes_penza';$('patrol-hint').classList.toggle('hidden',profile.patrol_mode!=='termes_penza');});
+$('patrol-mode').addEventListener('change',()=>{collect();baseLabel();$('target').disabled=profile.patrol_mode!=='base';$('patrol-hint').classList.toggle('hidden',profile.patrol_mode!=='termes_penza');$('mina-hint').classList.toggle('hidden',profile.patrol_mode!=='mina_lenfer');});
 $('auto-base').addEventListener('change',()=>{collect();baseLabel();});
 $('save').addEventListener('click',()=>action(async()=>{profile=await window.hunt.save(collect());render();message('Configuração salva','Ela será carregada automaticamente na próxima abertura.');}));
 $('reset').addEventListener('click',()=>action(async()=>{if(running)return;profile=await window.hunt.load();render();message('Configuração recarregada');}));
@@ -67,8 +70,10 @@ $('minimize').addEventListener('click',()=>window.hunt.minimize());$('close').ad
 $('show-log').addEventListener('click',()=>$('activity').classList.remove('hidden'));$('hide-log').addEventListener('click',()=>$('activity').classList.add('hidden'));
 window.hunt.onEvent(e=>{
  if(e.event==='log'){log(e.message);if(!lastError)message(e.message,e.posicao?'Posição: '+e.posicao.join(', '):'F12 para encerrar.',running?'running':'idle');}
+ if(e.event==='dungeon_complete'){log(e.message);message('Mina finalizada',e.message,'idle');}
+ if(e.event==='cycle'){const etapas={dg:'Indo até Malik',sair:'Saindo do grupo',retornar:'Voltando à entrada',entrar:'Entrando no Elite',corrigir_entrada:'Reconfirmando dificuldade',dg_concluida:'Malik abatido',save_confirmado:'Retorno ao save confirmado',elite_confirmado:'Entrada Elite confirmada'};if(e.message)log(e.message);message(etapas[e.state]||'Ciclo da Mina',e.message||`${e.cycles_completed||0} DGs concluídas`,'running');}
  if(e.event==='base'){profile.base=e.base;baseLabel();log('Base capturada: '+e.base.map(v=>Math.round(v)).join(', '));}
- if(e.event==='telemetry'){if(e.mobs_regiao!==undefined)$('mobs-read').textContent=e.mobs_regiao===null?'Aguardando leitura':String(e.mobs_regiao);if(e.next_buff_seconds!==undefined)$('buff-next').textContent=e.next_buff_seconds===null?'Desativado':e.next_buff_seconds>0?Math.ceil(e.next_buff_seconds/60)+' min':'Após terminar o alvo';$('target-read').textContent=e.target||'Sem alvo';$('data-source').textContent=e.source==='native'?'Memória do cliente':'Leitura visual';profile.base=e.base;baseLabel();$('position-read').textContent=e.position.map(v=>Math.round(v)).join(', ');$('vitals-read').textContent=Math.round(e.hp*100)+'% / '+(e.mp===null?'—':Math.round(e.mp*100)+'%');if(!lastError)message(e.controle?.stunned?'Atordoado · aguardando':e.controle?.paralyzed?'Paralisado · aguardando':e.controle?.frozen?'Congelado · aguardando':e.controle?.casting?'Executando habilidade':names[e.state]||'Caçando',e.patrol_point!==null&&e.patrol_point!==undefined?`Posição ${e.position.map(v=>Math.round(v)).join(', ')} · ponto ${e.patrol_point} · voltas ${e.patrol_laps}`:`Posição ${e.position.map(v=>Math.round(v)).join(', ')} · base ${e.base.map(v=>Math.round(v)).join(', ')}`,'running');if(profile.duration_minutes)$('time-left').textContent=Math.max(0,Math.ceil(profile.duration_minutes-e.elapsed/60))+'min';}
+ if(e.event==='telemetry'){if(e.mobs_regiao!==undefined)$('mobs-read').textContent=e.mobs_regiao===null?'Aguardando leitura':String(e.mobs_regiao);if(e.next_buff_seconds!==undefined)$('buff-next').textContent=e.next_buff_seconds===null?'Desativado':e.next_buff_seconds>0?Math.ceil(e.next_buff_seconds/60)+' min':'Após terminar o alvo';$('target-read').textContent=e.target||'Sem alvo';$('data-source').textContent=e.source==='native'?'Memória do cliente':'Leitura visual';profile.base=e.base;baseLabel();$('position-read').textContent=e.position.map(v=>Math.round(v)).join(', ');$('vitals-read').textContent=Math.round(e.hp*100)+'% / '+(e.mp===null?'—':Math.round(e.mp*100)+'%');if(!lastError)message(e.controle?.stunned?'Atordoado · aguardando':e.controle?.paralyzed?'Paralisado · aguardando':e.controle?.frozen?'Congelado · aguardando':e.controle?.casting?'Executando habilidade':names[e.state]||'Caçando',e.patrol_point!==null&&e.patrol_point!==undefined?`Posição ${e.position.map(v=>Math.round(v)).join(', ')} · setor ${e.patrol_point}${e.dungeon?'':(' · voltas '+e.patrol_laps)}`:`Posição ${e.position.map(v=>Math.round(v)).join(', ')} · base ${e.base.map(v=>Math.round(v)).join(', ')}`,'running');if(profile.duration_minutes)$('time-left').textContent=Math.max(0,Math.ceil(profile.duration_minutes-e.elapsed/60))+'min';}
  if(e.event==='status'&&!lastError)message(names[e.state]||e.state,e.message,e.state==='paused'?'idle':'running');
  if(e.event==='error'){lastError=true;log(e.message);message('Não foi possível iniciar',e.message,'error');}
  if(e.event==='finished'||e.event==='exit'){running=false;startedAt=null;$('start').disabled=false;$('running-tools').classList.add('hidden');if(!lastError)message('Caça encerrada','Você pode alterar a configuração e começar novamente.');}
