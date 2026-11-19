@@ -8,6 +8,7 @@
 - Botão Entrar do grupo reconhecido também com o fundo realçado, sem precisar mover o mouse manualmente.
 - Progresso de preparação da interface exibido no painel.
 - Teste do monitor e da interface em processo novo incluído na verificação do motor empacotado.
+- Ciclo completo validado ao vivo no executável: entrada Elite, Malik, saída, retorno e nova entrada Elite; sem ataques no trajeto externo.
 
 ## 0.1.0-beta.11 — 2026-11-19
 

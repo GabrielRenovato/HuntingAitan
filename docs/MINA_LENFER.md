@@ -44,7 +44,9 @@ O retorno está limitado à região do save validada junto à entrada. Saves de 
 
 ## Verificação ao vivo de 19/11/2026
 
-O motor chegou ao final e confirmou Malik (59.480 HP máximos) por vida zero, seguido da verificação da área. Em testes sequenciais das transições, saiu pelo menu do grupo, confirmou a chegada ao save em 2628,4 / 1792,4, caminhou aproximadamente 227,3 unidades até o portal e entrou novamente na primeira área. A nova posição 2850,4 / 3344,4 e o indicador Elite foram confirmados. Essas etapas foram executadas por testes separados; a repetição contínua por várias DGs ainda requer acompanhamento.
+O motor chegou ao final e confirmou Malik (59.480 HP máximos) por vida zero, seguido da verificação da área. Em testes sequenciais das transições, saiu pelo menu do grupo, confirmou a chegada ao save em 2628,4 / 1792,4, caminhou aproximadamente 227,3 unidades até o portal e entrou novamente na primeira área.
+
+Após corrigir o carregamento nativo e o reconhecimento do botão, o ciclo completo também foi executado no motor empacotado: save → portal → Elite → Malik confirmado → saída do grupo → save → portal → nova entrada Elite. A nova posição 2850,4 / 3344,4 e o indicador Elite foram confirmados nas duas entradas. Nenhum ataque ou TAB foi enviado nos trajetos externos dessa execução. O teste encerrou na entrada da próxima DG, com uma conclusão contabilizada. A validação cobre uma DG e a entrada da próxima.
 
 ## Regeneração
 
