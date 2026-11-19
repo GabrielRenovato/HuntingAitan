@@ -50,6 +50,8 @@ Os triângulos inclinados ou verticais são recortados à faixa entre 0,35 e 1,8
 
 O eixo da estrada passa por 2696,5 / 1715,5 e 2699,5 / 1675,5 antes de subir até o portal. As guias restringem o caminho ao centro da estrada, sem cortar o pátio da caixa-d'água em 2713,1682. A célula observada da colisão nas pedras em 2683,1714 passa a ser bloqueada. A máscara de objetos vale tanto para o caminho estático quanto para a condução com a grade carregada.
 
+Na validação dessa condução em 19/11/2026, o retorno completo de 2627,4 / 1792,4 até 2715,8 / 1614,8 levou 28 segundos, com HP cheio e sem eventos de bloqueio. Também foi confirmada uma passagem iniciada mais à frente no caminho. Isso valida o trecho observado; outros objetos dinâmicos continuam sujeitos à reconfirmação durante a execução.
+
 Em outros bloqueios físicos do retorno, a falta de deslocamento com avanço enviado informa o ponto tentado. O controlador volta a uma passagem já percorrida, exclui temporariamente uma pequena área à frente e calcula outro caminho. A revisão muda a referência de navegação, evitando repetir indefinidamente a mesma rota. Essa recuperação é restrita ao retorno externo; a navegação da DG e do circuito de Termes mantém o comportamento anterior.
 
 Para regenerar o inventário após revalidar uma alteração no cliente:
