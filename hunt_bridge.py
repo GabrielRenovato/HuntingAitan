@@ -33,7 +33,9 @@ def main():
             cv2.putText(teste,'Tempo restante: 111 seg',(15,105),cv2.FONT_HERSHEY_SIMPLEX,.7,(255,255,255),2)
             linhas,_=detector.ocr(teste)
             if tipo_convite([(l[1],float(l[2])) for l in linhas or []])!='arena_elter':raise RuntimeError('OCR empacotado nao reconheceu a amostra de teste')
-            r=dict(backend=True,templates=True,ocr=True)
+            from circuito_termes import plano,dentro_regiao
+            if len(plano()['trechos'])!=8 or not dentro_regiao((2752,635)):raise RuntimeError('Circuito nao incluido no motor')
+            r=dict(backend=True,templates=True,ocr=True,circuito=True)
         elif modo=='validate':r=validar(d)
         elif modo=='position':
             from dados_internos import DadosInternos

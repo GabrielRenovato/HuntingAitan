@@ -65,7 +65,9 @@ class Grade:
             for dx,dy in ((1,0),(-1,0),(0,1),(0,-1),(1,1),(1,-1),(-1,1),(-1,-1)):
                 novo=(c[0]+dx,c[1]+dy)
                 if novo in visitados or not self.passagem(c,novo):continue
-                if limite and math.dist(self.mundo(novo),limite[0])>limite[1]:continue
+                if limite:
+                    permitido=limite(self.mundo(novo)) if callable(limite) else math.dist(self.mundo(novo),limite[0])<=limite[1]
+                    if not permitido:continue
                 valor=custo+math.hypot(dx,dy)+self.penalidade_parede(novo)
                 if valor<custos.get(novo,float('inf')):
                     custos[novo]=valor;pais[novo]=c;heapq.heappush(fila,(valor+h(novo),valor,novo))

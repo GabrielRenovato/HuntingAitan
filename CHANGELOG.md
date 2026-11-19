@@ -1,5 +1,13 @@
 # Alterações
 
+## 0.1.0-beta.6 — 2026-11-19
+
+- Circuito Penza de Termes selecionável no painel, seguindo 3 → 2 → 12 → 18 → 17 e retornando pela mesma faixa.
+- Caminhos derivados dos arquivos locais de colisão e altura; oito trechos verificados, com conferência do SHA-256 dos terrenos ao iniciar.
+- Busca limitada ao corredor, pausa para combater Penzas e retomada do trecho após abate, com cinco segundos em cada parada.
+- Navegação também reconfirma a grade carregada e não avança o ponto se faltar passagem.
+- Buffs exclusivos, cura prioritária e fechamento de janelas mantidos. Validação no jogo ainda pendente.
+
 ## 0.1.0-beta.5 — 2026-11-19
 
 - Alcance máximo configurável aumentado de 30 para 50, no painel, na validação e na importação de configuração nativa.

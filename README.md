@@ -31,9 +31,9 @@ O Python no PATH é usado no desenvolvimento. Para outro interpretador, defina `
 ## Publicar uma correção
 
 1. Faça a alteração, atualize `CHANGELOG.md` e rode `npm test`.
-2. Ajuste a mesma versão nos dois `package.json` e nos respectivos lockfiles. Exemplo: `0.1.0-beta.6` para a próxima beta.
+2. Ajuste a mesma versão nos dois `package.json` e nos respectivos lockfiles. Exemplo: `0.1.0-beta.7` para a próxima beta.
 3. Atualize `RELEASE_NOTES.md`, faça commit e push.
-4. Crie a tag correspondente e envie: `git tag v0.1.0-beta.6` e `git push origin v0.1.0-beta.6`.
+4. Crie a tag correspondente e envie: `git tag v0.1.0-beta.7` e `git push origin v0.1.0-beta.7`.
 
 O workflow verifica a versão, executa os testes, empacota o backend, gera o instalador NSIS e publica instalador, blockmap e metadados YAML na release. O token vem do GitHub Actions; não deve ser colocado no aplicativo. O workflow falha sem publicar se um desses passos falhar. Tags com sufixo beta são publicadas como pré-release.
 
@@ -48,3 +48,5 @@ Para reportar um problema, informe a versão mostrada no painel e envie apenas o
 A calibração do cancelamento e suas limitações estão em [docs/CALIBRACAO.md](docs/CALIBRACAO.md). Ative **Timing calibrado por habilidade** na aba Comportamento para usar esse modo.
 
 O fechamento de CTE, Arena Elter e conversas está descrito em [docs/JANELAS.md](docs/JANELAS.md), incluindo o que foi validado e as limitações.
+
+Circuito de Termes: veja [as instruções e a validação das passagens](docs/CIRCUITO_TERMES.md).
