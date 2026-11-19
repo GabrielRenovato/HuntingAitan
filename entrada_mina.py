@@ -3,13 +3,14 @@ import math,struct
 from pathlib import Path
 from navegacao_grade import Grade
 from circuito_termes import distancia_segmento
+from geometria_entrada import GeometriaEntrada
 
 PORTAL=(2716.,1611.)
+EIXO_ESTRADA=((2696.5,1715.5),(2699.5,1675.5),(2708.5,1645.5),PORTAL)
 
-def passagem_caixas(pos):
-    # A grade marca o chao sob esses objetos como livre. Reserva o lado
-    # oeste da passagem; o personagem colidiu em 2713.12,1682.12.
-    return not(1679<=pos[1]<=1687) or 2709<=pos[0]<2712
+def passagem_estrada(pos):
+    if not 1614<=pos[1]<=1718:return True
+    return min(distancia_segmento(pos,a,b) for a,b in zip(EIXO_ESTRADA,EIXO_ESTRADA[1:]))<=3
 
 def recuo_caixas(pos):return (2709.5,min(1689.5,max(1685.5,pos[1]+2)))
 
@@ -24,18 +25,27 @@ class EntradaMina:
         for y in range(y0,y1+1):
             off=(y*4096+x0)*2;flags.extend(a[off:off+w*2:2]);alturas.extend(struct.unpack_from('<'+'h'*w,h,off+4))
         g=Grade((0,0),(x0,y0),w,y1-y0+1,bytes(flags),tuple(alturas),1)
-        recuo=None if passagem_caixas(pos) else recuo_caixas(pos)
+        self.geometria=GeometriaEntrada(pasta);g=self.geometria.aplicar(g)
+        recuo=recuo_caixas(pos) if 1679<=pos[1]<=1687 and pos[0]>=2712 else None
         if recuo is not None:
-            saida=g.caminho(pos,recuo,alcance=.5,limite=lambda q:passagem_caixas(q) or distancia_segmento(q,pos,recuo)<=2)
+            saida=g.caminho(pos,recuo,alcance=.5,limite=lambda q:passagem_estrada(q) or distancia_segmento(q,pos,recuo)<=2)
             if not saida:raise RuntimeError('Sem passagem validada para sair do canto das caixas.')
-        rota=g.caminho(recuo or pos,PORTAL,alcance=3,max_nos=w*(y1-y0+1),limite=passagem_caixas)
+        # Guias do centro da estrada impedem que o menor caminho do terreno
+        # corte pelo patio da caixa-dagua e das caixas, fora da estrada.
+        metas=[q for q in EIXO_ESTRADA[:-1] if q[1]<pos[1]-1]+[PORTAL]
+        rota=[];origem=recuo or pos
+        for i,meta in enumerate(metas):
+            limite=lambda q,a=origem,b=meta,i=i:passagem_estrada(q) or (i==0 and distancia_segmento(q,a,b)<=(12 if recuo is not None else 3))
+            trecho=g.caminho(origem,meta,alcance=3 if meta==PORTAL else 1,max_nos=w*(y1-y0+1),limite=limite)
+            if not trecho:raise RuntimeError('Sem passagem validada pelo centro da estrada ate a Mina.')
+            rota.extend(trecho if not rota else trecho[1:]);origem=trecho[-1]
         if not rota or not all(g.passagem(g.celula(a),g.celula(b)) for a,b in zip(rota,rota[1:])):raise RuntimeError('Sem passagem validada do save atual ate o portal da Mina.')
         self.rota=rota;self.trechos=[dict(ate='entrada',caminho=rota)];self.trecho=0;self.voltas=0;self.indice=0
         self.bloqueadores=set(bloqueadores);self.bloqueio_em=-float('inf')
         self.grade=g;self.trilha=[tuple(pos)];self.obstaculos=[];self.recuo=recuo;self.revisao=0
 
     def passagem(self,pos):
-        return passagem_caixas(pos) and all(math.dist(pos,c)>1.15 for c in self.obstaculos)
+        return passagem_estrada(pos) and (not hasattr(self,'geometria') or self.geometria.livre(pos)) and all(math.dist(pos,c)>1.15 for c in self.obstaculos)
 
     def observar_navegacao(self,pos,agora,plano):
         if math.dist(pos,PORTAL)<=8 and plano['estado'] in ('replanejar','bloqueado'):
@@ -50,7 +60,7 @@ class EntradaMina:
         # Exclui a pequena area a frente e volta a um ponto ja percorrido.
         centro=(pos[0]+dx/dist*1.8,pos[1]+dy/dist*1.8)
         novos=self.obstaculos+[centro]
-        livre=lambda p:passagem_caixas(p) and all(math.dist(p,c)>1.15 for c in novos)
+        livre=lambda p:passagem_estrada(p) and all(math.dist(p,c)>1.15 for c in novos)
         anteriores=[p for p in reversed(self.trilha) if 2<=math.dist(pos,p)<=5 and livre(p)]
         recuo=anteriores[0] if anteriores else (pos[0]-dx/dist*2.5,pos[1]-dy/dist*2.5)
         if not livre(recuo):return False

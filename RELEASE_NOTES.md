@@ -1,7 +1,7 @@
-Desvio das caixas no caminho da Mina.
+Caminho externo da Mina baseado no terreno e nos objetos.
 
-O percurso externo passa pela faixa livre ao lado das caixas e barris em 2713,1682. Ao confirmar uma colisão por falta de deslocamento, recua para uma passagem conhecida, exclui a pequena área bloqueada e calcula um caminho diferente. Também permite retomar a navegação se o personagem já começar preso nesse canto.
+A rota segue o eixo da estrada e evita o pátio das caixas. A ocupação cruza as malhas MS3 posicionadas nos DAT com a altura do terreno, incluindo as pedras na região da colisão observada em 2683,1714. Pisos e rampas são separados das superfícies que bloqueiam a passagem. Os arquivos de origem são conferidos por SHA-256 antes da navegação.
 
-Continua ignorando os mobs no trajeto e só combate bloqueadores perto do portal. Entrada no Elite e repetição da DG permanecem incluídas.
+O retorno continua ignorando os mobs do caminho. Entrada Elite, repetição e cura permanecem incluídas.
 
-Instalador: HuntingAitan-Setup-0.1.0-beta.13-x64.exe.
+Instalador: HuntingAitan-Setup-0.1.0-beta.14-x64.exe.

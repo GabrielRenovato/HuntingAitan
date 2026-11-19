@@ -362,6 +362,9 @@ def main(profile,event_sink,control,percurso=None):
                     # uma passagem estreita de reentrada, com colisao validada.
                     reentrada=chave[0]=='circuito' and not regiao(pos)
                     limite=lambda q:regiao(q) or (reentrada and distancia_segmento(q,pos,destino)<=2)
+                    if percurso is not None and hasattr(percurso,'geometria'):
+                        faixa=limite
+                        limite=lambda q:percurso.geometria.livre(q) and faixa(q)
                 try:plano=navegador.planejar(dados,pos,player.get('heading'),destino,chave,agora,alcance=alcance,limite=limite,parcial=retorno or bool(circuito))
                 except RuntimeError as e:
                     soltar()

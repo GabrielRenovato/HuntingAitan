@@ -2,7 +2,7 @@ import copy,sys,threading,unittest
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import MagicMock,patch
-from entrada_mina import EntradaMina,PORTAL,passagem_caixas
+from entrada_mina import EntradaMina,PORTAL,passagem_estrada
 from test_navegacao_grade import grade
 from perfil_hunt import DEFAULT
 
@@ -19,12 +19,12 @@ class EntradaTeste(unittest.TestCase):
     def mob(self,id_,pos):return dict(id=id_,position=pos)
 
     def test_rota_se_afasta_do_ponto_real_das_caixas(self):
-        self.assertFalse(passagem_caixas((2713.124,1682.123)))
-        self.assertTrue(passagem_caixas((2711.5,1682.5)))
-        self.assertTrue(passagem_caixas((2713.5,1677.5)))
-        m=percurso([(2710.5,1686.5),(2711.5,1680.5),(2713.5,1677.5)])
+        self.assertFalse(passagem_estrada((2713.124,1682.123)))
+        self.assertTrue(passagem_estrada((2697.5,1682.5)))
+        self.assertFalse(passagem_estrada((2711.5,1682.5)))
+        m=percurso([(2695.5,1686.5),(2697.5,1680.5),(2700.5,1677.5)])
         self.assertFalse(m.contem((2713.124,1682.123)))
-        self.assertTrue(m.contem((2711.5,1682.5)))
+        self.assertTrue(m.contem((2697.5,1682.5)))
 
     def test_ja_preso_nas_caixas_recuar_para_o_lado_livre(self):
         m=percurso([(2710.5,1686.5),(2711.5,1680.5),(2713.5,1677.5)])

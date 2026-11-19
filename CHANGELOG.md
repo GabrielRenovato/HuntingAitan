@@ -1,5 +1,12 @@
 # Alterações
 
+## 0.1.0-beta.14 — 2026-11-19
+
+- Percurso externo pelo eixo da estrada, evitando o pátio das caixas e da caixa-d’água.
+- Ocupação adicional derivada das malhas MS3 e dos objetos posicionados nos DAT, cruzada com a altura do terreno.
+- A célula da colisão observada nas pedras em 2683,1714 é bloqueada no planejamento.
+- Fontes da geometria conferidas por SHA-256 antes da navegação e incluídas na distribuição.
+
 ## 0.1.0-beta.13 — 2026-11-19
 
 - Retorno ao portal desvia do canto das caixas e barris em 2713,1682.

@@ -1,0 +1,6163 @@
+{
+  "schema": 1,
+  "limites": [
+    2588,
+    1570,
+    2757,
+    1834
+  ],
+  "largura": 169,
+  "altura": 264,
+  "mascara": "eNrtXdsW2ygMZP7/p/e0J44BSegKds42T9tuak8EEtLoQmsNQPuFD9pvAP0jz1+R6L/Pv8+/zw9/ELfeh+0+WtB+/zGnh6D+fQ1ipvEDEYdkmTDi54Aid9w8BdT9SvQ74OyJDbfO4wGBBoSKp3C+0zFC1IfDO3DqQA579/gVvxgLUHg3ULwTKeiGeydSMOheGbSBorMDxUFPFNfL7leOL8dbXGZcUAFeoliux2G2BOikA6ffdzYO6cOJlwPtRPrWUx9XaOdde5yPP2+dcmrTcZuLAek7j3wQpLhjfLyIVcZo+b824Ps5p88GoCOk0yC9QMmWxfGF9Sg90a2XCPR3gDYRaHvVylcCRZS8ML9sAnb9EZEllM842cuILn1m5dGhNT/D/LrJHJl1CWDsHOc62p1Mi7134xypPER1xPY+SCtvB/oRSJjFuPaJQapRoO0CiIx9vANMXaxRoLro4Pm3JqB+KzrtayGQhksjDU4eAQoPUOJte6S0AygxDzo1oQExqq13iw7qLX9x9m6zxzxEXbKe5yC/+woQjNQPPOpGgMo/FCxX2f1DinMNxgMUdqBDDAhJuSjSGieQrrzHR6OHKdWznHP71Wwa2Xm9crDirRLpBRQcUPieRK1ZHdAbDkaL460y4M3EpPjZHSqmRXwMOXgfz3GQGmz9ZBovf6jAOx/Zl5xA6XFJd4Nd9xfeAHICnesCLvUyA9VMBFSP1STTcWHweS/s4RZ0j+Py/5HSJqI5+J6AtnDLHgfEkXbrCxIRmoAyXwHkOBPBPQrOkOID3xLBzhw6FnsB4ToufDHNaTuzREe4UIHGNio63mbOLwIeUnxwphYuP1pgpwKXSKkufV0hj4FiEUwOFAKW/yaHJl+0e7liICfzIYuSPjvij8xKT31A3wEi/z36jeVRJF42ZT4kGzg76+OsubgCznlQIKY4IIwzwAw43uUzpnYKoyTViYbYMyE+gpdANVAzxcfAwNbF551/5cl8VIxaGVpUdi2EOXxn9Lww661TY3BYjkmGlVkwAylvtlL4HBddIFIHFVXE6BV/Tq5TCVBr8OExVYRxLVF0lIm9CxEmVwUFMFG3PzrOtS4G8ydUTBk76jSneIJvuI1a49AY+i1rNyO5XmO+rgFl7ieqHiSGdxXPR7jk2J0BLTsw95R4ZJng+0SjTy2tSslaIyYGIyFIgcFPiPRmU+gO8tCB7dxHJ/AfRiuIM4Bza4mVlKNr/lrOzUDbQp71p1N8s9wh+lG/0BkdUGHmch+bRUqR5qzytqWn3HgqP4c9SCG8CYeQ+k7Q0veonHX8sWzZEw4A9ZLWLN0db4y0Hx0uQWNO+ngNnOn9EtKYO4pWlZmnMs2fD2N58pyZj45psOinty3tW/V5lR/1Ce9gOnFKdixKFgLR4TdnNdjRCpHKr2yRtBp4FyU0vMgCs0WKiNgoJAHUUPnhPgDVxpfYzIV1GR+AlfsDA04+bkJgeU0ntxfowkeJKpRew4lFoYWbZ4GQuEBSofoCnfnnQQa6knjY9dE8gpXgIJ1joI5UPlqP1kTz6g3Rz9tMLyxexGZL5mUXz+VioAgmRF81JwKhrzzRLhzjA94ItD6ErPdowqxMhXyO0EfngIqNQVW//JVrQ4qha59eCJ4CxQ/soxcDFZ9dBLgSKU9ilmTVa5OUs7fYl7JaQ7jFsyuRjvL7Ft0iu7LI8uFrU4IM58Iex+XH/C1G5B+PbYlv9N3MNbkhlOs+vqXdVTjnwmi0io2EDmjVCJKJe0B+J92lbUNFe5lZcfSlK1b0A67rZej+q9CaIOWx4ZZpG7nFZN0YxQdkpd43qgwkKJB2yxDP07KPROvmLJBUa27dyzjwvgtQKKtAbs0rdXBhlvKORenJtLL0OXqw9kqEm+iCeXOb47FKmZKxaM8zMCsdOz9wKmoK0N4MdAjqcYxXTQHdIE/s2QO/c1/Npt//NF2Ri/tjv2eTgpbLvXztMZ4jpljjGWPiKow/tupCnShsUSjcvaulqt0XI2iZe6fi7UFK/InlYhxButaPb8VT4byfCotEBztAmHgzfWU7cqjBDakiW8yEMr3v5khdx78+nVbdjs5+vL6gLtghB3kmERZTRR1Da+YnufpK0P9WIab9Cg4LRqQ161w+DCRKQP/VKToFR/64QQN8bIphc161wJTVeaL+KFC4BqCQWsqlc8MrTSi11o/PhaW6j/soe1rM0LrsDT1Ol28nCKEUxAn+EaaMGHww9WNgWHpVLFhzybZpyIaDRTJ2/QhjrQ506bc376jSmALqp2i+Rhbp1jbTYb/uW1LWPZKBEY9e12lvnC9ptCgGIxbbONy751PKbvhsoauPKB4Gc4/JJawI+SIeKrRrjO5BaSbXsQKySQQ2gvSRJmRQZTtZUur2JQBU/votlJVw2mMLzLFQGQUVNtiyMZneq7CR4+S7szYR8TQo9l05VAnUfc/YWY3arek8TZDRyCKcY4AhjChdtBqqbTpTo4Ofy2/zQP050mTf6N4OY0eGv92c3AC49BbbqqnG0rkbwTn4lrBfOCO3h5qtU6BF7yaeDH1uWhRkjHt94znHart1Uer8B2ibXVFW1740BHDM/1k3GIu1PtHIF4YGMp5iUDqhhfyHn6Z0X5KaHgXRzwwuTqaDkmdJT2FPhgiNFOEVlOJ5llVttOcverC5StrVCw6gSvzCXDXm4ALUyyysQL87DYsyK2C+//O+mGrFvAwCNKhNkFdjCA3nMOJ+GrjFWKSAMpvSO4FiVPCtAXyWm7LfIJZgDMoqwmGcJifkGev4JPvSGEwlZoU/MstaNAvyYBb/bUT7mj6VW/PoBNvny8ZMS6kHNC9BqiYwToi0ZgQTHkPqMqLtufpQX675kEwXrrWxYm8ovzG5Y6XNTavatjERMDaCOexBRfIKy0s0mLv0pulNE1kEqCNJKj0ZU5qV8TDVG4jCoo2OuOv6rTATEUwpQMQFgnL3jI0FYMIfgki7+dN4x+wivxwdciL+mGW/d8zLphfTbXSOl1SwQeqiI4WGymH0mC7WZDhAxe+TYt+a7lzxh4OrIVgeqfK031DRjuP79JpeFSj/84Hkcvu8UYWwEQWqh/Hhi+ljwYtgoZttOOJ+X3Csy12YNNGJubqXcQAn3R5g7Ldgj3EoRMQqSS4JdJpm+4xXDWsc8kwrEedUdBMO/NfJma+dThu1niZ0EIeCwmHjnu0q4wfzBcel6z6RIrpHaYVXC6aEEtflrRnTO1LF2FOLbAdwvKCSdwkbU9SJSCyacwyMGSIBaObVkbs9Y4dtUkZFCx8hQGyNIdg0LVogLdR+hXKn1VQ2w7F6QOyp2DTdVmuEdD8V5wZAZgePbAPaXv3J3w1/BGX7lSkJm1f9veNE09b7CfWsB7pVCV4EFNj1O/5nBnj/Dn98Z77GAttl/B8pmhFC",
+  "fontes": {
+    "Objects/MeshList.txt": "75b1f52c3913488e9087f2190fc37a70b48cbf538c818c91458aefbfe4a73fca",
+    "Env/z011006.dat": "57fd81fd4d6885d131483c168aa07498999685ac3cdf0a94e5949afc172e6143",
+    "Objects//sigmF0017.MS3": "361b3200f84e3b61e1e8b270e44b28cfc4f176149ca6427988406bd02d1c64df",
+    "Objects//lenferF002.MS3": "e1ee0d2ae77207a220e58bf03db845541748a5a4159963d33a234988f15d1c05",
+    "Objects//FL12010101.MS3": "762641c3fbe2a7c59a5c9f7405aba4929f0dd91e365d4f39c89f3deaccc8f41b",
+    "Objects//lenferF011.MS3": "0b9be8ff42df3f554b6cb687a7671e3256aaba6edacf2364051017982bec11f9",
+    "Objects//lenferF004.MS3": "73239deb0a15d5b306a92f501f295421ca97d060d405970d84af8d2a8597eac4",
+    "Objects//lenferF017.MS3": "2d9060f59215a3e6a16341112612ee5f7b0df251782b91c8320e7ccabebfdc4f",
+    "Objects//lenferF010.MS3": "331f7a0fee7b94ce6364cc9c5fc67874dc61465b0944f603bae4aa03939efd0b",
+    "Objects//lenferF014.MS3": "d9385c2b0896c3e8a35b19f9a09c44d2c37b76daff043a9112b6ae47fa07c50e",
+    "Objects//lenferF001.MS3": "2941626f85e1fef4be0cd2b3d1af881af60a4de847a6e41014efcd46823d8038",
+    "Objects//lenferF007.MS3": "73d5c73b6d507b9ba5dac84114092ee4f0df336fac3a8364a36e95dfe397e0a1",
+    "Objects//sigmF0010.MS3": "e812a9423706d84f51786544439a2ed91b7a926505c939df8c1447165dcc7867",
+    "Objects//lenferN006.MS3": "549e6b6597c5549cfa03b253459b10bb646ede056f2bcd5d23888cd7c33c55d9",
+    "Objects//sigmN0006.MS3": "2ba02fa722e7738dc9e3f4ed11598b86fd01e6fd35f3b7f3f07d93756dc506a2",
+    "Objects//lenferN005.MS3": "f490b1b6a22a16a9d76a03d148f32349edfee05d48e1de191524f962233929a9",
+    "Objects//lenferN004.MS3": "cfb4fb7f420213bf5eebeb39a07fe0064572fe9ac8afd56486dff9de00884df0",
+    "Objects//lenferN007.MS3": "8e816177fd51acb52bf1a09ba9669c2b1c13321bbe7b9f2e50ea2dcb01dd43e5",
+    "Objects//nlafarm047.MS3": "1c4c35f4e62f9226ca9b4c5f0e64e6b313fa949ed4bfe1ab3da1470e79fda71c",
+    "Objects//sigmF0012.MS3": "f20bb52fcd758475344b237d2cc3a1b9cbb2e49ebc773b21a5ac3bbd7cc0c893",
+    "Objects//nlafarm074.MS3": "fd350601a8fac438f6c421a0c7fa3ace7c1785b3b5921507c1a85d2e7b245213",
+    "Objects//nlafarm076.MS3": "4eed564419b5405dc399d0c46740d0930ec74cfef34843eaa18a7b75cf3e22c4",
+    "Objects//lasgN0007.MS3": "9f4aacff4d2d6de5d8155b37d02a9ece00236db961cce3b974c16bf6c218622a",
+    "Objects//lenferN010.MS3": "579232bf5a42f84d42da17c1ff4573e523cb4d5f4099d70b6d7e0a8e08db16d4",
+    "Objects//lenferN003.MS3": "a389383f6c0efe1cc15c4fd7b916dbb740267f15954890b82b157d9600669111",
+    "Objects//lenferN002.MS3": "4817fe3ba549169212b2f3ae683227154b9169a4ffcbaf5babd04111a32c51f5",
+    "Objects//lakiac0009.MS3": "bec0dfdb931e596dcb6f6e47e006829c589d8d3f18cfbcb3c46eae53ec2925cb",
+    "Objects//nlafarm075.MS3": "2ee3c9a989635d9a9e824a05303ca539cd457df2e42569302b17a33be358e511",
+    "Objects//nlafarm003.MS3": "82cba382f1046ab01d0e36bfab68ac8459d0eff046fce981429b3e8cde0545e0",
+    "Objects//sigmF0011.MS3": "0082d48d5e12f22a13b189a510d8e3349c5fabf376e9f69bb3d0a4f442d190fd",
+    "Objects//sigmF0001.MS3": "fb9ea49f501f8b31aacaa9aa6a349c85233b2c90cab208a8377925644c774e09",
+    "Objects//amaN000023.MS3": "13d838a6bbdbed1c82d0d00c9801e1580e4b48c880a71818b691b58ee512699d",
+    "Objects//nlafarm026.MS3": "c2b0985e87eae4a0b9f509dc519f80efdb795154934fc66883fe73f6ccef505d",
+    "Objects//amaN000022.MS3": "5cac4d58458f2a2b86e284ef25d4e1ad64e2ec8a76014803148330282c57d8d7",
+    "Objects//sigmF0002.MS3": "3d402986c7f4404f5a84ae97da4515e7d6b17b5a6d118a14412163d2dce7ac8a",
+    "Objects//nlafarm052.MS3": "99ba4edd60b9ec7ecbb52399541436348323cdeb4d94f7d0eab102c7fdf13768",
+    "Objects//nlafarm077.MS3": "c48434c6b4fac8414f9556f56580686c6867de046137e0b743b21dbb217c7b45",
+    "Objects//nlafarm064.MS3": "d79ac55f7c9151e3add2e4bc2f43e496522e9d4d3478ed908ab652b33b7a15d7",
+    "Objects//RlenfF0022.MS3": "4c7b28250e87366bebf14fe9c5bda70c5d6a0fc1536b099fd3eed775dab47191",
+    "Objects//nlafarm051.MS3": "7b3ae9a860595745505c87e6c3dde8d2d839f58ed9598d8ed1eae42f1e889822",
+    "Objects//nlafarm027.MS3": "654ffbabbbeeb9f29b01eff1201b1a3bc146eaf12b1dfc3e0d44ccaedc1b9fa9",
+    "Objects//nlafarm019.MS3": "37639560558f32f73f21a6206fb5fc1df81ae54b434ecda75f3738e758fdc5d7",
+    "Objects//GR02010302.MS3": "da8c35e1c0d799deace457a9c091b9ab27d35e19cd7db82b036091850e7efa45",
+    "Objects//GR03010702.MS3": "8408622b5d41c9f5f86cde9bbd62a3aa9f6f65f255452239637b95b3fd2932e1",
+    "Objects//amaN000028.MS3": "247eeada35c8b37f2e263a579c147bd64d02d9e122ebc5010f722d5795f867c5",
+    "Objects//nlafarm020.MS3": "4dfad8586c0960bd459e0c28c933e4acb4946476b21debf58db2b6cbbe2f9f2b",
+    "Objects//GR03011101.MS3": "b5962f8f89a25f92f47028c59cc957743f36be3253ba032b95900d039a2f73bf",
+    "Objects//GR03011001.MS3": "1fea5415cc07469463a47acb9945f01f85921c5972efdf1332975cb8de6af394",
+    "Objects//GR03011002.MS3": "908f6450ab8b48b7f271e90bfb164dde5cb5220307fe661c20046506494b86d6",
+    "Objects//sigmN0004.MS3": "1994b9717e55570765902f00189426b1d982dc44ad9c78d85e1748cc0361a083",
+    "Objects//sigmN0005.MS3": "0edb8cb7a42fe3d06ea3a6908e3a84ea268a8e79f38832daec269a23d03c67a2",
+    "Objects//nlafarm028.MS3": "df4e009aaf739151f759314d9b3da7e015fb4823a6977389303516260cd3a880",
+    "Objects//amaN000024.MS3": "efd013740ae630bf7131c858c157177582d8cf7eb3998a24795d9e29a2be671c",
+    "Objects//nlafarm043.MS3": "9718b6f94628acc28fc9bd6c0e078dc1d8a9372cec05c8435f9d0ef9dfd2e6da",
+    "Objects//nlafarm060.MS3": "cc9da037797e19b5e5cf92b6f39c6c91d5f76cc9de5202d126af0cf77fde9bf6",
+    "Objects//sigmF0003.MS3": "bbee28a4a6791e4285bff3bbd479f7af04fe296fa146b90b557b1e805bb22d60",
+    "Objects//lenferN009.MS3": "76230e36558d8cd74b9f169dba1d22facbc8c82ccf1dd31027e38e4d1605483a",
+    "Objects//helpN0002.MS3": "f241497132aae34fe454a5dd2ac02a3dd300dc12628d474b265d253f54897325",
+    "Objects//lasgN0005.MS3": "b2c649c89d29be91e4d41d24cfcd7376e65032b4809a2091ca346282f615def0",
+    "Objects//lenferN001.MS3": "594f50a5e37aa5abf6aca37f384b8ea58bf1c178f9f15090d788c694f4bd05d4",
+    "Objects//amaN000026.MS3": "8e25b165cc39a0a8192fe9a446946b10376e555b17bde308733992457ae3d8f6",
+    "Objects//nlafarm053.MS3": "0e7d2e027faeb9229c9ccab740935704c5d9b662cf25cf3bc24adb4c6a7a0ece",
+    "Objects//lenferN008.MS3": "3edc451e9b3a2ae96f5753df24588044b0fe9ecd8aab175f8871ec6b5dbc8544",
+    "Objects//amaN000025.MS3": "62a4cfc1cafec784352822a3b91cd2b3c4d36ca863578afb4bed615c504a1ba3",
+    "Env/z011007.dat": "78028cd07183f343ecdd0a59de9b9fb5c185038d3c0c0096bb84688626381487",
+    "Objects//sigmF0008.MS3": "ce3bd546ff1767632bbb4f61345c8181b98d08fbcca83e7eb657df34e881fb05",
+    "Objects//sigmF0018.MS3": "c7fff8e61b20523e859b265dbab4850b55a83c75a51dedfc114e7e7087555d36",
+    "Objects//sigmF0013.MS3": "61ffbcd1686d4b8204d348abea30dae30926f4754bd17491e1b178367796ca8c",
+    "Objects//sigmF0009.MS3": "11ed4baa59a1568083cb5eb9f79fa5e78e9fbdea3fc32fb7dfab02c1090cc5e5",
+    "Objects//sigmN0001.MS3": "bf084679d0a55db3d459e931a1e261b7a87546e28e362ffcc6e28bc034f778e5",
+    "Objects//sigmN0007.MS3": "79aaeb401a7e49ae2a039ca5047aa6cd5d5a89700d8895f09a546e383450b1d5",
+    "Objects//amaN000011.MS3": "1096ea06e2f362dbffb7095bfa1f620b4e60b525c153a4c9a236717a600c9814",
+    "Objects//sigmF0021.MS3": "e3116bf3bd1065b8abd016cdeee63e00014b26a805978e30106c87eaac42e45c",
+    "Objects//sigmF0020.MS3": "456ae8ef207451b87459b83f01be48ffe2a859a36b661ff4aecb46d0ec06f0e1",
+    "Objects//nlafarm063.MS3": "e2ef2a4ccb35fac18a848879e36ba6c12ac13a6a19d9ad349ce25c1c73062dd8",
+    "Objects//sigmF0019.MS3": "d6d502c67fa5fb016753694191a13fb3a6757e1f0ef70acd7ed1309a5b935ae2",
+    "Objects//sigmF0022.MS3": "68b8368ba984773717997f6bc16c7edb1bd6e2f3e70401c923bb66419190d578",
+    "Objects//nlafarm080.MS3": "1be5ab8529c38f0d3598fb4df5c30ef2b7e1b1d48e1e79a3c6fc29e5e863919a",
+    "Objects//TW01010301.MS3": "ab0810e21b34b3f370d82d2e0a3bc2c9687cb3226dd4350b7b943dd079d0a4e0",
+    "Env/AttributeS01.dat": "f50de453e46f8e89366d6651d2bbb505703978ab898bc20e60590e30a1a04cdc",
+    "Env/z01.hgt": "2d965763c5bb5d2762d6e41e6010a7ae06285b470f2aeae7529b1a23cc4dc020"
+  },
+  "objetos": [
+    {
+      "id": 4717,
+      "modelo": "Objects//sigmF0017.MS3",
+      "pos": [
+        2630.0,
+        1767.5,
+        1.6500043869018555
+      ],
+      "rot": [
+        -3.1415929794311523,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 154
+    },
+    {
+      "id": 4729,
+      "modelo": "Objects//lenferF011.MS3",
+      "pos": [
+        2625.0,
+        1656.0,
+        10.24998950958252
+      ],
+      "rot": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 231
+    },
+    {
+      "id": 4722,
+      "modelo": "Objects//lenferF004.MS3",
+      "pos": [
+        2586.0,
+        1742.5,
+        25.324995040893555
+      ],
+      "rot": [
+        -0.7853981256484985,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 179
+    },
+    {
+      "id": 4735,
+      "modelo": "Objects//lenferF017.MS3",
+      "pos": [
+        2715.0,
+        1616.0,
+        18.124996185302734
+      ],
+      "rot": [
+        -3.337942600250244,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0499999523162842,
+      "celulas": 581
+    },
+    {
+      "id": 4728,
+      "modelo": "Objects//lenferF010.MS3",
+      "pos": [
+        2712.5,
+        1726.5,
+        8.550000190734863
+      ],
+      "rot": [
+        0.0,
+        0.0,
+        -0.02454369328916073
+      ],
+      "escala": 1.0,
+      "celulas": 110
+    },
+    {
+      "id": 4732,
+      "modelo": "Objects//lenferF014.MS3",
+      "pos": [
+        2585.0,
+        1682.5,
+        18.60000228881836
+      ],
+      "rot": [
+        -0.9817476868629456,
+        -0.02454368956387043,
+        0.04908738285303116
+      ],
+      "escala": 1.0999999046325684,
+      "celulas": 287
+    },
+    {
+      "id": 4725,
+      "modelo": "Objects//lenferF007.MS3",
+      "pos": [
+        2598.5,
+        1582.5,
+        59.474945068359375
+      ],
+      "rot": [
+        -1.9634952545166016,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 26
+    },
+    {
+      "id": 4710,
+      "modelo": "Objects//sigmF0010.MS3",
+      "pos": [
+        2695.0,
+        1767.5,
+        8.321759223937988
+      ],
+      "rot": [
+        1.5707963705062866,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 30
+    },
+    {
+      "id": 4710,
+      "modelo": "Objects//sigmF0010.MS3",
+      "pos": [
+        2681.0,
+        1775.5,
+        3.2000012397766113
+      ],
+      "rot": [
+        -3.337942600250244,
+        0.0,
+        0.0
+      ],
+      "escala": 0.570000410079956,
+      "celulas": 16
+    },
+    {
+      "id": 4710,
+      "modelo": "Objects//sigmF0010.MS3",
+      "pos": [
+        2666.0,
+        1615.0,
+        49.54999923706055
+      ],
+      "rot": [
+        -1.1780972480773926,
+        0.0,
+        0.0
+      ],
+      "escala": 1.859999179840088,
+      "celulas": 69
+    },
+    {
+      "id": 4710,
+      "modelo": "Objects//sigmF0010.MS3",
+      "pos": [
+        2650.0,
+        1735.0,
+        35.05002212524414
+      ],
+      "rot": [
+        7.450580596923828e-08,
+        0.0,
+        0.0
+      ],
+      "escala": 0.940000057220459,
+      "celulas": 3
+    },
+    {
+      "id": 4710,
+      "modelo": "Objects//sigmF0010.MS3",
+      "pos": [
+        2736.5,
+        1688.5,
+        32.14234161376953
+      ],
+      "rot": [
+        2.1598448753356934,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0899999141693115,
+      "celulas": 39
+    },
+    {
+      "id": 2695,
+      "modelo": "Objects//lenferN006.MS3",
+      "pos": [
+        2735.0,
+        1704.5,
+        32.9749870300293
+      ],
+      "rot": [
+        3.337942600250244,
+        0.0,
+        0.0
+      ],
+      "escala": 0.5200004577636719,
+      "celulas": 11
+    },
+    {
+      "id": 2695,
+      "modelo": "Objects//lenferN006.MS3",
+      "pos": [
+        2630.0,
+        1735.5,
+        14.255666732788086
+      ],
+      "rot": [
+        0.5890486240386963,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 31
+    },
+    {
+      "id": 2695,
+      "modelo": "Objects//lenferN006.MS3",
+      "pos": [
+        2594.0,
+        1702.0,
+        22.37499237060547
+      ],
+      "rot": [
+        -0.7853981256484985,
+        0.0,
+        0.0
+      ],
+      "escala": 0.5500004291534424,
+      "celulas": 13
+    },
+    {
+      "id": 2695,
+      "modelo": "Objects//lenferN006.MS3",
+      "pos": [
+        2727.5,
+        1636.5,
+        18.274999618530273
+      ],
+      "rot": [
+        -1.3744467496871948,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 30
+    },
+    {
+      "id": 2695,
+      "modelo": "Objects//lenferN006.MS3",
+      "pos": [
+        2628.0,
+        1617.5,
+        14.748071670532227
+      ],
+      "rot": [
+        -0.9817477464675903,
+        0.0,
+        0.07363107800483704
+      ],
+      "escala": 0.7100002765655518,
+      "celulas": 22
+    },
+    {
+      "id": 2616,
+      "modelo": "Objects//sigmN0006.MS3",
+      "pos": [
+        2753.0,
+        1622.5,
+        81.17478942871094
+      ],
+      "rot": [
+        0.0,
+        0.0,
+        1.5707963705062866
+      ],
+      "escala": 1.0,
+      "celulas": 18
+    },
+    {
+      "id": 2616,
+      "modelo": "Objects//sigmN0006.MS3",
+      "pos": [
+        2709.0,
+        1739.5,
+        18.10002899169922
+      ],
+      "rot": [
+        0.0,
+        0.0,
+        0.957204282283783
+      ],
+      "escala": 1.0,
+      "celulas": 37
+    },
+    {
+      "id": 2616,
+      "modelo": "Objects//sigmN0006.MS3",
+      "pos": [
+        2661.28995513916,
+        1777.490005493164,
+        12.27501106262207
+      ],
+      "rot": [
+        1.570796251296997,
+        0.0,
+        1.595339059829712
+      ],
+      "escala": 0.7300002574920654,
+      "celulas": 15
+    },
+    {
+      "id": 2616,
+      "modelo": "Objects//sigmN0006.MS3",
+      "pos": [
+        2598.0,
+        1603.0,
+        41.7838020324707
+      ],
+      "rot": [
+        -0.7853981256484985,
+        0.0,
+        0.0
+      ],
+      "escala": 1.5599994659423828,
+      "celulas": 3
+    },
+    {
+      "id": 2694,
+      "modelo": "Objects//lenferN005.MS3",
+      "pos": [
+        2589.0,
+        1709.0,
+        23.574996948242188
+      ],
+      "rot": [
+        -2.356194496154785,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 12
+    },
+    {
+      "id": 2694,
+      "modelo": "Objects//lenferN005.MS3",
+      "pos": [
+        2649.4200897216797,
+        1737.5,
+        13.15000057220459
+      ],
+      "rot": [
+        -0.5235987901687622,
+        0.0,
+        0.0
+      ],
+      "escala": 0.8600001335144043,
+      "celulas": 2
+    },
+    {
+      "id": 2694,
+      "modelo": "Objects//lenferN005.MS3",
+      "pos": [
+        2687.5,
+        1644.5,
+        16.174989700317383
+      ],
+      "rot": [
+        0.7853981256484985,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 17
+    },
+    {
+      "id": 2694,
+      "modelo": "Objects//lenferN005.MS3",
+      "pos": [
+        2642.0,
+        1638.5,
+        12.573271751403809
+      ],
+      "rot": [
+        2.552544116973877,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 26
+    },
+    {
+      "id": 2694,
+      "modelo": "Objects//lenferN005.MS3",
+      "pos": [
+        2712.5,
+        1688.5,
+        11.400004386901855
+      ],
+      "rot": [
+        0.7853981852531433,
+        0.0,
+        0.0
+      ],
+      "escala": 0.510000467300415,
+      "celulas": 8
+    },
+    {
+      "id": 2694,
+      "modelo": "Objects//lenferN005.MS3",
+      "pos": [
+        2715.0,
+        1680.5,
+        12.750006675720215
+      ],
+      "rot": [
+        1.7671458721160889,
+        0.0,
+        0.0
+      ],
+      "escala": 0.7400002479553223,
+      "celulas": 18
+    },
+    {
+      "id": 2694,
+      "modelo": "Objects//lenferN005.MS3",
+      "pos": [
+        2697.0,
+        1627.0,
+        18.7499942779541
+      ],
+      "rot": [
+        1.0908308029174805,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 17
+    },
+    {
+      "id": 2693,
+      "modelo": "Objects//lenferN004.MS3",
+      "pos": [
+        2617.0,
+        1613.0,
+        9.524996757507324
+      ],
+      "rot": [
+        -0.1745329350233078,
+        0.0,
+        0.0
+      ],
+      "escala": 1.1399998664855957,
+      "celulas": 19
+    },
+    {
+      "id": 2693,
+      "modelo": "Objects//lenferN004.MS3",
+      "pos": [
+        2616.0,
+        1739.5,
+        17.850006103515625
+      ],
+      "rot": [
+        -0.19634954631328583,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0999999046325684,
+      "celulas": 11
+    },
+    {
+      "id": 2693,
+      "modelo": "Objects//lenferN004.MS3",
+      "pos": [
+        2635.5,
+        1629.0,
+        13.074848175048828
+      ],
+      "rot": [
+        -1.3744467496871948,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 16
+    },
+    {
+      "id": 2696,
+      "modelo": "Objects//lenferN007.MS3",
+      "pos": [
+        2646.0,
+        1740.0,
+        38.04997634887695
+      ],
+      "rot": [
+        2.268927812576294,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 24
+    },
+    {
+      "id": 2696,
+      "modelo": "Objects//lenferN007.MS3",
+      "pos": [
+        2590.5,
+        1598.5,
+        22.225000381469727
+      ],
+      "rot": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "escala": 2.1799988746643066,
+      "celulas": 20
+    },
+    {
+      "id": 2696,
+      "modelo": "Objects//lenferN007.MS3",
+      "pos": [
+        2696.5,
+        1744.5,
+        7.5500006675720215
+      ],
+      "rot": [
+        1.7671457529067993,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 22
+    },
+    {
+      "id": 2696,
+      "modelo": "Objects//lenferN007.MS3",
+      "pos": [
+        2708.5,
+        1683.0,
+        11.870760917663574
+      ],
+      "rot": [
+        3.337942600250244,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 25
+    },
+    {
+      "id": 2696,
+      "modelo": "Objects//lenferN007.MS3",
+      "pos": [
+        2671.0,
+        1713.5,
+        9.975001335144043
+      ],
+      "rot": [
+        2.552544116973877,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 23
+    },
+    {
+      "id": 4712,
+      "modelo": "Objects//sigmF0012.MS3",
+      "pos": [
+        2662.0,
+        1774.5,
+        1.7351182699203491
+      ],
+      "rot": [
+        0.19634954631328583,
+        0.14726215600967407,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 6
+    },
+    {
+      "id": 4712,
+      "modelo": "Objects//sigmF0012.MS3",
+      "pos": [
+        2676.0,
+        1768.0,
+        3.404999256134033
+      ],
+      "rot": [
+        -2.552544116973877,
+        -0.04908739775419235,
+        -0.09817478805780411
+      ],
+      "escala": 1.0,
+      "celulas": 2
+    },
+    {
+      "id": 4712,
+      "modelo": "Objects//sigmF0012.MS3",
+      "pos": [
+        2652.5,
+        1777.5,
+        0.6134527921676636
+      ],
+      "rot": [
+        -2.9452433586120605,
+        0.0,
+        -0.22089321911334991
+      ],
+      "escala": 1.0,
+      "celulas": 11
+    },
+    {
+      "id": 4712,
+      "modelo": "Objects//sigmF0012.MS3",
+      "pos": [
+        2696.5,
+        1752.0,
+        6.671291828155518
+      ],
+      "rot": [
+        0.19634954631328583,
+        0.19634953141212463,
+        0.14726215600967407
+      ],
+      "escala": 1.0,
+      "celulas": 14
+    },
+    {
+      "id": 4712,
+      "modelo": "Objects//sigmF0012.MS3",
+      "pos": [
+        2683.0,
+        1754.0,
+        4.325000286102295
+      ],
+      "rot": [
+        -0.9817477464675903,
+        0.12271846830844879,
+        -0.02454369328916073
+      ],
+      "escala": 1.0,
+      "celulas": 6
+    },
+    {
+      "id": 4634,
+      "modelo": "Objects//nlafarm074.MS3",
+      "pos": [
+        2678.5,
+        1713.5,
+        7.899995803833008
+      ],
+      "rot": [
+        -0.9817477464675903,
+        0.0,
+        0.0
+      ],
+      "escala": 1.1399998664855957,
+      "celulas": 17
+    },
+    {
+      "id": 4634,
+      "modelo": "Objects//nlafarm074.MS3",
+      "pos": [
+        2704.5,
+        1746.5,
+        6.7269062995910645
+      ],
+      "rot": [
+        2.356194496154785,
+        0.0,
+        0.0
+      ],
+      "escala": 1.3799996376037598,
+      "celulas": 24
+    },
+    {
+      "id": 4634,
+      "modelo": "Objects//nlafarm074.MS3",
+      "pos": [
+        2692.5,
+        1742.5,
+        5.650001525878906
+      ],
+      "rot": [
+        -0.9817477464675903,
+        0.0,
+        0.36815541982650757
+      ],
+      "escala": 1.119999885559082,
+      "celulas": 19
+    },
+    {
+      "id": 4636,
+      "modelo": "Objects//nlafarm076.MS3",
+      "pos": [
+        2700.5,
+        1747.5,
+        7.450000762939453
+      ],
+      "rot": [
+        2.1598448753356934,
+        0.0,
+        0.0
+      ],
+      "escala": 0.7300002574920654,
+      "celulas": 9
+    },
+    {
+      "id": 4636,
+      "modelo": "Objects//nlafarm076.MS3",
+      "pos": [
+        2682.0,
+        1715.5,
+        6.000000476837158
+      ],
+      "rot": [
+        -2.356194496154785,
+        0.2454369068145752,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 19
+    },
+    {
+      "id": 4636,
+      "modelo": "Objects//nlafarm076.MS3",
+      "pos": [
+        2756.5,
+        1770.0,
+        14.949991226196289
+      ],
+      "rot": [
+        0.39269909262657166,
+        0.19634953141212463,
+        0.07363107055425644
+      ],
+      "escala": 1.3299996852874756,
+      "celulas": 16
+    },
+    {
+      "id": 4548,
+      "modelo": "Objects//lasgN0007.MS3",
+      "pos": [
+        2645.0,
+        1733.0,
+        35.360015869140625
+      ],
+      "rot": [
+        -2.8797929286956787,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 1
+    },
+    {
+      "id": 2699,
+      "modelo": "Objects//lenferN010.MS3",
+      "pos": [
+        2694.0,
+        1704.0,
+        7.320000171661377
+      ],
+      "rot": [
+        -0.19634954631328583,
+        0.1336267590522766,
+        0.09817477315664291
+      ],
+      "escala": 1.0,
+      "celulas": 17
+    },
+    {
+      "id": 2563,
+      "modelo": "Objects//lakiac0009.MS3",
+      "pos": [
+        2638.5,
+        1734.5,
+        13.699995994567871
+      ],
+      "rot": [
+        3.647737741470337,
+        0.0,
+        0.0
+      ],
+      "escala": 1.7499992847442627,
+      "celulas": 2
+    },
+    {
+      "id": 4635,
+      "modelo": "Objects//nlafarm075.MS3",
+      "pos": [
+        2719.0,
+        1767.0,
+        10.42500114440918
+      ],
+      "rot": [
+        0.19634954631328583,
+        0.0,
+        0.0
+      ],
+      "escala": 0.7000002861022949,
+      "celulas": 10
+    },
+    {
+      "id": 4635,
+      "modelo": "Objects//nlafarm075.MS3",
+      "pos": [
+        2755.5,
+        1752.0,
+        16.131975173950195
+      ],
+      "rot": [
+        2.9802322387695312e-08,
+        0.09817476570606232,
+        0.02454369328916073
+      ],
+      "escala": 1.0,
+      "celulas": 10
+    },
+    {
+      "id": 2591,
+      "modelo": "Objects//nlafarm003.MS3",
+      "pos": [
+        2677.0,
+        1707.5,
+        9.333785057067871
+      ],
+      "rot": [
+        3.534292221069336,
+        -3.725290298461914e-09,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 12
+    },
+    {
+      "id": 2591,
+      "modelo": "Objects//nlafarm003.MS3",
+      "pos": [
+        2675.0,
+        1720.5,
+        8.833172798156738
+      ],
+      "rot": [
+        2.1598448753356934,
+        0.07363107800483704,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 12
+    },
+    {
+      "id": 4711,
+      "modelo": "Objects//sigmF0011.MS3",
+      "pos": [
+        2669.0,
+        1772.5,
+        2.5399997234344482
+      ],
+      "rot": [
+        -2.7488937377929688,
+        -0.14726215600967407,
+        -0.2454369068145752
+      ],
+      "escala": 1.0,
+      "celulas": 12
+    },
+    {
+      "id": 4711,
+      "modelo": "Objects//sigmF0011.MS3",
+      "pos": [
+        2684.5,
+        1756.5,
+        4.5
+      ],
+      "rot": [
+        0.9817477464675903,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 2
+    },
+    {
+      "id": 4701,
+      "modelo": "Objects//sigmF0001.MS3",
+      "pos": [
+        2606.5,
+        1615.5,
+        9.72499942779541
+      ],
+      "rot": [
+        1.6580625772476196,
+        0.0,
+        0.0
+      ],
+      "escala": 0.7100002765655518,
+      "celulas": 3
+    },
+    {
+      "id": 4701,
+      "modelo": "Objects//sigmF0001.MS3",
+      "pos": [
+        2740.5,
+        1753.0,
+        13.083258628845215
+      ],
+      "rot": [
+        -2.9452433586120605,
+        0.0,
+        0.0
+      ],
+      "escala": 0.9600000381469727,
+      "celulas": 3
+    },
+    {
+      "id": 4701,
+      "modelo": "Objects//sigmF0001.MS3",
+      "pos": [
+        2752.5,
+        1754.5,
+        16.12828254699707
+      ],
+      "rot": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "escala": 1.5199995040893555,
+      "celulas": 4
+    },
+    {
+      "id": 4701,
+      "modelo": "Objects//sigmF0001.MS3",
+      "pos": [
+        2742.5,
+        1744.5,
+        13.565286636352539
+      ],
+      "rot": [
+        -1.9634952545166016,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 2
+    },
+    {
+      "id": 4701,
+      "modelo": "Objects//sigmF0001.MS3",
+      "pos": [
+        2590.5,
+        1625.0,
+        10.300000190734863
+      ],
+      "rot": [
+        -1.0471974611282349,
+        0.0,
+        0.0
+      ],
+      "escala": 1.5199995040893555,
+      "celulas": 4
+    },
+    {
+      "id": 2522,
+      "modelo": "Objects//amaN000023.MS3",
+      "pos": [
+        2675.0,
+        1715.0,
+        9.75461196899414
+      ],
+      "rot": [
+        -2.7488937377929688,
+        -0.1227184608578682,
+        0.04908738657832146
+      ],
+      "escala": 1.0,
+      "celulas": 5
+    },
+    {
+      "id": 2522,
+      "modelo": "Objects//amaN000023.MS3",
+      "pos": [
+        2710.5,
+        1686.5,
+        11.62576675415039
+      ],
+      "rot": [
+        2.552544116973877,
+        -0.1227184608578682,
+        0.07363107800483704
+      ],
+      "escala": 1.0,
+      "celulas": 8
+    },
+    {
+      "id": 2522,
+      "modelo": "Objects//amaN000023.MS3",
+      "pos": [
+        2724.5,
+        1636.0,
+        18.35390281677246
+      ],
+      "rot": [
+        3.1415929794311523,
+        -0.02454369328916073,
+        -0.12271846830844879
+      ],
+      "escala": 1.0,
+      "celulas": 9
+    },
+    {
+      "id": 7719,
+      "modelo": "Objects//nlafarm026.MS3",
+      "pos": [
+        2705.5,
+        1749.5,
+        7.750000476837158
+      ],
+      "rot": [
+        2.6179935932159424,
+        0.0,
+        0.0
+      ],
+      "escala": 0.6700003147125244,
+      "celulas": 4
+    },
+    {
+      "id": 7719,
+      "modelo": "Objects//nlafarm026.MS3",
+      "pos": [
+        2681.0,
+        1712.0,
+        7.700000286102295
+      ],
+      "rot": [
+        5.759586334228516,
+        -0.21816617250442505,
+        -0.869937539100647
+      ],
+      "escala": 1.0,
+      "celulas": 6
+    },
+    {
+      "id": 7719,
+      "modelo": "Objects//nlafarm026.MS3",
+      "pos": [
+        2693.5,
+        1745.0,
+        6.850000381469727
+      ],
+      "rot": [
+        5.759586334228516,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 7
+    },
+    {
+      "id": 7719,
+      "modelo": "Objects//nlafarm026.MS3",
+      "pos": [
+        2679.5,
+        1716.5,
+        8.024998664855957
+      ],
+      "rot": [
+        4.799654960632324,
+        -0.5235987901687622,
+        -0.25907230377197266
+      ],
+      "escala": 1.059999942779541,
+      "celulas": 5
+    },
+    {
+      "id": 2521,
+      "modelo": "Objects//amaN000022.MS3",
+      "pos": [
+        2674.5,
+        1711.0,
+        9.962265014648438
+      ],
+      "rot": [
+        2.1598448753356934,
+        0.0,
+        0.09817477315664291
+      ],
+      "escala": 1.0,
+      "celulas": 6
+    },
+    {
+      "id": 2521,
+      "modelo": "Objects//amaN000022.MS3",
+      "pos": [
+        2712.0,
+        1680.5,
+        12.655058860778809
+      ],
+      "rot": [
+        -2.7488937377929688,
+        -0.09817476570606232,
+        -0.04908738657832146
+      ],
+      "escala": 1.0,
+      "celulas": 10
+    },
+    {
+      "id": 4702,
+      "modelo": "Objects//sigmF0002.MS3",
+      "pos": [
+        2592.5,
+        1620.5,
+        10.199999809265137
+      ],
+      "rot": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "escala": 2.4399986267089844,
+      "celulas": 12
+    },
+    {
+      "id": 4702,
+      "modelo": "Objects//sigmF0002.MS3",
+      "pos": [
+        2592.5,
+        1571.0,
+        50.925010681152344
+      ],
+      "rot": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "escala": 1.359999656677246,
+      "celulas": 6
+    },
+    {
+      "id": 4702,
+      "modelo": "Objects//sigmF0002.MS3",
+      "pos": [
+        2744.5,
+        1756.5,
+        13.253294944763184
+      ],
+      "rot": [
+        -2.9452433586120605,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 5
+    },
+    {
+      "id": 4702,
+      "modelo": "Objects//sigmF0002.MS3",
+      "pos": [
+        2752.5,
+        1766.5,
+        14.624999046325684
+      ],
+      "rot": [
+        -0.5890486240386963,
+        0.0,
+        0.0
+      ],
+      "escala": 1.9399991035461426,
+      "celulas": 8
+    },
+    {
+      "id": 4702,
+      "modelo": "Objects//sigmF0002.MS3",
+      "pos": [
+        2616.5,
+        1782.5,
+        5.41946268081665
+      ],
+      "rot": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "escala": 1.8399991989135742,
+      "celulas": 6
+    },
+    {
+      "id": 4702,
+      "modelo": "Objects//sigmF0002.MS3",
+      "pos": [
+        2652.5,
+        1790.5,
+        -0.2750000059604645
+      ],
+      "rot": [
+        2.1598448753356934,
+        0.0,
+        0.0
+      ],
+      "escala": 1.2699997425079346,
+      "celulas": 5
+    },
+    {
+      "id": 4637,
+      "modelo": "Objects//nlafarm077.MS3",
+      "pos": [
+        2593.5,
+        1615.5,
+        10.375000953674316
+      ],
+      "rot": [
+        2.9670588970184326,
+        0.1745329350233078,
+        0.0872664675116539
+      ],
+      "escala": 1.0,
+      "celulas": 6
+    },
+    {
+      "id": 4637,
+      "modelo": "Objects//nlafarm077.MS3",
+      "pos": [
+        2739.5,
+        1755.0,
+        12.474366188049316
+      ],
+      "rot": [
+        0.9817477464675903,
+        0.0,
+        0.14726215600967407
+      ],
+      "escala": 0.880000114440918,
+      "celulas": 8
+    },
+    {
+      "id": 4637,
+      "modelo": "Objects//nlafarm077.MS3",
+      "pos": [
+        2691.0,
+        1744.5,
+        5.90000057220459
+      ],
+      "rot": [
+        1.570796251296997,
+        0.0,
+        -0.07363107800483704
+      ],
+      "escala": 1.0,
+      "celulas": 5
+    },
+    {
+      "id": 4637,
+      "modelo": "Objects//nlafarm077.MS3",
+      "pos": [
+        2684.5,
+        1710.5,
+        6.309998989105225
+      ],
+      "rot": [
+        -2.356194496154785,
+        0.0,
+        0.04908738657832146
+      ],
+      "escala": 1.0,
+      "celulas": 6
+    },
+    {
+      "id": 4637,
+      "modelo": "Objects//nlafarm077.MS3",
+      "pos": [
+        2737.5,
+        1745.0,
+        12.520249366760254
+      ],
+      "rot": [
+        1.3744467496871948,
+        0.0,
+        -0.22089321911334991
+      ],
+      "escala": 0.7200002670288086,
+      "celulas": 7
+    },
+    {
+      "id": 4775,
+      "modelo": "Objects//RlenfF0022.MS3",
+      "pos": [
+        2645.0,
+        1733.5,
+        36.459964752197266
+      ],
+      "rot": [
+        1.8325958251953125,
+        0.4363323152065277,
+        -0.2617993950843811
+      ],
+      "escala": 1.5099995136260986,
+      "celulas": 5
+    },
+    {
+      "id": 7720,
+      "modelo": "Objects//nlafarm027.MS3",
+      "pos": [
+        2677.5,
+        1710.5,
+        9.649998664855957
+      ],
+      "rot": [
+        2.6179935932159424,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 3
+    },
+    {
+      "id": 7720,
+      "modelo": "Objects//nlafarm027.MS3",
+      "pos": [
+        2698.5,
+        1760.5,
+        8.87499713897705
+      ],
+      "rot": [
+        2.0943949222564697,
+        0.0,
+        0.0
+      ],
+      "escala": 1.9299991130828857,
+      "celulas": 24
+    },
+    {
+      "id": 7720,
+      "modelo": "Objects//nlafarm027.MS3",
+      "pos": [
+        2691.5,
+        1738.8598022460938,
+        5.793550968170166
+      ],
+      "rot": [
+        3.1415927410125732,
+        0.0,
+        0.0
+      ],
+      "escala": 1.239999771118164,
+      "celulas": 8
+    },
+    {
+      "id": 7720,
+      "modelo": "Objects//nlafarm027.MS3",
+      "pos": [
+        2682.5,
+        1717.5,
+        5.980546951293945
+      ],
+      "rot": [
+        3.1415927410125732,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 4
+    },
+    {
+      "id": 7720,
+      "modelo": "Objects//nlafarm027.MS3",
+      "pos": [
+        2708.5,
+        1747.0,
+        8.349998474121094
+      ],
+      "rot": [
+        4.1887898445129395,
+        0.0,
+        0.0
+      ],
+      "escala": 1.1299998760223389,
+      "celulas": 6
+    },
+    {
+      "id": 7720,
+      "modelo": "Objects//nlafarm027.MS3",
+      "pos": [
+        2676.5,
+        1775.8001098632812,
+        3.5250003337860107
+      ],
+      "rot": [
+        3.665191411972046,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 8
+    },
+    {
+      "id": 7720,
+      "modelo": "Objects//nlafarm027.MS3",
+      "pos": [
+        2672.4699935913086,
+        1764.0902252197266,
+        3.9000000953674316
+      ],
+      "rot": [
+        2.0943949222564697,
+        0.0,
+        0.0
+      ],
+      "escala": 1.119999885559082,
+      "celulas": 10
+    },
+    {
+      "id": 7720,
+      "modelo": "Objects//nlafarm027.MS3",
+      "pos": [
+        2689.0,
+        1743.5,
+        5.375000476837158
+      ],
+      "rot": [
+        2.0943949222564697,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 5
+    },
+    {
+      "id": 7720,
+      "modelo": "Objects//nlafarm027.MS3",
+      "pos": [
+        2698.5,
+        1748.0,
+        7.65000057220459
+      ],
+      "rot": [
+        2.6179935932159424,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 5
+    },
+    {
+      "id": 7720,
+      "modelo": "Objects//nlafarm027.MS3",
+      "pos": [
+        2684.5,
+        1714.5,
+        5.900000095367432
+      ],
+      "rot": [
+        4.450588703155518,
+        0.0,
+        0.02454369328916073
+      ],
+      "escala": 1.0,
+      "celulas": 4
+    },
+    {
+      "id": 7720,
+      "modelo": "Objects//nlafarm027.MS3",
+      "pos": [
+        2700.5,
+        1745.0,
+        8.549999237060547
+      ],
+      "rot": [
+        5.759586334228516,
+        0.0,
+        0.0
+      ],
+      "escala": 1.3299996852874756,
+      "celulas": 10
+    },
+    {
+      "id": 7720,
+      "modelo": "Objects//nlafarm027.MS3",
+      "pos": [
+        2683.0,
+        1709.0,
+        7.003108501434326
+      ],
+      "rot": [
+        5.235987186431885,
+        -0.22089321911334991,
+        -0.02454369328916073
+      ],
+      "escala": 1.429999589920044,
+      "celulas": 11
+    },
+    {
+      "id": 7714,
+      "modelo": "Objects//nlafarm019.MS3",
+      "pos": [
+        2674.0,
+        1723.5,
+        8.51740837097168
+      ],
+      "rot": [
+        2.0943949222564697,
+        0.19634953141212463,
+        0.2208932340145111
+      ],
+      "escala": 1.0,
+      "celulas": 4
+    },
+    {
+      "id": 7714,
+      "modelo": "Objects//nlafarm019.MS3",
+      "pos": [
+        2632.5,
+        1713.5,
+        14.529998779296875
+      ],
+      "rot": [
+        3.4033920764923096,
+        -0.1745329350233078,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 6
+    },
+    {
+      "id": 7714,
+      "modelo": "Objects//nlafarm019.MS3",
+      "pos": [
+        2670.5,
+        1704.5,
+        9.079758644104004
+      ],
+      "rot": [
+        3.1415927410125732,
+        0.22089321911334991,
+        0.09817477315664291
+      ],
+      "escala": 1.0,
+      "celulas": 7
+    },
+    {
+      "id": 7714,
+      "modelo": "Objects//nlafarm019.MS3",
+      "pos": [
+        2659.5,
+        1663.5,
+        9.19999885559082
+      ],
+      "rot": [
+        3.3161251544952393,
+        0.0,
+        0.0872664526104927
+      ],
+      "escala": 0.7700002193450928,
+      "celulas": 4
+    },
+    {
+      "id": 7714,
+      "modelo": "Objects//nlafarm019.MS3",
+      "pos": [
+        2688.0,
+        1739.0,
+        4.77500057220459
+      ],
+      "rot": [
+        1.5707963705062866,
+        -0.19634953141212463,
+        -0.02454369328916073
+      ],
+      "escala": 1.2899997234344482,
+      "celulas": 9
+    },
+    {
+      "id": 7714,
+      "modelo": "Objects//nlafarm019.MS3",
+      "pos": [
+        2694.5,
+        1758.5,
+        7.075000762939453
+      ],
+      "rot": [
+        2.4216439723968506,
+        0.3190680146217346,
+        -0.36815541982650757
+      ],
+      "escala": 1.2199997901916504,
+      "celulas": 11
+    },
+    {
+      "id": 7714,
+      "modelo": "Objects//nlafarm019.MS3",
+      "pos": [
+        2683.0,
+        1721.0,
+        4.8997883796691895
+      ],
+      "rot": [
+        2.6179935932159424,
+        0.0,
+        0.26998060941696167
+      ],
+      "escala": 1.0,
+      "celulas": 6
+    },
+    {
+      "id": 7714,
+      "modelo": "Objects//nlafarm019.MS3",
+      "pos": [
+        2668.260055541992,
+        1701.0799560546875,
+        8.484999656677246
+      ],
+      "rot": [
+        4.1887898445129395,
+        0.0872664675116539,
+        0.1745329350233078
+      ],
+      "escala": 0.6200003623962402,
+      "celulas": 3
+    },
+    {
+      "id": 7714,
+      "modelo": "Objects//nlafarm019.MS3",
+      "pos": [
+        2634.5,
+        1712.5,
+        14.445000648498535
+      ],
+      "rot": [
+        3.4033915996551514,
+        -0.0872664824128151,
+        0.2617993950843811
+      ],
+      "escala": 0.570000410079956,
+      "celulas": 2
+    },
+    {
+      "id": 7714,
+      "modelo": "Objects//nlafarm019.MS3",
+      "pos": [
+        2712.5,
+        1742.5,
+        8.374999046325684
+      ],
+      "rot": [
+        1.1780973672866821,
+        0.36815541982650757,
+        0.19634953141212463
+      ],
+      "escala": 1.0,
+      "celulas": 7
+    },
+    {
+      "id": 7714,
+      "modelo": "Objects//nlafarm019.MS3",
+      "pos": [
+        2678.5,
+        1770.5,
+        3.1750006675720215
+      ],
+      "rot": [
+        -2.421644449234009,
+        0.22089321911334991,
+        0.02454369328916073
+      ],
+      "escala": 1.1999998092651367,
+      "celulas": 9
+    },
+    {
+      "id": 7714,
+      "modelo": "Objects//nlafarm019.MS3",
+      "pos": [
+        2652.5,
+        1716.5,
+        11.564998626708984
+      ],
+      "rot": [
+        5.759586334228516,
+        -0.0872664526104927,
+        0.0872664675116539
+      ],
+      "escala": 1.0,
+      "celulas": 6
+    },
+    {
+      "id": 7714,
+      "modelo": "Objects//nlafarm019.MS3",
+      "pos": [
+        2690.5,
+        1752.0,
+        5.375000953674316
+      ],
+      "rot": [
+        6.544984817504883,
+        -0.02454369328916073,
+        0.26998060941696167
+      ],
+      "escala": 1.0,
+      "celulas": 5
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2659.0,
+        1765.0,
+        2.7250003814697266
+      ],
+      "rot": [
+        2.9802322387695312e-08,
+        0.0,
+        0.1227184608578682
+      ],
+      "escala": 1.0,
+      "celulas": 5
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2650.5,
+        1788.5,
+        -0.17500001192092896
+      ],
+      "rot": [
+        3.665191411972046,
+        0.0,
+        -0.14726215600967407
+      ],
+      "escala": 1.0,
+      "celulas": 7
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2620.5,
+        1786.5,
+        3.1750001907348633
+      ],
+      "rot": [
+        4.057889461517334,
+        0.0,
+        -0.024543682113289833
+      ],
+      "escala": 1.0,
+      "celulas": 8
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2690.5,
+        1768.5,
+        10.124998092651367
+      ],
+      "rot": [
+        2.028944730758667,
+        0.0,
+        -0.17180584371089935
+      ],
+      "escala": 1.0,
+      "celulas": 8
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2618.5,
+        1778.5,
+        5.625000476837158
+      ],
+      "rot": [
+        3.730640411376953,
+        0.0,
+        0.04908738657832146
+      ],
+      "escala": 1.0,
+      "celulas": 8
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2734.5,
+        1776.5,
+        10.92499828338623
+      ],
+      "rot": [
+        0.8508478999137878,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 8
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2755.0,
+        1754.0,
+        16.52672004699707
+      ],
+      "rot": [
+        5.563236713409424,
+        0.0,
+        0.12271846830844879
+      ],
+      "escala": 1.0,
+      "celulas": 5
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2664.0,
+        1778.0,
+        1.75
+      ],
+      "rot": [
+        1.6362457275390625,
+        0.0,
+        -0.02454368956387043
+      ],
+      "escala": 1.0,
+      "celulas": 9
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2752.5,
+        1752.5,
+        15.704036712646484
+      ],
+      "rot": [
+        1.0471974611282349,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 5
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2654.5,
+        1789.5,
+        0.5749999284744263
+      ],
+      "rot": [
+        2.356194496154785,
+        0.0,
+        -0.02454369328916073
+      ],
+      "escala": 1.0,
+      "celulas": 4
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2622.5,
+        1776.5,
+        5.325000286102295
+      ],
+      "rot": [
+        3.2724926471710205,
+        0.0,
+        0.19634953141212463
+      ],
+      "escala": 1.0,
+      "celulas": 8
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2652.5,
+        1770.0,
+        1.1499998569488525
+      ],
+      "rot": [
+        2.487093687057495,
+        0.0,
+        0.2454369068145752
+      ],
+      "escala": 1.0,
+      "celulas": 7
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2617.5,
+        1783.5,
+        4.925000190734863
+      ],
+      "rot": [
+        0.5235987305641174,
+        0.0,
+        -0.07363107800483704
+      ],
+      "escala": 1.0,
+      "celulas": 4
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2676.5,
+        1773.5,
+        3.2750003337860107
+      ],
+      "rot": [
+        0.7853981852531433,
+        0.0,
+        0.04908738657832146
+      ],
+      "escala": 1.0,
+      "celulas": 7
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2634.5,
+        1770.5,
+        3.4750001430511475
+      ],
+      "rot": [
+        5.759586334228516,
+        0.0,
+        -0.4172428250312805
+      ],
+      "escala": 1.0,
+      "celulas": 9
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2678.5,
+        1776.5,
+        3.6000003814697266
+      ],
+      "rot": [
+        4.1887898445129395,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 5
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2648.5,
+        1766.5,
+        2.375000238418579
+      ],
+      "rot": [
+        1.0471974611282349,
+        0.0,
+        0.12271846830844879
+      ],
+      "escala": 1.0,
+      "celulas": 7
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2640.5,
+        1768.5,
+        2.950000047683716
+      ],
+      "rot": [
+        2.879793405532837,
+        0.0,
+        0.3436117172241211
+      ],
+      "escala": 1.0,
+      "celulas": 7
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2612.5,
+        1790.5,
+        4.100000381469727
+      ],
+      "rot": [
+        3.6651902198791504,
+        0.0,
+        -0.19634953141212463
+      ],
+      "escala": 1.0,
+      "celulas": 7
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2754.0,
+        1769.0,
+        14.524998664855957
+      ],
+      "rot": [
+        0.9817478060722351,
+        0.0,
+        0.07363107800483704
+      ],
+      "escala": 1.0,
+      "celulas": 2
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2751.5,
+        1770.5,
+        14.0
+      ],
+      "rot": [
+        1.3089969158172607,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 8
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2668.5,
+        1764.5,
+        3.8500003814697266
+      ],
+      "rot": [
+        2.6179935932159424,
+        0.0,
+        0.09817477315664291
+      ],
+      "escala": 1.0,
+      "celulas": 5
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2666.0,
+        1779.5,
+        2.1000003814697266
+      ],
+      "rot": [
+        5.759586334228516,
+        0.0,
+        0.19634953141212463
+      ],
+      "escala": 1.0,
+      "celulas": 4
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2658.5,
+        1780.5,
+        2.1000006198883057
+      ],
+      "rot": [
+        3.2070417404174805,
+        0.0,
+        -0.02454369328916073
+      ],
+      "escala": 1.0,
+      "celulas": 6
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2652.5,
+        1782.5,
+        0.6499998569488525
+      ],
+      "rot": [
+        3.926990032196045,
+        0.0,
+        -0.17180584371089935
+      ],
+      "escala": 1.0,
+      "celulas": 7
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2637.0,
+        1769.0,
+        3.6500003337860107
+      ],
+      "rot": [
+        6.544984817504883,
+        0.0,
+        -0.02454369328916073
+      ],
+      "escala": 1.0,
+      "celulas": 5
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2674.5,
+        1776.5,
+        3.0500004291534424
+      ],
+      "rot": [
+        1.243546724319458,
+        0.0,
+        -0.04908738657832146
+      ],
+      "escala": 1.0,
+      "celulas": 8
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2678.0,
+        1760.5,
+        3.700000286102295
+      ],
+      "rot": [
+        4.450588703155518,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 7
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2754.5,
+        1760.5,
+        15.799999237060547
+      ],
+      "rot": [
+        5.3014373779296875,
+        0.0,
+        -0.12271846830844879
+      ],
+      "escala": 1.0,
+      "celulas": 7
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2748.5,
+        1751.5,
+        14.700884819030762
+      ],
+      "rot": [
+        5.039637565612793,
+        0.0,
+        0.14726217091083527
+      ],
+      "escala": 1.0,
+      "celulas": 8
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2754.5,
+        1740.5,
+        15.195320129394531
+      ],
+      "rot": [
+        -0.9817477464675903,
+        0.0,
+        0.07363107800483704
+      ],
+      "escala": 1.0,
+      "celulas": 8
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2746.5,
+        1738.5,
+        13.489555358886719
+      ],
+      "rot": [
+        2.552544116973877,
+        0.0,
+        -0.12271846830844879
+      ],
+      "escala": 0.9500000476837158,
+      "celulas": 7
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2744.5,
+        1734.5,
+        12.636466026306152
+      ],
+      "rot": [
+        1.5707963705062866,
+        0.0,
+        0.0
+      ],
+      "escala": 1.1299998760223389,
+      "celulas": 11
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2742.5,
+        1732.5,
+        11.798141479492188
+      ],
+      "rot": [
+        2.2907445430755615,
+        0.0,
+        -0.2454369068145752
+      ],
+      "escala": 1.0,
+      "celulas": 6
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2722.5,
+        1770.5,
+        10.299999237060547
+      ],
+      "rot": [
+        1.5707963705062866,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 9
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2716.5,
+        1776.5,
+        10.19999885559082
+      ],
+      "rot": [
+        2.9452431201934814,
+        0.0,
+        0.0
+      ],
+      "escala": 0.9000000953674316,
+      "celulas": 8
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2718.5,
+        1778.5,
+        10.299999237060547
+      ],
+      "rot": [
+        2.0943949222564697,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0799999237060547,
+      "celulas": 6
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2724.5,
+        1778.5,
+        10.299999237060547
+      ],
+      "rot": [
+        4.1887898445129395,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 9
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2732.5,
+        1778.0,
+        10.574997901916504
+      ],
+      "rot": [
+        3.3379411697387695,
+        0.0,
+        -0.12271846830844879
+      ],
+      "escala": 1.1299998760223389,
+      "celulas": 8
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2740.5,
+        1772.5,
+        11.099998474121094
+      ],
+      "rot": [
+        4.450588703155518,
+        0.0,
+        0.12271846830844879
+      ],
+      "escala": 1.0,
+      "celulas": 9
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2746.5,
+        1772.5,
+        12.52499771118164
+      ],
+      "rot": [
+        0.5235987305641174,
+        0.0,
+        0.09817477315664291
+      ],
+      "escala": 1.0,
+      "celulas": 9
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2628.5,
+        1776.5,
+        3.000000238418579
+      ],
+      "rot": [
+        3.8615410327911377,
+        0.0,
+        0.09817476570606232
+      ],
+      "escala": 1.0,
+      "celulas": 8
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2666.0,
+        1765.0,
+        3.8000001907348633
+      ],
+      "rot": [
+        0.0,
+        0.0,
+        0.12271846830844879
+      ],
+      "escala": 1.0,
+      "celulas": 7
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2614.5,
+        1784.5,
+        5.300000190734863
+      ],
+      "rot": [
+        1.9634953737258911,
+        0.0,
+        0.09817478060722351
+      ],
+      "escala": 1.0,
+      "celulas": 7
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2757.5,
+        1742.5,
+        15.57499885559082
+      ],
+      "rot": [
+        4.385138988494873,
+        0.0,
+        0.04908738657832146
+      ],
+      "escala": 1.0,
+      "celulas": 3
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2644.5,
+        1768.5,
+        2.075000047683716
+      ],
+      "rot": [
+        0.19634957611560822,
+        0.0,
+        0.02454369328916073
+      ],
+      "escala": 1.0,
+      "celulas": 7
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2646.5,
+        1766.5,
+        2.4750001430511475
+      ],
+      "rot": [
+        2.6179935932159424,
+        0.0,
+        0.19634953141212463
+      ],
+      "escala": 1.0,
+      "celulas": 4
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2757.0,
+        1766.0,
+        14.999998092651367
+      ],
+      "rot": [
+        1.4398964643478394,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0399999618530273,
+      "celulas": 3
+    },
+    {
+      "id": 2536,
+      "modelo": "Objects//amaN000028.MS3",
+      "pos": [
+        2726.0,
+        1639.869972229004,
+        18.499990463256836
+      ],
+      "rot": [
+        -3.337942600250244,
+        -0.09817477315664291,
+        -0.14726215600967407
+      ],
+      "escala": 1.0,
+      "celulas": 7
+    },
+    {
+      "id": 7715,
+      "modelo": "Objects//nlafarm020.MS3",
+      "pos": [
+        2676.5,
+        1700.5,
+        7.673583030700684
+      ],
+      "rot": [
+        5.563236713409424,
+        -0.2208932340145111,
+        0.04908737540245056
+      ],
+      "escala": 0.820000171661377,
+      "celulas": 4
+    },
+    {
+      "id": 7715,
+      "modelo": "Objects//nlafarm020.MS3",
+      "pos": [
+        2696.5,
+        1754.5,
+        6.400001049041748
+      ],
+      "rot": [
+        2.6179938316345215,
+        0.3436117172241211,
+        -0.1227184608578682
+      ],
+      "escala": 1.0,
+      "celulas": 7
+    },
+    {
+      "id": 7681,
+      "modelo": "Objects//GR03011101.MS3",
+      "pos": [
+        2592.5,
+        1626.5,
+        10.600000381469727
+      ],
+      "rot": [
+        5.235987186431885,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 6
+    },
+    {
+      "id": 7681,
+      "modelo": "Objects//GR03011101.MS3",
+      "pos": [
+        2598.5,
+        1616.5,
+        10.199999809265137
+      ],
+      "rot": [
+        3.665191411972046,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 6
+    },
+    {
+      "id": 7681,
+      "modelo": "Objects//GR03011101.MS3",
+      "pos": [
+        2612.5,
+        1638.5,
+        10.84999942779541
+      ],
+      "rot": [
+        1.5707963705062866,
+        0.0,
+        0.0
+      ],
+      "escala": 1.179999828338623,
+      "celulas": 8
+    },
+    {
+      "id": 7681,
+      "modelo": "Objects//GR03011101.MS3",
+      "pos": [
+        2682.5,
+        1724.5,
+        5.050000190734863
+      ],
+      "rot": [
+        2.6179935932159424,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 8
+    },
+    {
+      "id": 7681,
+      "modelo": "Objects//GR03011101.MS3",
+      "pos": [
+        2611.5,
+        1637.0,
+        11.040000915527344
+      ],
+      "rot": [
+        0.5235987305641174,
+        0.0,
+        0.0
+      ],
+      "escala": 0.6500003337860107,
+      "celulas": 2
+    },
+    {
+      "id": 7681,
+      "modelo": "Objects//GR03011101.MS3",
+      "pos": [
+        2606.5,
+        1638.5,
+        10.899999618530273
+      ],
+      "rot": [
+        4.1887898445129395,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 8
+    },
+    {
+      "id": 2614,
+      "modelo": "Objects//sigmN0004.MS3",
+      "pos": [
+        2629.5,
+        1648.0,
+        12.15000057220459
+      ],
+      "rot": [
+        -0.0872664675116539,
+        -1.0471974611282349,
+        0.0872664526104927
+      ],
+      "escala": 1.0,
+      "celulas": 7
+    },
+    {
+      "id": 2614,
+      "modelo": "Objects//sigmN0004.MS3",
+      "pos": [
+        2700.5,
+        1659.5,
+        12.999720573425293
+      ],
+      "rot": [
+        -2.356194496154785,
+        0.024543697014451027,
+        0.04908738285303116
+      ],
+      "escala": 1.0,
+      "celulas": 6
+    },
+    {
+      "id": 2614,
+      "modelo": "Objects//sigmN0004.MS3",
+      "pos": [
+        2720.5,
+        1636.5,
+        18.117076873779297
+      ],
+      "rot": [
+        0.19634954631328583,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 7
+    },
+    {
+      "id": 2614,
+      "modelo": "Objects//sigmN0004.MS3",
+      "pos": [
+        2688.5,
+        1680.0,
+        9.195000648498535
+      ],
+      "rot": [
+        -0.03490658476948738,
+        0.24434608221054077,
+        0.03490658476948738
+      ],
+      "escala": 1.0,
+      "celulas": 5
+    },
+    {
+      "id": 2614,
+      "modelo": "Objects//sigmN0004.MS3",
+      "pos": [
+        2717.5,
+        1655.0,
+        14.894999504089355
+      ],
+      "rot": [
+        0.4363323152065277,
+        -0.0872664675116539,
+        0.22689281404018402
+      ],
+      "escala": 1.0,
+      "celulas": 6
+    },
+    {
+      "id": 2614,
+      "modelo": "Objects//sigmN0004.MS3",
+      "pos": [
+        2616.5,
+        1736.5,
+        18.524999618530273
+      ],
+      "rot": [
+        0.5934119820594788,
+        0.0,
+        0.0
+      ],
+      "escala": 1.1299998760223389,
+      "celulas": 6
+    },
+    {
+      "id": 2614,
+      "modelo": "Objects//sigmN0004.MS3",
+      "pos": [
+        2696.5,
+        1646.5,
+        15.275001525878906
+      ],
+      "rot": [
+        -0.5890486240386963,
+        0.17180584371089935,
+        -0.12271846830844879
+      ],
+      "escala": 1.0,
+      "celulas": 7
+    },
+    {
+      "id": 2614,
+      "modelo": "Objects//sigmN0004.MS3",
+      "pos": [
+        2694.5,
+        1656.5,
+        13.644996643066406
+      ],
+      "rot": [
+        -1.2217304706573486,
+        -1.4901161193847656e-08,
+        -0.1745329201221466
+      ],
+      "escala": 1.0,
+      "celulas": 5
+    },
+    {
+      "id": 2614,
+      "modelo": "Objects//sigmN0004.MS3",
+      "pos": [
+        2598.5,
+        1748.5,
+        40.50489044189453
+      ],
+      "rot": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 8
+    },
+    {
+      "id": 2615,
+      "modelo": "Objects//sigmN0005.MS3",
+      "pos": [
+        2614.5,
+        1734.5,
+        18.950000762939453
+      ],
+      "rot": [
+        0.418878972530365,
+        0.0,
+        -0.13962633907794952
+      ],
+      "escala": 1.0,
+      "celulas": 7
+    },
+    {
+      "id": 2615,
+      "modelo": "Objects//sigmN0005.MS3",
+      "pos": [
+        2620.5,
+        1680.5,
+        15.515000343322754
+      ],
+      "rot": [
+        -0.7853981256484985,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 7
+    },
+    {
+      "id": 2615,
+      "modelo": "Objects//sigmN0005.MS3",
+      "pos": [
+        2654.5,
+        1769.0,
+        2.5999996662139893
+      ],
+      "rot": [
+        -3.1415929794311523,
+        1.3008153438568115,
+        -0.8590294718742371
+      ],
+      "escala": 1.4799995422363281,
+      "celulas": 8
+    },
+    {
+      "id": 2615,
+      "modelo": "Objects//sigmN0005.MS3",
+      "pos": [
+        2680.5,
+        1750.5,
+        4.275000095367432
+      ],
+      "rot": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 4
+    },
+    {
+      "id": 2615,
+      "modelo": "Objects//sigmN0005.MS3",
+      "pos": [
+        2694.5,
+        1649.0,
+        14.679831504821777
+      ],
+      "rot": [
+        0.39269909262657166,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 6
+    },
+    {
+      "id": 2615,
+      "modelo": "Objects//sigmN0005.MS3",
+      "pos": [
+        2622.0300788879395,
+        1684.509994506836,
+        16.23000717163086
+      ],
+      "rot": [
+        -1.4835296869277954,
+        -1.919861912727356,
+        0.4363323152065277
+      ],
+      "escala": 1.5299994945526123,
+      "celulas": 12
+    },
+    {
+      "id": 2615,
+      "modelo": "Objects//sigmN0005.MS3",
+      "pos": [
+        2598.5,
+        1745.5,
+        40.57490158081055
+      ],
+      "rot": [
+        1.4835296869277954,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 9
+    },
+    {
+      "id": 2615,
+      "modelo": "Objects//sigmN0005.MS3",
+      "pos": [
+        2722.5,
+        1639.5,
+        18.059146881103516
+      ],
+      "rot": [
+        -0.7853981852531433,
+        0.14726215600967407,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 7
+    },
+    {
+      "id": 2615,
+      "modelo": "Objects//sigmN0005.MS3",
+      "pos": [
+        2604.5,
+        1690.5,
+        19.444997787475586
+      ],
+      "rot": [
+        -1.3089967966079712,
+        -0.1745329201221466,
+        -0.1745329350233078
+      ],
+      "escala": 1.0,
+      "celulas": 8
+    },
+    {
+      "id": 2615,
+      "modelo": "Objects//sigmN0005.MS3",
+      "pos": [
+        2622.5,
+        1652.5,
+        12.29999828338623
+      ],
+      "rot": [
+        -0.6108652353286743,
+        -0.0872664526104927,
+        -0.1745329201221466
+      ],
+      "escala": 1.0,
+      "celulas": 7
+    },
+    {
+      "id": 2615,
+      "modelo": "Objects//sigmN0005.MS3",
+      "pos": [
+        2618.5,
+        1621.0,
+        11.145003318786621
+      ],
+      "rot": [
+        -0.9599310159683228,
+        -1.7453290224075317,
+        -0.3490658700466156
+      ],
+      "escala": 1.0,
+      "celulas": 8
+    },
+    {
+      "id": 7721,
+      "modelo": "Objects//nlafarm028.MS3",
+      "pos": [
+        2738.0,
+        1756.0,
+        11.824996948242188
+      ],
+      "rot": [
+        1.0471974611282349,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 4
+    },
+    {
+      "id": 7721,
+      "modelo": "Objects//nlafarm028.MS3",
+      "pos": [
+        2752.0,
+        1765.0,
+        14.375000953674316
+      ],
+      "rot": [
+        4.450588703155518,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 5
+    },
+    {
+      "id": 7721,
+      "modelo": "Objects//nlafarm028.MS3",
+      "pos": [
+        2754.5,
+        1751.5,
+        16.049999237060547
+      ],
+      "rot": [
+        3.5342907905578613,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 1
+    },
+    {
+      "id": 7721,
+      "modelo": "Objects//nlafarm028.MS3",
+      "pos": [
+        2690.5,
+        1745.0,
+        5.700000762939453
+      ],
+      "rot": [
+        5.235987186431885,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 1
+    },
+    {
+      "id": 7721,
+      "modelo": "Objects//nlafarm028.MS3",
+      "pos": [
+        2703.0,
+        1749.5,
+        7.450000762939453
+      ],
+      "rot": [
+        2.028944730758667,
+        0.0,
+        0.09817477315664291
+      ],
+      "escala": 1.0,
+      "celulas": 2
+    },
+    {
+      "id": 7721,
+      "modelo": "Objects//nlafarm028.MS3",
+      "pos": [
+        2752.0,
+        1751.5,
+        15.65000057220459
+      ],
+      "rot": [
+        4.1887898445129395,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 2
+    },
+    {
+      "id": 7721,
+      "modelo": "Objects//nlafarm028.MS3",
+      "pos": [
+        2695.5,
+        1747.5,
+        7.175000190734863
+      ],
+      "rot": [
+        -0.6544985771179199,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 4
+    },
+    {
+      "id": 7721,
+      "modelo": "Objects//nlafarm028.MS3",
+      "pos": [
+        2683.5,
+        1717.0,
+        5.608095645904541
+      ],
+      "rot": [
+        2.6179935932159424,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 2
+    },
+    {
+      "id": 7721,
+      "modelo": "Objects//nlafarm028.MS3",
+      "pos": [
+        2719.0,
+        1768.5,
+        10.299999237060547
+      ],
+      "rot": [
+        4.516040325164795,
+        0.0,
+        -0.26998060941696167
+      ],
+      "escala": 1.0,
+      "celulas": 2
+    },
+    {
+      "id": 7721,
+      "modelo": "Objects//nlafarm028.MS3",
+      "pos": [
+        2690.5,
+        1708.5,
+        5.4250006675720215
+      ],
+      "rot": [
+        2.0943949222564697,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 2
+    },
+    {
+      "id": 7721,
+      "modelo": "Objects//nlafarm028.MS3",
+      "pos": [
+        2696.5,
+        1746.5,
+        7.475000381469727
+      ],
+      "rot": [
+        2.2907440662384033,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 1
+    },
+    {
+      "id": 7721,
+      "modelo": "Objects//nlafarm028.MS3",
+      "pos": [
+        2736.0,
+        1744.0,
+        12.024999618530273
+      ],
+      "rot": [
+        0.7853982448577881,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 4
+    },
+    {
+      "id": 7721,
+      "modelo": "Objects//nlafarm028.MS3",
+      "pos": [
+        2708.5,
+        1744.5,
+        8.674999237060547
+      ],
+      "rot": [
+        -0.19634945690631866,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 6
+    },
+    {
+      "id": 7721,
+      "modelo": "Objects//nlafarm028.MS3",
+      "pos": [
+        2738.5,
+        1744.0,
+        12.32499885559082
+      ],
+      "rot": [
+        -0.19634951651096344,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 3
+    },
+    {
+      "id": 7721,
+      "modelo": "Objects//nlafarm028.MS3",
+      "pos": [
+        2682.0,
+        1718.5,
+        5.68054723739624
+      ],
+      "rot": [
+        5.563237190246582,
+        0.0,
+        -0.5154176354408264
+      ],
+      "escala": 1.0,
+      "celulas": 2
+    },
+    {
+      "id": 7721,
+      "modelo": "Objects//nlafarm028.MS3",
+      "pos": [
+        2700.5,
+        1749.5,
+        7.5500006675720215
+      ],
+      "rot": [
+        1.5707963705062866,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 2
+    },
+    {
+      "id": 7721,
+      "modelo": "Objects//nlafarm028.MS3",
+      "pos": [
+        2717.5,
+        1766.5,
+        10.099998474121094
+      ],
+      "rot": [
+        4.05789041519165,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 3
+    },
+    {
+      "id": 7721,
+      "modelo": "Objects//nlafarm028.MS3",
+      "pos": [
+        2719.5,
+        1765.5,
+        10.099998474121094
+      ],
+      "rot": [
+        -2.879793643951416,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 5
+    },
+    {
+      "id": 7721,
+      "modelo": "Objects//nlafarm028.MS3",
+      "pos": [
+        2736.5,
+        1748.5,
+        12.224998474121094
+      ],
+      "rot": [
+        -1.9634952545166016,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 8
+    },
+    {
+      "id": 7721,
+      "modelo": "Objects//nlafarm028.MS3",
+      "pos": [
+        2598.5,
+        1639.5,
+        11.299999237060547
+      ],
+      "rot": [
+        -1.4835296869277954,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 7
+    },
+    {
+      "id": 7721,
+      "modelo": "Objects//nlafarm028.MS3",
+      "pos": [
+        2604.5,
+        1641.5,
+        10.899998664855957
+      ],
+      "rot": [
+        1.221730351448059,
+        0.0,
+        0.0
+      ],
+      "escala": 1.1599998474121094,
+      "celulas": 8
+    },
+    {
+      "id": 7721,
+      "modelo": "Objects//nlafarm028.MS3",
+      "pos": [
+        2592.0,
+        1637.0,
+        11.224998474121094
+      ],
+      "rot": [
+        2.967060089111328,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 5
+    },
+    {
+      "id": 7721,
+      "modelo": "Objects//nlafarm028.MS3",
+      "pos": [
+        2620.5,
+        1626.5,
+        10.599998474121094
+      ],
+      "rot": [
+        7.679447650909424,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 1
+    },
+    {
+      "id": 7721,
+      "modelo": "Objects//nlafarm028.MS3",
+      "pos": [
+        2604.0,
+        1627.0,
+        9.79999828338623
+      ],
+      "rot": [
+        2.6179935932159424,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 3
+    },
+    {
+      "id": 7721,
+      "modelo": "Objects//nlafarm028.MS3",
+      "pos": [
+        2620.5,
+        1623.0,
+        10.224998474121094
+      ],
+      "rot": [
+        6.981316089630127,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 6
+    },
+    {
+      "id": 7721,
+      "modelo": "Objects//nlafarm028.MS3",
+      "pos": [
+        2604.5,
+        1619.5,
+        9.499999046325684
+      ],
+      "rot": [
+        0.5235987305641174,
+        0.0,
+        0.0
+      ],
+      "escala": 1.1399998664855957,
+      "celulas": 5
+    },
+    {
+      "id": 7721,
+      "modelo": "Objects//nlafarm028.MS3",
+      "pos": [
+        2594.5,
+        1620.5,
+        10.124999046325684
+      ],
+      "rot": [
+        1.2217295169830322,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 4
+    },
+    {
+      "id": 7721,
+      "modelo": "Objects//nlafarm028.MS3",
+      "pos": [
+        2594.5,
+        1616.5,
+        10.299999237060547
+      ],
+      "rot": [
+        2.0943949222564697,
+        0.0,
+        0.0
+      ],
+      "escala": 1.2199997901916504,
+      "celulas": 4
+    },
+    {
+      "id": 7721,
+      "modelo": "Objects//nlafarm028.MS3",
+      "pos": [
+        2686.0,
+        1710.5,
+        5.750000476837158
+      ],
+      "rot": [
+        2.0943949222564697,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 4
+    },
+    {
+      "id": 7721,
+      "modelo": "Objects//nlafarm028.MS3",
+      "pos": [
+        2690.5,
+        1746.5,
+        5.650000095367432
+      ],
+      "rot": [
+        1.8325954675674438,
+        -0.04908737540245056,
+        -0.04908738285303116
+      ],
+      "escala": 1.0,
+      "celulas": 2
+    },
+    {
+      "id": 7721,
+      "modelo": "Objects//nlafarm028.MS3",
+      "pos": [
+        2684.5,
+        1712.5,
+        6.000000476837158
+      ],
+      "rot": [
+        2.4216439723968506,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 1
+    },
+    {
+      "id": 7721,
+      "modelo": "Objects//nlafarm028.MS3",
+      "pos": [
+        2739.5,
+        1757.0,
+        12.04999828338623
+      ],
+      "rot": [
+        3.1415915489196777,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 2
+    },
+    {
+      "id": 2523,
+      "modelo": "Objects//amaN000024.MS3",
+      "pos": [
+        2695.0,
+        1640.0,
+        16.176578521728516
+      ],
+      "rot": [
+        2.1598448753356934,
+        0.0,
+        0.14726215600967407
+      ],
+      "escala": 1.0,
+      "celulas": 6
+    },
+    {
+      "id": 2523,
+      "modelo": "Objects//amaN000024.MS3",
+      "pos": [
+        2602.5,
+        1694.5,
+        19.375
+      ],
+      "rot": [
+        -2.356194257736206,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 6
+    },
+    {
+      "id": 2523,
+      "modelo": "Objects//amaN000024.MS3",
+      "pos": [
+        2715.490005493164,
+        1669.3101043701172,
+        14.414998054504395
+      ],
+      "rot": [
+        0.523598849773407,
+        0.0,
+        0.10471975803375244
+      ],
+      "escala": 1.0,
+      "celulas": 4
+    },
+    {
+      "id": 2632,
+      "modelo": "Objects//nlafarm043.MS3",
+      "pos": [
+        2622.5,
+        1690.5,
+        15.354999542236328
+      ],
+      "rot": [
+        0.0,
+        0.0,
+        -0.15707963705062866
+      ],
+      "escala": 1.0,
+      "celulas": 1
+    },
+    {
+      "id": 2632,
+      "modelo": "Objects//nlafarm043.MS3",
+      "pos": [
+        2641.0,
+        1677.0,
+        10.91423225402832
+      ],
+      "rot": [
+        0.0,
+        -0.06981316953897476,
+        -0.06981316953897476
+      ],
+      "escala": 1.0,
+      "celulas": 1
+    },
+    {
+      "id": 2632,
+      "modelo": "Objects//nlafarm043.MS3",
+      "pos": [
+        2717.0,
+        1651.5,
+        14.870000839233398
+      ],
+      "rot": [
+        3.6826367378234863,
+        0.0,
+        -0.20943953096866608
+      ],
+      "escala": 1.0,
+      "celulas": 1
+    },
+    {
+      "id": 2632,
+      "modelo": "Objects//nlafarm043.MS3",
+      "pos": [
+        2698.0,
+        1653.5,
+        13.824993133544922
+      ],
+      "rot": [
+        0.0,
+        0.22689282894134521,
+        -0.06981316953897476
+      ],
+      "escala": 1.0,
+      "celulas": 1
+    },
+    {
+      "id": 2632,
+      "modelo": "Objects//nlafarm043.MS3",
+      "pos": [
+        2668.5,
+        1700.5,
+        8.674996376037598
+      ],
+      "rot": [
+        0.0,
+        -0.0872664600610733,
+        -0.01745329238474369
+      ],
+      "escala": 1.0,
+      "celulas": 2
+    },
+    {
+      "id": 2632,
+      "modelo": "Objects//nlafarm043.MS3",
+      "pos": [
+        2642.5,
+        1688.5,
+        10.55526351928711
+      ],
+      "rot": [
+        4.886921405792236,
+        -0.19198623299598694,
+        0.0872664600610733
+      ],
+      "escala": 1.0,
+      "celulas": 1
+    },
+    {
+      "id": 2632,
+      "modelo": "Objects//nlafarm043.MS3",
+      "pos": [
+        2646.5,
+        1684.5,
+        9.649624824523926
+      ],
+      "rot": [
+        1.692970633506775,
+        0.10471975058317184,
+        0.06981316953897476
+      ],
+      "escala": 1.0,
+      "celulas": 1
+    },
+    {
+      "id": 2632,
+      "modelo": "Objects//nlafarm043.MS3",
+      "pos": [
+        2592.5,
+        1636.5,
+        11.604998588562012
+      ],
+      "rot": [
+        0.0,
+        0.0,
+        -0.05235987901687622
+      ],
+      "escala": 1.0,
+      "celulas": 1
+    },
+    {
+      "id": 2632,
+      "modelo": "Objects//nlafarm043.MS3",
+      "pos": [
+        2692.5,
+        1678.5,
+        9.719999313354492
+      ],
+      "rot": [
+        0.0,
+        0.13962633907794952,
+        0.0872664600610733
+      ],
+      "escala": 1.0,
+      "celulas": 1
+    },
+    {
+      "id": 2649,
+      "modelo": "Objects//nlafarm060.MS3",
+      "pos": [
+        2604.5,
+        1697.0,
+        19.174999237060547
+      ],
+      "rot": [
+        -0.17453289031982422,
+        0.0,
+        -0.2617993950843811
+      ],
+      "escala": 1.4799995422363281,
+      "celulas": 12
+    },
+    {
+      "id": 2649,
+      "modelo": "Objects//nlafarm060.MS3",
+      "pos": [
+        2695.0,
+        1637.0,
+        16.225000381469727
+      ],
+      "rot": [
+        0.3839724659919739,
+        0.1745329201221466,
+        0.13962633907794952
+      ],
+      "escala": 1.4399995803833008,
+      "celulas": 11
+    },
+    {
+      "id": 2649,
+      "modelo": "Objects//nlafarm060.MS3",
+      "pos": [
+        2636.0,
+        1733.0,
+        14.925004005432129
+      ],
+      "rot": [
+        0.0,
+        0.0,
+        0.10471975058317184
+      ],
+      "escala": 1.0,
+      "celulas": 3
+    },
+    {
+      "id": 2649,
+      "modelo": "Objects//nlafarm060.MS3",
+      "pos": [
+        2697.0,
+        1659.5,
+        13.184999465942383
+      ],
+      "rot": [
+        0.0872664675116539,
+        0.03490658476948738,
+        -0.13962635397911072
+      ],
+      "escala": 1.0299999713897705,
+      "celulas": 9
+    },
+    {
+      "id": 4703,
+      "modelo": "Objects//sigmF0003.MS3",
+      "pos": [
+        2600.5,
+        1641.0,
+        11.47499942779541
+      ],
+      "rot": [
+        -2.181661367416382,
+        0.0,
+        0.0
+      ],
+      "escala": 0.7700002193450928,
+      "celulas": 2
+    },
+    {
+      "id": 4703,
+      "modelo": "Objects//sigmF0003.MS3",
+      "pos": [
+        2736.5,
+        1746.5,
+        12.527935028076172
+      ],
+      "rot": [
+        1.7671458721160889,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0699999332427979,
+      "celulas": 3
+    },
+    {
+      "id": 4703,
+      "modelo": "Objects//sigmF0003.MS3",
+      "pos": [
+        2747.5,
+        1764.0,
+        13.19999885559082
+      ],
+      "rot": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "escala": 1.119999885559082,
+      "celulas": 3
+    },
+    {
+      "id": 4703,
+      "modelo": "Objects//sigmF0003.MS3",
+      "pos": [
+        2602.5,
+        1616.5,
+        9.84999942779541
+      ],
+      "rot": [
+        -0.8726645708084106,
+        0.0,
+        0.0
+      ],
+      "escala": 0.8000001907348633,
+      "celulas": 4
+    },
+    {
+      "id": 4703,
+      "modelo": "Objects//sigmF0003.MS3",
+      "pos": [
+        2590.5,
+        1572.5,
+        50.600006103515625
+      ],
+      "rot": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "escala": 1.4499995708465576,
+      "celulas": 5
+    },
+    {
+      "id": 4703,
+      "modelo": "Objects//sigmF0003.MS3",
+      "pos": [
+        2596.5,
+        1622.5,
+        10.175000190734863
+      ],
+      "rot": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 4
+    },
+    {
+      "id": 2698,
+      "modelo": "Objects//lenferN009.MS3",
+      "pos": [
+        2629.0,
+        1641.5,
+        14.500003814697266
+      ],
+      "rot": [
+        1.4835296869277954,
+        0.0,
+        2.0943949222564697
+      ],
+      "escala": 1.0,
+      "celulas": 5
+    },
+    {
+      "id": 2698,
+      "modelo": "Objects//lenferN009.MS3",
+      "pos": [
+        2626.0,
+        1691.0,
+        14.92499828338623
+      ],
+      "rot": [
+        0.0,
+        0.7853981256484985,
+        -1.4835296869277954
+      ],
+      "escala": 1.1699998378753662,
+      "celulas": 1
+    },
+    {
+      "id": 2698,
+      "modelo": "Objects//lenferN009.MS3",
+      "pos": [
+        2697.0,
+        1705.0,
+        7.069998264312744
+      ],
+      "rot": [
+        0.0,
+        -0.5399613380432129,
+        0.6435903310775757
+      ],
+      "escala": 1.0,
+      "celulas": 1
+    },
+    {
+      "id": 2698,
+      "modelo": "Objects//lenferN009.MS3",
+      "pos": [
+        2627.5,
+        1685.0,
+        14.22499942779541
+      ],
+      "rot": [
+        -0.3490658700466156,
+        0.3490658700466156,
+        0.9599310159683228
+      ],
+      "escala": 1.0,
+      "celulas": 2
+    },
+    {
+      "id": 2698,
+      "modelo": "Objects//lenferN009.MS3",
+      "pos": [
+        2715.5,
+        1651.5,
+        14.69999885559082
+      ],
+      "rot": [
+        -0.9599310159683228,
+        -0.0872664675116539,
+        0.9599310159683228
+      ],
+      "escala": 1.0,
+      "celulas": 3
+    },
+    {
+      "id": 2698,
+      "modelo": "Objects//lenferN009.MS3",
+      "pos": [
+        2692.5,
+        1678.0,
+        9.830001831054688
+      ],
+      "rot": [
+        -0.8726645708084106,
+        -0.3490658700466156,
+        1.134463906288147
+      ],
+      "escala": 1.0,
+      "celulas": 4
+    },
+    {
+      "id": 2698,
+      "modelo": "Objects//lenferN009.MS3",
+      "pos": [
+        2695.370071411133,
+        1660.0,
+        13.324999809265137
+      ],
+      "rot": [
+        0.0,
+        0.0,
+        -0.6981316804885864
+      ],
+      "escala": 1.0,
+      "celulas": 2
+    },
+    {
+      "id": 2698,
+      "modelo": "Objects//lenferN009.MS3",
+      "pos": [
+        2700.0,
+        1655.0,
+        14.675004959106445
+      ],
+      "rot": [
+        0.0,
+        -0.1745329350233078,
+        2.443460702896118
+      ],
+      "escala": 1.0,
+      "celulas": 4
+    },
+    {
+      "id": 2698,
+      "modelo": "Objects//lenferN009.MS3",
+      "pos": [
+        2696.670181274414,
+        1648.2199401855469,
+        14.860152244567871
+      ],
+      "rot": [
+        -0.7853981256484985,
+        -0.36815541982650757,
+        0.03272490203380585
+      ],
+      "escala": 1.0,
+      "celulas": 2
+    },
+    {
+      "id": 2539,
+      "modelo": "Objects//helpN0002.MS3",
+      "pos": [
+        2600.5,
+        1748.5,
+        40.5248908996582
+      ],
+      "rot": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 3
+    },
+    {
+      "id": 2539,
+      "modelo": "Objects//helpN0002.MS3",
+      "pos": [
+        2697.0,
+        1639.0,
+        16.09892463684082
+      ],
+      "rot": [
+        0.0,
+        0.09817477315664291,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 3
+    },
+    {
+      "id": 2526,
+      "modelo": "Objects//lasgN0005.MS3",
+      "pos": [
+        2599.0,
+        1720.0,
+        22.304967880249023
+      ],
+      "rot": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 3
+    },
+    {
+      "id": 2526,
+      "modelo": "Objects//lasgN0005.MS3",
+      "pos": [
+        2646.5,
+        1734.5,
+        13.699999809265137
+      ],
+      "rot": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 2
+    },
+    {
+      "id": 2526,
+      "modelo": "Objects//lasgN0005.MS3",
+      "pos": [
+        2612.5,
+        1614.5,
+        9.764998435974121
+      ],
+      "rot": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 4
+    },
+    {
+      "id": 2526,
+      "modelo": "Objects//lasgN0005.MS3",
+      "pos": [
+        2718.0,
+        1628.5,
+        19.550006866455078
+      ],
+      "rot": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 2
+    },
+    {
+      "id": 2526,
+      "modelo": "Objects//lasgN0005.MS3",
+      "pos": [
+        2709.0,
+        1627.0,
+        19.400009155273438
+      ],
+      "rot": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 3
+    },
+    {
+      "id": 2526,
+      "modelo": "Objects//lasgN0005.MS3",
+      "pos": [
+        2640.5,
+        1728.5,
+        14.434999465942383
+      ],
+      "rot": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 3
+    },
+    {
+      "id": 2526,
+      "modelo": "Objects//lasgN0005.MS3",
+      "pos": [
+        2694.5,
+        1652.5,
+        14.199999809265137
+      ],
+      "rot": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 4
+    },
+    {
+      "id": 2526,
+      "modelo": "Objects//lasgN0005.MS3",
+      "pos": [
+        2603.0,
+        1682.0,
+        19.930021286010742
+      ],
+      "rot": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 4
+    },
+    {
+      "id": 2526,
+      "modelo": "Objects//lasgN0005.MS3",
+      "pos": [
+        2594.5,
+        1690.5,
+        20.31501007080078
+      ],
+      "rot": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 4
+    },
+    {
+      "id": 2534,
+      "modelo": "Objects//amaN000026.MS3",
+      "pos": [
+        2715.0,
+        1671.5,
+        14.199999809265137
+      ],
+      "rot": [
+        0.0,
+        0.0,
+        -0.27925267815589905
+      ],
+      "escala": 1.0,
+      "celulas": 2
+    },
+    {
+      "id": 2534,
+      "modelo": "Objects//amaN000026.MS3",
+      "pos": [
+        2691.0,
+        1675.5,
+        10.124998092651367
+      ],
+      "rot": [
+        -0.3490658700466156,
+        -0.4363323450088501,
+        0.2617993950843811
+      ],
+      "escala": 1.0,
+      "celulas": 4
+    },
+    {
+      "id": 2534,
+      "modelo": "Objects//amaN000026.MS3",
+      "pos": [
+        2716.5,
+        1649.5,
+        14.874999046325684
+      ],
+      "rot": [
+        -0.08726642280817032,
+        0.0,
+        -0.4363324046134949
+      ],
+      "escala": 1.0,
+      "celulas": 2
+    },
+    {
+      "id": 2534,
+      "modelo": "Objects//amaN000026.MS3",
+      "pos": [
+        2621.0,
+        1688.0,
+        15.475001335144043
+      ],
+      "rot": [
+        -0.7853980660438538,
+        0.0,
+        1.134463906288147
+      ],
+      "escala": 1.0,
+      "celulas": 4
+    },
+    {
+      "id": 2534,
+      "modelo": "Objects//amaN000026.MS3",
+      "pos": [
+        2698.5,
+        1651.5,
+        13.724995613098145
+      ],
+      "rot": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 4
+    },
+    {
+      "id": 2642,
+      "modelo": "Objects//nlafarm053.MS3",
+      "pos": [
+        2672.5,
+        1777.5,
+        2.862628221511841
+      ],
+      "rot": [
+        0.0,
+        0.0,
+        0.22089321911334991
+      ],
+      "escala": 2.4399986267089844,
+      "celulas": 6
+    },
+    {
+      "id": 2642,
+      "modelo": "Objects//nlafarm053.MS3",
+      "pos": [
+        2668.5,
+        1765.5,
+        3.275000810623169
+      ],
+      "rot": [
+        -0.19634951651096344,
+        0.04908738657832146,
+        -0.19634953141212463
+      ],
+      "escala": 2.5999984741210938,
+      "celulas": 2
+    },
+    {
+      "id": 2642,
+      "modelo": "Objects//nlafarm053.MS3",
+      "pos": [
+        2639.5,
+        1729.5,
+        14.554998397827148
+      ],
+      "rot": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "escala": 1.3399996757507324,
+      "celulas": 2
+    },
+    {
+      "id": 2697,
+      "modelo": "Objects//lenferN008.MS3",
+      "pos": [
+        2700.210159301758,
+        1659.5,
+        14.445821762084961
+      ],
+      "rot": [
+        0.0,
+        0.0,
+        0.19634953141212463
+      ],
+      "escala": 1.0,
+      "celulas": 1
+    },
+    {
+      "id": 2697,
+      "modelo": "Objects//lenferN008.MS3",
+      "pos": [
+        2675.0,
+        1709.5,
+        9.981593132019043
+      ],
+      "rot": [
+        0.7853981852531433,
+        0.2454369217157364,
+        0.49087393283843994
+      ],
+      "escala": 1.0,
+      "celulas": 3
+    },
+    {
+      "id": 2697,
+      "modelo": "Objects//lenferN008.MS3",
+      "pos": [
+        2692.5,
+        1642.5,
+        15.949999809265137
+      ],
+      "rot": [
+        0.4363323152065277,
+        -0.5235987901687622,
+        0.3490658700466156
+      ],
+      "escala": 1.0,
+      "celulas": 3
+    },
+    {
+      "id": 2697,
+      "modelo": "Objects//lenferN008.MS3",
+      "pos": [
+        2622.5,
+        1651.0,
+        12.309999465942383
+      ],
+      "rot": [
+        -1.0471974611282349,
+        0.6981317400932312,
+        0.9599310159683228
+      ],
+      "escala": 1.0,
+      "celulas": 2
+    },
+    {
+      "id": 2697,
+      "modelo": "Objects//lenferN008.MS3",
+      "pos": [
+        2623.0,
+        1693.5,
+        15.22499942779541
+      ],
+      "rot": [
+        -1.0471974611282349,
+        0.523598849773407,
+        -1.4901161193847656e-08
+      ],
+      "escala": 1.309999704360962,
+      "celulas": 3
+    },
+    {
+      "id": 2697,
+      "modelo": "Objects//lenferN008.MS3",
+      "pos": [
+        2695.9600219726562,
+        1658.9598846435547,
+        14.960002899169922
+      ],
+      "rot": [
+        0.0,
+        -0.3839724659919739,
+        3.6302876472473145
+      ],
+      "escala": 1.2899997234344482,
+      "celulas": 1
+    },
+    {
+      "id": 2697,
+      "modelo": "Objects//lenferN008.MS3",
+      "pos": [
+        2697.0,
+        1653.0,
+        14.125000953674316
+      ],
+      "rot": [
+        0.0,
+        -1.0471974611282349,
+        0.6981316804885864
+      ],
+      "escala": 1.0,
+      "celulas": 1
+    },
+    {
+      "id": 2697,
+      "modelo": "Objects//lenferN008.MS3",
+      "pos": [
+        2707.5,
+        1687.5,
+        11.47499942779541
+      ],
+      "rot": [
+        -1.134463906288147,
+        0.0,
+        0.6981316804885864
+      ],
+      "escala": 1.0,
+      "celulas": 3
+    },
+    {
+      "id": 2697,
+      "modelo": "Objects//lenferN008.MS3",
+      "pos": [
+        2694.509994506836,
+        1650.2699508666992,
+        14.689831733703613
+      ],
+      "rot": [
+        0.39269909262657166,
+        -0.4172428250312805,
+        0.04908738657832146
+      ],
+      "escala": 1.0,
+      "celulas": 1
+    },
+    {
+      "id": 2697,
+      "modelo": "Objects//lenferN008.MS3",
+      "pos": [
+        2624.5,
+        1686.5,
+        14.799999237060547
+      ],
+      "rot": [
+        -0.4363323450088501,
+        0.17453289031982422,
+        0.0
+      ],
+      "escala": 1.429999589920044,
+      "celulas": 2
+    },
+    {
+      "id": 2697,
+      "modelo": "Objects//lenferN008.MS3",
+      "pos": [
+        2624.5,
+        1688.5,
+        14.97499942779541
+      ],
+      "rot": [
+        0.0,
+        0.0,
+        0.5235987901687622
+      ],
+      "escala": 1.0,
+      "celulas": 2
+    },
+    {
+      "id": 2697,
+      "modelo": "Objects//lenferN008.MS3",
+      "pos": [
+        2690.5,
+        1680.5,
+        9.049999237060547
+      ],
+      "rot": [
+        0.0,
+        0.1745329350233078,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 1
+    },
+    {
+      "id": 2697,
+      "modelo": "Objects//lenferN008.MS3",
+      "pos": [
+        2692.5,
+        1676.5,
+        9.874999046325684
+      ],
+      "rot": [
+        -1.0471974611282349,
+        0.0,
+        -0.6108652353286743
+      ],
+      "escala": 1.0,
+      "celulas": 1
+    },
+    {
+      "id": 2697,
+      "modelo": "Objects//lenferN008.MS3",
+      "pos": [
+        2614.5,
+        1680.5,
+        15.995000839233398
+      ],
+      "rot": [
+        -0.6108652353286743,
+        -0.4363324046134949,
+        0.3490658700466156
+      ],
+      "escala": 1.0,
+      "celulas": 2
+    },
+    {
+      "id": 2697,
+      "modelo": "Objects//lenferN008.MS3",
+      "pos": [
+        2630.5,
+        1691.0,
+        13.725000381469727
+      ],
+      "rot": [
+        1.134463906288147,
+        0.0,
+        0.5235987901687622
+      ],
+      "escala": 1.0,
+      "celulas": 2
+    },
+    {
+      "id": 2697,
+      "modelo": "Objects//lenferN008.MS3",
+      "pos": [
+        2693.5,
+        1704.5,
+        8.19999885559082
+      ],
+      "rot": [
+        0.0,
+        -0.36815541982650757,
+        0.3436117172241211
+      ],
+      "escala": 1.0,
+      "celulas": 1
+    },
+    {
+      "id": 2697,
+      "modelo": "Objects//lenferN008.MS3",
+      "pos": [
+        2630.5,
+        1644.5,
+        12.6850004196167
+      ],
+      "rot": [
+        -1.221730351448059,
+        0.08726642280817032,
+        0.2617993950843811
+      ],
+      "escala": 1.309999704360962,
+      "celulas": 2
+    },
+    {
+      "id": 2697,
+      "modelo": "Objects//lenferN008.MS3",
+      "pos": [
+        2624.5,
+        1640.5,
+        12.324997901916504
+      ],
+      "rot": [
+        0.0,
+        0.0,
+        -0.3490658700466156
+      ],
+      "escala": 1.0,
+      "celulas": 2
+    },
+    {
+      "id": 2697,
+      "modelo": "Objects//lenferN008.MS3",
+      "pos": [
+        2716.5,
+        1650.5,
+        14.899999618530273
+      ],
+      "rot": [
+        -1.221730351448059,
+        0.0,
+        -0.5235987901687622
+      ],
+      "escala": 1.0,
+      "celulas": 1
+    },
+    {
+      "id": 2697,
+      "modelo": "Objects//lenferN008.MS3",
+      "pos": [
+        2724.5,
+        1640.5,
+        18.125
+      ],
+      "rot": [
+        -0.7853981852531433,
+        0.0,
+        -0.19634953141212463
+      ],
+      "escala": 1.0,
+      "celulas": 1
+    },
+    {
+      "id": 2697,
+      "modelo": "Objects//lenferN008.MS3",
+      "pos": [
+        2690.5,
+        1676.5,
+        10.02500057220459
+      ],
+      "rot": [
+        0.0,
+        0.0,
+        0.5235987901687622
+      ],
+      "escala": 1.0,
+      "celulas": 2
+    },
+    {
+      "id": 2697,
+      "modelo": "Objects//lenferN008.MS3",
+      "pos": [
+        2696.5,
+        1640.5,
+        15.924999237060547
+      ],
+      "rot": [
+        0.0,
+        -0.3190680146217346,
+        0.3436117172241211
+      ],
+      "escala": 1.0,
+      "celulas": 1
+    },
+    {
+      "id": 2697,
+      "modelo": "Objects//lenferN008.MS3",
+      "pos": [
+        2700.5,
+        1662.0,
+        13.0
+      ],
+      "rot": [
+        -0.7853981256484985,
+        0.0,
+        -0.5235987901687622
+      ],
+      "escala": 1.3799996376037598,
+      "celulas": 4
+    },
+    {
+      "id": 2697,
+      "modelo": "Objects//lenferN008.MS3",
+      "pos": [
+        2698.5,
+        1640.5,
+        15.82499885559082
+      ],
+      "rot": [
+        0.6108652353286743,
+        0.0,
+        -0.4363323450088501
+      ],
+      "escala": 1.4699995517730713,
+      "celulas": 3
+    },
+    {
+      "id": 2697,
+      "modelo": "Objects//lenferN008.MS3",
+      "pos": [
+        2600.5,
+        1689.5,
+        19.73000144958496
+      ],
+      "rot": [
+        -0.8726645708084106,
+        0.0,
+        1.0471974611282349
+      ],
+      "escala": 1.0,
+      "celulas": 1
+    },
+    {
+      "id": 2697,
+      "modelo": "Objects//lenferN008.MS3",
+      "pos": [
+        2718.0,
+        1651.0,
+        15.174999237060547
+      ],
+      "rot": [
+        -1.221730351448059,
+        0.0,
+        -1.0471974611282349
+      ],
+      "escala": 1.3999996185302734,
+      "celulas": 4
+    },
+    {
+      "id": 2697,
+      "modelo": "Objects//lenferN008.MS3",
+      "pos": [
+        2631.5,
+        1644.5,
+        12.32499885559082
+      ],
+      "rot": [
+        0.1745329350233078,
+        0.0,
+        -0.5235987901687622
+      ],
+      "escala": 1.0,
+      "celulas": 2
+    },
+    {
+      "id": 2697,
+      "modelo": "Objects//lenferN008.MS3",
+      "pos": [
+        2625.5,
+        1686.5,
+        14.725001335144043
+      ],
+      "rot": [
+        -1.8325954675674438,
+        0.0,
+        0.3490658700466156
+      ],
+      "escala": 1.0,
+      "celulas": 2
+    },
+    {
+      "id": 2697,
+      "modelo": "Objects//lenferN008.MS3",
+      "pos": [
+        2626.5,
+        1644.5,
+        13.40000057220459
+      ],
+      "rot": [
+        -1.919861912727356,
+        -0.1745329350233078,
+        -0.6981316804885864
+      ],
+      "escala": 1.0,
+      "celulas": 2
+    },
+    {
+      "id": 2697,
+      "modelo": "Objects//lenferN008.MS3",
+      "pos": [
+        2694.5,
+        1707.0,
+        6.675000190734863
+      ],
+      "rot": [
+        0.0,
+        -0.2427099049091339,
+        -0.3354305028915405
+      ],
+      "escala": 1.249999761581421,
+      "celulas": 1
+    },
+    {
+      "id": 2697,
+      "modelo": "Objects//lenferN008.MS3",
+      "pos": [
+        2610.5,
+        1700.5,
+        18.899999618530273
+      ],
+      "rot": [
+        0.0,
+        0.0,
+        -0.4363323450088501
+      ],
+      "escala": 1.0,
+      "celulas": 2
+    },
+    {
+      "id": 4708,
+      "modelo": "Objects//sigmF0008.MS3",
+      "pos": [
+        2686.5,
+        1800.0,
+        -4.199997901916504
+      ],
+      "rot": [
+        -0.19634954631328583,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 140
+    },
+    {
+      "id": 4718,
+      "modelo": "Objects//sigmF0018.MS3",
+      "pos": [
+        2566.0,
+        1824.0,
+        -1.125001072883606
+      ],
+      "rot": [
+        0.39269906282424927,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 29
+    },
+    {
+      "id": 4709,
+      "modelo": "Objects//sigmF0009.MS3",
+      "pos": [
+        2639.0,
+        1804.5,
+        -2.4142656326293945
+      ],
+      "rot": [
+        -3.337942600250244,
+        0.0,
+        0.0
+      ],
+      "escala": 0.9300000667572021,
+      "celulas": 70
+    },
+    {
+      "id": 4712,
+      "modelo": "Objects//sigmF0012.MS3",
+      "pos": [
+        2672.5,
+        1806.5,
+        -3.25101637840271
+      ],
+      "rot": [
+        2.7488937377929688,
+        -0.14726217091083527,
+        0.07363108545541763
+      ],
+      "escala": 1.0,
+      "celulas": 2
+    },
+    {
+      "id": 4711,
+      "modelo": "Objects//sigmF0011.MS3",
+      "pos": [
+        2641.0,
+        1809.0,
+        -1.5858772993087769
+      ],
+      "rot": [
+        -1.5707963705062866,
+        0.09817478060722351,
+        -0.09817476570606232
+      ],
+      "escala": 1.0,
+      "celulas": 1
+    },
+    {
+      "id": 4711,
+      "modelo": "Objects//sigmF0011.MS3",
+      "pos": [
+        2622.5,
+        1798.5,
+        2.3455488681793213
+      ],
+      "rot": [
+        1.1780972480773926,
+        0.02454369328916073,
+        -0.02454369328916073
+      ],
+      "escala": 1.0,
+      "celulas": 12
+    },
+    {
+      "id": 4711,
+      "modelo": "Objects//sigmF0011.MS3",
+      "pos": [
+        2640.5,
+        1792.5,
+        -0.14265760779380798
+      ],
+      "rot": [
+        -2.9452433586120605,
+        0.0,
+        -0.02454369328916073
+      ],
+      "escala": 1.0,
+      "celulas": 1
+    },
+    {
+      "id": 4711,
+      "modelo": "Objects//sigmF0011.MS3",
+      "pos": [
+        2638.5,
+        1816.0,
+        -2.3228976726531982
+      ],
+      "rot": [
+        -2.356194496154785,
+        0.0,
+        -0.19634953141212463
+      ],
+      "escala": 1.2799997329711914,
+      "celulas": 3
+    },
+    {
+      "id": 4711,
+      "modelo": "Objects//sigmF0011.MS3",
+      "pos": [
+        2632.5,
+        1824.5,
+        -2.674999713897705
+      ],
+      "rot": [
+        0.0,
+        0.0,
+        0.02454368956387043
+      ],
+      "escala": 1.2799997329711914,
+      "celulas": 7
+    },
+    {
+      "id": 4701,
+      "modelo": "Objects//sigmF0001.MS3",
+      "pos": [
+        2668.5,
+        1812.5,
+        -4.150000095367432
+      ],
+      "rot": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "escala": 2.1799988746643066,
+      "celulas": 6
+    },
+    {
+      "id": 7719,
+      "modelo": "Objects//nlafarm026.MS3",
+      "pos": [
+        2664.5,
+        1814.5,
+        -3.950000286102295
+      ],
+      "rot": [
+        1.0471974611282349,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 13
+    },
+    {
+      "id": 4702,
+      "modelo": "Objects//sigmF0002.MS3",
+      "pos": [
+        2610.5,
+        1814.5,
+        0.3497379422187805
+      ],
+      "rot": [
+        -1.570796251296997,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 6
+    },
+    {
+      "id": 4702,
+      "modelo": "Objects//sigmF0002.MS3",
+      "pos": [
+        2641.5,
+        1820.5,
+        -2.2749998569488525
+      ],
+      "rot": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 6
+    },
+    {
+      "id": 4702,
+      "modelo": "Objects//sigmF0002.MS3",
+      "pos": [
+        2699.5,
+        1797.5,
+        -2.5702931880950928
+      ],
+      "rot": [
+        0.39269909262657166,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 5
+    },
+    {
+      "id": 4702,
+      "modelo": "Objects//sigmF0002.MS3",
+      "pos": [
+        2622.5,
+        1792.5,
+        2.330049753189087
+      ],
+      "rot": [
+        -3.9269914627075195,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 5
+    },
+    {
+      "id": 7741,
+      "modelo": "Objects//nlafarm080.MS3",
+      "pos": [
+        2660.5,
+        1816.5,
+        -4.25
+      ],
+      "rot": [
+        3.1415927410125732,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 10
+    },
+    {
+      "id": 7741,
+      "modelo": "Objects//nlafarm080.MS3",
+      "pos": [
+        2652.5,
+        1792.5,
+        -0.5
+      ],
+      "rot": [
+        3.1415927410125732,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 9
+    },
+    {
+      "id": 7720,
+      "modelo": "Objects//nlafarm027.MS3",
+      "pos": [
+        2663.5,
+        1815.5,
+        -3.825000047683716
+      ],
+      "rot": [
+        1.0471974611282349,
+        0.0,
+        0.0
+      ],
+      "escala": 2.0599989891052246,
+      "celulas": 12
+    },
+    {
+      "id": 7720,
+      "modelo": "Objects//nlafarm027.MS3",
+      "pos": [
+        2732.5,
+        1798.5,
+        8.324999809265137
+      ],
+      "rot": [
+        1.1126474142074585,
+        -0.02454369328916073,
+        0.29452431201934814
+      ],
+      "escala": 2.409998655319214,
+      "celulas": 20
+    },
+    {
+      "id": 7720,
+      "modelo": "Objects//nlafarm027.MS3",
+      "pos": [
+        2597.5,
+        1797.0,
+        3.7750000953674316
+      ],
+      "rot": [
+        4.1887898445129395,
+        0.0,
+        0.0
+      ],
+      "escala": 2.4999985694885254,
+      "celulas": 22
+    },
+    {
+      "id": 7720,
+      "modelo": "Objects//nlafarm027.MS3",
+      "pos": [
+        2660.0,
+        1792.0,
+        0.32500001788139343
+      ],
+      "rot": [
+        5.235987186431885,
+        0.0,
+        0.0
+      ],
+      "escala": 1.6899993419647217,
+      "celulas": 14
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2668.5,
+        1814.5,
+        -4.625
+      ],
+      "rot": [
+        3.1415927410125732,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 8
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2660.5,
+        1820.5,
+        -4.75
+      ],
+      "rot": [
+        3.665191411972046,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 7
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2666.5,
+        1818.5,
+        -4.824999809265137
+      ],
+      "rot": [
+        1.0471974611282349,
+        0.0,
+        0.04908738657832146
+      ],
+      "escala": 1.0,
+      "celulas": 7
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2662.5,
+        1810.5,
+        -3.5749998092651367
+      ],
+      "rot": [
+        0.5235987305641174,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 7
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2670.5,
+        1812.5,
+        -4.349999904632568
+      ],
+      "rot": [
+        4.712388515472412,
+        0.0,
+        -0.09817477315664291
+      ],
+      "escala": 1.0,
+      "celulas": 5
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2684.5,
+        1816.5,
+        -6.049999713897705
+      ],
+      "rot": [
+        1.1126474142074585,
+        0.0,
+        0.02454369328916073
+      ],
+      "escala": 1.0,
+      "celulas": 10
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2722.5,
+        1818.5,
+        -5.174999713897705
+      ],
+      "rot": [
+        4.1887898445129395,
+        0.0,
+        -0.04908738657832146
+      ],
+      "escala": 1.0,
+      "celulas": 10
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2720.5,
+        1810.5,
+        -3.7749998569488525
+      ],
+      "rot": [
+        4.712388515472412,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 9
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2706.5,
+        1810.5,
+        -4.175000190734863
+      ],
+      "rot": [
+        2.0943944454193115,
+        0.0,
+        0.04908738657832146
+      ],
+      "escala": 1.0,
+      "celulas": 7
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2698.5,
+        1796.5,
+        -2.499999761581421
+      ],
+      "rot": [
+        1.0471974611282349,
+        0.0,
+        0.14726215600967407
+      ],
+      "escala": 1.0,
+      "celulas": 6
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2698.5,
+        1798.5,
+        -2.749999761581421
+      ],
+      "rot": [
+        3.2724926471710205,
+        0.0,
+        -0.04908738657832146
+      ],
+      "escala": 1.0,
+      "celulas": 5
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2686.5,
+        1804.5,
+        -3.624999761581421
+      ],
+      "rot": [
+        2.879793405532837,
+        0.0,
+        0.04908738657832146
+      ],
+      "escala": 1.0,
+      "celulas": 9
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2678.5,
+        1794.5,
+        -1.9500000476837158
+      ],
+      "rot": [
+        -1.4398967027664185,
+        0.0,
+        -0.07363107800483704
+      ],
+      "escala": 1.0,
+      "celulas": 9
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2672.5,
+        1794.5,
+        -1.7000001668930054
+      ],
+      "rot": [
+        0.6544983386993408,
+        0.0,
+        0.09817477315664291
+      ],
+      "escala": 1.0,
+      "celulas": 8
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2662.5,
+        1792.5,
+        -0.15000000596046448
+      ],
+      "rot": [
+        3.010692834854126,
+        0.0,
+        0.02454369328916073
+      ],
+      "escala": 1.0,
+      "celulas": 7
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2656.5,
+        1810.5,
+        -1.9500000476837158
+      ],
+      "rot": [
+        4.123340606689453,
+        0.0,
+        0.02454369328916073
+      ],
+      "escala": 1.0,
+      "celulas": 8
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2651.5,
+        1812.5,
+        -1.5000001192092896
+      ],
+      "rot": [
+        2.4870941638946533,
+        0.0,
+        0.02454369328916073
+      ],
+      "escala": 1.0,
+      "celulas": 8
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2644.5,
+        1810.5,
+        -1.475000023841858
+      ],
+      "rot": [
+        1.963495135307312,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 7
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2610.5,
+        1792.5,
+        3.9750003814697266
+      ],
+      "rot": [
+        0.9817478060722351,
+        0.0,
+        0.02454369328916073
+      ],
+      "escala": 1.0,
+      "celulas": 7
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2636.5,
+        1826.5,
+        -2.299999713897705
+      ],
+      "rot": [
+        0.7199482917785645,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 8
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2685.5,
+        1802.5,
+        -3.0
+      ],
+      "rot": [
+        3.9269912242889404,
+        0.0,
+        -0.17180584371089935
+      ],
+      "escala": 1.0,
+      "celulas": 6
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2690.5,
+        1804.5,
+        -3.374999761581421
+      ],
+      "rot": [
+        4.843287944793701,
+        0.0,
+        -0.2454369217157364
+      ],
+      "escala": 1.0,
+      "celulas": 8
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2694.5,
+        1818.5,
+        -6.474999904632568
+      ],
+      "rot": [
+        1.6362459659576416,
+        0.0,
+        0.07363107800483704
+      ],
+      "escala": 1.0,
+      "celulas": 8
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2698.5,
+        1830.5,
+        -7.275000095367432
+      ],
+      "rot": [
+        0.5890486240386963,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 7
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2716.5,
+        1834.5,
+        -6.549999713897705
+      ],
+      "rot": [
+        4.843287944793701,
+        0.0,
+        -0.09817477315664291
+      ],
+      "escala": 1.0,
+      "celulas": 3
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2730.5,
+        1814.5,
+        -1.2750000953674316
+      ],
+      "rot": [
+        1.1780972480773926,
+        0.0,
+        0.36815541982650757
+      ],
+      "escala": 1.0,
+      "celulas": 8
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2708.5,
+        1796.5,
+        -2.624999761581421
+      ],
+      "rot": [
+        6.086835861206055,
+        0.0,
+        -0.07363107800483704
+      ],
+      "escala": 1.0,
+      "celulas": 9
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2686.5,
+        1794.5,
+        -1.9000000953674316
+      ],
+      "rot": [
+        4.1887898445129395,
+        0.0,
+        -0.19634953141212463
+      ],
+      "escala": 1.0,
+      "celulas": 10
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2660.5,
+        1814.5,
+        -3.549999952316284
+      ],
+      "rot": [
+        4.712388515472412,
+        0.0,
+        -0.17180584371089935
+      ],
+      "escala": 0.9000000953674316,
+      "celulas": 3
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2658.5,
+        1818.5,
+        -4.074999809265137
+      ],
+      "rot": [
+        3.665191411972046,
+        0.0,
+        0.02454369328916073
+      ],
+      "escala": 1.0,
+      "celulas": 6
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2634.5,
+        1808.5,
+        -1.350000023841858
+      ],
+      "rot": [
+        4.581489086151123,
+        0.0,
+        -0.09817477315664291
+      ],
+      "escala": 1.0,
+      "celulas": 8
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2642.0,
+        1822.0,
+        -2.2749998569488525
+      ],
+      "rot": [
+        3.796091318130493,
+        0.0,
+        0.12271846830844879
+      ],
+      "escala": 1.0,
+      "celulas": 6
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2634.5,
+        1812.5,
+        -1.975000023841858
+      ],
+      "rot": [
+        1.0471974611282349,
+        0.0,
+        0.14726215600967407
+      ],
+      "escala": 1.0,
+      "celulas": 8
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2657.5,
+        1793.5,
+        -0.17500001192092896
+      ],
+      "rot": [
+        -0.6544985771179199,
+        0.0,
+        -0.1227184608578682
+      ],
+      "escala": 1.0,
+      "celulas": 6
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2606.5,
+        1794.5,
+        4.125000476837158
+      ],
+      "rot": [
+        3.1415927410125732,
+        0.0,
+        0.04908738657832146
+      ],
+      "escala": 1.0,
+      "celulas": 10
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2594.5,
+        1802.5,
+        2.700000286102295
+      ],
+      "rot": [
+        5.759586334228516,
+        0.0,
+        0.02454369328916073
+      ],
+      "escala": 1.0,
+      "celulas": 9
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2596.5,
+        1800.5,
+        3.1750001907348633
+      ],
+      "rot": [
+        3.4033920764923096,
+        0.0,
+        -0.02454369328916073
+      ],
+      "escala": 1.0,
+      "celulas": 4
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2587.5,
+        1828.5,
+        -0.5244773030281067
+      ],
+      "rot": [
+        1.4398962259292603,
+        0.0,
+        0.09817477315664291
+      ],
+      "escala": 1.0,
+      "celulas": 3
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2586.5,
+        1830.5,
+        -0.8000000715255737
+      ],
+      "rot": [
+        3.3379411697387695,
+        0.0,
+        0.04908738657832146
+      ],
+      "escala": 1.0,
+      "celulas": 1
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2611.0,
+        1816.0,
+        0.19992735981941223
+      ],
+      "rot": [
+        0.5235987305641174,
+        0.0,
+        -0.04908738657832146
+      ],
+      "escala": 1.0,
+      "celulas": 7
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2608.5,
+        1818.5,
+        -0.16884887218475342
+      ],
+      "rot": [
+        4.712388515472412,
+        0.0,
+        -0.04908738657832146
+      ],
+      "escala": 1.0,
+      "celulas": 9
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2684.5,
+        1806.5,
+        -4.224999904632568
+      ],
+      "rot": [
+        2.4870941638946533,
+        0.0,
+        0.26998060941696167
+      ],
+      "escala": 1.0,
+      "celulas": 7
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2662.5,
+        1796.5,
+        -1.350000023841858
+      ],
+      "rot": [
+        5.759586334228516,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 9
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2658.5,
+        1806.5,
+        -2.0999999046325684
+      ],
+      "rot": [
+        0.6544983386993408,
+        0.0,
+        -0.07363107800483704
+      ],
+      "escala": 1.0,
+      "celulas": 6
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2648.5,
+        1812.5,
+        -1.600000023841858
+      ],
+      "rot": [
+        0.5235987305641174,
+        0.0,
+        0.1227184608578682
+      ],
+      "escala": 1.0,
+      "celulas": 9
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2690.5,
+        1794.5,
+        -1.8750001192092896
+      ],
+      "rot": [
+        2.945241928100586,
+        0.0,
+        -0.04908738657832146
+      ],
+      "escala": 1.0,
+      "celulas": 9
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2608.5,
+        1816.5,
+        0.23079630732536316
+      ],
+      "rot": [
+        5.759586334228516,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 4
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2646.5,
+        1814.5,
+        -2.075000047683716
+      ],
+      "rot": [
+        2.6179935932159424,
+        0.0,
+        0.02454369328916073
+      ],
+      "escala": 1.0,
+      "celulas": 8
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2666.5,
+        1794.5,
+        -1.0750000476837158
+      ],
+      "rot": [
+        5.497786998748779,
+        0.0,
+        -0.22089321911334991
+      ],
+      "escala": 1.0,
+      "celulas": 7
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2722.5,
+        1820.5,
+        -5.174999713897705
+      ],
+      "rot": [
+        5.694136619567871,
+        0.0,
+        0.07363107800483704
+      ],
+      "escala": 1.0,
+      "celulas": 4
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2618.5,
+        1806.5,
+        0.699999988079071
+      ],
+      "rot": [
+        2.683443784713745,
+        0.0,
+        0.07363107800483704
+      ],
+      "escala": 1.0,
+      "celulas": 9
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2726.5,
+        1826.5,
+        -6.324999809265137
+      ],
+      "rot": [
+        1.8325954675674438,
+        0.0,
+        0.2454369068145752
+      ],
+      "escala": 1.0,
+      "celulas": 9
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2640.5,
+        1820.5,
+        -2.374999761581421
+      ],
+      "rot": [
+        5.17053747177124,
+        0.0,
+        0.09817477315664291
+      ],
+      "escala": 1.0,
+      "celulas": 5
+    },
+    {
+      "id": 7677,
+      "modelo": "Objects//GR03010702.MS3",
+      "pos": [
+        2694.5,
+        1834.5,
+        -7.199999809265137
+      ],
+      "rot": [
+        4.254240036010742,
+        0.0,
+        -0.04908738657832146
+      ],
+      "escala": 1.0,
+      "celulas": 3
+    },
+    {
+      "id": 7681,
+      "modelo": "Objects//GR03011101.MS3",
+      "pos": [
+        2620.5,
+        1804.5,
+        1.6750000715255737
+      ],
+      "rot": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "escala": 2.229998826980591,
+      "celulas": 16
+    },
+    {
+      "id": 2614,
+      "modelo": "Objects//sigmN0004.MS3",
+      "pos": [
+        2639.0,
+        1793.0,
+        0.04999999701976776
+      ],
+      "rot": [
+        0.19634954631328583,
+        0.0,
+        1.1175870895385742e-08
+      ],
+      "escala": 1.0,
+      "celulas": 7
+    },
+    {
+      "id": 2615,
+      "modelo": "Objects//sigmN0005.MS3",
+      "pos": [
+        2628.5,
+        1796.5,
+        1.8693690299987793
+      ],
+      "rot": [
+        -2.1598448753356934,
+        0.0,
+        0.0
+      ],
+      "escala": 1.2299997806549072,
+      "celulas": 9
+    },
+    {
+      "id": 2615,
+      "modelo": "Objects//sigmN0005.MS3",
+      "pos": [
+        2670.5,
+        1806.5,
+        -3.075000047683716
+      ],
+      "rot": [
+        -0.19634954631328583,
+        0.2208932340145111,
+        -0.07363107800483704
+      ],
+      "escala": 1.369999647140503,
+      "celulas": 13
+    },
+    {
+      "id": 2615,
+      "modelo": "Objects//sigmN0005.MS3",
+      "pos": [
+        2654.0,
+        1802.2399940490723,
+        -0.19999992847442627
+      ],
+      "rot": [
+        3.337942600250244,
+        1.668969988822937,
+        0.0
+      ],
+      "escala": 1.489999532699585,
+      "celulas": 11
+    },
+    {
+      "id": 2615,
+      "modelo": "Objects//sigmN0005.MS3",
+      "pos": [
+        2649.5,
+        1802.5,
+        -0.25999972224235535
+      ],
+      "rot": [
+        -0.5890486240386963,
+        -1.6198827028274536,
+        -0.09817476570606232
+      ],
+      "escala": 1.4799995422363281,
+      "celulas": 9
+    },
+    {
+      "id": 4703,
+      "modelo": "Objects//sigmF0003.MS3",
+      "pos": [
+        2662.5,
+        1818.5,
+        -4.625
+      ],
+      "rot": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "escala": 1.2199997901916504,
+      "celulas": 4
+    }
+  ],
+  "ignorados": [],
+  "criterio": "Triangulos estaticos na faixa de .35 a 1.8 acima do terreno, margem horizontal .6; geometrias animadas excluidas."
+}

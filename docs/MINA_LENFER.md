@@ -42,11 +42,21 @@ A entrada reconhece o nome do portal, a opção da primeira área, Elite e os bo
 
 O retorno está limitado à região do save validada junto à entrada. Saves de outros mapas, cliente alterado ou ausência de passagem produzem erro explícito, sem navegação às cegas. Morte e parada manual encerram o ciclo.
 
-### Caixas na passagem externa
+### Objetos e estrada externa
 
-As caixas e barris perto de 2713,1682 têm colisão que não aparece como bloqueio do chão nessa grade. O percurso e a condução reservam a faixa livre em 2709–2712, entre Y=1679 e Y=1687. Assim, a curva começa antes dos objetos. Se a navegação já começar encostada nesse canto, usa um recuo validado para alcançar o lado livre.
+A grade do chão não contém toda a ocupação das pedras, caixas e construções. O planejamento externo cruza os objetos posicionados nos arquivos DAT dos tiles próximos com as malhas MS3, aplicando posição, escala e rotação. O leitor suporta os modelos com e sem lightmap, verifica o tamanho dos blocos e os índices dos triângulos. O inventário registra 379 instâncias que acrescentam ocupação e nenhum modelo com formato não lido nessa região.
+
+Os triângulos inclinados ou verticais são recortados à faixa entre 0,35 e 1,8 acima do terreno, com margem horizontal de 0,6. Pisos e rampas são excluídos desse bloqueio. Essa é uma aproximação conservadora para navegação baseada na geometria visível, não a reprodução exata da colisão interna do servidor. Instâncias animadas ficam fora da máscara. O arquivo `entrada_mina_geometria.json` contém máscara, inventário e hashes SHA-256 dos arquivos usados; a execução reconfirma essas fontes.
+
+O eixo da estrada passa por 2696,5 / 1715,5 e 2699,5 / 1675,5 antes de subir até o portal. As guias restringem o caminho ao centro da estrada, sem cortar o pátio da caixa-d'água em 2713,1682. A célula observada da colisão nas pedras em 2683,1714 passa a ser bloqueada. A máscara de objetos vale tanto para o caminho estático quanto para a condução com a grade carregada.
 
 Em outros bloqueios físicos do retorno, a falta de deslocamento com avanço enviado informa o ponto tentado. O controlador volta a uma passagem já percorrida, exclui temporariamente uma pequena área à frente e calcula outro caminho. A revisão muda a referência de navegação, evitando repetir indefinidamente a mesma rota. Essa recuperação é restrita ao retorno externo; a navegação da DG e do circuito de Termes mantém o comportamento anterior.
+
+Para regenerar o inventário após revalidar uma alteração no cliente:
+
+```powershell
+python tools/validar_entrada_mina.py --game-dir "C:\GoLevel\AikaOnline" --out entrada_mina_geometria.json
+```
 
 ## Verificação ao vivo de 19/11/2026
 

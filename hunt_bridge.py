@@ -55,6 +55,8 @@ def main():
             from interface_mina import InterfaceMina
             from ciclo_mina import CicloMina
             InterfaceMina()
+            from geometria_entrada import plano_geometria
+            if not plano_geometria()['objetos']:raise RuntimeError('Geometria externa nao incluida no motor')
             r=dict(backend=True,templates=True,ocr=True,circuito=True,mina=True)
         elif modo=='validate':r=validar(d)
         elif modo=='position':
