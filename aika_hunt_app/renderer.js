@@ -1,7 +1,7 @@
 const $=id=>document.getElementById(id);
 let profile=null,running=false,paused=false,editing=null,lastError=false;
 const lines=[];let startedAt=null;
-const names={rebufar:'Renovando os cinco buffs',initializing:'Inicializando dados internos',inicio:'Confirmando posição',buscar:'Procurando alvo',combater:'Em combate',retornar:'Voltando à base',waiting:'Aguardando o Aika',paused:'Pausado',stopped:'Parado'};
+const names={aviso:'Fechando aviso',rebufar:'Renovando os cinco buffs',initializing:'Inicializando dados internos',inicio:'Confirmando posição',buscar:'Procurando alvo',combater:'Em combate',retornar:'Voltando à base',waiting:'Aguardando o Aika',paused:'Pausado',stopped:'Parado'};
 function message(title,detail='',type='idle'){$('state-label').textContent=title;$('state-detail').textContent=detail;$('state-dot').className='dot '+type;}
 function fail(e){lastError=true;message('Confira a configuração',String(e.message||e).replace(/^Error invoking remote method '[^']+': Error: /,''),'error');}
 async function action(fn){try{await fn();}catch(e){fail(e);}}

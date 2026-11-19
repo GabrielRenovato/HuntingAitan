@@ -1,11 +1,12 @@
-Calibracao do ataque e das habilidades a partir das demonstracoes.
+Correcao dos avisos que bloqueiam o combate, incluindo CTE e Arena Elter.
 
-- Padrao: ataque primeiro e W aproximadamente 3 ms depois, com cerca de 65 ms de pressao.
-- Skill observada na tecla 4 (ID 177): W antes da skill por aproximadamente 3,5 ms.
-- Skill observada na tecla 5 (ID 273): W antes da skill por aproximadamente 25 ms.
-- Sem W automatico nas skills 3/6, na cura 7 ou em habilidades nao calibradas.
-- Cadencia minima de 170 ms no modo calibrado, mantendo a recarga real e as protecoes de alvo/alcance.
+- Verificacao continua, inclusive na janela de horario do minuto 57.
+- Pausa das entradas antes de fechar o aviso.
+- Cancelar reconfirmado por captura atual; retomada somente depois de duas imagens sem a janela.
+- Monitor recupera falhas temporarias de captura em vez de parar de vigiar.
+- Leitura do texto dos convites e modelos ja incluidos no instalador.
+- Conversas de amigo continuam sendo fechadas pelo mesmo monitor.
 
-Ative **Timing calibrado por habilidade** em Comportamento. Os IDs impedem que outra habilidade no mesmo atalho receba o cancelamento indevidamente. Detalhes em docs/CALIBRACAO.md.
+A captura real anterior do CTE foi reconhecida. A Arena foi validada em imagem sintetica e testes de escala/posicao; ainda falta confirmar uma aparicao real. Janelas desconhecidas nao recebem clique automatico. Detalhes em docs/JANELAS.md.
 
-Baixe HuntingAitan-Setup-0.1.0-beta.2-x64.exe ou use a verificacao de atualizacoes da beta anterior. As configuracoes sao preservadas. Nao houve validacao de ganho de dano em combate real; a versao continua experimental.
+Baixe HuntingAitan-Setup-0.1.0-beta.3-x64.exe ou atualize pela versao instalada. Configuracoes e a calibracao dos ataques sao preservadas.

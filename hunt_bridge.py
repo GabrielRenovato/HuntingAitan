@@ -25,7 +25,15 @@ def main():
             import keyboard,pydirectinput,mss,hunt_native
             from avisos_hunt import DetectorAvisos
             DetectorAvisos()
-            r=dict(backend=True,templates=True)
+            from dialogos_evento import DetectorEventos,tipo_convite
+            detector=DetectorEventos();detector.preparar_ocr()
+            import cv2,numpy as np
+            teste=np.zeros((160,430,3),np.uint8)
+            cv2.putText(teste,'Arena Elter',(15,50),cv2.FONT_HERSHEY_SIMPLEX,.9,(255,255,255),2)
+            cv2.putText(teste,'Tempo restante: 111 seg',(15,105),cv2.FONT_HERSHEY_SIMPLEX,.7,(255,255,255),2)
+            linhas,_=detector.ocr(teste)
+            if tipo_convite([(l[1],float(l[2])) for l in linhas or []])!='arena_elter':raise RuntimeError('OCR empacotado nao reconheceu a amostra de teste')
+            r=dict(backend=True,templates=True,ocr=True)
         elif modo=='validate':r=validar(d)
         elif modo=='position':
             from dados_internos import DadosInternos

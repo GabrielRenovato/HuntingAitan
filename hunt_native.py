@@ -1,5 +1,5 @@
 """Motor por dados internos validados; nao usa minimapa para posicao, vida ou alvo."""
-import ctypes,time,math,threading,re,unicodedata,queue
+import ctypes,time,math,threading,re,unicodedata
 from ctypes import wintypes as w
 from dados_internos import DadosInternos
 from perfil_hunt import validar
@@ -10,6 +10,7 @@ from navegador_local import NavegadorLocal
 from cancelamento_normal import CancelamentoNormal,executar_combo,perfil_combo,duracao_tecla
 from cura_prioritaria import CuraPrioritaria
 from vigia_ataque import VigiaAtaque
+from controle_avisos import ObservadorAvisos
 from hunt_core import CadenciaCombate,erro_angular,VerificadorMovimento,AgendaBuffs,executar_buff
 
 NOMES={'verit':'Verit Mutante','penza':'Penza Poderosa Mutante','croshu':'Croshu Mutante das Cinzas','tet':'Tet das Chamas'}
@@ -56,7 +57,7 @@ def main(profile,event_sink,control):
         t=ctypes.create_unicode_buffer(256);u.GetWindowTextW(u.GetForegroundWindow(),t,256);return t.value=='AikaClient'
     def parar():return control.stop.is_set() or keyboard.is_pressed('f12')
     def ativo():return foco() and not parar() and not control.pause.is_set()
-    seg=set();lock=threading.RLock();fim=threading.Event();ultima=[time.monotonic()]
+    seg=set();lock=threading.RLock();fim=threading.Event();ultima=[time.monotonic()];modal_bloqueia=threading.Event()
     def soltar():
         with lock:
             for k in list(seg):
@@ -66,7 +67,7 @@ def main(profile,event_sink,control):
             if k in seg and liberar_tecla(entrada,k) is not False:seg.discard(k)
     def segurar(k):
         with lock:
-            if not ativo():return False
+            if not ativo() or modal_bloqueia.is_set():return False
             if k not in seg:
                 if entrada.keyDown(k) is False:return False
                 seg.add(k)
@@ -86,7 +87,7 @@ def main(profile,event_sink,control):
     def log(msg,**d):event_sink(dict(event='log',message=msg,**d))
     def vigia():
         while not fim.wait(.03):
-            if not ativo() or time.monotonic()-ultima[0]>.5:soltar()
+            if not ativo() or modal_bloqueia.is_set() or time.monotonic()-ultima[0]>.5:soltar()
     dados=None
     try:
         dados=DadosInternos();s=dados.snapshot();s2=dados.snapshot()
@@ -117,53 +118,66 @@ def main(profile,event_sink,control):
         buffs=AgendaBuffs(inicio,p['buff_keys'],p['buff_minutes']*60,p['buff_gap'],p['buffs_enabled'])
         log('Rebuff programado.',ativo=p['buffs_enabled'],minutos=p['buff_minutes'],atalhos=p['buff_keys'])
         log('Habilidades ativas nesta sessao.',atalhos=list(cadencia.recargas))
-        log('Motor com recargas reais e cura prioritaria.',versao='busca-buffs-2',cura=tecla_cura,hp_percent=p['hp_percent'])
+        log('Motor com recargas reais e cura prioritaria.',versao='janelas-3',cura=tecla_cura,hp_percent=p['hp_percent'])
         verificador=VerificadorMovimento(p['stationary_seconds']);suprimento_em={};item_em={};janela_pausa=None
-        # Aviso visual em thread propria: nao bloqueia os dados internos.
-        fila_avisos=queue.Queue(maxsize=1)
-        def verificar_aviso():
-            try:
-                import mss
-                from captura_aika import CapturaAika
-                from avisos_hunt import DetectorAvisos
-                with (getattr(mss,'MSS',None) or mss.mss)() as captura:
-                    cap=CapturaAika(captura);det=DetectorAvisos()
-                    while not fim.wait(.35):
-                        if not ativo():continue
-                        aviso=det.localizar(cap.capturar())
-                        if aviso and ativo():
-                            aviso['capturado']=time.monotonic()
-                            try:fila_avisos.put_nowait(aviso)
-                            except queue.Full:pass
-            except Exception as e:log('Verificacao do aviso indisponivel.',detail=str(e))
-        threading.Thread(target=verificar_aviso,daemon=True).start()
+        monitor=ObservadorAvisos(fim,ativo,log,bloqueio=modal_bloqueia)
+        monitor.iniciar()
+        log('Monitor CTE e Arena Elter: prioridade de fechamento ativa.')
+        modal_desde=None;clique_modal_em=0.;cliques_modal=0;modal_log_em=-100.
         while not parar():
             if not ativo():
                 soltar();antes=time.monotonic();event_sink(dict(event='status',state='paused',message='Pausado pelo painel.' if control.pause.is_set() else 'Aika sem foco; volte ao jogo para retomar.'))
                 while not ativo() and not parar():time.sleep(.04)
                 decorrido=time.monotonic()-antes
+                if modal_desde is not None:modal_desde+=decorrido
                 vigia_ataque.suspender(time.monotonic())
                 if progresso:progresso.ultimo_dano+=decorrido
                 cancelamento=CancelamentoNormal(p['cancel_normal'])
-                recuperacao.pausar(decorrido);fim_busca+=decorrido;verificador.observar(None,0,False);continue
-            # Cliques de interface executam na mesma thread das teclas.
-            try:aviso=fila_avisos.get_nowait()
-            except queue.Empty:aviso=None
-            if aviso and time.monotonic()-aviso['capturado']<=1.:
-                from avisos_hunt import reconfirmar
-                soltar()
-                try:ponto=reconfirmar(aviso)
-                except Exception as e:
-                    log('Nao consegui reconfirmar o aviso.',detail=str(e));ponto=None
-                if ponto and ativo():
-                    entrada.moveTo(*ponto)
-                    if ativo():
-                        entrada.mouseDown()
-                        try:esperar(.045)
-                        finally:liberar_mouse(entrada)
-                        log('Convite CTE/Elter: Cancelar clicado.' if aviso['tipo']=='cte_elter' else 'Janela de mensagem de amigo fechada.')
-                        cancelamento=CancelamentoNormal(p['cancel_normal'])
-                        esperar(.15);continue
+                recuperacao.pausar(decorrido);fim_busca+=decorrido;busca_ate+=decorrido;verificador.observar(None,0,False);continue
+            # Fecha o aviso antes de teclado, movimento, cura ou ataque. Um
+            # clique sozinho nao e prova de fechamento: aguarda duas capturas.
+            aviso=monitor.atual();agora_modal=time.monotonic()
+            if modal_bloqueia.is_set():
+                soltar();navegador.suspender(s['player']['position'],agora_modal)
+                verificador.observar(None,agora_modal,False)
+                if modal_desde is None:
+                    modal_desde=agora_modal;cliques_modal=0
+                    log('Janela bloqueando o jogo; combate suspenso para fechar o aviso.',tipo=(aviso or {}).get('tipo'),ponto=(aviso or {}).get('ponto'))
+                if agora_modal-ultima_telemetria>=.2:
+                    try:leitura_modal=dados.snapshot()
+                    except RuntimeError:leitura_modal=None
+                    if leitura_modal:
+                        s=leitura_modal;pm=s['player'];tm=s['target'];ultima[0]=time.monotonic()
+                        event_sink(dict(event='telemetry',source='native',state='aviso',aviso_tipo=(aviso or {}).get('tipo'),position=pm['position'],base=base,hp=pm['hp']/pm['hp_max'],mp=pm['mp']/pm['mp_max'] if pm['mp_max'] else None,elapsed=agora_modal-inicio,target=tm['name'] if tm else None,target_id=tm['id'] if tm else None,target_hp=tm['hp'] if tm else None,target_hp_max=tm['hp_max'] if tm else None))
+                        ultima_telemetria=agora_modal
+                        if pm['hp']<=0:
+                            log('Personagem sem vida com janela bloqueante aberta; caca encerrada.');break
+                conhecido=aviso and aviso['tipo'] in ('cte_elter','arena_elter','conversa_amigo')
+                if conhecido and agora_modal-aviso['capturado']<=1. and agora_modal>=clique_modal_em:
+                    from avisos_hunt import reconfirmar
+                    try:ponto=reconfirmar(aviso)
+                    except Exception as e:
+                        log('Nao consegui reconfirmar o aviso.',detail=str(e));ponto=None
+                    clique_modal_em=agora_modal+.6
+                    if ponto and ativo():
+                        entrada.moveTo(*ponto)
+                        if ativo():
+                            entrada.mouseDown()
+                            try:esperar(.045)
+                            finally:liberar_mouse(entrada)
+                            cliques_modal+=1
+                            log('Aviso: clique de fechamento enviado; aguardando desaparecer.',tipo=aviso['tipo'],tentativa=cliques_modal)
+                elif aviso and aviso['tipo']=='janela_desconhecida' and agora_modal-modal_log_em>=5:
+                    log('Janela com Confirmar/Cancelar nao reconhecida; entradas pausadas para evitar clique incorreto.');modal_log_em=agora_modal
+                esperar(.025);continue
+            if modal_desde is not None:
+                duracao=agora_modal-modal_desde
+                if progresso:progresso.ultimo_dano+=duracao
+                recuperacao.pausar(duracao);fim_busca+=duracao;busca_ate+=duracao
+                vigia_ataque.suspender(agora_modal)
+                cancelamento=CancelamentoNormal(p['cancel_normal'])
+                log('Fechamento confirmado em duas capturas; retomando combate.',cliques=cliques_modal,segundos=round(duracao,2))
+                modal_desde=None
             agora=time.monotonic()
             try:s=dados.snapshot();ultima[0]=time.monotonic();falhas_desde=None
             except RuntimeError:

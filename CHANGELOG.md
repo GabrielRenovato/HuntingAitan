@@ -1,5 +1,16 @@
 # Alterações
 
+## 0.1.0-beta.3 — 2026-11-19
+
+- Convites do CTE e da Arena Elter reconhecidos continuamente, por título ou texto do evento e confirmação dos botões.
+- Movimento, ataque e cura ficam suspensos enquanto o aviso bloqueia o jogo; a retomada exige duas capturas sem a janela.
+- Cliques são reconfirmados na imagem atual, inclusive se a janela mudou de posição.
+- O monitor reinicia a captura após falhas temporárias, durante a caça e com o painel ocioso.
+- Janelas sem identificação suficiente não recebem clique automático.
+- Motor de leitura de texto e modelos incluídos no instalador, sem instalação adicional no PC do usuário.
+
+Reconhecimento validado na captura real anterior do CTE e em testes sintéticos da Arena; o fechamento da Arena em uma aparição real ainda precisa de confirmação.
+
 ## 0.1.0-beta.2 — 2026-11-18
 
 - Timing calibrado por habilidade a partir das demonstrações: padrão com 1 antes de W, skill 4 com W antes da tecla e skill 5 com separação de 25 ms.

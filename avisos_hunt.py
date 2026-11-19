@@ -34,12 +34,20 @@ class DetectorConversa:
         return None
 
 class DetectorAvisos:
-    def __init__(self):self.elter=DetectorElter();self.conversa=DetectorConversa()
-    def localizar(self,tela):
+    def __init__(self):
+        from dialogos_evento import DetectorEventos
+        self.elter=DetectorElter();self.conversa=DetectorConversa();self.eventos=DetectorEventos()
+    def localizar(self,tela,ao_bloquear=None):
         ponto=self.elter.localizar(tela)
-        if ponto:return dict(tipo='cte_elter',ponto=ponto)
+        if ponto:
+            if ao_bloquear:ao_bloquear()
+            return dict(tipo='cte_elter',ponto=ponto)
+        evento=self.eventos.localizar(tela,ao_bloquear)
+        if evento:return evento
         ponto=self.conversa.localizar(tela)
-        if ponto:return dict(tipo='conversa_amigo',ponto=ponto)
+        if ponto:
+            if ao_bloquear:ao_bloquear()
+            return dict(tipo='conversa_amigo',ponto=ponto)
         return None
 
 def reconfirmar(aviso):
@@ -47,7 +55,12 @@ def reconfirmar(aviso):
     import mss
     from captura_aika import CapturaAika
     with (getattr(mss,'MSS',None) or mss.mss)() as sct:
-        cap=CapturaAika(sct);atual=DetectorAvisos().localizar(cap.capturar())
-        if atual and atual['tipo']==aviso['tipo'] and np.linalg.norm(np.subtract(atual['ponto'],aviso['ponto']))<=4:
-            x,y=atual['ponto'];return (cap.area['left']+x,cap.area['top']+y)
+        cap=CapturaAika(sct);tela=cap.capturar();ponto=None
+        if aviso['tipo']=='cte_elter' and 'referencia' not in aviso:ponto=DetectorElter().localizar(tela)
+        elif aviso['tipo']=='conversa_amigo':ponto=DetectorConversa().localizar(tela)
+        elif aviso['tipo'] in ('cte_elter','arena_elter') and 'referencia' in aviso:
+            from dialogos_evento import DetectorEventos
+            ponto=DetectorEventos().reconfirmar(tela,aviso)
+        if ponto:
+            x,y=ponto;return (cap.area['left']+x,cap.area['top']+y)
     return None
