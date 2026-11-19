@@ -66,3 +66,7 @@ carregada no cliente. Os pontos de monstros cadastrados não garantem spawn ativ
 O início fora da faixa é rejeitado com uma orientação de reposicionamento.
 Um deslocamento curto para fora permite tentar reentrar por uma passagem local
 com colisão válida. Uma saída distante da região interrompe o circuito.
+
+## Condução nas curvas
+
+O navegador antecipa os destinos e mantém o avanço em curvas suaves quando a projeção à frente respeita a colisão e os limites. A condução não reinicia a cada pequeno destino do mesmo trecho. Correções pequenas usam pulsos mais curtos e aguardam a resposta antes de repetir. Curvas fechadas, obstáculos, combate, buffs e paradas de busca ainda podem interromper o avanço. A fluidez visual precisa ser confirmada no jogo.

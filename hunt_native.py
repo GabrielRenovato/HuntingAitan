@@ -126,7 +126,7 @@ def main(profile,event_sink,control):
         buffs=AgendaBuffs(inicio,p['buff_keys'],p['buff_minutes']*60,p['buff_gap'],p['buffs_enabled'])
         log('Rebuff programado.',ativo=p['buffs_enabled'],minutos=p['buff_minutes'],atalhos=p['buff_keys'])
         log('Habilidades ativas nesta sessao.',atalhos=list(cadencia.recargas))
-        log('Motor com recargas reais e cura prioritaria.',versao='circuito-termes-6',cura=tecla_cura,hp_percent=p['hp_percent'])
+        log('Motor com recargas reais e cura prioritaria.',versao='movimento-fluido-8',cura=tecla_cura,hp_percent=p['hp_percent'])
         verificador=VerificadorMovimento(p['stationary_seconds']);suprimento_em={};item_em={};janela_pausa=None
         monitor=ObservadorAvisos(fim,ativo,log,bloqueio=modal_bloqueia)
         monitor.iniciar()
@@ -346,7 +346,7 @@ def main(profile,event_sink,control):
                         log('Navegacao: '+plano['estado']+'.',destino=destino);nav_log_em=agora
                     return plano['estado']
                 if agora-nav_log_em>=2:
-                    log('Seguindo rota com colisao validada.',pontos=plano['pontos'],destino=destino,erro=round(plano['erro'],1));nav_log_em=agora
+                    log('Seguindo rota com colisao validada.',pontos=plano['pontos'],destino=destino,erro=round(plano['erro'],1),andando=plano['w'],giro=plano.get('giro'),pulso_giro=plano.get('tempo'));nav_log_em=agora
                 if plano['w']:segurar('w')
                 else:liberar('w')
                 if plano.get('giro'):pulso(plano['giro'],plano['tempo'])

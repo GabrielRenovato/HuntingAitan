@@ -48,6 +48,9 @@ class CircuitoTermes:
             self.indice=0;self.espera_ate=None;t=self.trechos[self.trecho];rota=t['caminho']
         # A luta pode deslocar o personagem. Reencontra o trecho atual,
         # preservando o sentido e sem reiniciar o circuito no primeiro ponto.
-        self.indice=min(range(max(0,self.indice-8),len(rota)),key=lambda i:math.dist(pos,rota[i]))
-        alvo=min(self.indice+4,len(rota)-1)
-        return dict(estado='andar',destino=tuple(rota[alvo]),chave=('circuito',self.trecho,alvo),ponto=t['ate'],voltas=self.voltas)
+        proximo=min(range(max(0,self.indice-8),len(rota)),key=lambda i:math.dist(pos,rota[i]))
+        self.indice=max(self.indice,proximo) if math.dist(pos,rota[proximo])<=4 else proximo
+        alvo=self.indice;distancia=0.
+        while alvo+1<len(rota) and distancia<8:
+            distancia+=math.dist(rota[alvo],rota[alvo+1]);alvo+=1
+        return dict(estado='andar',destino=tuple(rota[alvo]),chave=('circuito',self.trecho),ponto=t['ate'],voltas=self.voltas)

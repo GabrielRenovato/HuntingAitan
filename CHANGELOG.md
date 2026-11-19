@@ -1,5 +1,13 @@
 # Alterações
 
+## 0.1.0-beta.8 — 2026-11-19
+
+- Movimento contínuo nas curvas suaves, com conferência de colisão e limites à frente.
+- Destinos antecipados e condução preservada ao avançar dentro do mesmo trecho do circuito.
+- Pulsos menores de giro e espera curta pela resposta antes de corrigir novamente.
+- Correções pequenas perto de obstáculos continuam permitidas para evitar ficar parado.
+- Testes de curvas, paredes, borda da região, aproximação e bloqueio físico. Fluidez no jogo ainda precisa ser confirmada.
+
 ## 0.1.0-beta.7 — 2026-11-19
 
 - Circuito de Penza alterado para os pontos 4, 5, 6, 7, 8 e 9 do novo recorte.

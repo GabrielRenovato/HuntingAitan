@@ -3,6 +3,38 @@ from navegador_local import NavegadorLocal
 from test_navegacao_grade import grade
 
 class NavegadorTeste(unittest.TestCase):
+ def test_posicao_descentrada_na_quina_nao_para_sem_comando(self):
+  n=NavegadorLocal(lambda d,p:grade(12,12,[(9,8)]))
+  r=n.planejar(None,(8.978854,8.449965),14.2632,(10.5,10.5),'a',0)
+  self.assertTrue(r['w'] or r['giro'] is not None)
+ def test_perto_da_parede_corrige_angulo_pequeno_em_vez_de_ficar_parado(self):
+  n=NavegadorLocal(lambda d,p:grade(14,14,[(3,2)]))
+  r=n.planejar(None,(1.5,1.99),88,(10.5,1.5),'a',0)
+  self.assertFalse(r['w']);self.assertIsNotNone(r['giro'])
+ def test_curva_suave_mantem_avanco_sem_reiniciar_na_variacao_do_angulo(self):
+  n=NavegadorLocal(lambda d,p:grade(14,14))
+  self.assertTrue(n.planejar(None,(1.5,1.5),90,(10.5,1.5),'a',0)['w'])
+  r=n.planejar(None,(1.5,1.5),62,(10.5,1.5),'a',.1)
+  self.assertTrue(r['w']);self.assertEqual(r['giro'],'d')
+  n.suspender((1.5,1.5),.2)
+  self.assertFalse(n.planejar(None,(1.5,1.5),62,(10.5,1.5),'a',.3)['w'])
+ def test_curva_em_movimento_nao_corta_obstaculo_a_frente(self):
+  n=NavegadorLocal(lambda d,p:grade(14,14,[(2,2)]))
+  n.planejar(None,(1.5,1.5),90,(10.5,1.5),'a',0)
+  self.assertFalse(n.planejar(None,(1.5,1.5),60,(10.5,1.5),'a',.1)['w'])
+ def test_curva_em_movimento_respeita_limite_da_area(self):
+  n=NavegadorLocal(lambda d,p:grade(14,14));limite=lambda p:p[1]<1.9
+  n.planejar(None,(1.5,1.5),90,(10.5,1.5),'a',0,limite=limite)
+  self.assertFalse(n.planejar(None,(1.5,1.5),70,(10.5,1.5),'a',.1,limite=limite)['w'])
+ def test_correcao_curta_aguarda_resposta_e_nao_oscila_por_erro_pequeno(self):
+  n=NavegadorLocal(lambda d,p:grade(14,14))
+  r=n.planejar(None,(1.5,1.5),80,(10.5,1.5),'a',0)
+  self.assertLess(r['tempo'],.04);self.assertEqual(r['giro'],'d')
+  self.assertIsNone(n.planejar(None,(1.5,1.5),80,(10.5,1.5),'a',.04)['giro'])
+  self.assertIsNone(n.planejar(None,(1.5,1.5),94,(10.5,1.5),'a',.1)['giro'])
+ def test_obstaculo_depois_da_meta_nao_impede_aproximar_da_meta(self):
+  n=NavegadorLocal(lambda d,p:grade(8,8,[(4,1)]))
+  self.assertTrue(n.planejar(None,(2.1,1.5),90,(3.5,1.5),'a',0)['w'])
  def test_reta_usa_w_sem_giro(self):
   n=NavegadorLocal(lambda d,p:grade(12,12));r=n.planejar(None,(1.5,1.5),90,(9.5,1.5),'a',0)
   self.assertTrue(r['w']);self.assertIsNone(r['giro'])

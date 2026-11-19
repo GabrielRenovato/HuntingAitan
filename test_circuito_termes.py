@@ -9,6 +9,13 @@ from test_navegacao_grade import grade
 
 
 class CircuitoTermesTeste(unittest.TestCase):
+    def test_microdestinos_usam_chave_estavel_e_antecipam_percurso(self):
+        c=CircuitoTermes((2584.5,587.5))
+        a=c.destino((2584.5,587.5),0)
+        b=c.destino((2584.5,590.5),.5)
+        self.assertEqual(a['chave'],b['chave'])
+        self.assertGreater(math.dist(a['destino'],(2584.5,587.5)),6)
+        self.assertNotEqual(a['destino'],b['destino'])
     def test_perfil_antigo_preserva_caca_na_base_e_circuito_fixa_penza(self):
         self.assertEqual(validar({})['patrol_mode'],'base')
         self.assertEqual(validar(dict(patrol_mode='termes_penza',target='qualquer'))['target'],'penza')
