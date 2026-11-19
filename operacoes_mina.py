@@ -62,10 +62,10 @@ def entrar_elite(dados,control,emitir,limite=120):
     from captura_aika import CapturaAika
     from avisos_hunt import DetectorAvisos,reconfirmar
     from interface_mina import VerificadorElite
-    from entrada_mina import PORTAL
+    from entrada_mina import PORTAL,bloqueadores_da_porta
     entrada.PAUSE=0;dados.u.GetForegroundWindow.restype=w.HWND
     detector=InterfaceMina();verificador=VerificadorElite();avisos=DetectorAvisos();inicio=time.monotonic();acao_em=0.;ultimo=None;elite=False;confirmacoes=0;erro_em=-100.
-    progresso_em=inicio;ferido_em=-float('inf');hp_anterior=None;control.bloqueadores_portal=set()
+    progresso_em=inicio;ferido_em=-float('inf');hp_anterior=None;control.bloqueadores_portal=set();verificar_mob_em=0.
     def ativo():return not control.stop.is_set() and not keyboard.is_pressed('f12') and dados.u.GetForegroundWindow()==dados.hwnd and not control.pause.is_set()
     def clicar(p,duplo=False):
         if not ativo():return False
@@ -96,6 +96,13 @@ def entrar_elite(dados,control,emitir,limite=120):
                 if math.dist(s['player']['position'],PORTAL)>8:
                     emitir(dict(event='log',message='Personagem fora do alcance do portal; retomando aproximacao por coordenadas.'));return False
                 hp=s['player']['hp'];agora=time.monotonic()
+                if agora>=verificar_mob_em:
+                    verificar_mob_em=agora+.4
+                    perto=dados.listar_mobs(s['player']['position'],3,s['player'])
+                    bloqueadores=bloqueadores_da_porta(perto,s['player']['position'])
+                    if bloqueadores:
+                        control.bloqueadores_portal=bloqueadores
+                        emitir(dict(event='cycle',state='liberar_entrada',message='Mob colado a porta; liberando o acesso antes de entrar na DG.',target_ids=sorted(bloqueadores)));return False
                 if hp_anterior is not None and hp<hp_anterior:ferido_em=agora
                 hp_anterior=hp
                 if agora-progresso_em>=5 and agora-ferido_em<=3:

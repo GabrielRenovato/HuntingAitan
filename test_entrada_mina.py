@@ -2,7 +2,7 @@ import copy,sys,threading,unittest
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import MagicMock,patch
-from entrada_mina import EntradaMina,PORTAL,passagem_estrada
+from entrada_mina import EntradaMina,PORTAL,passagem_estrada,bloqueadores_da_porta
 from test_navegacao_grade import grade
 from perfil_hunt import DEFAULT
 
@@ -17,6 +17,11 @@ def percurso(rota=None):
 
 class EntradaTeste(unittest.TestCase):
     def mob(self,id_,pos):return dict(id=id_,position=pos)
+
+    def test_mob_na_porta_e_hostil_vivo_proximo_sem_exigir_dano(self):
+        mobs=[dict(id=1,position=(2716,1612),hostile=True,hp=100),dict(id=2,position=(2716,1612),hostile=False,hp=100),dict(id=3,position=(2716,1612),hostile=True,hp=0),dict(id=4,position=(2716,1620),hostile=True,hp=100)]
+        self.assertEqual(bloqueadores_da_porta(mobs,(2716,1614)),{1})
+        self.assertEqual(bloqueadores_da_porta(mobs,(2716,1640)),set())
 
     def test_rota_se_afasta_do_ponto_real_das_caixas(self):
         self.assertFalse(passagem_estrada((2713.124,1682.123)))

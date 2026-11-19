@@ -14,6 +14,10 @@ def passagem_estrada(pos):
 
 def recuo_caixas(pos):return (2709.5,min(1689.5,max(1685.5,pos[1]+2)))
 
+def bloqueadores_da_porta(mobs,pos):
+    if math.dist(pos,PORTAL)>8:return set()
+    return {m['id'] for m in mobs if m.get('hostile') and m.get('hp',0)>0 and math.dist(m['position'],PORTAL)<=6 and math.dist(m['position'],pos)<=3}
+
 class EntradaMina:
     def __init__(self,pasta,pos,bloqueadores=()):
         if not(2400<pos[0]<2850 and 1500<pos[1]<2000):raise RuntimeError('Save fora da regiao validada para a entrada da Mina.')

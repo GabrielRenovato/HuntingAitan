@@ -1,5 +1,11 @@
 # Alterações
 
+## 0.1.0-beta.16 — 2026-11-19
+
+- Libera o mob hostil colado ao portal antes da tentativa de entrada, sem exigir dano recebido.
+- Combate limitado a hostis vivos a até três unidades do jogador e seis da entrada.
+- Inclui o caminho externo com a ocupação dos modelos estáticos e condução pelo eixo da estrada.
+
 ## 0.1.0-beta.15 — 2026-11-19
 
 - A condução aplica a ocupação dos objetos também à grade carregada; as curvas não são encurtadas atravessando a geometria.
