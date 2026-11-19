@@ -1,7 +1,9 @@
-Jardim Aéreo de Mirza · Difícil.
+Defesa nas dungeons Mina e Jardim Aéreo.
 
-Novo modo em Comportamento → Percurso. Comece dentro do Jardim no Difícil. O motor confere o indicador de dificuldade, segue o caminho derivado dos dois blocos de terreno e combate os hostis do trajeto até Seridunn. A chegada ao altar não basta: precisa confirmar o abate do chefe e verificar a área final.
+Ao receber dano ou stun, suspende o avanço da rota e prioriza hostis próximos com passagem validada. A falha de seleção deixa de mandar o personagem avançar e atrair outro grupo nessa situação. O chefe distante não oculta os inimigos próximos durante a defesa.
 
-Cura, recargas, buffs exclusivos e interrupção por F12 mantidos. A repetição externa da Mina não é aplicada ao Jardim; este modo ainda começa dentro da DG. A validação ao vivo está em andamento.
+Sem hostis próximos, aguarda recuperação de vida (mínimo de 70%, ou o limite maior configurado) e quatro segundos sem dano ou controle antes de retomar. A cura mantém a recarga real; nenhum atalho de poção é criado automaticamente.
 
-Instalador: HuntingAitan-Setup-0.1.0-beta.18-x64.exe.
+262 testes Python e verificações do painel e atualizador passaram. O ajuste ainda precisa de validação ao vivo em uma DG completa; não garante sobrevivência sob stun contínuo ou sem recursos de cura.
+
+Instalador: HuntingAitan-Setup-0.1.0-beta.19-x64.exe.

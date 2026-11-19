@@ -1,5 +1,13 @@
 # Alterações
 
+## 0.1.0-beta.19 — 2026-11-19
+
+- Mina e Jardim suspendem o avanço ao receber dano ou controle; limpam hostis próximos antes de puxar outro grupo.
+- Falha de seleção sob pressão tenta aproximação validada, sem ignorar todos os IDs e avançar.
+- Defesa considera hostis próximos antes do chefe distante, mantendo a verificação de passagem.
+- Sem inimigos próximos, aguarda pelo menos 70% de HP e quatro segundos sem dano ou controle para retomar; cura e poções respeitam os atalhos e recargas existentes.
+- Testes de regressão para seleção falhando sob dano, retomada após recuperação e obstáculos. Validação ao vivo pendente.
+
 ## 0.1.0-beta.18 — 2026-11-19
 
 - Modo Jardim Aéreo de Mirza no Difícil, com caminho pelos dois blocos de terreno até o altar de Seridunn.

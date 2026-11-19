@@ -1,6 +1,6 @@
 {
   "name": "huntingaitan-workspace",
-  "version": "0.1.0-beta.18",
+  "version": "0.1.0-beta.19",
   "private": true,
   "scripts": {
     "test": "python -m unittest discover -p \"test_*.py\" && node test_monitor_lifecycle.cjs && node test_updates.cjs && node test_runtime.cjs && python tools/check_version.py",

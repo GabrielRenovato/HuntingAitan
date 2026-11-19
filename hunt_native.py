@@ -9,6 +9,7 @@ from entrada_segura import liberar_tecla,liberar_mouse
 from navegador_local import NavegadorLocal
 from cancelamento_normal import CancelamentoNormal,executar_combo,perfil_combo,duracao_tecla
 from cura_prioritaria import CuraPrioritaria
+from defesa_dg import DefesaDG
 from vigia_ataque import VigiaAtaque
 from controle_avisos import ObservadorAvisos
 from circuito_termes import CircuitoTermes,dentro_regiao,conferir_arquivos,distancia_segmento
@@ -137,13 +138,15 @@ def main(profile,event_sink,control,percurso=None):
         cura=CuraPrioritaria(tecla_cura,p['hp_percent']/100,next((v['seconds'] for v in p['skills'] if v['key']==tecla_cura),15.))
         vigia_ataque=VigiaAtaque()
         ultimo_hp=s['player']['hp'];ultimo_ferimento=-float('inf')
+        defesa=DefesaDG(hp_retomada=max(.7,p['hp_percent']/100));defesa_log_em=-100.
+        if mina:defesa.observar(inicio,s['player']['hp']/s['player']['hp_max'],{})
         if percurso is not None and hasattr(percurso,'geometria'):
             from navegacao_grade import ler_grade
             navegador=NavegadorLocal(leitor=lambda leitor,posicao:percurso.geometria.aplicar(ler_grade(leitor,posicao)))
         else:navegador=NavegadorLocal()
         cc={};cc_em=0.;cc_desde=None;cc_log=False;cc_motivo=None;nav_log_em=-100.;aprox_pos=None;reaprox_id=None
         regional=BuscaRegional(prazo_aproximar=2.5,prazo_trocar=2.,intervalo_tab=.2,intervalo_giro=.35) if mina else BuscaRegional()
-        indisponiveis={};mobs_regiao=None;pool_em=0.;nativo_em=0.;nativo_pausou=False;pool_erro_em=-100.
+        indisponiveis={};ignorados_selecao=set();mobs_regiao=None;pool_em=0.;nativo_em=0.;nativo_pausou=False;pool_erro_em=-100.
         busca_destino=None;busca_ate=0.;reconhecer_buff_ate=0.;retorno_busca=False;buff_pausa_desde=None
         recuperacao=RecuperacaoAlvo()
         cancelamento=CancelamentoNormal(p['cancel_normal'])
@@ -258,12 +261,19 @@ def main(profile,event_sink,control,percurso=None):
                     soltar()
                     if agora-pool_erro_em>=3:log('Aguardando estados do personagem.',detail=str(e));pool_erro_em=agora
                     esperar(.1);continue
+            defesa_anterior=defesa.ativa
+            defendendo=mina and defesa.observar(agora,player['hp']/player['hp_max'],cc)
+            if defendendo!=defesa_anterior:
+                pool_em=0.
+                log('Defesa da DG ativada: limpar hostis proximos antes de avancar.' if defendendo else 'Pressao encerrada e vida recuperada; percurso liberado.')
             if estado!='combater' and hasattr(dados,'listar_mobs') and agora>=pool_em:
                 try:
                     lista=dados.listar_mobs(pos if circuito else base,p['radius'],player)
                     indisponiveis={id_:ate for id_,ate in indisponiveis.items() if ate>agora}
-                    mobs_regiao=[m for m in lista if m['id'] not in indisponiveis and alvo_permitido(m,player,base,p)]
-                    if mina:mobs_regiao=circuito.filtrar_mobs(mobs_regiao,pos,p['radius'])
+                    ignorados_selecao.intersection_update(indisponiveis)
+                    mobs_regiao=[m for m in lista if (m['id'] not in indisponiveis or defendendo and m['id'] in ignorados_selecao) and alvo_permitido(m,player,base,p)]
+                    if mina:mobs_regiao=circuito.filtrar_mobs(mobs_regiao,pos,p['radius'],defendendo)
+                    if defendendo:mobs_regiao=defesa.candidatos(mobs_regiao,pos)
                     if percurso is not None:mobs_regiao=percurso.filtrar_mobs(mobs_regiao,pos,agora)
                     regional.atualizar(mobs_regiao);pool_em=agora+(.2 if mina else .4)
                 except RuntimeError as e:
@@ -402,6 +412,12 @@ def main(profile,event_sink,control,percurso=None):
                 if estado=='retornar':estado='percorrer'
                 reentrar=not regiao(pos)
                 if reentrar or (estado!='combater' and not mobs_regiao):
+                    if defendendo:
+                        soltar();navegador.suspender(pos,agora);circuito.combate_ativo()
+                        if agora-defesa_log_em>=3:
+                            log('Defesa da DG: rota suspensa; aguardando inimigo proximo ou recuperacao de vida.',hp=player['hp']/player['hp_max'],controle=cc)
+                            defesa_log_em=agora
+                        esperar(.03);continue
                     if mobs_regiao is None and not reentrar:
                         soltar();esperar(.03);continue
                     if estado!='combater':estado='percorrer'
@@ -445,10 +461,18 @@ def main(profile,event_sink,control,percurso=None):
                     try:camera=dados.camera_regional() if hasattr(dados,'camera_regional') else None
                     except RuntimeError:camera=None
                     acao,valor=regional.decidir(agora,target,camera,pos=pos)
+                    if defendendo and acao in ['retornar','aproximar']:
+                        candidato=defesa.proximo(mobs_regiao,pos)
+                        if candidato:
+                            acao,valor='aproximar',candidato
+                            regional.reiniciar_busca(agora)
+                        else:
+                            soltar();pool_em=0.;esperar(.03);continue
                     if acao=='retornar':
                         if circuito:
                             soltar();navegador.invalidar()
                             for m in mobs_regiao:indisponiveis[m['id']]=agora+15
+                            ignorados_selecao.update(m['id'] for m in mobs_regiao)
                             mobs_regiao=[];pool_em=0.;estado='percorrer';regional.confirmar_alvo()
                             log('Alvos sem selecao confirmada; seguindo o percurso sem registrar abate.');continue
                         soltar();pulso('s',.06);navegador.invalidar()
@@ -456,8 +480,9 @@ def main(profile,event_sink,control,percurso=None):
                         log('Tres aproximacoes sem alvo; voltando a base para recomecar a busca.')
                         continue
                     if acao=='aproximar':
-                        if mina and not any(circuito.eh_chefe(m['name']) for m in mobs_regiao):
+                        if mina and not defendendo and not any(circuito.eh_chefe(m['name']) for m in mobs_regiao):
                             for m in mobs_regiao:indisponiveis[m['id']]=agora+6
+                            ignorados_selecao.update(m['id'] for m in mobs_regiao)
                             mobs_regiao=[];pool_em=0.;estado='percorrer';regional.confirmar_alvo();navegador.invalidar()
                             log('Sem selecao em 2.5s; seguindo a rota antes de tentar esses IDs novamente.');continue
                         soltar();busca_destino=valor;busca_ate=agora+3
