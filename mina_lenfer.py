@@ -47,7 +47,7 @@ class MinaLenfer:
         # Segue o corredor em vez de interromper a marcha para perseguir
         # mobs distantes. Malik conserva o alcance configurado.
         chefe_presente=any(self.eh_chefe(m['name']) for m in mobs)
-        raio=min(raio,8 if defendendo else 50 if chefe_presente else 12)
+        raio=min(raio,12 if defendendo else 50 if chefe_presente else 12)
         origem=self.grade.celula(pos);chave=(origem,raio)
         if chave!=self.custo_origem:
             custos={origem:0.};fila=[(0.,origem)];vistos=set()

@@ -1,5 +1,12 @@
 # Alterações
 
+## 0.1.0-beta.20 — 2026-11-19
+
+- Dano residual perto de 100% de HP deixa de renovar a pausa defensiva. Pressão considera perda acumulada de pelo menos 1% em três segundos, vida baixa ou controle.
+- Busca defensiva alcança hostis a até 12 unidades com passagem validada, sem priorizar chefe distante.
+- Regressão reproduz a sequência de HP da parada observada na Mina; replay de 141 leituras deixa de acionar a pausa indevida.
+- 266 testes Python e verificações do painel e atualizador passaram; validação ao vivo ainda pendente.
+
 ## 0.1.0-beta.19 — 2026-11-19
 
 - Mina e Jardim suspendem o avanço ao receber dano ou controle; limpam hostis próximos antes de puxar outro grupo.

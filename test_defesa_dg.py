@@ -9,6 +9,27 @@ from test_navegacao_grade import grade
 
 
 class DefesaTeste(unittest.TestCase):
+    def test_dano_residual_com_vida_cheia_nao_prende_rota_na_defesa(self):
+        d=DefesaDG();d.observar(0,1,{})
+        # Alternancia observada na Mina: poucos pontos de dano e regeneracao.
+        for i in range(1,301):
+            hp=[1.,.99983352,.99958380,.99995838,.99970866,.99954218][i%6]
+            self.assertFalse(d.observar(i*.1,hp,{}),(i,hp))
+
+    def test_dano_em_varios_golpes_pequenos_ainda_aciona_defesa(self):
+        d=DefesaDG();d.observar(0,1,{})
+        for i in range(1,10):self.assertFalse(d.observar(i*.2,1-i*.001,{}))
+        self.assertTrue(d.observar(2.,.99,{}))
+
+    def test_danos_antigos_nao_acumulam_indefinidamente(self):
+        d=DefesaDG();d.observar(0,1,{})
+        for i in range(1,30):self.assertFalse(d.observar(i*4,1-i*.001,{}))
+
+    def test_inimigo_a_dez_unidades_entra_na_busca_defensiva(self):
+        d=DefesaDG();d.observar(0,.5,{})
+        mobs=[dict(id=1,position=(10,0)),dict(id=2,position=(20,0))]
+        self.assertEqual(d.candidatos(mobs,(0,0)),mobs[:1])
+
     def test_dano_e_stun_travam_avanco_ate_quatro_segundos_de_sossego(self):
         d=DefesaDG()
         self.assertFalse(d.observar(0,1,{}))
