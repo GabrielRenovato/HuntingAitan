@@ -1,0 +1,37 @@
+CHANGELOG.md
+  s_edfc50aef2ee58::t_fd9aea302685e2 3-9
+README.md
+  s_edfc50aef2ee58::t_f7dfeaffe1c7f9 34,36
+RELEASE_NOTES.md
+  s_edfc50aef2ee58::t_71e699239b3f24 1,3,5,7,9
+aika_hunt_app/package-lock.json
+  s_edfc50aef2ee58::t_5cd5e015790f0d 3,9
+aika_hunt_app/package.json
+  s_edfc50aef2ee58::t_646e03ad7a3705 3
+package-lock.json
+  s_edfc50aef2ee58::t_0a9374538d8e4b 3,9
+package.json
+  s_edfc50aef2ee58::t_a6279ab46b70df 3
+defesa_dg.py
+  s_edfc50aef2ee58::t_fb985d2b0fc44b 3,7,12-13,18,20-22,24
+mina_lenfer.py
+  s_edfc50aef2ee58::t_515d2df3506852 50
+test_defesa_dg.py
+  s_edfc50aef2ee58::t_90f7c4509b753e 12-32
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.6",
+  "base_commit_sha": "8170cd2aac8e8d1c9acb55074ddfe4830e60031c",
+  "prompts": {},
+  "sessions": {
+    "s_edfc50aef2ee58": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "01a1e01c-4c9b-7e00-b2fb-9c7ef8050eed",
+        "model": "unknown"
+      },
+      "human_author": "Gabriel Renovato <86806861+GabrielRenovato@users.noreply.github.com>"
+    }
+  }
+}
