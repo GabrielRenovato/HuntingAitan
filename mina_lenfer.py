@@ -15,9 +15,15 @@ def dentro_mina(pos,margem=0):
 def normalizar(nome):return ''.join(c for c in unicodedata.normalize('NFKD',nome.lower()) if 'a'<=c<='z')
 
 class MinaLenfer:
+    chefe='malik'
+    def obter_plano(self):return plano_mina()
+    contem=staticmethod(dentro_mina)
+
+    def eh_chefe(self,nome):return normalizar(nome).startswith(self.chefe)
+
     def __init__(self,pos):
-        d=plano_mina()
-        if not dentro_mina(pos):raise RuntimeError('Mina LEnfer: entre na primeira area antes de iniciar o caminho para Malik.')
+        d=self.obter_plano()
+        if not self.contem(pos):raise RuntimeError('Entre na area da DG selecionada antes de iniciar o percurso.')
         self.inicio=tuple(pos);self.trechos=copy.deepcopy(d['trechos']);self.pontos=d['pontos'];self.trecho=0;self.indice=0;self.voltas=0
         self.espera_ate=None;self.abates={};self.grade=None;self.custo_origem=None;self.custos={};self.concluida=False
         self.revisao=0;self.antecipacao=8.;self.replanejado_em=None
@@ -40,7 +46,7 @@ class MinaLenfer:
         if self.grade is None:raise RuntimeError('Grade da Mina ainda nao conferida.')
         # Segue o corredor em vez de interromper a marcha para perseguir
         # mobs distantes. Malik conserva o alcance configurado.
-        chefe_presente=any(normalizar(m['name']).startswith('malik') for m in mobs)
+        chefe_presente=any(self.eh_chefe(m['name']) for m in mobs)
         raio=min(raio,50 if chefe_presente else 12)
         origem=self.grade.celula(pos);chave=(origem,raio)
         if chave!=self.custo_origem:
@@ -56,7 +62,7 @@ class MinaLenfer:
             self.custos=custos;self.custo_origem=chave
         validos=[]
         for m in mobs:
-            malik=normalizar(m['name']).startswith('malik')
+            malik=self.eh_chefe(m['name'])
             # O objetivo e chegar ao chefe. Evita abandonar a rota para limpar
             # salas laterais; Malik tem prioridade quando for reconhecido.
             distancia_rota=min((distancia_segmento(m['position'],a,b) for a,b in zip(self.rota_planejada,self.rota_planejada[1:])),default=math.dist(m['position'],self.rota_planejada[0]))
@@ -64,24 +70,24 @@ class MinaLenfer:
             c=self.grade.celula(m['position'])
             custo=min((self.custos.get((c[0]+dx,c[1]+dy),float('inf')) for dx in range(-2,3) for dy in range(-2,3) if dx*dx+dy*dy<=4),default=float('inf'))
             if custo<=min(raio,50 if malik else 12):validos.append(m)
-        chefes=[m for m in validos if normalizar(m['name']).startswith('malik')]
+        chefes=[m for m in validos if self.eh_chefe(m['name'])]
         return chefes or validos
 
     def combate_ativo(self):self.espera_ate=None
 
     def replanejar_passagem(self,pos):
         if self.grade is None or self.replanejado_em is not None and math.dist(pos,self.replanejado_em)<.6:return False
-        rota=self.grade.caminho(pos,self.pontos[-1]['pos'],max_nos=65536)
+        rota=self.grade.caminho(pos,self.pontos[-1]['pos'],max_nos=self.grade.largura*self.grade.altura)
         if not rota:return False
         self.rota_planejada=rota;self.trechos[0]['caminho']=rota;self.indice=0
         self.antecipacao=2.5;self.replanejado_em=tuple(pos);self.revisao+=1
         return True
 
     def registrar_abate(self,id_,nome,pos,agora):
-        if normalizar(nome).startswith('malik') and dentro_mina(pos):
-            self.abates['malik']=dict(id=id_,nome=nome,pos=pos,tempo=agora)
+        if self.eh_chefe(nome) and self.contem(pos):
+            self.abates[self.chefe]=dict(id=id_,nome=nome,pos=pos,tempo=agora)
             self.espera_ate=None
-            return 'malik'
+            return self.chefe
         return None
 
     def pausar(self,duracao):
@@ -90,13 +96,13 @@ class MinaLenfer:
     def destino(self,pos,agora):
         if self.concluida:return dict(estado='concluido',ponto=self.pontos[-1]['id'],voltas=0,abates=self.abates)
         t=self.trechos[self.trecho];p=self.pontos[self.trecho];rota=t['caminho']
-        if 'malik' in self.abates or math.dist(pos,p['pos'])<=3:
+        if self.chefe in self.abates or math.dist(pos,p['pos'])<=3:
             if p['chefe'] and p['chefe'] not in self.abates:
                 return dict(estado='aguardar_chefe',ponto=p['id'],voltas=0,chefe=p['chefe'])
             if self.espera_ate is None:self.espera_ate=agora+p['espera']
             if agora<self.espera_ate:return dict(estado='aguardar',ponto=p['id'],voltas=0)
             if self.trecho==len(self.trechos)-1:
-                if 'malik' not in self.abates:return dict(estado='aguardar_confirmacao',ponto=p['id'],voltas=0)
+                if self.chefe not in self.abates:return dict(estado='aguardar_confirmacao',ponto=p['id'],voltas=0)
                 self.concluida=True
                 return dict(estado='concluido',ponto=p['id'],voltas=0,abates=self.abates)
             self.trecho+=1;self.indice=0;self.espera_ate=None

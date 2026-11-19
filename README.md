@@ -31,9 +31,9 @@ O Python no PATH é usado no desenvolvimento. Para outro interpretador, defina `
 ## Publicar uma correção
 
 1. Faça a alteração, atualize `CHANGELOG.md` e rode `npm test`.
-2. Ajuste a mesma versão nos dois `package.json` e nos respectivos lockfiles. Exemplo: `0.1.0-beta.18` para a próxima beta.
+2. Ajuste a mesma versão nos dois `package.json` e nos respectivos lockfiles. Exemplo: `0.1.0-beta.19` para a próxima beta.
 3. Atualize `RELEASE_NOTES.md`, faça commit e push.
-4. Crie a tag correspondente e envie: `git tag v0.1.0-beta.18` e `git push origin v0.1.0-beta.18`.
+4. Crie a tag correspondente e envie: `git tag v0.1.0-beta.19` e `git push origin v0.1.0-beta.19`.
 
 O workflow verifica a versão, executa os testes, empacota o backend, gera o instalador NSIS e publica instalador, blockmap e metadados YAML na release. O token vem do GitHub Actions; não deve ser colocado no aplicativo. O workflow falha sem publicar se um desses passos falhar. Tags com sufixo beta são publicadas como pré-release.
 
@@ -52,3 +52,5 @@ O fechamento de CTE, Arena Elter e conversas está descrito em [docs/JANELAS.md]
 Circuito de Termes: veja [as instruções e a validação das passagens](docs/CIRCUITO_TERMES.md).
 
 Mina L’Enfer → Malik, com repetição opcional no Elite e retorno do save até a entrada: veja [o modo e a validação](docs/MINA_LENFER.md).
+
+Jardim Aéreo de Mirza no Difícil: [modo e validação](docs/JARDIM_AEREO.md).

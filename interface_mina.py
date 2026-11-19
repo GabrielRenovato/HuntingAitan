@@ -67,7 +67,7 @@ class InterfaceMina:
         return dict(acao='aguardar_portal')
 
 class VerificadorElite:
-    def __init__(self,ocr=None):self.ocr=ocr
+    def __init__(self,ocr=None,dificuldade='elite'):self.ocr=ocr;self.dificuldade=dificuldade
     def confirmar(self,tela):
         if self.ocr is None:
             from rapidocr_onnxruntime import RapidOCR
@@ -76,4 +76,4 @@ class VerificadorElite:
         h,w=tela.shape[:2];roi=tela[:min(h,480),max(0,w-480):]
         roi=cv2.resize(roi,None,fx=3,fy=3,interpolation=cv2.INTER_CUBIC)
         linhas,_=self.ocr(roi)
-        return any(normalizar(l[1])=='elite' and float(l[2])>=.75 for l in linhas or [])
+        return any(normalizar(l[1])==self.dificuldade and float(l[2])>=.75 for l in linhas or [])

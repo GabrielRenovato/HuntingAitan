@@ -48,9 +48,10 @@ def validar(dados):
  if any(not re.fullmatch(r'ctrl\+[1-8]',v) for v in p['buff_keys']):raise ValueError('Buffs precisam de atalhos Ctrl+1 a Ctrl+8')
  if len(set(p['buff_keys']))!=5:raise ValueError('Os cinco buffs precisam de atalhos diferentes')
  if p['target'] not in ['qualquer','verit','penza','croshu','tet']:raise ValueError('Filtro de alvo invalido')
- if p['patrol_mode'] not in ['base','termes_penza','mina_lenfer']:raise ValueError('Circuito invalido')
+ if p['patrol_mode'] not in ['base','termes_penza','mina_lenfer','jardim_aereo']:raise ValueError('Circuito invalido')
  if p['patrol_mode']=='termes_penza':p.update(target='penza',data_source='native')
  if p['patrol_mode']=='mina_lenfer':p.update(target='qualquer',data_source='native')
+ if p['patrol_mode']=='jardim_aereo':p.update(target='qualquer',data_source='native',mina_repeat=False)
  usadas=set([p['attack_key']]+[v for k in ['hp_keys','mp_keys'] for v in p[k] if v])
  for campo,n in [('skills',10),('items',5)]:
   if len(p[campo])!=n:raise ValueError('Quantidade de slots invalida')

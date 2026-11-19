@@ -13,6 +13,7 @@ from vigia_ataque import VigiaAtaque
 from controle_avisos import ObservadorAvisos
 from circuito_termes import CircuitoTermes,dentro_regiao,conferir_arquivos,distancia_segmento
 from mina_lenfer import MinaLenfer,dentro_mina
+from jardim_aereo import JardimAereo,dentro_jardim
 from hunt_core import CadenciaCombate,erro_angular,VerificadorMovimento,AgendaBuffs,executar_buff
 
 NOMES={'verit':'Verit Mutante','penza':'Penza Poderosa Mutante','croshu':'Croshu Mutante das Cinzas','tet':'Tet das Chamas'}
@@ -24,6 +25,8 @@ def alvo_permitido(target,player,base,profile):
         if not dentro_regiao(target['position']):return False
     elif profile.get('patrol_mode')=='mina_lenfer':
         if not dentro_mina(target['position']):return False
+    elif profile.get('patrol_mode')=='jardim_aereo':
+        if not dentro_jardim(target['position']):return False
     elif math.dist(target['position'],base)>profile['radius']:return False
     if math.dist(target['position'],player['position'])>profile['radius']:return False
     return profile['target']=='qualquer' or nome_normal(target['name'])==nome_normal(NOMES[profile['target']])
@@ -113,7 +116,7 @@ def main(profile,event_sink,control,percurso=None):
             time.sleep(.04)
         s=dados.snapshot();base=tuple(s['player']['position']) if p['auto_base'] else tuple(p['base'])
         event_sink(dict(event='base',base=base));log('Base capturada por dados internos.',posicao=base)
-        circuito=None;circuito_log=None;circuito_replanejar_em=0.;regiao=dentro_regiao;mina=p['patrol_mode']=='mina_lenfer';mapa_mina=None
+        circuito=None;circuito_log=None;circuito_replanejar_em=0.;regiao=dentro_regiao;mina=p['patrol_mode'] in ('mina_lenfer','jardim_aereo');jardim=p['patrol_mode']=='jardim_aereo';mapa_mina=None
         if percurso is not None:
             circuito=percurso;regiao=percurso.contem
             log('Retorno ao portal da Mina iniciado por coordenadas e colisao.')
@@ -122,9 +125,12 @@ def main(profile,event_sink,control,percurso=None):
             conferir_arquivos(dados.caminho.parent)
             log('Circuito Termes ativado: 6, 5, 4, 7, 8, 9 e volta pelo mesmo corredor. Apenas Penza Poderosa Mutante.')
         elif mina:
-            circuito=MinaLenfer(s['player']['position']);circuito.conferir(dados.caminho.parent);regiao=dentro_mina
+            if jardim:
+                from jardim_aereo import conferir_dificil
+                conferir_dificil()
+            circuito=(JardimAereo if jardim else MinaLenfer)(s['player']['position']);circuito.conferir(dados.caminho.parent);regiao=circuito.contem
             mapa_mina=dados.u32(dados.cena_validada()+0x38)
-            log('Mina LEnfer: caminho direto para Malik iniciado.',entrada=s['player']['position'],mapa=mapa_mina)
+            log('Jardim Aereo: caminho ate Seridunn iniciado.' if jardim else 'Mina LEnfer: caminho direto para Malik iniciado.',entrada=s['player']['position'],mapa=mapa_mina)
         trilha=[base];volta=[];estado='buscar';progresso=None;ultima_tab=0.;fim_busca=0.;ultima_telemetria=0.;inicio=time.monotonic();heading=None;origem_mov=None;falhas_desde=None;espera_na_base=False
         tecla_cura=p['heal_key'] if p['heal_enabled'] else ''
         cadencia=CadenciaCombate({'intervalo_skills':p['action_gap'],'recargas':{v['key']:v['seconds'] for v in p['skills'] if v['enabled'] and v['key']!=tecla_cura}})
@@ -223,7 +229,7 @@ def main(profile,event_sink,control,percurso=None):
             if percurso is not None:base=pos
             if percurso is not None and target and not percurso.permite_combate(target['id'],pos,target):target=None
             if mina and dados.u32(dados.cena_validada()+0x38)!=mapa_mina:
-                soltar();raise RuntimeError('A cena da Mina mudou; percurso interrompido sem registrar conclusao.')
+                soltar();raise RuntimeError('A cena da DG mudou; percurso interrompido sem registrar conclusao.')
             if player['hp']<ultimo_hp:ultimo_ferimento=agora
             ultimo_hp=player['hp']
             if hasattr(dados,'caca_original_ativa') and agora>=nativo_em:
@@ -406,12 +412,12 @@ def main(profile,event_sink,control,percurso=None):
                     if passo['estado']=='concluido':
                         if percurso is not None:
                             soltar();control.reason='entrada_alcancada';event_sink(dict(event='cycle',state='entrada_confirmada',position=pos));break
-                        soltar();control.reason='mina_finalizada'
-                        event_sink(dict(event='dungeon_complete',abates=passo['abates'],message='Malik abatido com vida zero confirmada e area final limpa.'))
-                        log('Mina finalizada: Malik confirmado e area final limpa.');break
+                        soltar();control.reason='jardim_finalizado' if jardim else 'mina_finalizada'
+                        event_sink(dict(event='dungeon_complete',abates=passo['abates'],message='Seridunn abatido com vida zero confirmada e area final limpa.' if jardim else 'Malik abatido com vida zero confirmada e area final limpa.'))
+                        log('Jardim finalizado: Seridunn confirmado e area final limpa.' if jardim else 'Mina finalizada: Malik confirmado e area final limpa.');break
                     if marca!=circuito_log:
                         if mina:
-                            msg='Aguardando confirmacao do chefe da sala.' if passo['estado']=='aguardar_chefe' else 'Verificando sala limpa.' if passo['estado'].startswith('aguardar') else 'Percorrendo Mina LEnfer por caminho validado.'
+                            msg='Aguardando confirmacao do chefe da sala.' if passo['estado']=='aguardar_chefe' else 'Verificando sala limpa.' if passo['estado'].startswith('aguardar') else 'Percorrendo Jardim Aereo por caminho validado.' if jardim else 'Percorrendo Mina LEnfer por caminho validado.'
                         elif percurso is not None:msg='Seguindo caminho ate a entrada da Mina.'
                         else:msg='Procurando Penzas por 5s no ponto.' if passo['estado']=='aguardar' else 'Percorrendo circuito de Termes por caminho validado.'
                         log(msg,ponto=passo['ponto'],voltas=passo['voltas'],chefe=passo.get('chefe'));circuito_log=marca
@@ -419,7 +425,7 @@ def main(profile,event_sink,control,percurso=None):
                     nav=seguir_grade(passo['destino'],passo['chave'],.9)
                     if nav in ['sem_caminho','bloqueado','aguardar_grade']:
                         if mina and nav in ['sem_caminho','bloqueado'] and circuito.replanejar_passagem(pos):
-                            navegador.invalidar();log('Passagem da Mina recalculada; aproximando o proximo ponto da rota.',posicao=pos)
+                            navegador.invalidar();log('Passagem da DG recalculada; aproximando o proximo ponto da rota.',posicao=pos)
                         circuito_replanejar_em=agora+(.25 if mina else 2)
                         log('Passagem do circuito indisponivel na grade atual; aguardando nova leitura sem avancar o ponto.',ponto=passo['ponto'])
                     esperar(.015);continue
@@ -450,7 +456,7 @@ def main(profile,event_sink,control,percurso=None):
                         log('Tres aproximacoes sem alvo; voltando a base para recomecar a busca.')
                         continue
                     if acao=='aproximar':
-                        if mina and not any(nome_normal(m['name']).startswith('malik') for m in mobs_regiao):
+                        if mina and not any(circuito.eh_chefe(m['name']) for m in mobs_regiao):
                             for m in mobs_regiao:indisponiveis[m['id']]=agora+6
                             mobs_regiao=[];pool_em=0.;estado='percorrer';regional.confirmar_alvo();navegador.invalidar()
                             log('Sem selecao em 2.5s; seguindo a rota antes de tentar esses IDs novamente.');continue
@@ -536,7 +542,7 @@ def main(profile,event_sink,control,percurso=None):
                 if resultado=='morto':
                     if mina:
                         chefe=circuito.registrar_abate(progresso.id,progresso.nome_original,progresso.posicao or pos,agora)
-                        if chefe:log('Chefe da Mina abatido com vida zero confirmada.',chefe=chefe,alvo_id=progresso.id)
+                        if chefe:log('Chefe do Jardim abatido com vida zero confirmada.' if jardim else 'Chefe da Mina abatido com vida zero confirmada.',chefe=chefe,alvo_id=progresso.id)
                     soltar();reaprox_id=None;estado='buscar';pool_em=0.;log('Mob abatido; procurando o proximo.');continue
                 if progresso.precisa_aproximar(agora,math.dist(pos,target['position'])) and player.get('heading') is not None and hasattr(dados,'cena_validada'):
                     if progresso.dano and reaprox_id!=progresso.id:

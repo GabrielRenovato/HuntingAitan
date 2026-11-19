@@ -1,13 +1,7 @@
-Caminho externo da Mina baseado no terreno e nos objetos.
+Jardim Aéreo de Mirza · Difícil.
 
-A rota segue o eixo da estrada e evita o pátio das caixas. A ocupação cruza as malhas MS3 posicionadas nos DAT com a altura do terreno, incluindo as pedras na região da colisão observada em 2683,1714. Pisos e rampas são separados das superfícies que bloqueiam a passagem. Os arquivos de origem são conferidos por SHA-256 antes da navegação.
+Novo modo em Comportamento → Percurso. Comece dentro do Jardim no Difícil. O motor confere o indicador de dificuldade, segue o caminho derivado dos dois blocos de terreno e combate os hostis do trajeto até Seridunn. A chegada ao altar não basta: precisa confirmar o abate do chefe e verificar a área final.
 
-O retorno continua ignorando os mobs do caminho. Entrada Elite, repetição e cura permanecem incluídas.
+Cura, recargas, buffs exclusivos e interrupção por F12 mantidos. A repetição externa da Mina não é aplicada ao Jardim; este modo ainda começa dentro da DG. A validação ao vivo está em andamento.
 
-Instalador: HuntingAitan-Setup-0.1.0-beta.17-x64.exe.
-
-A grade usada durante a condução também recebe a ocupação dos objetos, evitando atalhos nas curvas que cortem as pedras.
-
-Antes de entrar, verifica hostis vivos colados à porta: até três unidades do personagem e seis do portal. Combate esses IDs e retoma a entrada; no restante do trajeto continua ignorando os mobs.
-
-Na Mina, uma busca sem seleção de hostil comum retoma a rota após 2,5 segundos e permite tentar o ID novamente depois. Malik não é descartado por essa regra, e uma luta já iniciada é preservada. Passagens internas bloqueadas recalculam a aproximação com um ponto mais próximo. Buffs e confirmação final não foram encurtados.
+Instalador: HuntingAitan-Setup-0.1.0-beta.18-x64.exe.

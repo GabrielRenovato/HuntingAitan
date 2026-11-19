@@ -57,6 +57,8 @@ def main():
             InterfaceMina()
             from geometria_entrada import plano_geometria
             if not plano_geometria()['objetos']:raise RuntimeError('Geometria externa nao incluida no motor')
+            from jardim_aereo import plano_jardim,dentro_jardim
+            if not plano_jardim()['trechos'] or not dentro_jardim((3351,3295)):raise RuntimeError('Rota do Jardim nao incluida no motor')
             r=dict(backend=True,templates=True,ocr=True,circuito=True,mina=True)
         elif modo=='validate':r=validar(d)
         elif modo=='position':

@@ -1,5 +1,12 @@
 # Alterações
 
+## 0.1.0-beta.18 — 2026-11-19
+
+- Modo Jardim Aéreo de Mirza no Difícil, com caminho pelos dois blocos de terreno até o altar de Seridunn.
+- Confere a dificuldade no indicador do jogo e os hashes dos arquivos usados na rota.
+- Combate no trajeto e prioriza Seridunn, exigindo abate por vida zero e área final limpa para concluir.
+- Inicialização dentro da DG; entrada e repetição externa do Jardim ainda não automatizadas.
+
 ## 0.1.0-beta.17 — 2026-11-19
 
 - Busca sem seleção de hostis comuns na Mina limitada a 2,5 segundos antes de retomar o percurso.
