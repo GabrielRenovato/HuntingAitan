@@ -1,0 +1,57 @@
+aika_hunt_app/package.json
+  s_edfc50aef2ee58::t_7377740a21a56a 3
+CHANGELOG.md
+  s_edfc50aef2ee58::t_7377740a21a56a 3-9
+aika_hunt_app/renderer.js
+  s_edfc50aef2ee58::t_5a0c6b931616be 9,17,37,73
+RELEASE_NOTES.md
+  s_edfc50aef2ee58::t_7377740a21a56a 1,3,5,7
+README.md
+  s_edfc50aef2ee58::t_7377740a21a56a 34,36,55-56
+jardim_aereo_rota.json
+  s_edfc50aef2ee58::t_d61b27800239cb 1-9691
+aika_hunt_app/index.html
+  s_edfc50aef2ee58::t_5a0c6b931616be 27-28
+package.json
+  s_edfc50aef2ee58::t_7377740a21a56a 3
+aika_hunt_app/package-lock.json
+  s_edfc50aef2ee58::t_a1949b52b9fd21 3,9
+docs/JARDIM_AEREO.md
+  s_edfc50aef2ee58::t_6ba3245a210ef5 1-24
+hunt_bridge.py
+  s_edfc50aef2ee58::t_d5eec81e265efa 60-61
+hunt_native.py
+  s_edfc50aef2ee58::t_f5361100d72a21 16,28-29,119,128-131,133,232,415-417,420,428,459,545
+interface_mina.py
+  s_edfc50aef2ee58::t_87c1086760cf2d 70,79
+jardim_aereo.py
+  s_edfc50aef2ee58::t_8abf7890dc05e8 1-43
+package-lock.json
+  s_edfc50aef2ee58::t_3a46505c786b99 3,9
+perfil_hunt.py
+  s_edfc50aef2ee58::t_114e871a3d3df5 51,54
+test_jardim_aereo.py
+  s_edfc50aef2ee58::t_922dcd414809ba 1-63
+mina_lenfer.py
+  s_edfc50aef2ee58::t_b4fe03552c0050 18-23,25-26,49,65,73,80,87-88,90,99,105
+tools/build_backend.py
+  s_edfc50aef2ee58::t_caccf48cff7f5f 10
+tools/validar_jardim_aereo.py
+  s_edfc50aef2ee58::t_784fbf4f9192df 1-34
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.6",
+  "base_commit_sha": "180aab3049bf9e8646f28a8331f22ca35d64ed33",
+  "prompts": {},
+  "sessions": {
+    "s_edfc50aef2ee58": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "01a1e01c-4c9b-7e00-b2fb-9c7ef8050eed",
+        "model": "unknown"
+      },
+      "human_author": "Gabriel Renovato <86806861+GabrielRenovato@users.noreply.github.com>"
+    }
+  }
+}
