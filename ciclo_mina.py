@@ -41,10 +41,12 @@ class CicloMina:
                 if limite and self.concluidas>=limite:
                     self.control.reason='ciclos_concluidos';self.control.stop.set()
                 else:self.etapa='retornar'
-        elif self.etapa=='retornar':
+        elif self.etapa in ('retornar','liberar_entrada'):
             if dentro_mina(pos):self.etapa='corrigir_entrada';return
-            if math.dist(pos,PORTAL)<=4:self.etapa='entrar';return
-            rota=self.criar_rota(contexto['pasta'],pos)
+            liberar=self.etapa=='liberar_entrada'
+            if not liberar and math.dist(pos,PORTAL)<=4:self.etapa='entrar';return
+            if liberar:rota=self.criar_rota(contexto['pasta'],pos,bloqueadores=getattr(self.control,'bloqueadores_portal',()))
+            else:rota=self.criar_rota(contexto['pasta'],pos)
             self.control.reason='etapa_em_andamento'
             self.executar(dict(self.perfil,duration_minutes=0,mina_repeat=False),self.evento,self.control,percurso=rota)
             if getattr(self.control,'reason',None)=='entrada_alcancada':self.etapa='entrar'
@@ -52,6 +54,7 @@ class CicloMina:
         elif self.etapa=='entrar':
             if self.entrar():self.etapa='dg'
             elif dentro_mina(self.ler()['position']):self.etapa='corrigir_entrada'
+            elif getattr(self.control,'bloqueadores_portal',None):self.etapa='liberar_entrada'
             else:self.etapa='retornar'
         elif self.etapa=='corrigir_entrada':
             # Posicao interna sem comprovacao de Elite: sai sem contar abate.

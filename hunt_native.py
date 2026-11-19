@@ -212,6 +212,7 @@ def main(profile,event_sink,control,percurso=None):
                 esperar(.1);continue
             player=s['player'];pos=tuple(player['position']);target=s['target']
             if percurso is not None:base=pos
+            if percurso is not None and target and not percurso.permite_combate(target['id'],pos,target):target=None
             if mina and dados.u32(dados.cena_validada()+0x38)!=mapa_mina:
                 soltar();raise RuntimeError('A cena da Mina mudou; percurso interrompido sem registrar conclusao.')
             if player['hp']<ultimo_hp:ultimo_ferimento=agora
@@ -248,12 +249,15 @@ def main(profile,event_sink,control,percurso=None):
                     indisponiveis={id_:ate for id_,ate in indisponiveis.items() if ate>agora}
                     mobs_regiao=[m for m in lista if m['id'] not in indisponiveis and alvo_permitido(m,player,base,p)]
                     if mina:mobs_regiao=circuito.filtrar_mobs(mobs_regiao,pos,p['radius'])
-                    if percurso is not None:mobs_regiao=[m for m in mobs_regiao if regiao(m['position'])]
+                    if percurso is not None:mobs_regiao=percurso.filtrar_mobs(mobs_regiao,pos,agora)
                     regional.atualizar(mobs_regiao);pool_em=agora+.4
                 except RuntimeError as e:
                     soltar();mobs_regiao=None
                     if agora-pool_erro_em>=5:log('Aguardando lista de mobs valida.',detail=str(e));pool_erro_em=agora
                     esperar(.1);continue
+            if percurso is not None and estado=='combater' and not percurso.permite_combate(progresso.id,pos,target):
+                soltar();progresso=None;estado='percorrer';pool_em=0.;mobs_regiao=[]
+                log('Mob deixou de bloquear a entrada; retomando acesso ao portal.');continue
             if mina and (estado=='combater' or mobs_regiao):circuito.combate_ativo()
             if not circuito and estado=='retornar' and not retorno_busca and mobs_regiao and math.dist(pos,base)<=p['radius']+2:
                 soltar();heading=None;origem_mov=None;estado='selecionar';fim_busca=agora+p['no_damage_seconds']
@@ -359,6 +363,7 @@ def main(profile,event_sink,control,percurso=None):
                     soltar()
                     if agora-nav_log_em>=3:log('Aguardando grade valida antes de mover.',detail=str(e));nav_log_em=agora
                     return 'aguardar_grade'
+                if percurso is not None:percurso.observar_navegacao(pos,agora,plano)
                 if plano['estado']!='andando':
                     soltar()
                     if plano['estado'] in ['sem_caminho','bloqueado','replanejar'] and agora-nav_log_em>=1:
@@ -403,7 +408,7 @@ def main(profile,event_sink,control,percurso=None):
                     esperar(.015);continue
                 if estado=='percorrer':
                     soltar();estado='buscar';regional.confirmar_alvo();retorno_busca=False
-                    log('Hostil proximo; percurso pausado para combate.' if mina or percurso is not None else 'Penza encontrado no corredor; percurso pausado para combate.')
+                    log('Mob bloqueando a entrada; liberando o acesso ao portal.' if percurso is not None else 'Hostil proximo; percurso pausado para combate.' if mina else 'Penza encontrado no corredor; percurso pausado para combate.')
             if not circuito and math.dist(pos,base)>p['radius']+2 and estado!='retornar':
                 soltar();pulso('s',.06)
                 navegador.invalidar();estado='retornar';progresso=None;pool_em=0.

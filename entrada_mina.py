@@ -7,7 +7,7 @@ from circuito_termes import distancia_segmento
 PORTAL=(2716.,1611.)
 
 class EntradaMina:
-    def __init__(self,pasta,pos):
+    def __init__(self,pasta,pos,bloqueadores=()):
         if not(2400<pos[0]<2850 and 1500<pos[1]<2000):raise RuntimeError('Save fora da regiao validada para a entrada da Mina.')
         p=Path(pasta)/'Env';a=(p/'AttributeS01.dat').read_bytes();h=(p/'z01.hgt').read_bytes()
         if len(a)!=4096*4096*2 or len(h)!=4+4096*4096*2:raise RuntimeError('Terreno externo diferente do validado.')
@@ -20,6 +20,24 @@ class EntradaMina:
         rota=g.caminho(pos,PORTAL,alcance=3,max_nos=w*(y1-y0+1))
         if not rota or not all(g.passagem(g.celula(a),g.celula(b)) for a,b in zip(rota,rota[1:])):raise RuntimeError('Sem passagem validada do save atual ate o portal da Mina.')
         self.rota=rota;self.trechos=[dict(ate='entrada',caminho=rota)];self.trecho=0;self.voltas=0;self.indice=0
+        self.bloqueadores=set(bloqueadores);self.bloqueio_em=-float('inf')
+
+    def observar_navegacao(self,pos,agora,plano):
+        if math.dist(pos,PORTAL)<=8 and plano['estado'] in ('replanejar','bloqueado'):
+            self.bloqueio_em=agora
+
+    def permite_combate(self,id_,pos,alvo=None):
+        return id_ in self.bloqueadores and math.dist(pos,PORTAL)<=8 and (alvo is None or math.dist(alvo['position'],PORTAL)<=8)
+
+    def filtrar_mobs(self,mobs,pos,agora):
+        if math.dist(pos,PORTAL)>8:return []
+        if agora-self.bloqueio_em<=3:
+            # A ausencia de movimento precisa ter sido confirmada pelo
+            # navegador. Proximidade sozinha nao autoriza iniciar combate.
+            for m in mobs:
+                if math.dist(pos,m['position'])<=3.5 and distancia_segmento(m['position'],pos,PORTAL)<=1.5:
+                    self.bloqueadores.add(m['id'])
+        return [m for m in mobs if self.permite_combate(m['id'],pos,m)]
 
     def contem(self,pos,margem=0):
         if len(self.rota)==1:return math.dist(pos,self.rota[0])<=12+margem

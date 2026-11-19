@@ -41,6 +41,14 @@ class CicloTeste(unittest.TestCase):
         self.assertEqual(self.c.etapa,'corrigir_entrada');self.assertEqual(self.c.concluidas,0)
         self.c.passo();self.assertEqual(self.motor.call_count,0)
 
+    def test_entrada_bloqueada_so_autoriza_ids_reportados_pela_interacao(self):
+        self.pos=[2716,1611];self.c.etapa='entrar';self.ctrl.bloqueadores_portal={17}
+        self.c.passo();self.assertEqual(self.c.etapa,'liberar_entrada')
+        def liberar(p,emitir,control,percurso):control.reason='entrada_alcancada'
+        self.motor.side_effect=liberar;self.c.passo()
+        self.rota.assert_called_once_with('cliente',self.pos,bloqueadores={17})
+        self.assertEqual(self.c.etapa,'entrar');self.assertEqual(self.c.concluidas,0)
+
     def test_limite_de_voltas_termina_apos_sair(self):
         self.c.perfil['mina_cycles']=1;self.c.concluidas=1;self.c.etapa='sair'
         self.sair.return_value=True;self.c.passo()

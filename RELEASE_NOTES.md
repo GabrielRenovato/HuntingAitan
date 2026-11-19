@@ -6,8 +6,8 @@ A rota e as alturas foram verificadas nos arquivos locais; 2.009 células da ent
 
 Chegar ao fim do caminho não conta como conclusão: é necessário confirmar o abate de Malik e verificar a área final. Ulman e Guarda-Costas do Malik não contam.
 
-Marque Repetir a Mina no Elite para sair do grupo após concluir, retornar do save até o portal e entrar novamente sozinho. Confere a posição e o indicador Elite antes da nova DG. Configure a quantidade de DGs ou zero para repetir sem limite; F12 interrompe. Sem repetição, comece dentro da primeira área.
+Marque Repetir a Mina no Elite para sair do grupo após concluir, retornar do save até o portal e entrar novamente sozinho. Ignora os mobs no caminho externo e só combate se estiverem bloqueando a entrada. Confere a posição e o indicador Elite antes da nova DG. Configure a quantidade de DGs ou zero para repetir sem limite; F12 interrompe. Sem repetição, comece dentro da primeira área.
 
 Malik, saída do grupo, retorno ao portal e nova entrada Elite foram validados ao vivo em etapas separadas. A repetição contínua por várias DGs ainda requer acompanhamento. Detalhes em docs/MINA_LENFER.md.
 
-Instalador: HuntingAitan-Setup-0.1.0-beta.9-x64.exe.
+Instalador: HuntingAitan-Setup-0.1.0-beta.10-x64.exe.

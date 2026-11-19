@@ -65,6 +65,7 @@ def entrar_elite(dados,control,emitir,limite=120):
     from entrada_mina import PORTAL
     entrada.PAUSE=0;dados.u.GetForegroundWindow.restype=w.HWND
     detector=InterfaceMina();verificador=VerificadorElite();avisos=DetectorAvisos();inicio=time.monotonic();acao_em=0.;ultimo=None;elite=False;confirmacoes=0;erro_em=-100.
+    progresso_em=inicio;ferido_em=-float('inf');hp_anterior=None;control.bloqueadores_portal=set()
     def ativo():return not control.stop.is_set() and not keyboard.is_pressed('f12') and dados.u.GetForegroundWindow()==dados.hwnd and not control.pause.is_set()
     def clicar(p,duplo=False):
         if not ativo():return False
@@ -94,6 +95,14 @@ def entrar_elite(dados,control,emitir,limite=120):
                     time.sleep(.4);continue
                 if math.dist(s['player']['position'],PORTAL)>8:
                     emitir(dict(event='log',message='Personagem fora do alcance do portal; retomando aproximacao por coordenadas.'));return False
+                hp=s['player']['hp'];agora=time.monotonic()
+                if hp_anterior is not None and hp<hp_anterior:ferido_em=agora
+                hp_anterior=hp
+                if agora-progresso_em>=5 and agora-ferido_em<=3:
+                    mobs=dados.listar_mobs(s['player']['position'],4,s['player'])
+                    control.bloqueadores_portal={m['id'] for m in mobs if m['hostile'] and m['hp']>0 and math.dist(m['position'],PORTAL)<=8}
+                    if control.bloqueadores_portal:
+                        emitir(dict(event='cycle',state='liberar_entrada',message='Acesso ao portal sem progresso e recebendo dano; combatendo somente os hostis junto da entrada.'));return False
                 if time.monotonic()<acao_em:time.sleep(.1);continue
                 aviso=avisos.localizar(tela)
                 if aviso and aviso['tipo'] in ['cte_elter','arena_elter','conversa_amigo']:
@@ -102,7 +111,7 @@ def entrar_elite(dados,control,emitir,limite=120):
                     time.sleep(.2);continue
                 acao=detector.entrada(tela,elite)
                 if acao['acao']!=ultimo:
-                    emitir(dict(event='cycle',state=acao['acao'],message='Entrada da Mina: '+acao['acao']));ultimo=acao['acao']
+                    emitir(dict(event='cycle',state=acao['acao'],message='Entrada da Mina: '+acao['acao']));ultimo=acao['acao'];progresso_em=time.monotonic()
                 if 'ponto' not in acao:time.sleep(.2);continue
                 atual=detector.entrada(cap.capturar(),elite)
                 if atual['acao']!=acao['acao'] or 'ponto' not in atual or math.dist(atual['ponto'],acao['ponto'])>6:continue
