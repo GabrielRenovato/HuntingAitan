@@ -131,7 +131,11 @@ def main(profile,event_sink,control,percurso=None):
         cura=CuraPrioritaria(tecla_cura,p['hp_percent']/100,next((v['seconds'] for v in p['skills'] if v['key']==tecla_cura),15.))
         vigia_ataque=VigiaAtaque()
         ultimo_hp=s['player']['hp'];ultimo_ferimento=-float('inf')
-        navegador=NavegadorLocal();cc={};cc_em=0.;cc_desde=None;cc_log=False;cc_motivo=None;nav_log_em=-100.;aprox_pos=None;reaprox_id=None
+        if percurso is not None and hasattr(percurso,'geometria'):
+            from navegacao_grade import ler_grade
+            navegador=NavegadorLocal(leitor=lambda leitor,posicao:percurso.geometria.aplicar(ler_grade(leitor,posicao)))
+        else:navegador=NavegadorLocal()
+        cc={};cc_em=0.;cc_desde=None;cc_log=False;cc_motivo=None;nav_log_em=-100.;aprox_pos=None;reaprox_id=None
         regional=BuscaRegional();indisponiveis={};mobs_regiao=None;pool_em=0.;nativo_em=0.;nativo_pausou=False;pool_erro_em=-100.
         busca_destino=None;busca_ate=0.;reconhecer_buff_ate=0.;retorno_busca=False;buff_pausa_desde=None
         recuperacao=RecuperacaoAlvo()

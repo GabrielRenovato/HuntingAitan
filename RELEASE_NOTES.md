@@ -4,4 +4,6 @@ A rota segue o eixo da estrada e evita o pátio das caixas. A ocupação cruza a
 
 O retorno continua ignorando os mobs do caminho. Entrada Elite, repetição e cura permanecem incluídas.
 
-Instalador: HuntingAitan-Setup-0.1.0-beta.14-x64.exe.
+Instalador: HuntingAitan-Setup-0.1.0-beta.15-x64.exe.
+
+A grade usada durante a condução também recebe a ocupação dos objetos, evitando atalhos nas curvas que cortem as pedras.

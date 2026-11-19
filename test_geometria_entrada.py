@@ -50,4 +50,24 @@ class GeometriaTeste(unittest.TestCase):
         struct.pack_into('<3H',raw,116+3*32,0,1,9)
         with self.assertRaisesRegex(ValueError,'invalida'):ler_ms3(raw)
 
+    def test_modelo_lightmap_expande_referencias_de_posicao(self):
+        raw=bytearray(166+3*12+3*20+6+40+2)
+        struct.pack_into('<I',raw,0,2222);struct.pack_into('<I',raw,12,1);struct.pack_into('<I',raw,28,1)
+        struct.pack_into('<3I',raw,134,3,3,1)
+        struct.pack_into('<9f',raw,166,0,0,0,1,0,0,0,2,0)
+        for i in range(3):struct.pack_into('<I',raw,202+i*20,i)
+        struct.pack_into('<3H',raw,262,0,1,2)
+        v,tri,animado=ler_ms3(raw)
+        self.assertEqual(v.tolist(),[[0,0,0],[1,0,0],[0,2,0]])
+        self.assertEqual(tri.tolist(),[[0,1,2]])
+
+    def test_conducao_nao_corta_objetos_marcados_na_grade(self):
+        from navegador_local import NavegadorLocal
+        base=grade(40,40);base.origem=(2672,1703)
+        geometria=self.geometria();n=NavegadorLocal(leitor=lambda *a:geometria.aplicar(base))
+        r=n.planejar(None,(2694.5,1724.5),170,(2696.5,1715.5),'entrada',0,limite=geometria.livre)
+        self.assertTrue(n.rota)
+        self.assertTrue(all(geometria.livre(p) for p in n.rota))
+        self.assertFalse(n.grade.livre(n.grade.celula((2683.2,1714.5))))
+
 if __name__=='__main__':unittest.main()

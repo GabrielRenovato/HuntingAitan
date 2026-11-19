@@ -1,5 +1,10 @@
 # Alterações
 
+## 0.1.0-beta.15 — 2026-11-19
+
+- A condução aplica a ocupação dos objetos também à grade carregada; as curvas não são encurtadas atravessando a geometria.
+- Inclui o percurso pelo eixo da estrada e a leitura das malhas e posições do cliente.
+
 ## 0.1.0-beta.14 — 2026-11-19
 
 - Percurso externo pelo eixo da estrada, evitando o pátio das caixas e da caixa-d’água.
