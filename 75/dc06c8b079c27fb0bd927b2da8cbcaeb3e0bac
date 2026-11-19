@@ -1,0 +1,50 @@
+RELEASE_NOTES.md
+  s_edfc50aef2ee58::t_32b379693dce37 1,7-9
+  s_edfc50aef2ee58::t_69271be36bb7cb 3,5
+package.json
+  s_edfc50aef2ee58::t_32b379693dce37 3
+tools/smoke_backend.py
+  s_edfc50aef2ee58::t_32b379693dce37 4,8
+README.md
+  s_edfc50aef2ee58::t_32b379693dce37 34,36
+aika_hunt_app/package.json
+  s_edfc50aef2ee58::t_32b379693dce37 3
+CHANGELOG.md
+  s_edfc50aef2ee58::t_32b379693dce37 3-11
+aika_hunt_app/package-lock.json
+  s_edfc50aef2ee58::t_84896032c3f32c 3,9
+ciclo_mina.py
+  s_edfc50aef2ee58::t_abe22d4c24dd48 79,93-95
+hunt_bridge.py
+  s_edfc50aef2ee58::t_f89f186417a2f7 24-38,74-76
+hunt_native.py
+  s_edfc50aef2ee58::t_9c62f6a615941b 59-60,148
+package-lock.json
+  s_edfc50aef2ee58::t_7009f5c9f18529 3,9
+test_monitor_inicializacao.py
+  s_edfc50aef2ee58::t_f60a5977aff9b2 1-44
+controle_avisos.py
+  s_edfc50aef2ee58::t_111fa994b2c084 4-8,15-27
+docs/MINA_LENFER.md
+  s_edfc50aef2ee58::t_64ee5557a98a22 23-26
+interface_mina.py
+  s_edfc50aef2ee58::t_55c99a96389577 15-17
+test_ciclo_mina.py
+  s_edfc50aef2ee58::t_40998195f4b59d 5,91-100
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.6",
+  "base_commit_sha": "75dc06c8b079c27fb0bd927b2da8cbcaeb3e0bac",
+  "prompts": {},
+  "sessions": {
+    "s_edfc50aef2ee58": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "01a1e01c-4c9b-7e00-b2fb-9c7ef8050eed",
+        "model": "unknown"
+      },
+      "human_author": "Gabriel Renovato <86806861+GabrielRenovato@users.noreply.github.com>"
+    }
+  }
+}
