@@ -1,5 +1,13 @@
 # Alterações
 
+## 0.1.0-beta.4 — 2026-11-19
+
+- Ciclo de buffs exclusivo: nenhum ataque, TAB ou navegação é enviado entre os cinco atalhos.
+- Dano recebido não libera ataques no meio da sequência. Cura de emergência, stun e fechamento de CTE/Elter mantêm prioridade.
+- Renovação mantém a pausa entre os vencimentos individuais de cada buff, sem renovar antes do prazo.
+- Retomada preserva a seleção e desconta a pausa dos prazos de combate e busca.
+- Testes simulam início, renovação durante combate, dano recebido e janela CTE durante os buffs. Validação no jogo ainda pendente.
+
 ## 0.1.0-beta.3 — 2026-11-19
 
 - Convites do CTE e da Arena Elter reconhecidos continuamente, por título ou texto do evento e confirmação dos botões.

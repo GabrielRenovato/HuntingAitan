@@ -36,7 +36,7 @@ class MorteSelecaoTeste(unittest.TestCase):
         self.assertTrue(c.aguardando_inicio(.2));self.assertFalse(c.aguardando_inicio(.41))
         c.observar(.3,.5,dict(ready=False));self.assertFalse(c.aguardando_inicio(.31))
 
-    def test_motor_para_rebuff_e_ataca_quando_toma_dano(self):
+    def test_motor_conclui_rebuff_antes_de_atacar_mesmo_recebendo_dano(self):
         import hunt_native as h
         from perfil_hunt import DEFAULT
         p=copy.deepcopy(DEFAULT);p.update(minimize_on_start=False,heal_enabled=False,hp_keys=['','',''],buff_gap=3)
@@ -57,7 +57,7 @@ class MorteSelecaoTeste(unittest.TestCase):
             if k=='ctrl':ctrl[0]=False
         def dormir(v):
             t[0]+=max(.001,v)
-            if t[0]>10:controle.stop.set()
+            if t[0]>20:controle.stop.set()
         def emitir(e):
             eventos.append(e)
             if e.get('message')=='Mob abatido; procurando o proximo.':controle.stop.set()
@@ -65,7 +65,8 @@ class MorteSelecaoTeste(unittest.TestCase):
         entrada=SimpleNamespace(PAUSE=0,keyDown=down,keyUp=up)
         with patch.dict(sys.modules,keyboard=SimpleNamespace(is_pressed=lambda k:False),pydirectinput=entrada),patch.object(h,'DadosInternos',Dados),patch.object(h.ctypes.windll,'user32',u),patch.object(h.threading,'Thread'),patch.object(h.time,'monotonic',lambda:t[0]),patch.object(h.time,'sleep',dormir):h.main(p,emitir,controle)
         self.assertEqual(hp_mob[0],0)
-        self.assertEqual([e['atalho'] for e in eventos if e.get('message')=='Atalho de buff enviado.'],['ctrl+1'])
+        self.assertEqual([e['atalho'] for e in eventos if e.get('message')=='Atalho de buff enviado.'],['ctrl+1','ctrl+2','ctrl+3','ctrl+4','ctrl+5'])
+        self.assertGreater(teclas.index('tab'),max(i for i,k in enumerate(teclas) if k=='ctrl'))
         self.assertIn('tab',teclas);self.assertFalse(ctrl[0])
 
 

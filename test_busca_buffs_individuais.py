@@ -38,7 +38,7 @@ class BuscaBuffsTeste(unittest.TestCase):
         self.assertFalse(executar_buff('ctrl+2',down,lambda k:eventos.append(('up',k)),lambda t:None,lambda:True))
         self.assertEqual(eventos[-1],('up','ctrl'))
 
-    def motor(self,buff):
+    def motor(self,buff,renovacao=False):
         import hunt_native as h
         from perfil_hunt import DEFAULT
         p=copy.deepcopy(DEFAULT);p.update(buffs_enabled=buff,heal_enabled=False,minimize_on_start=False,hp_keys=['','',''],buff_gap=3)
@@ -71,25 +71,39 @@ class BuscaBuffsTeste(unittest.TestCase):
             if k=='ctrl':ctrl[0]=False
         def dormir(v):
             t[0]+=max(.001,v)
-            if t[0]>15:c.stop.set()
+            if t[0]>30:c.stop.set()
         def emitir(e):
             eventos.append(e)
             if e.get('message')=='Mob abatido; procurando o proximo.':c.stop.set()
         u=MagicMock();u.GetWindowTextW.side_effect=lambda hwnd,buf,n:setattr(buf,'value','AikaClient')
         entrada=SimpleNamespace(PAUSE=0,keyDown=down,keyUp=up)
-        with patch.dict(sys.modules,keyboard=SimpleNamespace(is_pressed=lambda k:False),pydirectinput=entrada),patch.object(h,'DadosInternos',Dados),patch.object(h,'NavegadorLocal',Nav),patch.object(h.ctypes.windll,'user32',u),patch.object(h.threading,'Thread'),patch.object(h.time,'monotonic',lambda:t[0]),patch.object(h.time,'sleep',dormir):h.main(p,emitir,c)
+        with patch.dict(sys.modules,keyboard=SimpleNamespace(is_pressed=lambda k:False),pydirectinput=entrada),patch.object(h,'AgendaBuffs',lambda inicio,*args:AgendaBuffs(inicio+2 if renovacao else inicio,*args)),patch.object(h,'DadosInternos',Dados),patch.object(h,'NavegadorLocal',Nav),patch.object(h.ctypes.windll,'user32',u),patch.object(h.threading,'Thread'),patch.object(h.time,'monotonic',lambda:t[0]),patch.object(h.time,'sleep',dormir):h.main(p,emitir,c)
         self.assertEqual(hp[0],0);self.assertFalse(ctrl[0]);return eventos,teclas,navs
+
+    def test_renovacao_durante_luta_pausa_ataques_ate_ultimo_buff(self):
+        eventos,teclas,navs=self.motor(True,renovacao=True)
+        inicio=next(i for i,e in enumerate(eventos) if e.get('message')=='Ciclo de buffs iniciado; ataque, TAB e movimento suspensos.')
+        fim=next(i for i,e in enumerate(eventos) if e.get('message')=='Ciclo de buffs concluido; combate liberado com a selecao preservada.')
+        self.assertTrue(any(e.get('kind')=='normal' for e in eventos[:inicio]))
+        self.assertFalse(any(e.get('event')=='action' for e in eventos[inicio:fim]))
+        self.assertEqual(len([e for e in eventos[inicio:fim] if e.get('message')=='Atalho de buff enviado.']),5)
+        self.assertTrue(any(e.get('kind')=='normal' for e in eventos[fim:]))
+        self.assertEqual(sum(k=='tab' for _,k in teclas),1)
 
     def test_motor_aproxima_apos_oito_segundos_sem_alvo_e_retoma_combate(self):
         eventos,teclas,navs=self.motor(False)
         self.assertTrue(navs);self.assertGreaterEqual(navs[0],8)
         self.assertTrue(any(e.get('message') in ['Alvo confirmado apos aproximacao de busca.','Alvo confirmado por dados internos.'] for e in eventos))
 
-    def test_buff_vencido_consegue_janela_durante_luta_sem_esperar_proximo_abate(self):
+    def test_ciclo_buffs_nao_envia_tab_ou_ataques_entre_slots_mesmo_com_dano(self):
         eventos,teclas,navs=self.motor(True)
         self.assertIn('ctrl+2',[e.get('atalho') for e in eventos])
         instante_buff2=next(t for t,k in teclas if k=='2')
-        self.assertGreaterEqual(instante_buff2,5)
+        self.assertGreaterEqual(instante_buff2,3)
+        self.assertEqual([e['atalho'] for e in eventos if e.get('message')=='Atalho de buff enviado.'],['ctrl+1','ctrl+2','ctrl+3','ctrl+4','ctrl+5'])
+        fim=next(i for i,e in enumerate(eventos) if e.get('message')=='Ciclo de buffs concluido; combate liberado com a selecao preservada.')
+        self.assertFalse(any(e.get('event')=='action' for e in eventos[:fim]))
+        self.assertGreater(next(t for t,k in teclas if k=='tab'),max(t for t,k in teclas if k=='ctrl'))
         self.assertTrue(any(e.get('kind')=='normal' for e in eventos))
 
 

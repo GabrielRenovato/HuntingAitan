@@ -13,6 +13,23 @@ class TesteRebuff(unittest.TestCase):
    if i<4:self.assertIsNone(a.proximo(t+.5,True))
   self.assertFalse(a.em_andamento)
   self.assertIsNone(a.proximo(539,True));self.assertEqual(a.proximo(540,True),'ctrl+1')
+ def test_renovacao_mantem_ciclo_entre_vencimentos_individuais(self):
+  a=AgendaBuffs(0,K,intervalo=3)
+  for i,k in enumerate(K):
+   self.assertEqual(a.proximo(i*3,True),k);a.confirmar(i*3)
+  for i,k in enumerate(K):
+   self.assertEqual(a.proximo(540+i*3,True),k);a.confirmar(540+i*3)
+   if i<4:
+    self.assertTrue(a.em_andamento)
+    self.assertIsNone(a.proximo(541+i*3,True))
+    self.assertTrue(a.em_andamento)
+  self.assertFalse(a.em_andamento)
+ def test_falha_nao_remove_buff_pendente(self):
+  a=AgendaBuffs(0,K)
+  self.assertEqual(a.proximo(0,True),'ctrl+1')
+  self.assertIsNone(a.proximo(1,False))
+  self.assertTrue(a.em_andamento)
+  self.assertEqual(a.proximo(2,True),'ctrl+1')
  def test_nao_inicia_antes_do_foco_e_nao_reinicia_sequencia(self):
   a=AgendaBuffs(10,K)
   self.assertIsNone(a.proximo(9,True))

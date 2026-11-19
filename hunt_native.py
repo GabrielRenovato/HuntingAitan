@@ -111,14 +111,14 @@ def main(profile,event_sink,control):
         ultimo_hp=s['player']['hp'];ultimo_ferimento=-float('inf')
         navegador=NavegadorLocal();cc={};cc_em=0.;cc_desde=None;cc_log=False;cc_motivo=None;nav_log_em=-100.;aprox_pos=None;reaprox_id=None
         regional=BuscaRegional();indisponiveis={};mobs_regiao=None;pool_em=0.;nativo_em=0.;nativo_pausou=False;pool_erro_em=-100.
-        busca_destino=None;busca_ate=0.;reconhecer_buff_ate=0.;retorno_busca=False
+        busca_destino=None;busca_ate=0.;reconhecer_buff_ate=0.;retorno_busca=False;buff_pausa_desde=None
         recuperacao=RecuperacaoAlvo()
         cancelamento=CancelamentoNormal(p['cancel_normal'])
         log('Cancelamento de ataque normal experimental.',ativo=p['cancel_normal'])
         buffs=AgendaBuffs(inicio,p['buff_keys'],p['buff_minutes']*60,p['buff_gap'],p['buffs_enabled'])
         log('Rebuff programado.',ativo=p['buffs_enabled'],minutos=p['buff_minutes'],atalhos=p['buff_keys'])
         log('Habilidades ativas nesta sessao.',atalhos=list(cadencia.recargas))
-        log('Motor com recargas reais e cura prioritaria.',versao='janelas-3',cura=tecla_cura,hp_percent=p['hp_percent'])
+        log('Motor com recargas reais e cura prioritaria.',versao='buffs-exclusivos-4',cura=tecla_cura,hp_percent=p['hp_percent'])
         verificador=VerificadorMovimento(p['stationary_seconds']);suprimento_em={};item_em={};janela_pausa=None
         monitor=ObservadorAvisos(fim,ativo,log,bloqueio=modal_bloqueia)
         monitor.iniciar()
@@ -130,6 +130,7 @@ def main(profile,event_sink,control):
                 while not ativo() and not parar():time.sleep(.04)
                 decorrido=time.monotonic()-antes
                 if modal_desde is not None:modal_desde+=decorrido
+                if buff_pausa_desde is not None:buff_pausa_desde+=decorrido
                 vigia_ataque.suspender(time.monotonic())
                 if progresso:progresso.ultimo_dano+=decorrido
                 cancelamento=CancelamentoNormal(p['cancel_normal'])
@@ -172,6 +173,7 @@ def main(profile,event_sink,control):
                 esperar(.025);continue
             if modal_desde is not None:
                 duracao=agora_modal-modal_desde
+                if buff_pausa_desde is not None:buff_pausa_desde+=duracao
                 if progresso:progresso.ultimo_dano+=duracao
                 recuperacao.pausar(duracao);fim_busca+=duracao;busca_ate+=duracao
                 vigia_ataque.suspender(agora_modal)
@@ -228,7 +230,7 @@ def main(profile,event_sink,control):
                 soltar();heading=None;origem_mov=None;estado='selecionar';fim_busca=agora+p['no_damage_seconds']
                 log('Mobs validos na regiao; priorizando combate antes de retornar.',quantidade=len(mobs_regiao))
             if agora-ultima_telemetria>.15:
-                event_sink(dict(event='telemetry',controle=cc,heading=player.get('heading'),mobs_regiao=len(mobs_regiao) if mobs_regiao is not None else None,source='native',state='rebufar' if buffs.em_andamento and estado=='buscar' else estado,position=pos,base=base,hp=player['hp']/player['hp_max'],mp=player['mp']/player['mp_max'] if player['mp_max'] else None,elapsed=agora-inicio,next_buff_seconds=max(0,buffs.vencimento-agora) if p['buffs_enabled'] else None,next_buffs_seconds={k:round(max(0,v-agora),2) for k,v in buffs.vencimentos.items()} if p['buffs_enabled'] else {},target=target['name'] if target else None,target_id=target['id'] if target else None,target_hostile=target['hostile'] if target else None,target_distance=round(math.dist(target['position'],player['position']),2) if target else None,target_hp=target['hp'] if target else None,target_hp_max=target['hp_max'] if target else None));ultima_telemetria=agora
+                event_sink(dict(event='telemetry',controle=cc,heading=player.get('heading'),mobs_regiao=len(mobs_regiao) if mobs_regiao is not None else None,source='native',state='rebufar' if buffs.em_andamento or buff_pausa_desde is not None else estado,position=pos,base=base,hp=player['hp']/player['hp_max'],mp=player['mp']/player['mp_max'] if player['mp_max'] else None,elapsed=agora-inicio,next_buff_seconds=max(0,buffs.vencimento-agora) if p['buffs_enabled'] else None,next_buffs_seconds={k:round(max(0,v-agora),2) for k,v in buffs.vencimentos.items()} if p['buffs_enabled'] else {},target=target['name'] if target else None,target_id=target['id'] if target else None,target_hostile=target['hostile'] if target else None,target_distance=round(math.dist(target['position'],player['position']),2) if target else None,target_hp=target['hp'] if target else None,target_hp_max=target['hp_max'] if target else None));ultima_telemetria=agora
             if p['duration_minutes'] and agora-inicio>=p['duration_minutes']*60:
                 soltar();pulso(p['return_key']);log('Tempo de caca encerrado.');break
             if player['hp']<=0:soltar();log('Personagem sem vida; caca encerrada.');break
@@ -251,6 +253,7 @@ def main(profile,event_sink,control):
                     cc_log=True;cc_motivo=motivo_cc
                 esperar(.03);continue
             if cc_desde is not None:
+                if buff_pausa_desde is not None:buff_pausa_desde+=agora-cc_desde
                 if progresso:progresso.ultimo_dano+=agora-cc_desde
                 recuperacao.pausar(agora-cc_desde);cc_desde=None;cc_log=False
                 cancelamento=CancelamentoNormal(p['cancel_normal']);navegador.suspender(pos,agora)
@@ -278,13 +281,19 @@ def main(profile,event_sink,control):
                 soltar();esperar(.015);continue
             tranquilo=estado=='buscar' and agora-ultimo_ferimento>=3
             # Um buff vencido nao pode depender de toda a regiao ficar sem dano.
-            # Envia apenas um, entre acoes, com HP suficiente e fora de stun/cast.
+            # Inicia a sequencia entre acoes, com HP suficiente e fora de stun/cast.
             janela_curta=(estado=='combater' and target is not None and progresso is not None
                           and target['id']==progresso.id and hp_atual>=.5
                           and agora-ultimo_ferimento>=.5 and agora>=cadencia.livre_em
                           and agora>=buffs.vencimento+5)
-            seguro_buff=tranquilo or janela_curta
+            seguro_buff=buffs.em_andamento or tranquilo or janela_curta
             buff=buffs.proximo(agora,seguro_buff)
+            if (buffs.em_andamento or agora<reconhecer_buff_ate) and buff_pausa_desde is None:
+                buff_pausa_desde=agora
+                log('Ciclo de buffs iniciado; ataque, TAB e movimento suspensos.')
+            if buff_pausa_desde is not None:
+                vigia_ataque.suspender(agora);navegador.suspender(pos,agora)
+                verificador.observar(None,agora,False)
             if buff is not None:
                 soltar()
                 if executar_buff(buff,segurar,liberar,esperar,ativo):
@@ -294,8 +303,14 @@ def main(profile,event_sink,control):
                     log('Agenda individual de buffs atualizada.',vencimentos=buffs.vencimentos)
                     if not buffs.em_andamento:log('Buffs vencidos enviados; cada atalho tem sua propria renovacao de '+str(p['buff_minutes'])+' minutos.')
                 continue
-            if buffs.em_andamento and tranquilo:
+            if buffs.em_andamento:
                 soltar();esperar(.02);continue
+            if buff_pausa_desde is not None:
+                decorrido=agora-buff_pausa_desde
+                if progresso:progresso.ultimo_dano+=decorrido
+                recuperacao.pausar(decorrido);fim_busca+=decorrido;busca_ate+=decorrido
+                cancelamento=CancelamentoNormal(p['cancel_normal']);buff_pausa_desde=None
+                log('Ciclo de buffs concluido; combate liberado com a selecao preservada.')
             if math.dist(pos,trilha[-1])>=1.5 and estado!='retornar':trilha.append(pos)
             def seguir_grade(destino,chave,alcance):
                 nonlocal nav_log_em

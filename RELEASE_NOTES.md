@@ -1,12 +1,10 @@
-Correcao dos avisos que bloqueiam o combate, incluindo CTE e Arena Elter.
+Correção do ataque durante o ciclo de buffs.
 
-- Verificacao continua, inclusive na janela de horario do minuto 57.
-- Pausa das entradas antes de fechar o aviso.
-- Cancelar reconfirmado por captura atual; retomada somente depois de duas imagens sem a janela.
-- Monitor recupera falhas temporarias de captura em vez de parar de vigiar.
-- Leitura do texto dos convites e modelos ja incluidos no instalador.
-- Conversas de amigo continuam sendo fechadas pelo mesmo monitor.
+- Ataque, busca com TAB e navegação ficam suspensos durante toda a sequência dos cinco buffs, inclusive nos intervalos.
+- Receber dano não interrompe a sequência para atacar. Cura de emergência, stun e fechamento de CTE/Elter continuam prioritários.
+- Depois dos buffs, o combate retoma preservando a seleção.
+- Renovação respeita os prazos individuais de cada atalho.
 
-A captura real anterior do CTE foi reconhecida. A Arena foi validada em imagem sintetica e testes de escala/posicao; ainda falta confirmar uma aparicao real. Janelas desconhecidas nao recebem clique automatico. Detalhes em docs/JANELAS.md.
+Fluxos validados em testes simulados; o comportamento no jogo ainda precisa ser confirmado.
 
-Baixe HuntingAitan-Setup-0.1.0-beta.3-x64.exe ou atualize pela versao instalada. Configuracoes e a calibracao dos ataques sao preservadas.
+Baixe HuntingAitan-Setup-0.1.0-beta.4-x64.exe ou use a atualização do aplicativo. Configurações preservadas.

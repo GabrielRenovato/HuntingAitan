@@ -3,10 +3,11 @@ from types import SimpleNamespace
 from unittest.mock import patch,MagicMock
 
 class PrioridadeJanelaTeste(unittest.TestCase):
-    def simular(self,morrer=False):
+    def simular(self,morrer=False,buffs=False):
         import hunt_native as h
+        import avisos_hunt  # Carrega OpenCV antes de simular o relogio do motor.
         from perfil_hunt import DEFAULT
-        p=copy.deepcopy(DEFAULT);p.update(buffs_enabled=False,heal_enabled=False,minimize_on_start=False,hp_keys=['','',''])
+        p=copy.deepcopy(DEFAULT);p.update(buffs_enabled=buffs,heal_enabled=False,minimize_on_start=False,hp_keys=['','',''])
         for s in p['skills']:s['enabled']=False
         c=SimpleNamespace(stop=threading.Event(),pause=threading.Event());t=[0.];hp=[100];eventos=[];teclas=[];mouse=[];clicou=[False]
         def alvo():return dict(ref=1,id=4093,name='Verit Mutante',hp=hp[0],hp_max=100,mp=0,mp_max=0,position=(2,0),height=0,hostile=True)
@@ -26,7 +27,7 @@ class PrioridadeJanelaTeste(unittest.TestCase):
             if k=='1' and t[0]>=3:hp[0]=0
         def dormir(s):
             t[0]+=max(.001,s)
-            if t[0]>8:c.stop.set()
+            if t[0]>15:c.stop.set()
         def emitir(e):
             eventos.append(e)
             if e.get('message')=='Mob abatido; procurando o proximo.':c.stop.set()
@@ -44,6 +45,16 @@ class PrioridadeJanelaTeste(unittest.TestCase):
         self.assertTrue(any(tempo>=3 and key=='1' for tempo,key in teclas))
         self.assertEqual([k for tempo,k in teclas].count('tab'),1)
         self.assertTrue(any(e.get('message','').startswith('Fechamento confirmado em duas capturas;') for e in eventos))
+        self.assertEqual(hp,0)
+
+    def test_modal_interrompe_buffs_e_sequencia_retoma_antes_dos_ataques(self):
+        eventos,teclas,mouse,hp=self.simular(buffs=True)
+        self.assertEqual(len(mouse),1)
+        self.assertFalse(any(1<=tempo<3 for tempo,key in teclas))
+        self.assertEqual([e['atalho'] for e in eventos if e.get('message')=='Atalho de buff enviado.'],['ctrl+1','ctrl+2','ctrl+3','ctrl+4','ctrl+5'])
+        fim=next(i for i,e in enumerate(eventos) if e.get('message')=='Ciclo de buffs concluido; combate liberado com a selecao preservada.')
+        self.assertFalse(any(e.get('event')=='action' for e in eventos[:fim]))
+        self.assertGreater(next(tempo for tempo,key in teclas if key=='tab'),max(tempo for tempo,key in teclas if key=='ctrl'))
         self.assertEqual(hp,0)
 
     def test_hp_e_morte_continuam_observados_enquanto_fecha_aviso(self):

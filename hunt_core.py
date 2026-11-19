@@ -54,23 +54,27 @@ class VerificadorMovimento:
 class AgendaBuffs:
     def __init__(self,inicio,teclas,periodo=540,intervalo=2,ativo=True):
         self.teclas=list(teclas);self.periodo=periodo;self.intervalo=intervalo;self.ativo=ativo
-        self.vencimentos={k:inicio for k in self.teclas};self.indice=None;self.proxima_acao=0
+        self.vencimentos={k:inicio for k in self.teclas};self.indice=None;self.proxima_acao=0;self.pendentes=[]
     @property
     def vencimento(self):return min(self.vencimentos.values(),default=float('inf'))
     @property
     def em_andamento(self):return self.indice is not None
     def proximo(self,agora,seguro):
         if not self.ativo or not seguro:return None
-        if agora<self.proxima_acao:return None
-        vencidas=[i for i,k in enumerate(self.teclas) if self.vencimentos[k]<=agora]
-        if not vencidas:self.indice=None;return None
-        self.indice=min(vencidas,key=lambda i:self.vencimentos[self.teclas[i]])
+        if not self.pendentes:
+            if agora<self.vencimento:return None
+            # Agrupa os slots da mesma sequencia de renovacao. Cada slot
+            # conserva seu vencimento; a exclusividade cobre os intervalos.
+            limite=agora+self.intervalo*max(0,len(self.teclas)-1)+1
+            self.pendentes=sorted((i for i,k in enumerate(self.teclas) if self.vencimentos[k]<=limite),key=lambda i:self.vencimentos[self.teclas[i]])
+            self.indice=self.pendentes[0]
+        if agora<self.proxima_acao or agora<self.vencimentos[self.teclas[self.indice]]:return None
         return self.teclas[self.indice]
     def confirmar(self,agora):
         self.vencimentos[self.teclas[self.indice]]=agora+self.periodo
         self.proxima_acao=agora+self.intervalo
-        vencidas=[i for i,k in enumerate(self.teclas) if self.vencimentos[k]<=agora]
-        self.indice=min(vencidas,key=lambda i:self.vencimentos[self.teclas[i]]) if vencidas else None
+        self.pendentes.remove(self.indice)
+        self.indice=self.pendentes[0] if self.pendentes else None
 
 
 def executar_buff(atalho,pressionar,liberar,esperar,permitido):
