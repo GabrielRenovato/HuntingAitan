@@ -32,6 +32,7 @@ class ProgressoNativo:
     def __init__(self,alvo,agora):
         self.ref=alvo['ref'];self.id=alvo['id'];self.nome=nome_normal(alvo['name']);self.hp=alvo['hp'];self.posicao=alvo.get('position');self.nome_original=alvo['name']
         self.ultimo_dano=agora;self.dano=False;self.zero_desde=None;self.leituras_zero=0
+        self.abertura_enviada=False
     def observar(self,alvo,agora):
         if alvo is None:return 'ausente'
         if alvo['id']!=self.id or nome_normal(alvo['name'])!=self.nome:return 'outro'
@@ -250,7 +251,7 @@ def main(profile,event_sink,control,percurso=None):
                     mobs_regiao=[m for m in lista if m['id'] not in indisponiveis and alvo_permitido(m,player,base,p)]
                     if mina:mobs_regiao=circuito.filtrar_mobs(mobs_regiao,pos,p['radius'])
                     if percurso is not None:mobs_regiao=percurso.filtrar_mobs(mobs_regiao,pos,agora)
-                    regional.atualizar(mobs_regiao);pool_em=agora+.4
+                    regional.atualizar(mobs_regiao);pool_em=agora+(.2 if mina else .4)
                 except RuntimeError as e:
                     soltar();mobs_regiao=None
                     if agora-pool_erro_em>=5:log('Aguardando lista de mobs valida.',detail=str(e));pool_erro_em=agora
@@ -557,7 +558,10 @@ def main(profile,event_sink,control,percurso=None):
                         vigia_ataque.suspender(agora)
                     cadencia.normal_em=min(cadencia.normal_em,agora)
                 if verificador.observar(pos,agora,not progresso.dano and math.dist(pos,target['position'])>3):pulso(p['unstuck_key']);log('Sem deslocamento; tecla de recuperacao enviada.')
-                tecla=cadencia.escolher(agora,True,progresso.dano and agora-progresso.ultimo_dano<2.5,target['hp']/target['hp_max'],em_alcance=math.dist(pos,target['position'])<=2.4,recargas_reais=cc.get('recargas_atalhos'))
+                em_alcance=math.dist(pos,target['position'])<=2.4
+                abrir_normal=mina and not progresso.abertura_enviada and cc.get('normal_ready') is not False
+                if abrir_normal and em_alcance and cc.get('normal_ready') is True:cadencia.normal_em=min(cadencia.normal_em,agora)
+                tecla=cadencia.escolher(agora,True,progresso.dano and agora-progresso.ultimo_dano<2.5,target['hp']/target['hp_max'],em_alcance=em_alcance,recargas_reais=cc.get('recargas_atalhos'),iniciar_normal=abrir_normal)
                 if tecla=='1' and cc.get('normal_ready') is False:tecla=None
                 item=False
                 if agora>=cadencia.livre_em:
@@ -580,7 +584,7 @@ def main(profile,event_sink,control,percurso=None):
                     real=cc.get('recargas_atalhos',{}).get(tecla)
                     event_sink(dict(event='action',key=p['attack_key'] if tecla=='1' else tecla,kind='normal' if tecla=='1' else 'skill',target_id=target['id'],normal_cooldown=cc.get('normal_cooldown'),skill_state=real,combo_w=timing['ordem'] if combo else None,combo_timing=timing if combo else None))
                     cadencia.registrar(tecla,inicio_envio if combo and tecla=='1' else time.monotonic(),intervalo_normal=.17 if combo and tecla=='1' else None)
-                    if tecla=='1':vigia_ataque.enviado()
+                    if tecla=='1':vigia_ataque.enviado();progresso.abertura_enviada=True
                     cancelamento.acao(tecla=='1',time.monotonic(),cadencia.livre_em)
                     if tecla!='1':log('Tecla de habilidade enviada.',tecla=tecla,intervalo=cadencia.recargas[tecla],recarga_real=real)
                 esperar(.015);continue

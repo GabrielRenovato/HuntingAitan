@@ -1,5 +1,12 @@
 # Alterações
 
+## 0.1.0-beta.11 — 2026-11-19
+
+- Início do ciclo da Mina sem carregar antecipadamente as bibliotecas de reconhecimento do portal.
+- Busca de hostis comuns a até 12 unidades caminháveis, preservando o alcance de Malik.
+- Atualização dos candidatos a cada 200 ms e abertura com ataque normal ao chegar ao alcance.
+- Intervalos, recargas, cura, buffs exclusivos e retorno externo sem caça preservados.
+
 ## 0.1.0-beta.10 — 2026-11-19
 
 - Modo Mina L’Enfer → Malik: caminho direto da posição atual até a sala final, com combate no trajeto.

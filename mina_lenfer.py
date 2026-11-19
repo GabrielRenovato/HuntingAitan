@@ -37,6 +37,10 @@ class MinaLenfer:
     def filtrar_mobs(self,mobs,pos,raio):
         if not mobs:return []
         if self.grade is None:raise RuntimeError('Grade da Mina ainda nao conferida.')
+        # Segue o corredor em vez de interromper a marcha para perseguir
+        # mobs distantes. Malik conserva o alcance configurado.
+        chefe_presente=any(normalizar(m['name']).startswith('malik') for m in mobs)
+        raio=min(raio,50 if chefe_presente else 12)
         origem=self.grade.celula(pos);chave=(origem,raio)
         if chave!=self.custo_origem:
             custos={origem:0.};fila=[(0.,origem)];vistos=set()
@@ -54,10 +58,11 @@ class MinaLenfer:
             malik=normalizar(m['name']).startswith('malik')
             # O objetivo e chegar ao chefe. Evita abandonar a rota para limpar
             # salas laterais; Malik tem prioridade quando for reconhecido.
-            if not malik and min(distancia_segmento(m['position'],a,b) for a,b in zip(self.rota_planejada,self.rota_planejada[1:]))>12:continue
+            distancia_rota=min((distancia_segmento(m['position'],a,b) for a,b in zip(self.rota_planejada,self.rota_planejada[1:])),default=math.dist(m['position'],self.rota_planejada[0]))
+            if not malik and distancia_rota>12:continue
             c=self.grade.celula(m['position'])
             custo=min((self.custos.get((c[0]+dx,c[1]+dy),float('inf')) for dx in range(-2,3) for dy in range(-2,3) if dx*dx+dy*dy<=4),default=float('inf'))
-            if custo<=raio:validos.append(m)
+            if custo<=min(raio,50 if malik else 12):validos.append(m)
         chefes=[m for m in validos if normalizar(m['name']).startswith('malik')]
         return chefes or validos
 

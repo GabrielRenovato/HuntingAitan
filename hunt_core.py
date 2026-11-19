@@ -12,8 +12,9 @@ class CadenciaCombate:
                        config.get('recargas',{'2':6,'3':8,'4':10,'5':12,'6':15,'7':20}).items()}
         self.pronta_em={};self.livre_em=0.;self.normal_em=0.;self.ultimo_envio={}
 
-    def escolher(self,agora,alvo_valido,dano_recente,vida,em_alcance=None,recargas_reais=None):
+    def escolher(self,agora,alvo_valido,dano_recente,vida,em_alcance=None,recargas_reais=None,iniciar_normal=False):
         if not alvo_valido or vida<=0 or agora<self.livre_em:return None
+        if iniciar_normal and em_alcance and agora>=self.normal_em:return '1'
         skills_liberadas=(dano_recente and vida>.12) if em_alcance is None else (dano_recente or em_alcance)
         if skills_liberadas:
             disponiveis=[]

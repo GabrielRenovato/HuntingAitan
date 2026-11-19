@@ -7,6 +7,12 @@ from perfil_hunt import validar,DEFAULT
 from test_navegacao_grade import grade
 
 class MinaTeste(unittest.TestCase):
+    def test_hostil_distante_nao_interrompe_rota_mas_malik_preserva_alcance(self):
+        m=MinaLenfer((2850,3344));m.grade=grade(45,8);m.rota_planejada=[(1.5,1.5),(40.5,1.5)]
+        mobs=[dict(id=1,name='Soldado',position=(6.5,1.5)),dict(id=2,name='Soldado',position=(21.5,1.5))]
+        self.assertEqual([v['id'] for v in m.filtrar_mobs(mobs,(1.5,1.5),50)],[1])
+        mobs.append(dict(id=3,name='Malik',position=(25.5,1.5)))
+        self.assertEqual([v['id'] for v in m.filtrar_mobs(mobs,(1.5,1.5),50)],[3])
     def test_ulman_abatido_nao_conclui_objetivo_malik(self):
         m=MinaLenfer((2850,3344));pos=m.pontos[-1]['pos']
         self.assertIsNone(m.registrar_abate(1,'Ulman Super Fisico',pos,0))

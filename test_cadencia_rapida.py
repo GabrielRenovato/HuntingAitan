@@ -3,6 +3,16 @@ from hunt_core import CadenciaCombate
 from perfil_hunt import validar,DEFAULT
 
 class CadenciaRapidaTeste(unittest.TestCase):
+ def test_abertura_normal_tem_prioridade_em_alcance_sem_ignorar_intervalo(self):
+  c=CadenciaCombate({'recargas':{'2':150}})
+  self.assertEqual(c.escolher(0,True,False,1,em_alcance=True,iniciar_normal=True),'1')
+  c.registrar('1',0)
+  self.assertIsNone(c.escolher(.1,True,False,1,em_alcance=True,iniciar_normal=True))
+  self.assertEqual(c.escolher(.12,True,False,1,em_alcance=True,iniciar_normal=False),'2')
+ def test_abertura_nao_ataca_alvo_morto_ou_invalido(self):
+  c=CadenciaCombate({})
+  self.assertIsNone(c.escolher(0,False,False,1,True,iniciar_normal=True))
+  self.assertIsNone(c.escolher(0,True,False,0,True,iniciar_normal=True))
  def test_skill_em_alcance_nao_espera_primeiro_dano(self):
   c=CadenciaCombate({'recargas':{'4':15}})
   self.assertEqual(c.escolher(0,True,False,1,em_alcance=True),'4')

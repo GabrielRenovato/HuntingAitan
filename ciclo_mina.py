@@ -65,7 +65,6 @@ def main(perfil,emitir,control):
     import keyboard
     from dados_internos import DadosInternos
     from hunt_native import main as executar
-    from operacoes_mina import sair_grupo,entrar_elite
     inicio=time.monotonic();fim=threading.Event();control.cycle_context=True
     def evento(e):
         if e.get('event')=='telemetry':e=dict(e,elapsed=time.monotonic()-inicio)
@@ -76,7 +75,11 @@ def main(perfil,emitir,control):
             p=d.snapshot()['player']
             return dict(position=p['position'],hp=p['hp']/p['hp_max'],pasta=d.caminho.parent)
         finally:d.close()
-    def operacao(fn):
+    def operacao(nome):
+        # Carrega reconhecimento visual somente ao chegar a uma interface.
+        # Importar OpenCV aqui no inicio atrasava a primeira navegacao.
+        import operacoes_mina
+        fn=getattr(operacoes_mina,nome)
         d=DadosInternos()
         try:return fn(d,control,evento)
         finally:d.close()
@@ -85,9 +88,10 @@ def main(perfil,emitir,control):
             if keyboard.is_pressed('f12'):control.reason='F12';control.stop.set();return
             if perfil['duration_minutes'] and time.monotonic()-inicio>=perfil['duration_minutes']*60:
                 control.reason='tempo_encerrado';control.stop.set();return
-    ciclo=CicloMina(perfil,control,evento,contexto,executar,lambda:operacao(sair_grupo),lambda:operacao(entrar_elite))
+    ciclo=CicloMina(perfil,control,evento,contexto,executar,lambda:operacao('sair_grupo'),lambda:operacao('entrar_elite'))
     threading.Thread(target=vigiar,daemon=True).start()
     try:
+        emitir(dict(event='status',state='initializing',message='Conferindo posicao para iniciar o ciclo da Mina.'))
         if perfil['minimize_on_start'] and not control.stop.is_set() and not control.pause.is_set():
             d=DadosInternos()
             try:

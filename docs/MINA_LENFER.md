@@ -16,7 +16,9 @@ Na conferência ao vivo de 19/11/2026, a posição de entrada foi 2850,3999 / 33
 
 O caminho estático desde a entrada tem 534 células e aproximadamente 560,75 unidades na grade. O arquivo `mina_lenfer_rota.json` contém a referência e os SHA-256 necessários. Ao iniciar em outro ponto da mesma área, o caminho é recalculado. A execução também reconfirma a grade carregada, inclusive diante de objetos ou bloqueios dinâmicos.
 
-Monstros fora da faixa do trajeto são desconsiderados. A distância caminhável na grade filtra alvos próximos em linha reta mas separados por paredes. Ao reconhecer Malik, a busca prioriza esse alvo. Atordoamento, cura, buffs exclusivos, recargas e fechamento de avisos usam o motor já existente.
+Monstros fora da faixa do trajeto são desconsiderados. A busca dos mobs comuns fica limitada a 12 unidades caminháveis, para seguir o caminho sem interromper a marcha para perseguir alvos a 20–50 unidades. Malik conserva o alcance configurado. A distância caminhável na grade filtra alvos separados por paredes. Ao reconhecer Malik, a busca prioriza esse alvo. A lista é atualizada a cada 200 ms fora de combate. Ao chegar ao alcance, abre a luta com ataque normal e depois libera as habilidades, respeitando recargas, execução e intervalos. Atordoamento, cura, buffs exclusivos e fechamento de avisos mantêm prioridade.
+
+O início do ciclo não carrega mais o reconhecimento visual do portal antes da navegação. Esse carregamento antecipado atrasava a inicialização no executável instalado. O painel informa a conferência de posição antes da primeira etapa.
 
 ## Conclusão
 
