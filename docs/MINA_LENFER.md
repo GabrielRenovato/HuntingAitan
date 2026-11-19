@@ -42,6 +42,12 @@ A entrada reconhece o nome do portal, a opção da primeira área, Elite e os bo
 
 O retorno está limitado à região do save validada junto à entrada. Saves de outros mapas, cliente alterado ou ausência de passagem produzem erro explícito, sem navegação às cegas. Morte e parada manual encerram o ciclo.
 
+### Caixas na passagem externa
+
+As caixas e barris perto de 2713,1682 têm colisão que não aparece como bloqueio do chão nessa grade. O percurso e a condução reservam a faixa livre em 2709–2712, entre Y=1679 e Y=1687. Assim, a curva começa antes dos objetos. Se a navegação já começar encostada nesse canto, usa um recuo validado para alcançar o lado livre.
+
+Em outros bloqueios físicos do retorno, a falta de deslocamento com avanço enviado informa o ponto tentado. O controlador volta a uma passagem já percorrida, exclui temporariamente uma pequena área à frente e calcula outro caminho. A revisão muda a referência de navegação, evitando repetir indefinidamente a mesma rota. Essa recuperação é restrita ao retorno externo; a navegação da DG e do circuito de Termes mantém o comportamento anterior.
+
 ## Verificação ao vivo de 19/11/2026
 
 O motor chegou ao final e confirmou Malik (59.480 HP máximos) por vida zero, seguido da verificação da área. Em testes sequenciais das transições, saiu pelo menu do grupo, confirmou a chegada ao save em 2628,4 / 1792,4, caminhou aproximadamente 227,3 unidades até o portal e entrou novamente na primeira área.

@@ -367,7 +367,10 @@ def main(profile,event_sink,control,percurso=None):
                     soltar()
                     if agora-nav_log_em>=3:log('Aguardando grade valida antes de mover.',detail=str(e));nav_log_em=agora
                     return 'aguardar_grade'
-                if percurso is not None:percurso.observar_navegacao(pos,agora,plano)
+                if percurso is not None and percurso.observar_navegacao(pos,agora,plano):
+                    soltar();navegador.invalidar()
+                    log('Bloqueio fisico no retorno; recuando por passagem validada e seguindo novo caminho.',posicao=pos)
+                    return 'replanejar'
                 if plano['estado']!='andando':
                     soltar()
                     if plano['estado'] in ['sem_caminho','bloqueado','replanejar'] and agora-nav_log_em>=1:

@@ -2,7 +2,8 @@ import copy,sys,threading,unittest
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import MagicMock,patch
-from entrada_mina import EntradaMina,PORTAL
+from entrada_mina import EntradaMina,PORTAL,passagem_caixas
+from test_navegacao_grade import grade
 from perfil_hunt import DEFAULT
 
 
@@ -10,11 +11,42 @@ def percurso(rota=None):
     m=EntradaMina.__new__(EntradaMina)
     m.rota=rota or [(2708.,1611.),PORTAL];m.bloqueadores=set();m.bloqueio_em=-float('inf')
     m.trechos=[dict(ate='entrada',caminho=m.rota)];m.trecho=0;m.voltas=0;m.indice=0
+    m.trilha=[tuple(m.rota[0])];m.obstaculos=[];m.recuo=None;m.revisao=0
     return m
 
 
 class EntradaTeste(unittest.TestCase):
     def mob(self,id_,pos):return dict(id=id_,position=pos)
+
+    def test_rota_se_afasta_do_ponto_real_das_caixas(self):
+        self.assertFalse(passagem_caixas((2713.124,1682.123)))
+        self.assertTrue(passagem_caixas((2711.5,1682.5)))
+        self.assertTrue(passagem_caixas((2713.5,1677.5)))
+        m=percurso([(2710.5,1686.5),(2711.5,1680.5),(2713.5,1677.5)])
+        self.assertFalse(m.contem((2713.124,1682.123)))
+        self.assertTrue(m.contem((2711.5,1682.5)))
+
+    def test_ja_preso_nas_caixas_recuar_para_o_lado_livre(self):
+        m=percurso([(2710.5,1686.5),(2711.5,1680.5),(2713.5,1677.5)])
+        a=m.destino((2713.124,1682.123),0)
+        self.assertEqual(a['chave'][1],'recuo_entrada')
+        self.assertLess(a['destino'][0],2712)
+        self.assertGreater(a['destino'][1],1682.123)
+
+    def test_colisao_real_recuar_e_planejar_rota_diferente(self):
+        m=percurso([(1.5,4.5),(17.5,4.5)]);m.grade=grade(20,12);m.trilha=[(1.5,4.5),(2.5,4.5),(4.5,4.5)]
+        with patch('entrada_mina.PORTAL',(17.5,4.5)):
+            self.assertTrue(m.observar_navegacao((4.5,4.5),2,dict(estado='replanejar',ponto=(10.5,4.5))))
+            self.assertEqual(m.recuo,(2.5,4.5));self.assertEqual(m.revisao,1)
+            self.assertTrue(all(m.passagem(p) for p in m.rota))
+            self.assertFalse(m.passagem((6.3,4.5)))
+            self.assertEqual(m.destino((4.5,4.5),3)['destino'],(2.5,4.5))
+            self.assertEqual(m.destino((2.5,4.5),4)['chave'],('circuito','entrada',1))
+
+    def test_parado_sem_tentativa_de_andar_nao_cria_obstaculo(self):
+        m=percurso();m.grade=grade(20,12)
+        self.assertFalse(m.observar_navegacao((4.5,4.5),2,dict(estado='andando',w=False,ponto=(10.5,4.5))))
+        self.assertEqual(m.obstaculos,[])
 
     def test_ignora_mobs_no_caminho_mesmo_se_navegacao_bloquear(self):
         m=percurso();pos=(2670,1700);m.observar_navegacao(pos,10,dict(estado='bloqueado'))

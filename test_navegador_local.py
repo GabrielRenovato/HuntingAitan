@@ -3,6 +3,11 @@ from navegador_local import NavegadorLocal
 from test_navegacao_grade import grade
 
 class NavegadorTeste(unittest.TestCase):
+ def test_bloqueio_informa_o_ponto_para_planejar_desvio(self):
+  n=NavegadorLocal(lambda d,p:grade(14,14))
+  n.planejar(None,(1.5,1.5),90,(10.5,1.5),'a',0)
+  r=n.planejar(None,(1.5,1.5),90,(10.5,1.5),'a',2.1)
+  self.assertEqual(r['estado'],'replanejar');self.assertGreater(r['ponto'][0],1.5)
  def test_posicao_descentrada_na_quina_nao_para_sem_comando(self):
   n=NavegadorLocal(lambda d,p:grade(12,12,[(9,8)]))
   r=n.planejar(None,(8.978854,8.449965),14.2632,(10.5,10.5),'a',0)

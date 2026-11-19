@@ -67,7 +67,7 @@ class NavegadorLocal:
         if not andar:self.ancorar(pos,agora)
         if andar and agora-self.ancora_em>=2.:
             self.falhas+=1;self.ancora_em=agora;self.invalidar()
-            return self.parar('bloqueado' if self.falhas>=3 else 'replanejar',tentativa=self.falhas)
+            return self.parar('bloqueado' if self.falhas>=3 else 'replanejar',tentativa=self.falhas,ponto=ponto)
         self.movendo=andar
         sentido='d' if erro>0 else 'a'
         if abs(erro)<=3 or (self.virando is not None and self.virando!=sentido):self.virando=None

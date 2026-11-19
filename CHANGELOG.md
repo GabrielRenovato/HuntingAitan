@@ -1,5 +1,12 @@
 # Alterações
 
+## 0.1.0-beta.13 — 2026-11-19
+
+- Retorno ao portal desvia do canto das caixas e barris em 2713,1682.
+- Colisão física confirmada gera recuo para passagem conhecida e um novo caminho, com exclusão temporária da área bloqueada.
+- A recuperação muda a referência de navegação para evitar insistir indefinidamente na mesma tentativa.
+- Busca e combate no retorno continuam restritos aos bloqueadores junto da entrada.
+
 ## 0.1.0-beta.12 — 2026-11-19
 
 - Corrige travamento do executável nas transições de entrada e saída da Mina.
