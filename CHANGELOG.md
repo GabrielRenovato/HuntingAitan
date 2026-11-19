@@ -1,5 +1,12 @@
 # Alterações
 
+## 0.1.0-beta.7 — 2026-11-19
+
+- Circuito de Penza alterado para os pontos 4, 5, 6, 7, 8 e 9 do novo recorte.
+- Ordem de ida: 6 → 5 → 4 → 7 → 8 → 9; retorno pelos mesmos pontos.
+- Dez passagens recalculadas e verificadas nos arquivos de colisão e altura.
+- Orientações do painel e testes atualizados para a nova região.
+
 ## 0.1.0-beta.6 — 2026-11-19
 
 - Circuito Penza de Termes selecionável no painel, seguindo 3 → 2 → 12 → 18 → 17 e retornando pela mesma faixa.

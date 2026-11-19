@@ -34,7 +34,7 @@ def main():
             linhas,_=detector.ocr(teste)
             if tipo_convite([(l[1],float(l[2])) for l in linhas or []])!='arena_elter':raise RuntimeError('OCR empacotado nao reconheceu a amostra de teste')
             from circuito_termes import plano,dentro_regiao
-            if len(plano()['trechos'])!=8 or not dentro_regiao((2752,635)):raise RuntimeError('Circuito nao incluido no motor')
+            if len(plano()['trechos'])!=2*(len(plano()['pontos'])-1) or not dentro_regiao((2585,654)):raise RuntimeError('Circuito nao incluido no motor')
             r=dict(backend=True,templates=True,ocr=True,circuito=True)
         elif modo=='validate':r=validar(d)
         elif modo=='position':

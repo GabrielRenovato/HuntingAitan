@@ -4,7 +4,7 @@ from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from navegacao_grade import Grade
 
-PONTOS=[(3,(2652,629)),(2,(2700,630)),(12,(2752,635)),(18,(2840,637)),(17,(2889,614))]
+PONTOS=[(6,(2584,587)),(5,(2585,654)),(4,(2577,674)),(7,(2592,697)),(8,(2584,712)),(9,(2612,748))]
 
 def validar(pasta):
     nomes=['Env/AttributeS01.dat','Env/z01.hgt']
@@ -12,14 +12,15 @@ def validar(pasta):
     if len(atributos)!=4096*4096*2 or len(alturas)!=4+4096*4096*2 or struct.unpack_from('<I',alturas)[0]!=1:
         raise ValueError('Formato do terreno diferente do validado.')
     # Os arquivos por tile comprovam a orientacao e o encaixe da grade global.
-    for tx in range(10,12):
+    for tx in range(min(p[0] for _,p in PONTOS)//256,max(p[0] for _,p in PONTOS)//256+1):
         for ext,global_,skip in [('att',atributos,0),('hgt',alturas,4)]:
             nome=f'Env/z01{tx:02d}02.{ext}';tile=(Path(pasta)/nome).read_bytes()
             if len(tile)!=256*256*2:raise ValueError('Tile com tamanho inesperado: '+nome)
             for y in range(256):
                 off=skip+((2*256+y)*4096+tx*256)*2
                 if tile[y*512:(y+1)*512]!=global_[off:off+512]:raise ValueError('Orientacao do tile divergente: '+nome)
-    x0,y0,x1,y1=2620,580,2920,680;w=x1-x0+1;flags=bytearray();hs=[]
+    x0=min(p[0] for _,p in PONTOS)-30;y0=min(p[1] for _,p in PONTOS)-30
+    x1=max(p[0] for _,p in PONTOS)+30;y1=max(p[1] for _,p in PONTOS)+30;w=x1-x0+1;flags=bytearray();hs=[]
     for y in range(y0,y1+1):
         off=(y*4096+x0)*2;flags.extend(atributos[off:off+w*2:2]);hs.extend(struct.unpack_from('<'+'h'*w,alturas,off+4))
     grade=Grade((0,0),(x0,y0),w,y1-y0+1,bytes(flags),tuple(hs),1)

@@ -1,13 +1,13 @@
 # Circuito Penza de Termes
 
 No painel, abra **Comportamento → Modo de caça → Circuito Penza · Termes**.
-Comece dentro da faixa, por exemplo perto de **2652, 629** ou **2752, 635**.
+Comece dentro da faixa, por exemplo perto de **2584, 587** ou **2592, 697**.
 O modo seleciona somente **Penza Poderosa Mutante**. A caça em torno da base
 continua disponível como modo separado e permanece padrão nas instalações existentes.
 
-O circuito percorre **3 → 2 → 12 → 18 → 17 → 18 → 12 → 2 → 3** e repete.
-A entrada pode ocorrer perto de qualquer trecho da faixa; não exige voltar ao ponto 3.
-Os destinos são 2652,629; 2700,630; 2752,635; 2840,637; 2889,614.
+O circuito percorre **6 → 5 → 4 → 7 → 8 → 9 → 8 → 7 → 4 → 5 → 6** e repete.
+A entrada pode ocorrer perto de qualquer trecho da faixa; não exige voltar ao ponto 6.
+Os destinos são 2584,587; 2585,654; 2577,674; 2592,697; 2584,712; 2612,748.
 O personagem aguarda cinco segundos em cada parada e procura candidatos pela lista
 de entidades carregadas. O alcance configurado limita a distância de seleção ao
 personagem. A região permitida acompanha o trajeto numa faixa de 20 unidades;
@@ -25,22 +25,24 @@ relê a colisão, sem marcar o ponto como concluído.
 A ferramenta `tools/validar_circuito_termes.py` lê `Env/AttributeS01.dat` e
 `Env/z01.hgt`. São grades de 4096 × 4096; a tabela de alturas tem quatro bytes
 de cabeçalho. O encaixe XY foi conferido linha por linha com os tiles
-`z011002.att/.hgt` e `z011102.att/.hgt`.
+`z011002.att/.hgt`.
 
 O A* usa as mesmas regras de bloqueio, quinas e desnível do navegador local,
 limitado à faixa do circuito. Cada transição da rota gerada é conferida.
-Todos os oito trechos possuem passagem nos arquivos analisados:
+Todos os dez trechos possuem passagem nos arquivos analisados:
 
 | Trecho | Células | Distância na grade |
 | --- | ---: | ---: |
-| 3 → 2 | 49 | 48,41 |
-| 2 → 12 | 53 | 54,07 |
-| 12 → 18 | 89 | 88,83 |
-| 18 → 17 | 50 | 58,53 |
-| 17 → 18 | 50 | 58,53 |
-| 18 → 12 | 89 | 88,83 |
-| 12 → 2 | 53 | 54,07 |
-| 2 → 3 | 49 | 48,41 |
+| 6 → 5 | 68 | 68,24 |
+| 5 → 4 | 21 | 23,31 |
+| 4 → 7 | 24 | 29,21 |
+| 7 → 8 | 16 | 18,31 |
+| 8 → 9 | 37 | 47,60 |
+| 9 → 8 | 37 | 47,60 |
+| 8 → 7 | 16 | 18,31 |
+| 7 → 4 | 24 | 29,21 |
+| 4 → 5 | 21 | 23,31 |
+| 5 → 6 | 68 | 67,41 |
 
 `circuito_termes_penza.json` contém os caminhos derivados e os SHA-256 dos dois
 arquivos de terreno. Ao iniciar, o aplicativo exige que os arquivos locais

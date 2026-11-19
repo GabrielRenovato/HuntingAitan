@@ -13,7 +13,7 @@ def distancia_segmento(p,a,b):
 @lru_cache(maxsize=1)
 def plano():
     d=json.loads(ARQUIVO.read_text(encoding='utf-8'))
-    if d.get('schema')!=1 or len(d['trechos'])!=8:raise RuntimeError('Circuito de Termes invalido.')
+    if d.get('schema')!=1 or len(d['trechos'])!=2*(len(d['pontos'])-1):raise RuntimeError('Circuito de Termes invalido.')
     return d
 
 def dentro_regiao(pos,margem=0):
@@ -31,7 +31,7 @@ def conferir_arquivos(pasta):
 class CircuitoTermes:
     def __init__(self,pos):
         if not dentro_regiao(pos):
-            raise RuntimeError('Circuito de Termes: comece na faixa dos Penzas, por exemplo perto de 2652, 629 ou 2752, 635.')
+            raise RuntimeError('Circuito de Termes: comece na faixa dos Penzas, por exemplo perto de 2584, 587 ou 2592, 697.')
         self.trechos=plano()['trechos'];self.voltas=0;self.espera_ate=None
         _,_,self.trecho,self.indice=min((math.dist(pos,p),j!=0,i,j) for i,t in enumerate(self.trechos) for j,p in enumerate(t['caminho']))
 
@@ -47,7 +47,7 @@ class CircuitoTermes:
             if self.trecho==0:self.voltas+=1
             self.indice=0;self.espera_ate=None;t=self.trechos[self.trecho];rota=t['caminho']
         # A luta pode deslocar o personagem. Reencontra o trecho atual,
-        # preservando o sentido e sem reiniciar o circuito no ponto 3.
+        # preservando o sentido e sem reiniciar o circuito no primeiro ponto.
         self.indice=min(range(max(0,self.indice-8),len(rota)),key=lambda i:math.dist(pos,rota[i]))
         alvo=min(self.indice+4,len(rota)-1)
         return dict(estado='andar',destino=tuple(rota[alvo]),chave=('circuito',self.trecho,alvo),ponto=t['ate'],voltas=self.voltas)

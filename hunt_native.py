@@ -110,7 +110,7 @@ def main(profile,event_sink,control):
         if p['patrol_mode']=='termes_penza':
             circuito=CircuitoTermes(s['player']['position'])
             conferir_arquivos(dados.caminho.parent)
-            log('Circuito Termes ativado: 3, 2, 12, 18, 17 e volta pelo mesmo corredor. Apenas Penza Poderosa Mutante.')
+            log('Circuito Termes ativado: 6, 5, 4, 7, 8, 9 e volta pelo mesmo corredor. Apenas Penza Poderosa Mutante.')
         trilha=[base];volta=[];estado='buscar';progresso=None;ultima_tab=0.;fim_busca=0.;ultima_telemetria=0.;inicio=time.monotonic();heading=None;origem_mov=None;falhas_desde=None;espera_na_base=False
         tecla_cura=p['heal_key'] if p['heal_enabled'] else ''
         cadencia=CadenciaCombate({'intervalo_skills':p['action_gap'],'recargas':{v['key']:v['seconds'] for v in p['skills'] if v['enabled'] and v['key']!=tecla_cura}})

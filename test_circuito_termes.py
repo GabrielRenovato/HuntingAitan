@@ -16,51 +16,51 @@ class CircuitoTermesTeste(unittest.TestCase):
 
     def test_penza_na_faixa_pode_ficar_longe_da_base_original(self):
         p=validar(dict(patrol_mode='termes_penza',radius=50))
-        player=dict(position=(2840,637),height=0)
-        mob=dict(position=(2889,614),height=0,hp=100,hostile=True,name='Penza Poderosa Mutante')
+        player=dict(position=(2584,650),height=0)
+        mob=dict(position=(2584,712),height=0,hp=100,hostile=True,name='Penza Poderosa Mutante')
         # Distancia ao player >50: nao deve tentar selecionar.
-        self.assertFalse(alvo_permitido(mob,player,(2652,629),p))
-        player['position']=(2850,637)
-        self.assertTrue(alvo_permitido(mob,player,(2652,629),p))
-        mob['name']='Verit Mutante';self.assertFalse(alvo_permitido(mob,player,(2652,629),p))
-        mob.update(name='Penza Poderosa Mutante',position=(2850,690))
-        self.assertFalse(alvo_permitido(mob,dict(position=(2850,680),height=0),(2652,629),p))
+        self.assertFalse(alvo_permitido(mob,player,(2584,587),p))
+        player['position']=(2584,690)
+        self.assertTrue(alvo_permitido(mob,player,(2584,587),p))
+        mob['name']='Verit Mutante';self.assertFalse(alvo_permitido(mob,player,(2584,587),p))
+        mob.update(name='Penza Poderosa Mutante',position=(2640,690))
+        self.assertFalse(alvo_permitido(mob,dict(position=(2640,680),height=0),(2584,587),p))
 
     def test_tracado_tem_ida_volta_e_celulas_dentro_da_regiao(self):
-        d=plano();self.assertEqual([t['ate'] for t in d['trechos']],[2,12,18,17,18,12,2,3])
+        d=plano();self.assertEqual([t['ate'] for t in d['trechos']],[5,4,7,8,9,8,7,4,5,6])
         for t in d['trechos']:
             self.assertTrue(all(dentro_regiao(p) for p in t['caminho']))
             self.assertTrue(all(math.dist(a,b)<=math.sqrt(2)+1e-6 for a,b in zip(t['caminho'],t['caminho'][1:])))
 
     def test_espera_cinco_segundos_e_fecha_volta_sem_reiniciar_no_combate(self):
-        c=CircuitoTermes((2652,629));agora=0
-        for i in range(8):
+        c=CircuitoTermes((2584,587));agora=0
+        for i in range(len(plano()['trechos'])):
             fim=plano()['trechos'][i]['caminho'][-1]
             self.assertEqual(c.destino(fim,agora)['estado'],'aguardar')
             self.assertEqual(c.destino(fim,agora+4.9)['estado'],'aguardar')
             c.destino(fim,agora+5)
-            self.assertEqual(c.trecho,(i+1)%8);agora+=6
+            self.assertEqual(c.trecho,(i+1)%len(plano()['trechos']));agora+=6
         self.assertEqual(c.voltas,1)
-        c=CircuitoTermes((2752,635));trecho=c.trecho
-        c.destino((2770,646),10)  # deslocamento durante uma luta
+        c=CircuitoTermes((2585,654));trecho=c.trecho
+        c.destino((2580,665),10)  # deslocamento durante uma luta
         self.assertEqual(c.trecho,trecho)
-        self.assertGreater(c.destino((2770,646),11)['destino'][0],2752)
+        self.assertGreater(c.destino((2580,665),11)['destino'][1],654)
 
     def test_recusa_inicio_fora_da_regiao(self):
         with self.assertRaises(RuntimeError):CircuitoTermes((2785,837))
 
     def test_pausa_nao_consome_os_cinco_segundos_de_busca(self):
-        c=CircuitoTermes((2652,629));fim=plano()['trechos'][0]['caminho'][-1]
+        c=CircuitoTermes((2584,587));fim=plano()['trechos'][0]['caminho'][-1]
         c.destino(fim,0);c.pausar(10)
         self.assertEqual(c.destino(fim,12)['estado'],'aguardar')
         self.assertEqual(c.trecho,0)
         c.destino(fim,15);self.assertEqual(c.trecho,1)
 
     def test_deslocamento_para_tras_reencontra_mesmo_trecho(self):
-        c=CircuitoTermes((2720,632));trecho=c.trecho
-        c.destino((2740,634),0)
+        c=CircuitoTermes((2584,610));trecho=c.trecho
+        c.destino((2584,640),0)
         for t in range(5):
-            passo=c.destino((2738,647),t+1)
+            passo=c.destino((2590,638),t+1)
             self.assertEqual(c.trecho,trecho)
             self.assertEqual(passo['estado'],'andar')
             self.assertTrue(dentro_regiao(passo['destino']))
@@ -85,12 +85,12 @@ class CircuitoTermesTeste(unittest.TestCase):
         import hunt_native as h
         p=copy.deepcopy(DEFAULT);p.update(patrol_mode='termes_penza',radius=50,buffs_enabled=False,heal_enabled=False,minimize_on_start=False,hp_keys=['','',''])
         for s in p['skills']:s['enabled']=False
-        ctrl=SimpleNamespace(stop=threading.Event(),pause=threading.Event());tempo=[0.];pos=[(2652.5,629.5)];hp=[100];selecionado=[False];eventos=[];navs=[];inputs=[]
-        def mob():return dict(ref=1,id=4093,name='Penza Poderosa Mutante',position=(2666.5,630.5),height=0,hp=hp[0],hp_max=100,hostile=True)
+        ctrl=SimpleNamespace(stop=threading.Event(),pause=threading.Event());tempo=[0.];pos=[(2584.5,587.5)];hp=[100];selecionado=[False];eventos=[];navs=[];inputs=[]
+        def mob():return dict(ref=1,id=4093,name='Penza Poderosa Mutante',position=(2584.5,607.5),height=0,hp=hp[0],hp_max=100,hostile=True)
         class Dados:
             hwnd=1;caminho=Path('AIKACL.exe')
             def snapshot(self):return dict(player=dict(position=pos[0],heading=90,height=0,hp=100,hp_max=100,mp=100,mp_max=100),target=mob() if selecionado[0] else None)
-            def listar_mobs(self,*args):return [mob()] if pos[0][0]>=2660 and hp[0]>0 else []
+            def listar_mobs(self,*args):return [mob()] if pos[0][1]>=600 and hp[0]>0 else []
             def cena_validada(self):return 1
             def close(self):pass
         class Nav:
@@ -100,7 +100,7 @@ class CircuitoTermesTeste(unittest.TestCase):
                 destino=args[3];navs.append((tempo[0],destino,hp[0]))
                 if bloqueado:return dict(estado='sem_caminho',w=False)
                 pos[0]=destino
-                if hp[0]==0 and pos[0][0]>2710:ctrl.stop.set()
+                if hp[0]==0 and pos[0][1]>673:ctrl.stop.set()
                 return dict(estado='andando',w=True,erro=0,pontos=5)
         def down(k):
             inputs.append((tempo[0],k,hp[0]))
@@ -119,7 +119,7 @@ class CircuitoTermesTeste(unittest.TestCase):
         eventos,navs,inputs,hp=self.executar_motor()
         self.assertEqual(hp,0)
         self.assertTrue(any(e.get('message')=='Mob abatido; procurando o proximo.' for e in eventos))
-        self.assertTrue(any(dest[0]>2710 and vida==0 for _,dest,vida in navs))
+        self.assertTrue(any(dest[1]>673 and vida==0 for _,dest,vida in navs))
         self.assertEqual(sum(k=='tab' for _,k,_ in inputs),1)
         self.assertFalse(any(k=='tab' and 0<vida<100 for _,k,vida in inputs))
 
@@ -129,7 +129,7 @@ class CircuitoTermesTeste(unittest.TestCase):
         self.assertEqual(len(set(dest for _,dest,_ in navs)),1)
         self.assertFalse(inputs)
         self.assertTrue(any(e.get('message','').startswith('Passagem do circuito indisponivel') for e in eventos))
-        self.assertTrue(all(e.get('ponto')==2 for e in eventos if 'ponto' in e))
+        self.assertTrue(all(e.get('ponto')==5 for e in eventos if 'ponto' in e))
 
 
 if __name__=='__main__':unittest.main()
