@@ -56,6 +56,8 @@ class ProgressoNativo:
 
 
 def main(profile,event_sink,control,percurso=None):
+    from controle_avisos import preparar_runtime_visual
+    preparar_runtime_visual()
     import keyboard,pydirectinput as entrada
     p=validar(profile);entrada.PAUSE=0
     if percurso is not None:p.update(patrol_mode='base',target='qualquer',radius=min(12,p['radius']))
@@ -143,6 +145,7 @@ def main(profile,event_sink,control,percurso=None):
         log('Motor com recargas reais e cura prioritaria.',versao='mina-lenfer-9',cura=tecla_cura,hp_percent=p['hp_percent'])
         verificador=VerificadorMovimento(p['stationary_seconds']);suprimento_em={};item_em={};janela_pausa=None
         monitor=ObservadorAvisos(fim,ativo,log,bloqueio=modal_bloqueia)
+        log('Preparando reconhecimento de janelas antes de iniciar o monitor.')
         monitor.iniciar()
         log('Monitor CTE e Arena Elter: prioridade de fechamento ativa.')
         modal_desde=None;clique_modal_em=0.;cliques_modal=0;modal_log_em=-100.

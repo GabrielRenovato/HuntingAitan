@@ -20,6 +20,10 @@ Monstros fora da faixa do trajeto são desconsiderados. A busca dos mobs comuns 
 
 O início do ciclo não carrega mais o reconhecimento visual do portal antes da navegação. Esse carregamento antecipado atrasava a inicialização no executável instalado. O painel informa a conferência de posição antes da primeira etapa.
 
+As extensões de imagem do monitor são preparadas na thread principal antes dos controles de teclado e das threads de leitura. Na investigação do executável instalado, a transição para entrada ficou bloqueada no carregamento nativo do NumPy, e a interface aguardou o carregador do OpenCV. A verificação do motor empacotado inclui agora monitor e interface em processo novo, além do teste da ordem de inicialização da ponte.
+
+O botão Entrar do grupo é comparado pela faixa do texto, dentro da janela de mazmorra reconhecida. A borda e o fundo variam com o realce; o recorte anterior rejeitava um estado real do botão. O teste de regressão usa somente esse botão recortado, sem nomes ou dados do jogador.
+
 ## Conclusão
 
 A chegada à sala não conclui a execução. É necessário reconhecer Malik, confirmar o abate por duas leituras de vida zero e verificar a área final por quinze segundos sem hostis selecionáveis. Uma nova fase ou luta reinicia a verificação. Ulman e Guarda-Costas do Malik não contam como Malik.

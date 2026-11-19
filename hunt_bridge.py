@@ -21,6 +21,21 @@ def main():
     if modo!='run':
         d=json.loads(sys.stdin.read() or '{}')
         if modo=='defaults':r=DEFAULT
+        elif modo=='selftest-monitor':
+            # Executado em processo novo para detectar a disputa de imports
+            # que bloqueava a entrada/saida no executavel congelado.
+            from controle_avisos import ObservadorAvisos
+            fim=threading.Event()
+            monitor=ObservadorAvisos(fim,lambda:False,lambda *a,**k:None)
+            tarefa=monitor.iniciar()
+            try:
+                import keyboard
+                keyboard.is_pressed('f12')
+                from interface_mina import InterfaceMina
+                InterfaceMina()
+            finally:fim.set();tarefa.join(timeout=3)
+            if tarefa.is_alive():raise RuntimeError('Monitor nao encerrou apos preparar a interface')
+            r=dict(monitor=True,interface=True)
         elif modo=='selftest':
             import keyboard,pydirectinput,mss,hunt_native
             from avisos_hunt import DetectorAvisos
@@ -56,6 +71,9 @@ def main():
     DIARIO=(pasta/('run_'+time.strftime('%Y%m%d_%H%M%S')+'.jsonl')).open('w',encoding='utf-8')
     perfil=validar(json.loads(Path(sys.argv[2]).read_text(encoding='utf-8')))
     emitir(dict(event='status',state='initializing',message='Inicializando motor '+perfil['data_source'],source=perfil['data_source']))
+    emitir(dict(event='status',state='initializing',message='Preparando reconhecimento antes dos controles de teclado.'))
+    from controle_avisos import preparar_runtime_visual
+    preparar_runtime_visual()
     control=type('Control',(),{'stop':threading.Event(),'pause':threading.Event()})()
     def comandos():
         try:

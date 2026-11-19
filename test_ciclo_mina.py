@@ -2,6 +2,7 @@ import copy,threading,unittest
 from types import SimpleNamespace
 from unittest.mock import Mock
 import cv2,numpy as np
+from pathlib import Path
 from ciclo_mina import CicloMina
 from interface_mina import InterfaceMina,VerificadorElite
 from perfil_hunt import DEFAULT,validar
@@ -86,6 +87,16 @@ class InterfaceTeste(unittest.TestCase):
     def test_confirmar_solitario_nao_autoriza_saida(self):
         tela=self.tela();self.colar(tela,'confirmar',200,200)
         self.assertNotIn('ponto',self.ui.saida(tela))
+
+    def test_entrar_mazmorra_reconhece_realce_sem_hover_manual(self):
+        tela=self.tela();self.colar(tela,'titulo_mazmorra',350,80)
+        botao=cv2.imread(str(Path(__file__).parent/'tests/fixtures/mina_entrar_realce.png'))
+        self.assertIsNotNone(botao)
+        h,w=botao.shape[:2];tela[380:380+h,360:360+w]=botao
+        acao=self.ui.entrada(tela,True)
+        self.assertEqual(acao['acao'],'entrar_grupo_mazmorra')
+        self.assertLess(abs(acao['ponto'][0]-410),8)
+        self.assertLess(abs(acao['ponto'][1]-393),4)
 
     def test_pergunta_precisa_do_botao_confirmar_da_mesma_janela(self):
         tela=self.tela();self.colar(tela,'pergunta',300,200);self.colar(tela,'confirmar',40,500)

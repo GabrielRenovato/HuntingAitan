@@ -1,13 +1,30 @@
 """Monitor recuperavel; a ausencia de janela precisa de duas capturas validas."""
 import threading,time
 
+def preparar_runtime_visual():
+    # Inicializa extensoes nativas antes dos hooks de teclado e das threads
+    # de leitura. No binario Windows, a ordem inversa pode bloquear o loader.
+    import numpy,cv2
+
 class ObservadorAvisos:
     def __init__(self,fim,ativo,log,bloqueio=None,detector=None,relogio=time.monotonic):
         self.fim=fim;self.ativo=ativo;self.log=log;self.bloqueio=bloqueio or threading.Event()
         self.detector=detector;self.relogio=relogio;self.lock=threading.Lock()
         self.ultimo=None;self.erro=None;self.livres=0;self.log_em=-100.
 
-    def iniciar(self):threading.Thread(target=self.executar,daemon=True).start()
+    def preparar(self):
+        # O carregador do OpenCV no executavel congelado nao pode disputar
+        # sua primeira importacao entre a thread do monitor e a de interface.
+        if self.detector is None:
+            preparar_runtime_visual()
+            from avisos_hunt import DetectorAvisos
+            self.detector=DetectorAvisos()
+
+    def iniciar(self):
+        self.preparar()
+        tarefa=threading.Thread(target=self.executar,daemon=True)
+        tarefa.start()
+        return tarefa
 
     def observar(self,tela):
         aviso=self.detector.localizar(tela,ao_bloquear=self.bloqueio.set)

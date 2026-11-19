@@ -76,6 +76,7 @@ def main(perfil,emitir,control):
             return dict(position=p['position'],hp=p['hp']/p['hp_max'],pasta=d.caminho.parent)
         finally:d.close()
     def operacao(nome):
+        evento(dict(event='status',state='initializing',message='Preparando saida do grupo.' if nome=='sair_grupo' else 'Preparando entrada da Mina no Elite.'))
         # Carrega reconhecimento visual somente ao chegar a uma interface.
         # Importar OpenCV aqui no inicio atrasava a primeira navegacao.
         import operacoes_mina
@@ -89,6 +90,9 @@ def main(perfil,emitir,control):
             if perfil['duration_minutes'] and time.monotonic()-inicio>=perfil['duration_minutes']*60:
                 control.reason='tempo_encerrado';control.stop.set();return
     ciclo=CicloMina(perfil,control,evento,contexto,executar,lambda:operacao('sair_grupo'),lambda:operacao('entrar_elite'))
+    if not control.stop.is_set():
+        from controle_avisos import preparar_runtime_visual
+        preparar_runtime_visual()
     threading.Thread(target=vigiar,daemon=True).start()
     try:
         emitir(dict(event='status',state='initializing',message='Conferindo posicao para iniciar o ciclo da Mina.'))

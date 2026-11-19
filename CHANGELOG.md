@@ -1,5 +1,14 @@
 # Alterações
 
+## 0.1.0-beta.12 — 2026-11-19
+
+- Corrige travamento do executável nas transições de entrada e saída da Mina.
+- Reconhecimento visual preparado na thread principal antes do monitor, evitando disputa no carregamento de OpenCV/NumPy.
+- Bibliotecas de imagem carregadas antes dos hooks de teclado e das threads de controle.
+- Botão Entrar do grupo reconhecido também com o fundo realçado, sem precisar mover o mouse manualmente.
+- Progresso de preparação da interface exibido no painel.
+- Teste do monitor e da interface em processo novo incluído na verificação do motor empacotado.
+
 ## 0.1.0-beta.11 — 2026-11-19
 
 - Início do ciclo da Mina sem carregar antecipadamente as bibliotecas de reconhecimento do portal.

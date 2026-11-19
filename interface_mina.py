@@ -12,6 +12,9 @@ class InterfaceMina:
         self.tpl={n:cv2.imread(str(P/f'tpl_mina_{n}.png'),0) for n in nomes}
         if any(t is None for t in self.tpl.values()):raise RuntimeError('Modelos de interface da Mina ausentes.')
         for n in ['confirmar','elite','entrar','entrar_mazmorra']:self.tpl[n]=self.tpl[n][:,15:-15]
+        # O fundo e a borda mudam com o realce do botao. Compara a faixa do
+        # texto, dentro da janela ja reconhecida, sem depender desse estado.
+        self.tpl['entrar_mazmorra']=self.tpl['entrar_mazmorra'][6:21,7:-7]
 
     def achar(self,tela,nome,roi=None,limiar=.90,binario=None):
         g=cv2.cvtColor(tela,cv2.COLOR_BGR2GRAY) if tela.ndim==3 else tela
