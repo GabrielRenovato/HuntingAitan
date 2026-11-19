@@ -1,0 +1,62 @@
+aika_hunt_app/renderer.js
+  s_edfc50aef2ee58::t_fbc0813311d796 9,17,54,71
+  s_edfc50aef2ee58::t_84eab9805b07fd 4,28,34
+circuito_termes.py
+  s_edfc50aef2ee58::t_80bd704179f364 36
+  s_edfc50aef2ee58::t_fbc0813311d796 38-40
+  s_edfc50aef2ee58::t_84eab9805b07fd 1-35,37,41-53
+test_circuito_termes.py
+  s_edfc50aef2ee58::t_80bd704179f364 1-51,68-83,85-99,103-115,121-124,133-135
+  s_edfc50aef2ee58::t_5ddb7e50fa14ca 52,84,100-102,116-120,125-132
+  s_edfc50aef2ee58::t_ed2377ec6567e1 53-67
+README.md
+  s_edfc50aef2ee58::t_39c8706a62368a 34,36,51-52
+hunt_native.py
+  s_edfc50aef2ee58::t_fbc0813311d796 129,142,186,231,239,243,267,293,321
+  s_edfc50aef2ee58::t_84eab9805b07fd 357-359
+  s_edfc50aef2ee58::t_5347441cef3573 14,22-24,109-113,332-338,354-356,360-378,392-396,495
+circuito_termes_penza.json
+  s_edfc50aef2ee58::t_e9e788b6f85336 1-2033
+aika_hunt_app/package.json
+  s_edfc50aef2ee58::t_39c8706a62368a 3
+CHANGELOG.md
+  s_edfc50aef2ee58::t_39c8706a62368a 3-10
+package.json
+  s_edfc50aef2ee58::t_39c8706a62368a 3
+RELEASE_NOTES.md
+  s_edfc50aef2ee58::t_39c8706a62368a 1,3-8,10,12
+aika_hunt_app/index.html
+  s_edfc50aef2ee58::t_5668f2c137eb5a 27
+aika_hunt_app/package-lock.json
+  s_edfc50aef2ee58::t_60768bbeaef2d7 3,9
+hunt_bridge.py
+  s_edfc50aef2ee58::t_32df247b341aec 36-38
+navegacao_grade.py
+  s_edfc50aef2ee58::t_2142b1217b6f65 68-70
+package-lock.json
+  s_edfc50aef2ee58::t_64edaa1d67de14 3,9
+perfil_hunt.py
+  s_edfc50aef2ee58::t_bb8ed30bce3524 5,48-49
+docs/CIRCUITO_TERMES.md
+  s_edfc50aef2ee58::t_379c9175c0a614 1-66
+tools/build_backend.py
+  s_edfc50aef2ee58::t_5d540ceef605ec 6
+tools/validar_circuito_termes.py
+  s_edfc50aef2ee58::t_f13592dc375e18 1-40
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.6",
+  "base_commit_sha": "d74b629224860d9cbf34263984ddcb0954200840",
+  "prompts": {},
+  "sessions": {
+    "s_edfc50aef2ee58": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "01a1e01c-4c9b-7e00-b2fb-9c7ef8050eed",
+        "model": "unknown"
+      },
+      "human_author": "Gabriel Renovato <86806861+GabrielRenovato@users.noreply.github.com>"
+    }
+  }
+}
