@@ -1,10 +1,7 @@
-Correção do ataque durante o ciclo de buffs.
+Alcance máximo aumentado de 30 para 50.
 
-- Ataque, busca com TAB e navegação ficam suspensos durante toda a sequência dos cinco buffs, inclusive nos intervalos.
-- Receber dano não interrompe a sequência para atacar. Cura de emergência, stun e fechamento de CTE/Elter continuam prioritários.
-- Depois dos buffs, o combate retoma preservando a seleção.
-- Renovação respeita os prazos individuais de cada atalho.
+O painel, o motor e a importação de configurações aceitam o novo limite. Ajuste a distância máxima na aba de comportamento. Configurações existentes são preservadas; o alcance não é alterado automaticamente para todos os usuários.
 
-Fluxos validados em testes simulados; o comportamento no jogo ainda precisa ser confirmado.
+Inclui as correções anteriores de pausa dos ataques durante os buffs e fechamento de CTE/Elter.
 
-Baixe HuntingAitan-Setup-0.1.0-beta.4-x64.exe ou use a atualização do aplicativo. Configurações preservadas.
+Instalador: HuntingAitan-Setup-0.1.0-beta.5-x64.exe.

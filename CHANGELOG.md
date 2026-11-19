@@ -1,5 +1,10 @@
 # Alterações
 
+## 0.1.0-beta.5 — 2026-11-19
+
+- Alcance máximo configurável aumentado de 30 para 50, no painel, na validação e na importação de configuração nativa.
+- As correções de buffs e fechamento de janelas continuam incluídas.
+
 ## 0.1.0-beta.4 — 2026-11-19
 
 - Ciclo de buffs exclusivo: nenhum ataque, TAB ou navegação é enviado entre os cinco atalhos.

@@ -26,7 +26,7 @@ def validar(dados):
  # Migra a pausa padrao antiga sem alterar intervalos personalizados.
  if int(dados.get('version',1))<3 and float(p['action_gap'])==1.4:p['action_gap']=.7
  p['version']=3
- for k,a,b in [('radius',10,30),('no_damage_seconds',1,60),('stationary_seconds',1,20),('hp_percent',1,99),('mp_percent',1,99),('duration_minutes',0,1440),('action_gap',.4,10),('buff_minutes',1,120),('buff_gap',.5,10)]:
+ for k,a,b in [('radius',10,50),('no_damage_seconds',1,60),('stationary_seconds',1,20),('hp_percent',1,99),('mp_percent',1,99),('duration_minutes',0,1440),('action_gap',.4,10),('buff_minutes',1,120),('buff_gap',.5,10)]:
   p[k]=float(p[k])
   if not a<=p[k]<=b:raise ValueError(k+': valor fora do intervalo')
  if p['data_source'] not in ['native','visual']:raise ValueError('Fonte de dados invalida')
@@ -65,7 +65,7 @@ def validar(dados):
 def importar_nativo(caminho,atual=None):
  from config_nativa import decodificar_config
  raw=decodificar_config(Path(caminho).read_bytes());p=copy.deepcopy(atual or DEFAULT)
- p.update(auto_base=True,radius=max(10,min(30,raw['alcance'])),hp_percent=max(1,min(99,raw['hp_percentual'])),mp_percent=max(1,min(99,raw['mp_percentual'])))
+ p.update(auto_base=True,radius=max(10,min(50,raw['alcance'])),hp_percent=max(1,min(99,raw['hp_percentual'])),mp_percent=max(1,min(99,raw['mp_percentual'])))
  for i,(id_,cd) in enumerate(zip(raw['skills'],raw['intervalos_skills'])):
   p['skills'][i].update(native_id=id_ if id_>0 else None,seconds=max(0,cd),enabled=False,key='')
  for i,(id_,cd) in enumerate(zip(raw['itens_adicionais'],raw['intervalos_itens'])):

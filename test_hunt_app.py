@@ -34,7 +34,9 @@ class TestePerfil(unittest.TestCase):
   antes=copy.deepcopy(DEFAULT);p=validar(DEFAULT);p['base'][0]=1
   self.assertEqual(DEFAULT,antes)
  def test_limites_da_area(self):
-  p=copy.deepcopy(DEFAULT);p['radius']=1000
+  p=copy.deepcopy(DEFAULT);p['radius']=50
+  self.assertEqual(validar(p)['radius'],50)
+  p['radius']=50.1
   with self.assertRaises(ValueError):validar(p)
 
 class TesteAlvoInterno(unittest.TestCase):
