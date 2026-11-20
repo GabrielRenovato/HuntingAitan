@@ -1,9 +1,9 @@
-Correção da pausa defensiva indevida na Mina e no Jardim.
+Recuperação da borda de objetos no caminho até a Mina.
 
-A beta.19 podia permanecer parada mesmo com HP acima de 99,9%: cada ponto de dano residual renovava a defesa. Agora o gatilho de dano exige perda acumulada de pelo menos 1% do HP em três segundos. Vida baixa e stun continuam ativando a proteção.
+Corrige a repetição indefinida de sem_caminho observada em 2682,1758. O terreno permitia a posição ocupada pelo personagem, enquanto nossa máscara adicional bloqueava a célula inteira.
 
-A busca defensiva foi ampliada para hostis próximos a até 12 unidades, mantendo a verificação de passagem. Seleção e abate confirmado continuam preservados.
+Agora o navegador pode sair apenas dessa célula ocupada e retomar o percurso. Nenhum bloqueio nativo do terreno é removido; as demais células dos objetos continuam bloqueadas. Também funciona ao iniciar o retorno nessa posição.
 
-266 testes Python e verificações do painel e atualizador passaram. O replay das 141 leituras da pausa observada não aciona a pausa indevida. A nova versão ainda precisa de validação ao vivo em uma DG completa.
+269 testes Python e verificações do painel e atualizador passaram. O planejamento com os arquivos reais encontrou 145 pontos até o portal a partir da posição observada. A recuperação ainda precisa ser validada ao vivo.
 
-Instalador: HuntingAitan-Setup-0.1.0-beta.20-x64.exe.
+Instalador: HuntingAitan-Setup-0.1.0-beta.21-x64.exe.

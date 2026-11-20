@@ -33,6 +33,34 @@ class GeometriaTeste(unittest.TestCase):
         self.assertFalse(nova.livre(nova.celula((2683.2,1714.5))))
         self.assertEqual(nova.alturas,g.alturas)
 
+    def test_posicao_real_da_parada_permite_sair_sem_abrir_o_objeto(self):
+        geo=self.geometria();g=grade(16,20);g.origem=(2678,1748)
+        pos=(2682.510009765625,1758.752685546875);meta=(2684.5,1751.5)
+        self.assertFalse(geo.livre(pos))
+        self.assertIsNone(geo.aplicar(g).caminho(pos,meta))
+        nova=geo.aplicar(g,saida=pos)
+        rota=nova.caminho(pos,meta,limite=lambda q:geo.permite_saida(q,pos))
+        self.assertTrue(rota)
+        self.assertTrue(all(geo.livre(p) for p in rota[1:]))
+        self.assertFalse(nova.livre(nova.celula((2683.5,1758.5))))
+        self.assertFalse(geo.permite_saida((2683.5,1758.5),pos))
+        self.assertFalse(geo.aplicar(g).livre(g.celula(pos)))
+
+    def test_saida_nao_remove_bloqueio_nativo_do_terreno(self):
+        geo=self.geometria();g=grade(16,20,[(4,10)]);g.origem=(2678,1748)
+        pos=(2682.51,1758.75);nova=geo.aplicar(g,saida=pos)
+        self.assertFalse(nova.livre(nova.celula(pos)))
+        self.assertIsNone(nova.caminho(pos,(2684.5,1751.5)))
+
+    def test_navegador_consegue_comandar_saida_da_celula_ocupada(self):
+        from navegador_local import NavegadorLocal
+        geo=self.geometria();g=grade(16,20);g.origem=(2678,1748)
+        pos=(2682.51,1758.75)
+        n=NavegadorLocal(leitor=lambda dados,p:geo.aplicar(g,saida=p))
+        r=n.planejar(None,pos,180,(2684.5,1751.5),'entrada',0,limite=lambda q:geo.permite_saida(q,pos))
+        self.assertEqual(r['estado'],'andando')
+        self.assertTrue(r['w'] or r['giro'])
+
     def test_rotacao_yaw_converte_plano_xz_para_mundo_xy(self):
         import numpy as np
         v=transformar(np.array([[1.,0.,0.]]),(10,20,3),(math.pi/2,0,0),2)

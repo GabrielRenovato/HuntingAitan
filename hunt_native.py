@@ -142,7 +142,7 @@ def main(profile,event_sink,control,percurso=None):
         if mina:defesa.observar(inicio,s['player']['hp']/s['player']['hp_max'],{})
         if percurso is not None and hasattr(percurso,'geometria'):
             from navegacao_grade import ler_grade
-            navegador=NavegadorLocal(leitor=lambda leitor,posicao:percurso.geometria.aplicar(ler_grade(leitor,posicao)))
+            navegador=NavegadorLocal(leitor=lambda leitor,posicao:percurso.geometria.aplicar(ler_grade(leitor,posicao),saida=posicao))
         else:navegador=NavegadorLocal()
         cc={};cc_em=0.;cc_desde=None;cc_log=False;cc_motivo=None;nav_log_em=-100.;aprox_pos=None;reaprox_id=None
         regional=BuscaRegional(prazo_aproximar=2.5,prazo_trocar=2.,intervalo_tab=.2,intervalo_giro=.35) if mina else BuscaRegional()
@@ -385,7 +385,10 @@ def main(profile,event_sink,control,percurso=None):
                     limite=lambda q:regiao(q) or (reentrada and distancia_segmento(q,pos,destino)<=2)
                     if percurso is not None and hasattr(percurso,'geometria'):
                         faixa=limite
-                        limite=lambda q:percurso.geometria.livre(q) and faixa(q)
+                        limite=lambda q:percurso.geometria.permite_saida(q,pos) and faixa(q)
+                        if not percurso.geometria.livre(pos) and agora-nav_log_em>=2:
+                            log('Saindo da borda da mascara de objetos pela celula ja ocupada.',posicao=pos)
+                            nav_log_em=agora
                 try:plano=navegador.planejar(dados,pos,player.get('heading'),destino,chave,agora,alcance=alcance,limite=limite,parcial=retorno or bool(circuito))
                 except RuntimeError as e:
                     soltar()

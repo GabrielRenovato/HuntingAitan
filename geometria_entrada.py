@@ -25,10 +25,23 @@ class GeometriaEntrada:
         x,y=map(math.floor,pos);x0,y0,x1,y1=self.limites
         return x0<=x<x1 and y0<=y<y1 and not self.mascara[(y-y0)*self.largura+x-x0]
 
-    def aplicar(self,grade):
+    def permite_saida(self,pos,origem):
+        # A mascara rasterizada pode cobrir a borda de uma celula que o
+        # personagem ja ocupa. Permite sair somente dessa celula, sem abrir
+        # uma passagem pelas demais celulas do objeto.
+        x,y=map(math.floor,origem);x0,y0,x1,y1=self.limites
+        return self.livre(pos) or (x0<=x<x1 and y0<=y<y1 and tuple(map(math.floor,pos))==(x,y))
+
+    def aplicar(self,grade,saida=None):
         flags=bytearray(grade.flags)
         for y in range(grade.altura):
             for x in range(grade.largura):
                 c=(grade.canto[0]+x,grade.canto[1]+y)
                 if not self.livre(grade.mundo(c)):flags[y*grade.largura+x]|=1
+        if saida is not None:
+            c=grade.celula(saida);i=grade.indice(c)
+            if i is not None and grade.livre(c) and self.permite_saida(saida,saida):
+                # Preserva a colisao nativa: apenas a mascara adicional pode
+                # ser relaxada, apenas na celula atualmente ocupada.
+                flags[i]=grade.flags[i]
         return Grade(grade.origem,grade.canto,grade.largura,grade.altura,bytes(flags),grade.alturas,grade.mapa)

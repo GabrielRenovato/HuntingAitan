@@ -1,5 +1,12 @@
 # Alterações
 
+## 0.1.0-beta.21 — 2026-11-19
+
+- Corrige a parada externa em 2682,1758: o jogador ocupava uma célula livre no terreno, mas coberta pela máscara adicional de objetos.
+- Planejamento e condução permitem sair somente da célula já ocupada; obstáculos vizinhos e bloqueios nativos continuam preservados.
+- Inclui recuperação ao iniciar ou retomar o percurso nessa borda e diagnóstico no log.
+- 269 testes Python passaram; o planejamento com os arquivos reais encontra 145 pontos da posição observada até o portal. Validação ao vivo pendente.
+
 ## 0.1.0-beta.20 — 2026-11-19
 
 - Dano residual perto de 100% de HP deixa de renovar a pausa defensiva. Pressão considera perda acumulada de pelo menos 1% em três segundos, vida baixa ou controle.

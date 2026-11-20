@@ -29,7 +29,7 @@ class EntradaMina:
         for y in range(y0,y1+1):
             off=(y*4096+x0)*2;flags.extend(a[off:off+w*2:2]);alturas.extend(struct.unpack_from('<'+'h'*w,h,off+4))
         g=Grade((0,0),(x0,y0),w,y1-y0+1,bytes(flags),tuple(alturas),1)
-        self.geometria=GeometriaEntrada(pasta);g=self.geometria.aplicar(g)
+        self.geometria=GeometriaEntrada(pasta);g=self.geometria.aplicar(g,saida=pos)
         recuo=recuo_caixas(pos) if 1679<=pos[1]<=1687 and pos[0]>=2712 else None
         if recuo is not None:
             saida=g.caminho(pos,recuo,alcance=.5,limite=lambda q:passagem_estrada(q) or distancia_segmento(q,pos,recuo)<=2)
