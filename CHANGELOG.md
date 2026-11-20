@@ -1,5 +1,12 @@
 # Alterações
 
+## 0.1.0-beta.24 — 2026-11-20
+
+- Captura da área cliente usa contexto de DPI por monitor, restaurado ao terminar, para manter as coordenadas em pixels físicos.
+- Jardim aguarda foco e confirma Difícil em duas capturas consecutivas, com até quatro leituras estáveis; F12 e Parar cancelam a verificação.
+- Em falha, salva recorte do indicador e JSON das leituras; botão Abrir diagnósticos em Comportamento → Escala da interface.
+- 287 testes Python e verificações do painel e atualizador passaram. A falha específica do PC do amigo ainda precisa de validação com a captura real.
+
 ## 0.1.0-beta.23 — 2026-11-19
 
 - Retorno à Mina volta ao traçado pela caixa-d’água, com guias pelo lado livre dos barris e caixas.

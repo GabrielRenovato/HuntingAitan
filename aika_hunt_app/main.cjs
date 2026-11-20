@@ -110,7 +110,7 @@ ipcMain.handle('window:minimize',()=>win.minimize());
 ipcMain.handle('window:close',()=>{registrarPainel('botao-fechar');win.close();});
 ipcMain.handle('app:info',()=>({version:app.getVersion(),packaged:app.isPackaged}));
 ipcMain.handle('updates:check',()=>updates.check());
-ipcMain.handle('logs:open',()=>shell.openPath(runtime.dataRoot));
+ipcMain.handle('logs:open',()=>{const pasta=path.join(runtime.dataRoot,'app_sessions');fs.mkdirSync(pasta,{recursive:true});return shell.openPath(pasta);});
 app.on('window-all-closed',()=>app.quit());
 app.on('before-quit',()=>{if(worker)stopWorker();stopWatcher();});
 app.whenReady().then(createWindow);

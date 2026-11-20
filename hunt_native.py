@@ -128,7 +128,7 @@ def main(profile,event_sink,control,percurso=None):
         elif mina:
             if jardim:
                 from jardim_aereo import conferir_dificil
-                conferir_dificil(auto_escala=p['auto_ui_scale'],emitir=event_sink)
+                if not conferir_dificil(auto_escala=p['auto_ui_scale'],emitir=event_sink,ativo=ativo,parar=parar):return
             circuito=(JardimAereo if jardim else MinaLenfer)(s['player']['position']);circuito.conferir(dados.caminho.parent);regiao=circuito.contem
             mapa_mina=dados.u32(dados.cena_validada()+0x38)
             log('Jardim Aereo: caminho ate Seridunn iniciado.' if jardim else 'Mina LEnfer: caminho direto para Malik iniciado.',entrada=s['player']['position'],mapa=mapa_mina)

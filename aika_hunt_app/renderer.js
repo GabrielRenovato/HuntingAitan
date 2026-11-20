@@ -64,6 +64,7 @@ $('start').addEventListener('click',()=>action(async()=>{if(running)return;lastE
 $('stop').addEventListener('click',()=>action(async()=>{await window.hunt.stop();message('Encerrando a caça','Liberando as teclas do jogo.');}));
 $('pause').addEventListener('click',()=>action(async()=>{paused=!paused;await window.hunt.pause(paused);$('pause').textContent=paused?'Retomar':'Pausar';message(paused?'Caça pausada':'Aguardando o Aika',paused?'Use Retomar para continuar.':'Volte ao jogo para retomar.');}));
 $('read-data').addEventListener('click',()=>action(readData));
+$('open-diagnostics').addEventListener('click',()=>action(()=>window.hunt.logs()));
 async function readData(){
  $('read-data').disabled=true;message('Lendo dados do Aika','Lendo atributos internos do cliente.');try{const d=await window.hunt.position();$('position-read').textContent=d.position.join(', ');$('vitals-read').textContent=Math.round(d.hp*100)+'% / '+(d.mp===null?'—':Math.round(d.mp*100)+'%');$('target-read').textContent=d.target||'Sem alvo';$('data-source').textContent=d.source==='native'?'Memória do cliente':'Leitura visual';profile.base=d.position;profile.auto_base=$('auto-base').checked;render();message('Dados lidos',`Dados internos: ${d.position.map(v=>Math.round(v)).join(', ')}. A base será capturada novamente ao começar.`);}finally{$('read-data').disabled=false;}
 }

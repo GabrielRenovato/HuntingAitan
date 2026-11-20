@@ -31,9 +31,9 @@ O Python no PATH é usado no desenvolvimento. Para outro interpretador, defina `
 ## Publicar uma correção
 
 1. Faça a alteração, atualize `CHANGELOG.md` e rode `npm test`.
-2. Ajuste a mesma versão nos dois `package.json` e nos respectivos lockfiles. Exemplo: `0.1.0-beta.24` para a próxima beta.
+2. Ajuste a mesma versão nos dois `package.json` e nos respectivos lockfiles. Exemplo: `0.1.0-beta.25` para a próxima beta.
 3. Atualize `RELEASE_NOTES.md`, faça commit e push.
-4. Crie a tag correspondente e envie: `git tag v0.1.0-beta.24` e `git push origin v0.1.0-beta.24`.
+4. Crie a tag correspondente e envie: `git tag v0.1.0-beta.25` e `git push origin v0.1.0-beta.25`.
 
 O workflow verifica a versão, executa os testes, empacota o backend, gera o instalador NSIS e publica instalador, blockmap e metadados YAML na release. O token vem do GitHub Actions; não deve ser colocado no aplicativo. O workflow falha sem publicar se um desses passos falhar. Tags com sufixo beta são publicadas como pré-release.
 
@@ -56,3 +56,5 @@ Mina L’Enfer → Malik, com repetição opcional no Elite e retorno do save at
 Jardim Aéreo de Mirza no Difícil: [modo e validação](docs/JARDIM_AEREO.md).
 
 Em **Comportamento → Escala da interface**, mantenha **Detectar escala da dificuldade automaticamente** ativado ao trocar de resolução, monitor ou computador. A opção adapta a leitura do indicador da DG; o Jardim continua exigindo Difícil e o ciclo da Mina, Elite.
+
+Se o Jardim informar indicador ilegível, use **Comportamento → Escala da interface → Abrir diagnósticos**. A pasta contém o recorte `jardim_dificuldade_*.png` e o JSON com as tentativas, salvos após quatro leituras sem confirmação estável.
