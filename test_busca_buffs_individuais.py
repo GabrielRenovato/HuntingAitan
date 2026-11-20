@@ -38,10 +38,10 @@ class BuscaBuffsTeste(unittest.TestCase):
         self.assertFalse(executar_buff('ctrl+2',down,lambda k:eventos.append(('up',k)),lambda t:None,lambda:True))
         self.assertEqual(eventos[-1],('up','ctrl'))
 
-    def motor(self,buff,renovacao=False,extras=False):
+    def motor(self,buff,renovacao=False,extras=False,f3=False):
         import hunt_native as h
         from perfil_hunt import DEFAULT
-        p=copy.deepcopy(DEFAULT);p["extra_buffs_enabled"]=extras;p.update(buffs_enabled=buff,heal_enabled=False,minimize_on_start=False,hp_keys=['','',''],buff_gap=3)
+        p=copy.deepcopy(DEFAULT);p["f3_enabled"]=f3;p["extra_buffs_enabled"]=extras;p.update(buffs_enabled=buff,heal_enabled=False,minimize_on_start=False,hp_keys=['','',''],buff_gap=3)
         for v in p['skills']:v['enabled']=False
         c=SimpleNamespace(stop=threading.Event(),pause=threading.Event());t=[0.];pos=[(0,0)];alvo_selecionado=[False];aproximou=[False];ctrl=[False];buff1=[False];buff2=[False];hp=[100];eventos=[];teclas=[];navs=[]
         def alvo():return dict(ref=1,id=4093,name='Verit Mutante',hp=hp[0],hp_max=100,mp=0,mp_max=0,position=(2 if buff else 8,0),height=0,hostile=True)
@@ -79,6 +79,12 @@ class BuscaBuffsTeste(unittest.TestCase):
         entrada=SimpleNamespace(PAUSE=0,keyDown=down,keyUp=up)
         with patch.dict(sys.modules,keyboard=SimpleNamespace(is_pressed=lambda k:False),pydirectinput=entrada),patch.object(h,'AgendaBuffs',lambda inicio,*args:AgendaBuffs(inicio+2 if renovacao else inicio,*args)),patch.object(h,'DadosInternos',Dados),patch.object(h,'NavegadorLocal',Nav),patch.object(h.ctypes.windll,'user32',u),patch.object(h.threading,'Thread'),patch.object(h.time,'monotonic',lambda:t[0]),patch.object(h.time,'sleep',dormir):h.main(p,emitir,c)
         self.assertEqual(hp[0],0);self.assertFalse(ctrl[0]);return eventos,teclas,navs
+
+    def test_motor_envia_f3_no_ciclo_protegido(self):
+        eventos,teclas,navs=self.motor(True,extras=True,f3=True)
+        self.assertEqual([e['atalho'] for e in eventos if e.get('message')=='Atalho de buff enviado.'],['ctrl+1','ctrl+2','ctrl+3','ctrl+4','ctrl+5','ctrl+6','ctrl+8','f3'])
+        fim=next(i for i,e in enumerate(eventos) if e.get('message')=='Ciclo de buffs concluido; combate liberado com a selecao preservada.')
+        self.assertFalse(any(e.get('event')=='action' for e in eventos[:fim]))
 
     def test_motor_envia_adicionais_sem_ataques_entre_buffs(self):
         eventos,teclas,navs=self.motor(True,extras=True)

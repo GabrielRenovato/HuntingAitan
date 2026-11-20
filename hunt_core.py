@@ -81,6 +81,12 @@ class AgendaBuffs:
 
 
 def executar_buff(atalho,pressionar,liberar,esperar,permitido):
+    if '+' not in atalho:
+        if not permitido() or pressionar(atalho) is False:return False
+        try:
+            esperar(.06)
+            return permitido()
+        finally:liberar(atalho)
     modificador,tecla=atalho.split('+')
     if not permitido():return False
     if pressionar(modificador) is False:return False

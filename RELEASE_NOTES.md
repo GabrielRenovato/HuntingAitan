@@ -1,7 +1,5 @@
-Ctrl+6 e Ctrl+8 usados ao iniciar e renovados individualmente a cada 11 minutos.
+F3 automatico ao iniciar a caca e a cada 30 minutos, configuravel em Comportamento.
 
-O intervalo dos cinco buffs anteriores continua independente. A aplicacao suspende ataques, TAB e movimento; Ctrl e liberado mesmo ao perder foco.
+Preserva Ctrl+6 e Ctrl+8 a cada 11 minutos e os outros buffs a cada 9 minutos. Ataques, TAB e movimento ficam suspensos durante a aplicacao. F3 e enviado sem Ctrl, com liberacao garantida da tecla.
 
-Em Comportamento, a opcao de buffs adicionais permite ativar ou desativar Ctrl+6 e Ctrl+8 e ajustar seu intervalo.
-
-Instalador: HuntingAitan-Setup-0.1.0-beta.29-x64.exe.
+Instalador: HuntingAitan-Setup-0.1.0-beta.30-x64.exe.

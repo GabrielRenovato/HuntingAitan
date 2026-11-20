@@ -158,8 +158,9 @@ def main(profile,event_sink,control,percurso=None):
         buffs=getattr(control,'buff_agenda',None) if getattr(control,'cycle_context',False) else None
         if buffs is None:
             extras=['ctrl+6','ctrl+8'] if p['extra_buffs_enabled'] else []
-            teclas_buffs=p['buff_keys']+extras
+            teclas_buffs=p['buff_keys']+extras+(['f3'] if p['f3_enabled'] else [])
             periodos_buffs={k:p['extra_buff_minutes']*60 for k in extras}
+            if p['f3_enabled']:periodos_buffs['f3']=p['f3_minutes']*60
             buffs=AgendaBuffs(inicio,teclas_buffs,p['buff_minutes']*60,p['buff_gap'],p['buffs_enabled'],periodos_buffs)
         if getattr(control,'cycle_context',False):control.buff_agenda=buffs
         log('Rebuff programado.',ativo=p['buffs_enabled'],minutos=p['buff_minutes'],atalhos=buffs.teclas,periodos_segundos=buffs.periodos)

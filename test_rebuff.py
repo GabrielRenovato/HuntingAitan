@@ -4,6 +4,18 @@ from perfil_hunt import DEFAULT,validar
 K=['ctrl+1','ctrl+2','ctrl+3','ctrl+4','ctrl+5']
 
 class TesteRebuff(unittest.TestCase):
+ def test_f3_trinta_minutos_e_sem_ctrl(self):
+  a=AgendaBuffs(0,['f3'],periodos={'f3':1800})
+  self.assertEqual(a.proximo(0,True),'f3');a.confirmar(0)
+  self.assertIsNone(a.proximo(1799,True));self.assertEqual(a.proximo(1800,True),'f3')
+  e=[]
+  self.assertTrue(executar_buff('f3',lambda k:e.append(('down',k)),lambda k:e.append(('up',k)),lambda s:None,lambda:True))
+  self.assertEqual(e,[('down','f3'),('up','f3')])
+ def test_f3_libera_tecla_em_falha(self):
+  e=[]
+  def esperar(s):raise RuntimeError('erro')
+  with self.assertRaises(RuntimeError):executar_buff('f3',lambda k:None,lambda k:e.append(k),esperar,lambda:True)
+  self.assertEqual(e,['f3'])
  def test_buffs_adicionais_renovam_em_onze_minutos(self):
   teclas=K+['ctrl+6','ctrl+8']
   a=AgendaBuffs(0,teclas,periodos={'ctrl+6':660,'ctrl+8':660})

@@ -8,7 +8,7 @@ DEFAULT={
  'hp_percent':40,'mp_percent':40,'hp_keys':['8','',''],'mp_keys':['','',''],
  'heal_enabled':True,'heal_key':'7',
  'return_key':'','duration_minutes':240,'target':'qualquer','minimize_on_start':True,
- 'extra_buffs_enabled':True,'extra_buff_minutes':11,'buffs_enabled':True,'buff_minutes':9,'buff_gap':2,'buff_keys':['ctrl+1','ctrl+2','ctrl+3','ctrl+4','ctrl+5'],
+ 'f3_enabled':True,'f3_minutes':30,'extra_buffs_enabled':True,'extra_buff_minutes':11,'buffs_enabled':True,'buff_minutes':9,'buff_gap':2,'buff_keys':['ctrl+1','ctrl+2','ctrl+3','ctrl+4','ctrl+5'],
  'skills':[{'key':str(i+2) if i<6 else '', 'seconds':[6,8,10,12,15,20,17,52,0,0][i],
              'enabled':i<6,'icon':i if i<8 else None,'native_id':None} for i in range(10)],
  'items':[{'key':'','seconds':0,'enabled':False} for _ in range(5)]}
@@ -31,7 +31,7 @@ def validar(dados):
   if isinstance(p[k],bool):raise ValueError(k+': valor invalido')
   p[k]=float(p[k])
   if not 0<=p[k]<=limite:raise ValueError(k+': valor fora do intervalo')
- for k,a,b in [('radius',10,50),('no_damage_seconds',1,60),('stationary_seconds',1,20),('hp_percent',1,99),('mp_percent',1,99),('duration_minutes',0,1440),('action_gap',.4,10),('extra_buff_minutes',1,120),('buff_minutes',1,120),('buff_gap',.5,10)]:
+ for k,a,b in [('radius',10,50),('no_damage_seconds',1,60),('stationary_seconds',1,20),('hp_percent',1,99),('mp_percent',1,99),('duration_minutes',0,1440),('action_gap',.4,10),('f3_minutes',1,120),('extra_buff_minutes',1,120),('buff_minutes',1,120),('buff_gap',.5,10)]:
   p[k]=float(p[k])
   if not a<=p[k]<=b:raise ValueError(k+': valor fora do intervalo')
  if p['data_source'] not in ['native','visual']:raise ValueError('Fonte de dados invalida')
@@ -39,7 +39,7 @@ def validar(dados):
  if len(p['base'])!=2 or any(not 0<=x<=9999 for x in p['base']):raise ValueError('Base invalida')
  if isinstance(p['mina_cycles'],bool) or not isinstance(p['mina_cycles'],(int,float)) or not 0<=p['mina_cycles']<=9999 or int(p['mina_cycles'])!=p['mina_cycles']:raise ValueError('Quantidade de ciclos da Mina invalida')
  p['mina_cycles']=int(p['mina_cycles'])
- for k in ['auto_base','minimize_on_start','extra_buffs_enabled','buffs_enabled','cancel_normal','heal_enabled','mina_repeat','auto_ui_scale']:
+ for k in ['auto_base','minimize_on_start','extra_buffs_enabled','f3_enabled','buffs_enabled','cancel_normal','heal_enabled','mina_repeat','auto_ui_scale']:
   if not isinstance(p[k],bool):raise ValueError('Opcao invalida: '+k)
  for k in ['hp_keys','mp_keys']:
   if len(p[k])!=3:raise ValueError('Sao necessarios tres slots')
@@ -68,6 +68,7 @@ def validar(dados):
    if legado and campo=='skills':enabled=bool(key and seconds>0 and key not in usadas)
    if not 0<=seconds<=86400:raise ValueError('Intervalo invalido')
    if enabled and (not key or seconds<=0):raise ValueError('Slot ativo precisa de tecla e intervalo')
+   if enabled and p['f3_enabled'] and key=='f3':raise ValueError('F3 reservado ao uso automatico a cada 30 minutos')
    if enabled and key in usadas:raise ValueError('Atalho repetido: '+key)
    if enabled:usadas.add(key)
    normal.append(dict(key=key,seconds=seconds,enabled=enabled,icon=s.get('icon',i if campo=='skills' and i<8 else None),native_id=s.get('native_id')))
