@@ -27,7 +27,10 @@ class CadenciaRapidaTeste(unittest.TestCase):
   self.assertEqual(c.escolher(.7,True,True,1,True),'5')
   c.registrar('5',.7)
   self.assertNotIn(c.escolher(2,True,True,1,True),['4','5'])
-  self.assertEqual(c.escolher(15,True,True,1,True),'4')
+  c.registrar('1',2)
+  self.assertEqual(c.escolher(15,True,True,1,True),'1')
+  c.registrar('1',15)
+  self.assertEqual(c.escolher(15.13,True,True,1,True),'4')
  def test_ataque_normal_nao_acrescenta_meio_segundo_a_skill_pronta(self):
   c=CadenciaCombate({'recargas':{'4':15}});c.registrar('1',0)
   self.assertEqual(c.escolher(.12,True,False,1,True),'4')

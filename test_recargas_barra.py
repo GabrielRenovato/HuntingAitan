@@ -21,7 +21,7 @@ class RecargasBarraTeste(unittest.TestCase):
     def test_habilidade_sem_recarga_nao_monopoliza_fila(self):
         c=CadenciaCombate({'recargas':{'3':150,'4':15,'5':17}})
         reais={k:dict(ready=True) for k in c.recargas}
-        for i,esperada in enumerate(['3','4','5','3']):
+        for i,esperada in enumerate(['3','4','1','5','3']):
             tecla=c.escolher(i,True,True,1,True,reais)
             self.assertEqual(tecla,esperada);c.registrar(tecla,i)
 

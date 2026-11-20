@@ -9,6 +9,7 @@ class CuraPrioritaria:
         self.tentar_em=0.
         self.fallback_em=0.
         self.pendente=None
+        self.falhas=0;self.recuperar=False
 
     def observar(self, agora, hp, real):
         if self.pendente is None:return None
@@ -16,13 +17,18 @@ class CuraPrioritaria:
         if real is not None and not real['ready']:
             self.pendente=None
             self.fallback_em=inicio+self.intervalo_fallback
+            self.falhas=0;self.recuperar=False
             return 'recarga_confirmada'
         if hp>hp_antes+.03:
             self.pendente=None
             self.fallback_em=inicio+self.intervalo_fallback
+            self.falhas=0;self.recuperar=False
             return 'hp_recuperado'
         if agora-inicio>=2:
             self.pendente=None
+            self.falhas+=1
+            if self.falhas>=2:
+                self.recuperar=True;self.tentar_em=max(self.tentar_em,agora+3)
             return 'sem_confirmacao'
         return None
 
@@ -36,5 +42,5 @@ class CuraPrioritaria:
         self.tentar_em=agora+2.
 
     def aguardando_inicio(self, agora):
-        # Deixa o cliente reconhecer a skill antes de enviar giro ou movimento.
-        return self.pendente is not None and agora-self.pendente[0]<.4
+        # Nenhuma skill ofensiva deve interromper a janela de confirmacao.
+        return self.pendente is not None

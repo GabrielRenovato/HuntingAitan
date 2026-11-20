@@ -10,12 +10,15 @@ class CadenciaCombate:
         self.intervalo=max(.5,float(config.get('intervalo_skills',.7)))
         self.recargas={str(k):max(self.intervalo,float(v)) for k,v in
                        config.get('recargas',{'2':6,'3':8,'4':10,'5':12,'6':15,'7':20}).items()}
-        self.pronta_em={};self.livre_em=0.;self.normal_em=0.;self.ultimo_envio={}
+        self.pronta_em={};self.livre_em=0.;self.normal_em=0.;self.ultimo_envio={};self.skills_desde_normal=0;self.ultimo_normal=None
 
-    def escolher(self,agora,alvo_valido,dano_recente,vida,em_alcance=None,recargas_reais=None,iniciar_normal=False):
+    def escolher(self,agora,alvo_valido,dano_recente,vida,em_alcance=None,recargas_reais=None,iniciar_normal=False,normal_disponivel=True):
         if not alvo_valido or vida<=0 or agora<self.livre_em:return None
-        if iniciar_normal and em_alcance and agora>=self.normal_em:return '1'
+        if normal_disponivel and iniciar_normal and em_alcance and agora>=self.normal_em:return '1'
         skills_liberadas=(dano_recente and vida>.12) if em_alcance is None else (dano_recente or em_alcance)
+        # Mesmo uma leitura de recarga permanentemente pronta nao pode
+        # impedir a retomada do ataque normal. No maximo duas skills por vez.
+        if normal_disponivel and em_alcance and agora>=self.normal_em and (self.skills_desde_normal>=2 or (self.ultimo_normal is not None and agora-self.ultimo_normal>=2.5)):return '1'
         if skills_liberadas:
             disponiveis=[]
             for tecla in self.recargas:
@@ -27,14 +30,16 @@ class CadenciaCombate:
                 else:pronta=agora>=self.pronta_em.get(tecla,0)
                 if pronta:disponiveis.append(tecla)
             if disponiveis:return min(disponiveis,key=lambda k:self.ultimo_envio.get(k,-float('inf')))
-        return '1' if agora>=self.normal_em else None
+        return '1' if normal_disponivel and agora>=self.normal_em else None
 
     def registrar(self,tecla,agora,intervalo_normal=None,normal_repetido=False):
         if tecla in self.recargas:
+            self.skills_desde_normal+=1
             self.ultimo_envio[tecla]=agora
             self.pronta_em[tecla]=agora+self.recargas[tecla]
             self.livre_em=agora+self.intervalo
         elif tecla=='1':
+            self.skills_desde_normal=0;self.ultimo_normal=agora
             intervalo=1. if intervalo_normal is None else max(.001 if normal_repetido else .17,float(intervalo_normal))
             self.normal_em=agora+intervalo
             self.livre_em=agora+(min(.12,intervalo) if normal_repetido else .12)

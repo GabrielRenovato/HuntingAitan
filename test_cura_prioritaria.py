@@ -34,6 +34,14 @@ class CuraTeste(unittest.TestCase):
         self.assertFalse(c.necessaria(2,.3,None))
         self.assertTrue(c.necessaria(154,.3,None))
 
+    def test_duas_falhas_pedem_recuperacao_com_pausa_sem_inventar_recarga(self):
+        c=CuraPrioritaria('7',.7,154)
+        c.enviada(0,.5);c.observar(2,.4,dict(ready=True))
+        c.enviada(2,.4);self.assertEqual(c.observar(4,.3,dict(ready=True)),'sem_confirmacao')
+        self.assertTrue(c.recuperar);self.assertFalse(c.necessaria(6,.3,dict(ready=True)))
+        self.assertTrue(c.necessaria(7,.3,dict(ready=True)))
+        c.enviada(7,.3);c.observar(8,.3,dict(ready=False));self.assertEqual(c.falhas,0)
+
     def motor(self,efeito=None):
         import hunt_native as h
         from perfil_hunt import DEFAULT

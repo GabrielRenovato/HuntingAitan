@@ -33,7 +33,8 @@ class MorteSelecaoTeste(unittest.TestCase):
 
     def test_cura_reserva_tempo_para_cliente_reconhecer_cast(self):
         c=CuraPrioritaria('7',.7,154);c.enviada(0,.5)
-        self.assertTrue(c.aguardando_inicio(.2));self.assertFalse(c.aguardando_inicio(.41))
+        self.assertTrue(c.aguardando_inicio(.2));self.assertTrue(c.aguardando_inicio(.41))
+        c.observar(2,.5,dict(ready=True));self.assertFalse(c.aguardando_inicio(2))
         c.observar(.3,.5,dict(ready=False));self.assertFalse(c.aguardando_inicio(.31))
 
     def test_motor_conclui_rebuff_antes_de_atacar_mesmo_recebendo_dano(self):

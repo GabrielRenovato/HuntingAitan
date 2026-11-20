@@ -338,8 +338,12 @@ def main(profile,event_sink,control,percurso=None):
             confirmacao=cura.observar(agora,hp_atual,recarga_cura)
             if confirmacao:
                 log('Verificacao da cura.',resultado=confirmacao,tecla=tecla_cura,hp=hp_atual,recarga=recarga_cura)
+            if cura.recuperar:
+                cura.recuperar=False
+                if target and target.get('hostile') and target.get('hp',0)>0 and math.dist(pos,target['position'])<=3:
+                    vigia_ataque.forcar(agora)
+                log('Cura sem efeito confirmado em tentativas consecutivas; recuperando combate antes de repetir.',falhas=cura.falhas,hp=hp_atual)
             if cura.necessaria(agora,hp_atual,recarga_cura):
-                vigia_ataque.suspender(agora)
                 # Independente de mob, dano recente, alcance e fila ofensiva.
                 # Os bloqueios reais de stun e casting ja foram respeitados acima.
                 soltar();navegador.suspender(pos,agora)
@@ -520,7 +524,7 @@ def main(profile,event_sink,control,percurso=None):
                         if mobs_regiao or math.dist(pos,base)<=3:
                             soltar();esperar(.03);continue
                     target=valor if acao=='aceitar' else None
-                if alvo_permitido(target,player,base,p):
+                if alvo_permitido(target,player,base,p) and indisponiveis.get(target['id'],0)<=agora:
                     progresso=ProgressoNativo(target,agora);recuperacao.reiniciar();espera_na_base=False;estado='combater';log('Alvo confirmado por dados internos.',alvo=target['name']);continue
                 if agora>=fim_busca:
                     if math.dist(pos,base)<=3:
@@ -533,7 +537,7 @@ def main(profile,event_sink,control,percurso=None):
                 if agora-ultima_tab>=.25:pulso('tab');ultima_tab=agora
                 esperar(.015);continue
             if estado=='aproximar_busca':
-                if alvo_permitido(target,player,base,p):
+                if alvo_permitido(target,player,base,p) and indisponiveis.get(target['id'],0)<=agora:
                     soltar();progresso=ProgressoNativo(target,agora);recuperacao.reiniciar()
                     estado='combater';regional.confirmar_alvo()
                     log('Alvo confirmado apos aproximacao de busca.',alvo=target['name'],alvo_id=target['id']);continue
@@ -569,7 +573,7 @@ def main(profile,event_sink,control,percurso=None):
                             indisponiveis[progresso.id]=agora+15
                             recuperacao.reiniciar();pool_em=0.;cancelamento=CancelamentoNormal(p['cancel_normal'])
                             verificador.observar(None,agora,False)
-                            if alvo_permitido(target,player,base,p):
+                            if alvo_permitido(target,player,base,p) and indisponiveis.get(target['id'],0)<=agora:
                                 progresso=ProgressoNativo(target,agora)
                                 log('Atacando o alvo proximo ja selecionado.',alvo=target['name'],alvo_id=target['id'])
                             else:
@@ -607,6 +611,10 @@ def main(profile,event_sink,control,percurso=None):
                     log('Alvo sem dano; procurando outro mob antes de retornar.');continue
                 if resultado!='mesmo':esperar(.01);continue
                 vigia_ataque.observar(target,agora)
+                if not vigia_ataque.recuperar_ate and vigia_ataque.esgotado(agora,math.dist(pos,target['position'])):
+                    indisponiveis[progresso.id]=agora+30;pool_em=0.
+                    log('Alvo sem dano apos tres recuperacoes; ignorado por 30s sem registrar abate.',alvo_id=progresso.id,hp_alvo=target['hp'],hp=hp_atual)
+                    soltar();estado='buscar';progresso=None;aprox_pos=None;continue
                 if not vigia_ataque.recuperar_ate and vigia_ataque.iniciar(agora,math.dist(pos,target['position'])):
                     soltar();navegador.invalidar();cancelamento.suspender_alvo(progresso.id)
                     log('Ataques sem dano por 3s; corrigindo aproximacao e orientacao sem trocar alvo.',alvo_id=progresso.id,hp_alvo=target['hp'],distancia=math.dist(pos,target['position']),envios=vigia_ataque.envios)
@@ -636,7 +644,7 @@ def main(profile,event_sink,control,percurso=None):
                 if repetir_normal and repetindo_id!=progresso.id:
                     cadencia.normal_em=min(cadencia.normal_em,agora);repetindo_id=progresso.id
                 elif not repetir_normal:repetindo_id=None
-                tecla=cadencia.escolher(agora,True,progresso.dano and agora-progresso.ultimo_dano<2.5,target['hp']/target['hp_max'],em_alcance=em_alcance,recargas_reais=cc.get('recargas_atalhos'),iniciar_normal=abrir_normal)
+                tecla=cadencia.escolher(agora,True,progresso.dano and agora-progresso.ultimo_dano<2.5,target['hp']/target['hp_max'],em_alcance=em_alcance,recargas_reais=cc.get('recargas_atalhos'),iniciar_normal=abrir_normal,normal_disponivel=cc.get('normal_ready') is not False or repetir_normal)
                 if tecla=='1' and cc.get('normal_ready') is False and not repetir_normal:tecla=None
                 item=False
                 if agora>=cadencia.livre_em:
@@ -660,7 +668,8 @@ def main(profile,event_sink,control,percurso=None):
                     event_sink(dict(event='action',key=p['attack_key'] if tecla=='1' else tecla,kind='normal' if tecla=='1' else 'skill',target_id=target['id'],normal_cooldown=cc.get('normal_cooldown'),skill_state=real,combo_w=timing['ordem'] if combo else None,combo_timing=timing if combo else None,combo_repeticao_ms=round(ritmo['intervalo_repeticao']*1000,3) if combo and tecla=='1' else None,combo_pausa_teclas_ms=ritmo['pausa_teclas']*1000 if combo and tecla=='1' else None))
                     normal_repetido=bool(combo and tecla=='1')
                     cadencia.registrar(tecla,time.monotonic(),intervalo_normal=ritmo['intervalo_repeticao'] if normal_repetido else None,normal_repetido=normal_repetido)
-                    if tecla=='1':vigia_ataque.enviado();progresso.abertura_enviada=True
+                    vigia_ataque.enviado()
+                    if tecla=='1':progresso.abertura_enviada=True
                     cancelamento.acao(tecla=='1',time.monotonic(),cadencia.livre_em)
                     if tecla!='1':log('Tecla de habilidade enviada.',tecla=tecla,intervalo=cadencia.recargas[tecla],recarga_real=real)
                 if repetir_normal:
