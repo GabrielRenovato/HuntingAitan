@@ -12,14 +12,14 @@ def dentro_jardim(pos,margem=0):
     x0,y0,x1,y1=plano_jardim()['limites']
     return x0-margem<=pos[0]<x1+margem and y0-margem<=pos[1]<y1+margem
 
-def salvar_diagnostico_dificuldade(tela,leituras):
+def salvar_diagnostico_dificuldade(tela,leituras,arquivo=None,etapa='leitura_concluida'):
     import cv2
     pasta=Path(os.environ.get('AIKA_DATA_DIR',str(Path(__file__).parent)))/'app_sessions'
     pasta.mkdir(parents=True,exist_ok=True)
-    arquivo=pasta/('jardim_dificuldade_'+time.strftime('%Y%m%d_%H%M%S')+'_'+str(os.getpid()))
+    arquivo=Path(arquivo) if arquivo else pasta/('jardim_dificuldade_'+time.strftime('%Y%m%d_%H%M%S')+'_'+str(os.getpid()))
     h,w=tela.shape[:2];largura=min(w,max(480,round(w*.4)));altura=min(h,max(480,round(h*.75)))
     if not cv2.imwrite(str(arquivo.with_suffix('.png')),tela[:altura,w-largura:]):raise OSError('Nao foi possivel salvar o recorte do indicador')
-    arquivo.with_suffix('.json').write_text(json.dumps(dict(leituras=leituras,recorte=[w-largura,0,w,altura]),ensure_ascii=False,indent=2),encoding='utf-8')
+    arquivo.with_suffix('.json').write_text(json.dumps(dict(etapa=etapa,leituras=leituras,recorte=[w-largura,0,w,altura]),ensure_ascii=False,indent=2),encoding='utf-8')
     return str(arquivo.with_suffix('.png'))
 
 def conferir_dificil(auto_escala=True,emitir=None,ativo=None,parar=None):
@@ -28,7 +28,15 @@ def conferir_dificil(auto_escala=True,emitir=None,ativo=None,parar=None):
     from interface_mina import VerificadorElite
     verificador=VerificadorElite(dificuldade='dificil',auto_escala=auto_escala)
     with (getattr(mss,'MSS',None) or mss.mss)() as sct:
-        cap=CapturaAika(sct);confirmacoes=0;leituras=[];tela=None;pausado=False
+        cap=CapturaAika(sct);confirmacoes=0;leituras=[];tela=None;pausado=False;arquivo=None
+        def registrar(etapa):
+            nonlocal arquivo
+            try:
+                primeiro=arquivo is None
+                arquivo=salvar_diagnostico_dificuldade(tela,leituras,arquivo=arquivo,etapa=etapa)
+                if emitir and primeiro:emitir(dict(event='log',message='Recorte do Jardim salvo antes do OCR; disponivel em Abrir diagnosticos.',arquivo=arquivo))
+            except OSError as e:
+                if emitir:emitir(dict(event='log',message='Nao foi possivel salvar o diagnostico da dificuldade.',detail=str(e)))
         while len(leituras)<4:
             if parar and parar():return False
             if ativo and not ativo():
@@ -39,18 +47,17 @@ def conferir_dificil(auto_escala=True,emitir=None,ativo=None,parar=None):
             time.sleep(.3)
             if parar and parar():return False
             if ativo and not ativo():continue
-            tela=cap.capturar();correto=verificador.confirmar(tela)
+            tela=cap.capturar();registrar('antes_ocr')
+            correto=verificador.confirmar(tela)
             if ativo and not ativo():confirmacoes=0;continue
             pausado=False;leituras.append(dict(verificador.diagnostico))
             confirmacoes=confirmacoes+1 if correto else 0
+            registrar('confirmado' if confirmacoes>=2 else 'leitura_concluida')
             if confirmacoes>=2:
                 if emitir:emitir(dict(event='log',message='Dificuldade do Jardim confirmada em duas capturas.',leitura_interface=verificador.diagnostico))
                 return True
             if emitir:emitir(dict(event='log',message='Reconfirmando indicador da dificuldade do Jardim.',leitura_interface=verificador.diagnostico,tentativa=len(leituras)))
-        arquivo=None
-        try:arquivo=salvar_diagnostico_dificuldade(tela,leituras)
-        except OSError as e:
-            if emitir:emitir(dict(event='log',message='Nao foi possivel salvar o diagnostico da dificuldade.',detail=str(e)))
+        registrar('nao_confirmado')
         if emitir:emitir(dict(event='log',message='Indicador do Jardim nao confirmado; recorte salvo nos diagnosticos.' if arquivo else 'Indicador do Jardim nao confirmado.',arquivo=arquivo,leituras=leituras))
         raise RuntimeError('Jardim: dificuldade Dificil nao confirmada ('+verificador.resumo()+'). '+('Use Comportamento > Escala da interface > Abrir diagnosticos para enviar o recorte.' if arquivo else ''))
 

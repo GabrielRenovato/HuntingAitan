@@ -1,5 +1,12 @@
 # Alterações
 
+## 0.1.0-beta.25 — 2026-11-20
+
+- Recorte de diagnóstico do Jardim é salvo antes do primeiro OCR, sem esperar quatro falhas.
+- Atualiza o mesmo PNG/JSON a cada tentativa e registra se a leitura está pendente, concluída ou confirmada.
+- O arquivo permanece disponível se o OCR falhar; botão Abrir diagnósticos mantido.
+- 289 testes Python e verificações do painel e atualizador passaram. A falha de reconhecimento no PC do amigo ainda depende desse recorte para diagnóstico.
+
 ## 0.1.0-beta.24 — 2026-11-20
 
 - Captura da área cliente usa contexto de DPI por monitor, restaurado ao terminar, para manter as coordenadas em pixels físicos.

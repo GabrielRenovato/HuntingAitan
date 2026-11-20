@@ -20,7 +20,8 @@ class ConfirmacaoTeste(unittest.TestCase):
 
     def test_frames_transitorios_nao_encerram_antes_do_jogo_desenhar(self):
         ok,cap,eventos,salvar=self.executar([False,False,True,True])
-        self.assertTrue(ok);self.assertEqual(cap.call_count,4);salvar.assert_not_called()
+        self.assertTrue(ok);self.assertEqual(cap.call_count,4)
+        self.assertEqual(salvar.call_args.kwargs['etapa'],'confirmado')
         self.assertTrue(any('duas capturas' in e.get('message','') for e in eventos))
 
     def test_um_acerto_isolado_nao_libera_dificuldade(self):
@@ -49,6 +50,33 @@ class ConfirmacaoTeste(unittest.TestCase):
             recorte=cv2.imread(str(arquivo));self.assertEqual(recorte.shape,(576,546,3))
             self.assertEqual(recorte[20,540].tolist(),[10,100,220])
             self.assertEqual(json.loads(arquivo.with_suffix('.json').read_text(encoding='utf-8'))['leituras'],leituras)
+
+    def test_mesmo_recorte_e_atualizado_sem_criar_um_arquivo_por_frame(self):
+        tela=np.zeros((768,1366,3),np.uint8)
+        with tempfile.TemporaryDirectory() as pasta,patch.dict('os.environ',AIKA_DATA_DIR=pasta):
+            arquivo=Path(salvar_diagnostico_dificuldade(tela,[],etapa='antes_ocr'))
+            novo=salvar_diagnostico_dificuldade(tela,[dict(indicador='dificil')],arquivo=arquivo,etapa='confirmado')
+            self.assertEqual(str(arquivo),novo)
+            self.assertEqual(len(list(arquivo.parent.glob('jardim_dificuldade_*'))),2)
+            self.assertEqual(json.loads(arquivo.with_suffix('.json').read_text(encoding='utf-8'))['etapa'],'confirmado')
+
+    def test_png_existe_antes_do_primeiro_ocr_mesmo_se_ele_falhar(self):
+        class MSS:
+            def __enter__(self):return self
+            def __exit__(self,*args):pass
+        with tempfile.TemporaryDirectory() as pasta,patch.dict('os.environ',AIKA_DATA_DIR=pasta):
+            def ocr(tela):
+                arquivos=list((Path(pasta)/'app_sessions').glob('jardim_dificuldade_*.png'))
+                self.assertEqual(len(arquivos),1)
+                dados=json.loads(arquivos[0].with_suffix('.json').read_text(encoding='utf-8'))
+                self.assertEqual(dados['etapa'],'antes_ocr')
+                self.assertEqual(dados['leituras'],[])
+                raise RuntimeError('OCR interrompido')
+            v=Mock();v.confirmar.side_effect=ocr
+            cap=SimpleNamespace(capturar=lambda:np.zeros((768,1366,3),np.uint8))
+            with patch.dict('sys.modules',mss=SimpleNamespace(MSS=MSS)),patch('captura_aika.CapturaAika',return_value=cap),patch('interface_mina.VerificadorElite',return_value=v),patch('jardim_aereo.time.sleep'):
+                with self.assertRaisesRegex(RuntimeError,'OCR interrompido'):conferir_dificil()
+            self.assertTrue(list((Path(pasta)/'app_sessions').glob('jardim_dificuldade_*.png')))
 
 
 if __name__=='__main__':unittest.main()
