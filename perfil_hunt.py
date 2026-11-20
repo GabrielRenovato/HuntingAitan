@@ -3,7 +3,7 @@ from pathlib import Path
 
 DEFAULT={
  'version':3,'data_source':'native','auto_base':True,'base':[2767,846],'radius':20,'no_damage_seconds':5,'patrol_mode':'base',
- 'mina_repeat':False,'mina_cycles':0,
+ 'mina_repeat':False,'mina_cycles':0,'auto_ui_scale':True,
  'cancel_normal':False,'stationary_seconds':3,'unstuck_key':"'",'attack_key':'1','action_gap':.7,
  'hp_percent':40,'mp_percent':40,'hp_keys':['8','',''],'mp_keys':['','',''],
  'heal_enabled':True,'heal_key':'7',
@@ -35,7 +35,7 @@ def validar(dados):
  if len(p['base'])!=2 or any(not 0<=x<=9999 for x in p['base']):raise ValueError('Base invalida')
  if isinstance(p['mina_cycles'],bool) or not isinstance(p['mina_cycles'],(int,float)) or not 0<=p['mina_cycles']<=9999 or int(p['mina_cycles'])!=p['mina_cycles']:raise ValueError('Quantidade de ciclos da Mina invalida')
  p['mina_cycles']=int(p['mina_cycles'])
- for k in ['auto_base','minimize_on_start','buffs_enabled','cancel_normal','heal_enabled','mina_repeat']:
+ for k in ['auto_base','minimize_on_start','buffs_enabled','cancel_normal','heal_enabled','mina_repeat','auto_ui_scale']:
   if not isinstance(p[k],bool):raise ValueError('Opcao invalida: '+k)
  for k in ['hp_keys','mp_keys']:
   if len(p[k])!=3:raise ValueError('Sao necessarios tres slots')

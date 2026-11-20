@@ -1,5 +1,13 @@
 # Alterações
 
+## 0.1.0-beta.22 — 2026-11-19
+
+- Opção Detectar escala da dificuldade automaticamente em Comportamento, ativada por padrão e preservada no perfil.
+- Leitura da dificuldade da Mina e do Jardim adapta a região ao tamanho da tela e normaliza os recortes antes do OCR.
+- Registra a resolução, a escala estimada do texto e o indicador reconhecido. Erros distinguem indicador ilegível de dificuldade diferente.
+- 275 testes Python e verificações do painel e atualizador passaram. OCR real reconheceu o indicador de teste em 4K com escala de 100%, 150% e 200%.
+- Inclui a recuperação da borda de objetos do caminho até a Mina, introduzida na beta.21. Validação no PC do amigo pendente.
+
 ## 0.1.0-beta.21 — 2026-11-19
 
 - Corrige a parada externa em 2682,1758: o jogador ocupava uma célula livre no terreno, mas coberta pela máscara adicional de objetos.

@@ -67,13 +67,42 @@ class InterfaceMina:
         return dict(acao='aguardar_portal')
 
 class VerificadorElite:
-    def __init__(self,ocr=None,dificuldade='elite'):self.ocr=ocr;self.dificuldade=dificuldade
+    def __init__(self,ocr=None,dificuldade='elite',auto_escala=True):
+        self.ocr=ocr;self.dificuldade=dificuldade;self.auto_escala=auto_escala;self.diagnostico={}
     def confirmar(self,tela):
         if self.ocr is None:
             from rapidocr_onnxruntime import RapidOCR
             self.ocr=RapidOCR(intra_op_num_threads=1,inter_op_num_threads=1)
         from dialogos_evento import normalizar
-        h,w=tela.shape[:2];roi=tela[:min(h,480),max(0,w-480):]
-        roi=cv2.resize(roi,None,fx=3,fy=3,interpolation=cv2.INTER_CUBIC)
-        linhas,_=self.ocr(roi)
-        return any(normalizar(l[1])==self.dificuldade and float(l[2])>=.75 for l in linhas or [])
+        h,w=tela.shape[:2]
+        areas=[(min(w,480),min(h,480),3.)]
+        if self.auto_escala:
+            # A primeira leitura preserva o HUD pequeno em qualquer resolucao.
+            # A segunda acompanha HUD ampliado; a terceira amplia a busca para
+            # um indicador deslocado. Cada recorte e normalizado antes do OCR.
+            escala=max(1.,min(3.,h/1080))
+            areas.extend([(min(w,round(480*escala)),min(h,round(480*escala)),3/escala),
+                          (min(w,max(480,round(w*.4))),min(h,max(480,round(h*.75))),None)])
+        vistos=set();self.diagnostico=dict(resolucao=[w,h],automatico=self.auto_escala,tentativas=0,indicador=None,escala_texto=None)
+        for largura,altura,fator in areas:
+            if (largura,altura) in vistos:continue
+            vistos.add((largura,altura));roi=tela[:altura,w-largura:]
+            fator=fator or min(3.,1440/max(largura,altura))
+            roi=cv2.resize(roi,None,fx=fator,fy=fator,interpolation=cv2.INTER_CUBIC)
+            linhas,_=self.ocr(roi);self.diagnostico['tentativas']+=1
+            indicadores=[l for l in linhas or [] if normalizar(l[1]) in ('normal','facil','dificil','elite','infernal') and float(l[2])>=.75]
+            if not indicadores:continue
+            nomes={normalizar(l[1]) for l in indicadores}
+            self.diagnostico.update(indicador='/'.join(sorted(nomes)),recorte=[w-largura,0,w,altura])
+            if nomes!={self.dificuldade}:return False
+            l=max(indicadores,key=lambda l:float(l[2]));caixa=np.asarray(l[0],dtype=float)
+            if caixa.shape==(4,2) and np.isfinite(caixa).all():
+                altura_texto=(np.linalg.norm(caixa[3]-caixa[0])+np.linalg.norm(caixa[2]-caixa[1]))/2/fator
+                self.diagnostico['escala_texto']=round(float(altura_texto)/12,2)
+            self.diagnostico['confianca']=round(float(l[2]),3)
+            return True
+        return False
+
+    def resumo(self):
+        d=self.diagnostico;res='x'.join(map(str,d.get('resolucao',[])))
+        return 'esperado '+self.dificuldade+'; indicador '+str(d.get('indicador') or 'ilegivel')+'; tela '+res+'; escala automatica '+('ativa' if self.auto_escala else 'desativada')

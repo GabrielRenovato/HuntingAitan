@@ -64,7 +64,7 @@ def entrar_elite(dados,control,emitir,limite=120):
     from interface_mina import VerificadorElite
     from entrada_mina import PORTAL,bloqueadores_da_porta
     entrada.PAUSE=0;dados.u.GetForegroundWindow.restype=w.HWND
-    detector=InterfaceMina();verificador=VerificadorElite();avisos=DetectorAvisos();inicio=time.monotonic();acao_em=0.;ultimo=None;elite=False;confirmacoes=0;erro_em=-100.
+    detector=InterfaceMina();verificador=VerificadorElite(auto_escala=getattr(control,'auto_ui_scale',True));avisos=DetectorAvisos();inicio=time.monotonic();acao_em=0.;ultimo=None;elite=False;confirmacoes=0;erro_em=-100.
     progresso_em=inicio;ferido_em=-float('inf');hp_anterior=None;control.bloqueadores_portal=set();verificar_mob_em=0.
     def ativo():return not control.stop.is_set() and not keyboard.is_pressed('f12') and dados.u.GetForegroundWindow()==dados.hwnd and not control.pause.is_set()
     def clicar(p,duplo=False):
@@ -91,6 +91,7 @@ def entrar_elite(dados,control,emitir,limite=120):
                     correto=math.dist(s['player']['position'],(2850,3344))<=15 and verificador.confirmar(tela)
                     confirmacoes=confirmacoes+1 if correto else 0
                     if confirmacoes>=2:
+                        emitir(dict(event='log',message='Indicador Elite reconhecido; leitura da escala ajustada.',leitura_interface=verificador.diagnostico))
                         emitir(dict(event='cycle',state='elite_confirmado',position=s['player']['position'],message='Nova entrada Elite confirmada por posicao e indicador do jogo.'));return True
                     time.sleep(.4);continue
                 if math.dist(s['player']['position'],PORTAL)>8:

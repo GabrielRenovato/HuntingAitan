@@ -62,6 +62,7 @@ class CicloMina:
 
 
 def main(perfil,emitir,control):
+    control.auto_ui_scale=perfil.get('auto_ui_scale',True)
     import keyboard
     from dados_internos import DadosInternos
     from hunt_native import main as executar

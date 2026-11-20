@@ -14,6 +14,7 @@ function renderSlots(){
  $('return-slot').querySelector('.key').textContent=profile.return_key.toUpperCase();
 }
 function render(){
+ $('auto-ui-scale').checked=profile.auto_ui_scale;
  $('jardim-hint').classList.toggle('hidden',profile.patrol_mode!=='jardim_aereo');$('mina-repeat').checked=!!profile.mina_repeat;$('mina-cycles').value=profile.mina_cycles||0;
  $('target').disabled=profile.patrol_mode!=='base';$('patrol-mode').value=profile.patrol_mode||'base';$('patrol-hint').classList.toggle('hidden',profile.patrol_mode!=='termes_penza');$('mina-hint').classList.toggle('hidden',profile.patrol_mode!=='mina_lenfer');
  $('cancel-normal').checked=!!profile.cancel_normal;
@@ -27,6 +28,7 @@ function render(){
 function collect(){
  if(!profile)throw new Error('Aguarde a configuração carregar.');
  profile.patrol_mode=$('patrol-mode').value;
+ profile.auto_ui_scale=$('auto-ui-scale').checked;
  profile.mina_repeat=$('mina-repeat').checked;profile.mina_cycles=Number($('mina-cycles').value);
  profile.cancel_normal=$('cancel-normal').checked;
  profile.heal_enabled=$('heal-enabled').checked;profile.heal_key=$('heal-key').value.trim().toLowerCase();

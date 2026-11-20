@@ -1,9 +1,11 @@
-Recuperação da borda de objetos no caminho até a Mina.
+Escala automática para leitura da dificuldade da DG.
 
-Corrige a repetição indefinida de sem_caminho observada em 2682,1758. O terreno permitia a posição ocupada pelo personagem, enquanto nossa máscara adicional bloqueava a célula inteira.
+Em Comportamento → Escala da interface, a opção Detectar escala da dificuldade automaticamente vem ativada. O leitor busca o indicador em regiões adaptadas à resolução, normaliza a imagem para o OCR e registra a escala estimada do texto.
 
-Agora o navegador pode sair apenas dessa célula ocupada e retomar o percurso. Nenhum bloqueio nativo do terreno é removido; as demais células dos objetos continuam bloqueadas. Também funciona ao iniciar o retorno nessa posição.
+Mantém a confirmação de Difícil no Jardim e Elite na Mina; uma dificuldade diferente continua sendo recusada. O erro agora informa se o indicador ficou ilegível ou se foi reconhecida outra dificuldade. A opção também pode ser desativada para usar o recorte fixo anterior.
 
-269 testes Python e verificações do painel e atualizador passaram. O planejamento com os arquivos reais encontrou 145 pontos até o portal a partir da posição observada. A recuperação ainda precisa ser validada ao vivo.
+Inclui a correção da beta.21 para sair da borda de objetos no caminho até a entrada da Mina.
 
-Instalador: HuntingAitan-Setup-0.1.0-beta.21-x64.exe.
+275 testes Python e verificações do painel e atualizador passaram. O OCR real reconheceu o indicador de teste em uma imagem 4K com escalas de 100%, 150% e 200%. A validação no PC do amigo ainda está pendente.
+
+Instalador: HuntingAitan-Setup-0.1.0-beta.22-x64.exe.

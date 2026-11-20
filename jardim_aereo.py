@@ -12,14 +12,15 @@ def dentro_jardim(pos,margem=0):
     x0,y0,x1,y1=plano_jardim()['limites']
     return x0-margem<=pos[0]<x1+margem and y0-margem<=pos[1]<y1+margem
 
-def conferir_dificil():
+def conferir_dificil(auto_escala=True,emitir=None):
     import mss
     from captura_aika import CapturaAika
     from interface_mina import VerificadorElite
-    verificador=VerificadorElite(dificuldade='dificil')
+    verificador=VerificadorElite(dificuldade='dificil',auto_escala=auto_escala)
     with (getattr(mss,'MSS',None) or mss.mss)() as sct:
         cap=CapturaAika(sct)
-        if not verificador.confirmar(cap.capturar()):raise RuntimeError('Jardim: dificuldade Dificil nao confirmada no indicador do jogo.')
+        if not verificador.confirmar(cap.capturar()):raise RuntimeError('Jardim: dificuldade Dificil nao confirmada ('+verificador.resumo()+').')
+        if emitir:emitir(dict(event='log',message='Dificuldade do Jardim confirmada; leitura da escala ajustada.',leitura_interface=verificador.diagnostico))
 
 class JardimAereo(MinaLenfer):
     chefe='seridunn'
