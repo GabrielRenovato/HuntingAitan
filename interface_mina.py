@@ -5,6 +5,8 @@ from avisos_hunt import melhor
 
 P=Path(__file__).resolve().parent
 ESCALAS=(1.,.9,1.1,.8,1.25,1.5)
+DIFICULDADES={'normal':'normal','facil':'facil','easy':'facil',
+              'dificil':'dificil','hard':'dificil','elite':'elite','infernal':'infernal'}
 
 class InterfaceMina:
     def __init__(self):
@@ -72,7 +74,9 @@ class VerificadorElite:
     def confirmar(self,tela):
         if self.ocr is None:
             from rapidocr_onnxruntime import RapidOCR
-            self.ocr=RapidOCR(intra_op_num_threads=1,inter_op_num_threads=1)
+            # O HUD fica sempre na horizontal. O classificador de orientacao
+            # girava "Hard" em 180 graus na captura real do cliente ingles.
+            self.ocr=RapidOCR(intra_op_num_threads=1,inter_op_num_threads=1,use_cls=False)
         from dialogos_evento import normalizar
         h,w=tela.shape[:2]
         areas=[(min(w,480),min(h,480),3.)]
@@ -90,10 +94,10 @@ class VerificadorElite:
             fator=fator or min(3.,1440/max(largura,altura))
             roi=cv2.resize(roi,None,fx=fator,fy=fator,interpolation=cv2.INTER_CUBIC)
             linhas,_=self.ocr(roi);self.diagnostico['tentativas']+=1
-            indicadores=[l for l in linhas or [] if normalizar(l[1]) in ('normal','facil','dificil','elite','infernal') and float(l[2])>=.75]
+            indicadores=[l for l in linhas or [] if normalizar(l[1]) in DIFICULDADES and float(l[2])>=.75]
             if not indicadores:continue
-            nomes={normalizar(l[1]) for l in indicadores}
-            self.diagnostico.update(indicador='/'.join(sorted(nomes)),recorte=[w-largura,0,w,altura])
+            nomes={DIFICULDADES[normalizar(l[1])] for l in indicadores}
+            self.diagnostico.update(indicador='/'.join(sorted(nomes)),texto_indicador=sorted({l[1] for l in indicadores}),recorte=[w-largura,0,w,altura])
             if nomes!={self.dificuldade}:return False
             l=max(indicadores,key=lambda l:float(l[2]));caixa=np.asarray(l[0],dtype=float)
             if caixa.shape==(4,2) and np.isfinite(caixa).all():

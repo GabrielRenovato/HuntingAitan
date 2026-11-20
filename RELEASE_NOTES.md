@@ -1,9 +1,11 @@
-Diagnóstico do Jardim disponível antes da primeira leitura.
+Correção do indicador Hard no cliente em inglês.
 
-Corrige a ausência do PNG enquanto o OCR demora: antes, o recorte só era salvo após quatro leituras sem confirmação. Agora o PNG e o JSON são criados antes da primeira chamada ao OCR e atualizados nas tentativas seguintes, mantendo apenas um par de arquivos por sessão.
+O print enviado confirmou a diferença de idioma: o jogo exibe Hard, enquanto o leitor aceitava apenas Difícil. Também foi reproduzida uma falha de orientação do OCR: o classificador girava esse texto em 180 graus e retornava uma palavra incorreta.
 
-Após clicar em Começar com o Aika em foco, abra Comportamento → Escala da interface → Abrir diagnósticos. Envie o par mais recente jardim_dificuldade_*.png e .json. Se a leitura ficar pendente ou falhar, o recorte já estará disponível.
+Agora Hard é normalizado como Difícil e o OCR do indicador preserva a orientação horizontal do HUD. Normal, Easy e Elite continuam sendo rejeitados quando o modo exige Difícil. O diagnóstico registra o texto original reconhecido.
 
-289 testes Python e verificações do painel e atualizador passaram, incluindo a existência do PNG antes de um OCR que falha. Esta versão melhora a coleta de evidências; a causa específica da leitura ilegível no PC do amigo ainda precisa ser analisada com o recorte real.
+A correção reconheceu Hard no print real fornecido com confiança de 1,0. 291 testes Python e verificações do painel e atualizador passaram. A execução completa no notebook ainda precisa ser validada.
 
-Instalador: HuntingAitan-Setup-0.1.0-beta.25-x64.exe.
+Mantém o PNG/JSON salvo antes do OCR e o botão Abrir diagnósticos.
+
+Instalador: HuntingAitan-Setup-0.1.0-beta.26-x64.exe.

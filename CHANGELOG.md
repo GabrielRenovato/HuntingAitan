@@ -1,5 +1,12 @@
 # Alterações
 
+## 0.1.0-beta.26 — 2026-11-20
+
+- Reconhece Hard como Difícil no indicador da DG, mantendo a rejeição de outras dificuldades.
+- Desativa a rotação automática do OCR do indicador: no print real em inglês, o classificador girava Hard em 180 graus.
+- Diagnóstico registra o texto original reconhecido, além da dificuldade normalizada.
+- Validação no print enviado reconheceu Hard como Difícil com confiança de 1,0; 291 testes Python e verificações do painel e atualizador passaram.
+
 ## 0.1.0-beta.25 — 2026-11-20
 
 - Recorte de diagnóstico do Jardim é salvo antes do primeiro OCR, sem esperar quatro falhas.

@@ -1,10 +1,25 @@
 import unittest
+from unittest.mock import patch
 import numpy as np
 from interface_mina import VerificadorElite
 from perfil_hunt import validar
 
 
 class EscalaTeste(unittest.TestCase):
+    def test_hard_em_ingles_equivale_a_dificil_sem_aceitar_normal_ou_elite(self):
+        for texto,esperado in [('Hard',True),('HARD',True),('Difícil',True),('Normal',False),('Elite',False),('Easy',False),('Hard Mode',False)]:
+            with self.subTest(texto=texto):
+                v=VerificadorElite(self.ocr(texto),dificuldade='dificil')
+                self.assertEqual(v.confirmar(self.tela()),esperado)
+                if esperado:
+                    self.assertEqual(v.diagnostico['indicador'],'dificil')
+                    self.assertEqual(v.diagnostico['texto_indicador'],[texto])
+
+    def test_ocr_do_hud_nao_gira_texto_em_180_graus(self):
+        with patch('rapidocr_onnxruntime.RapidOCR',return_value=self.ocr('Hard')) as criar:
+            self.assertTrue(VerificadorElite(dificuldade='dificil').confirmar(self.tela()))
+            self.assertIs(criar.call_args.kwargs['use_cls'],False)
+
     def tela(self,w=3840,h=2160,y=620,altura=24):
         im=np.zeros((h,w,3),np.uint8);im[y:y+altura,w-240:w-140,1]=255
         return im
