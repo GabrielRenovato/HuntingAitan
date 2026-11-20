@@ -4,6 +4,29 @@ from perfil_hunt import DEFAULT,validar
 K=['ctrl+1','ctrl+2','ctrl+3','ctrl+4','ctrl+5']
 
 class TesteRebuff(unittest.TestCase):
+ def test_buffs_adicionais_renovam_em_onze_minutos(self):
+  teclas=K+['ctrl+6','ctrl+8']
+  a=AgendaBuffs(0,teclas,periodos={'ctrl+6':660,'ctrl+8':660})
+  for i,k in enumerate(teclas):
+   self.assertEqual(a.proximo(i*2,True),k);a.confirmar(i*2)
+  self.assertEqual(a.vencimentos['ctrl+1'],540)
+  self.assertEqual(a.vencimentos['ctrl+6'],670)
+  self.assertEqual(a.vencimentos['ctrl+8'],672)
+  for i,k in enumerate(K):
+   self.assertEqual(a.proximo(540+i*2,True),k);a.confirmar(540+i*2)
+  self.assertIsNone(a.proximo(669,True))
+  self.assertEqual(a.proximo(670,True),'ctrl+6');a.confirmar(670)
+  self.assertTrue(a.em_andamento)
+  self.assertIsNone(a.proximo(671,True))
+  self.assertEqual(a.proximo(672,True),'ctrl+8');a.confirmar(672)
+  self.assertFalse(a.em_andamento)
+  self.assertEqual(a.vencimentos['ctrl+6'],1330)
+  self.assertEqual(a.vencimentos['ctrl+8'],1332)
+ def test_perfil_adicionais_evita_atalhos_duplicados(self):
+  p=validar({});self.assertTrue(p['extra_buffs_enabled']);self.assertEqual(p['extra_buff_minutes'],11)
+  p['buff_keys'][-1]='ctrl+6'
+  with self.assertRaises(ValueError):validar(p)
+  p['extra_buffs_enabled']=False;validar(p)
  def test_buffs_no_inicio_e_repeticao_em_nove_minutos(self):
   a=AgendaBuffs(0,K)
   for i,k in enumerate(K):

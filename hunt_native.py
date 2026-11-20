@@ -156,9 +156,13 @@ def main(profile,event_sink,control,percurso=None):
         log('Ritmo do padrao configurado.',ativo=p['cancel_normal'],**ritmo)
         log('Cancelamento de ataque normal experimental.',ativo=p['cancel_normal'])
         buffs=getattr(control,'buff_agenda',None) if getattr(control,'cycle_context',False) else None
-        if buffs is None:buffs=AgendaBuffs(inicio,p['buff_keys'],p['buff_minutes']*60,p['buff_gap'],p['buffs_enabled'])
+        if buffs is None:
+            extras=['ctrl+6','ctrl+8'] if p['extra_buffs_enabled'] else []
+            teclas_buffs=p['buff_keys']+extras
+            periodos_buffs={k:p['extra_buff_minutes']*60 for k in extras}
+            buffs=AgendaBuffs(inicio,teclas_buffs,p['buff_minutes']*60,p['buff_gap'],p['buffs_enabled'],periodos_buffs)
         if getattr(control,'cycle_context',False):control.buff_agenda=buffs
-        log('Rebuff programado.',ativo=p['buffs_enabled'],minutos=p['buff_minutes'],atalhos=p['buff_keys'])
+        log('Rebuff programado.',ativo=p['buffs_enabled'],minutos=p['buff_minutes'],atalhos=buffs.teclas,periodos_segundos=buffs.periodos)
         log('Habilidades ativas nesta sessao.',atalhos=list(cadencia.recargas))
         log('Motor com recargas reais e cura prioritaria.',versao='mina-lenfer-9',cura=tecla_cura,hp_percent=p['hp_percent'])
         verificador=VerificadorMovimento(p['stationary_seconds']);suprimento_em={};item_em={};janela_pausa=None
@@ -371,7 +375,7 @@ def main(profile,event_sink,control,percurso=None):
                     buffs.confirmar(time.monotonic());reconhecer_buff_ate=time.monotonic()+.4
                     cadencia.livre_em=max(cadencia.livre_em,reconhecer_buff_ate)
                     log('Agenda individual de buffs atualizada.',vencimentos=buffs.vencimentos)
-                    if not buffs.em_andamento:log('Buffs vencidos enviados; cada atalho tem sua propria renovacao de '+str(p['buff_minutes'])+' minutos.')
+                    if not buffs.em_andamento:log('Buffs vencidos enviados; renovacao individual por atalho.',periodos_segundos=buffs.periodos)
                 continue
             if buffs.em_andamento:
                 soltar();esperar(.02);continue

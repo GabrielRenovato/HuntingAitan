@@ -54,8 +54,9 @@ class VerificadorMovimento:
 
 
 class AgendaBuffs:
-    def __init__(self,inicio,teclas,periodo=540,intervalo=2,ativo=True):
+    def __init__(self,inicio,teclas,periodo=540,intervalo=2,ativo=True,periodos=None):
         self.teclas=list(teclas);self.periodo=periodo;self.intervalo=intervalo;self.ativo=ativo
+        self.periodos={k:(periodos or {}).get(k,periodo) for k in self.teclas}
         self.vencimentos={k:inicio for k in self.teclas};self.indice=None;self.proxima_acao=0;self.pendentes=[]
     @property
     def vencimento(self):return min(self.vencimentos.values(),default=float('inf'))
@@ -73,7 +74,7 @@ class AgendaBuffs:
         if agora<self.proxima_acao or agora<self.vencimentos[self.teclas[self.indice]]:return None
         return self.teclas[self.indice]
     def confirmar(self,agora):
-        self.vencimentos[self.teclas[self.indice]]=agora+self.periodo
+        self.vencimentos[self.teclas[self.indice]]=agora+self.periodos[self.teclas[self.indice]]
         self.proxima_acao=agora+self.intervalo
         self.pendentes.remove(self.indice)
         self.indice=self.pendentes[0] if self.pendentes else None

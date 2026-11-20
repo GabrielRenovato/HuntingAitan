@@ -39,7 +39,7 @@ class MorteSelecaoTeste(unittest.TestCase):
     def test_motor_conclui_rebuff_antes_de_atacar_mesmo_recebendo_dano(self):
         import hunt_native as h
         from perfil_hunt import DEFAULT
-        p=copy.deepcopy(DEFAULT);p.update(minimize_on_start=False,heal_enabled=False,hp_keys=['','',''],buff_gap=3)
+        p=copy.deepcopy(DEFAULT);p["extra_buffs_enabled"]=False;p.update(minimize_on_start=False,heal_enabled=False,hp_keys=['','',''],buff_gap=3)
         for s in p['skills']:s['enabled']=False
         controle=SimpleNamespace(stop=threading.Event(),pause=threading.Event());t=[0.];recebeu_buff=[False];selecionado=[False];hp_mob=[100];ctrl=[False];eventos=[];teclas=[]
         def alvo():return dict(ref=1,id=4093,name='Verit Mutante',hp=hp_mob[0],hp_max=100,mp=0,mp_max=0,position=(2,0),height=0,hostile=True)

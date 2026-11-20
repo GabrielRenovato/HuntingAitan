@@ -7,7 +7,7 @@ class PrioridadeJanelaTeste(unittest.TestCase):
         import hunt_native as h
         import avisos_hunt  # Carrega OpenCV antes de simular o relogio do motor.
         from perfil_hunt import DEFAULT
-        p=copy.deepcopy(DEFAULT);p.update(buffs_enabled=buffs,heal_enabled=False,minimize_on_start=False,hp_keys=['','',''])
+        p=copy.deepcopy(DEFAULT);p["extra_buffs_enabled"]=False;p.update(buffs_enabled=buffs,heal_enabled=False,minimize_on_start=False,hp_keys=['','',''])
         for s in p['skills']:s['enabled']=False
         c=SimpleNamespace(stop=threading.Event(),pause=threading.Event());t=[0.];hp=[100];eventos=[];teclas=[];mouse=[];clicou=[False]
         def alvo():return dict(ref=1,id=4093,name='Verit Mutante',hp=hp[0],hp_max=100,mp=0,mp_max=0,position=(2,0),height=0,hostile=True)

@@ -1,7 +1,7 @@
 const $=id=>document.getElementById(id);
 let profile=null,running=false,paused=false,editing=null,lastError=false;
 const lines=[];let startedAt=null;
-const names={percorrer:'Percorrendo rota',aviso:'Fechando aviso',rebufar:'Renovando os cinco buffs',initializing:'Inicializando dados internos',inicio:'Confirmando posição',buscar:'Procurando alvo',combater:'Em combate',retornar:'Voltando à base',waiting:'Aguardando o Aika',paused:'Pausado',stopped:'Parado'};
+const names={percorrer:'Percorrendo rota',aviso:'Fechando aviso',rebufar:'Renovando buffs',initializing:'Inicializando dados internos',inicio:'Confirmando posição',buscar:'Procurando alvo',combater:'Em combate',retornar:'Voltando à base',waiting:'Aguardando o Aika',paused:'Pausado',stopped:'Parado'};
 function message(title,detail='',type='idle'){$('state-label').textContent=title;$('state-detail').textContent=detail;$('state-dot').className='dot '+type;}
 function fail(e){lastError=true;message('Confira a configuração',String(e.message||e).replace(/^Error invoking remote method '[^']+': Error: /,''),'error');}
 async function action(fn){try{await fn();}catch(e){fail(e);}}
@@ -19,6 +19,7 @@ function render(){
  $('target').disabled=profile.patrol_mode!=='base';$('patrol-mode').value=profile.patrol_mode||'base';$('patrol-hint').classList.toggle('hidden',profile.patrol_mode!=='termes_penza');$('mina-hint').classList.toggle('hidden',profile.patrol_mode!=='mina_lenfer');
  $('cancel-normal').checked=!!profile.cancel_normal;$('combo-key-delay').value=profile.combo_key_delay_ms;$('combo-repeat').value=profile.combo_repeat_ms;
  $('heal-enabled').checked=profile.heal_enabled;$('heal-key').value=profile.heal_key;
+ $('extra-buffs-enabled').checked=profile.extra_buffs_enabled;$('extra-buff-minutes').value=profile.extra_buff_minutes;
  $('buff-enabled').checked=profile.buffs_enabled;$('buff-minutes').value=profile.buff_minutes;$('buff-gap').value=profile.buff_gap;profile.buff_keys.forEach((k,i)=>$('buff-key-'+i).value=k);$('buff-next').textContent=profile.buffs_enabled?'Ao iniciar e a cada '+profile.buff_minutes+' minutos':'Desativado';
  $('hp-percent').value=profile.hp_percent;$('mp-percent').value=profile.mp_percent;
  for(const [id,key] of Object.entries({gap:'action_gap',attack:'attack_key',duration:'duration_minutes',radius:'radius',target:'target','no-damage':'no_damage_seconds',stationary:'stationary_seconds',unstuck:'unstuck_key'}))$(id).value=profile[key];
@@ -32,6 +33,7 @@ function collect(){
  profile.mina_repeat=$('mina-repeat').checked;profile.mina_cycles=Number($('mina-cycles').value);
  profile.cancel_normal=$('cancel-normal').checked;profile.combo_key_delay_ms=Number($('combo-key-delay').value);profile.combo_repeat_ms=Number($('combo-repeat').value);
  profile.heal_enabled=$('heal-enabled').checked;profile.heal_key=$('heal-key').value.trim().toLowerCase();
+ profile.extra_buffs_enabled=$('extra-buffs-enabled').checked;profile.extra_buff_minutes=Number($('extra-buff-minutes').value);
  profile.buffs_enabled=$('buff-enabled').checked;profile.buff_minutes=Number($('buff-minutes').value);profile.buff_gap=Number($('buff-gap').value);profile.buff_keys=Array.from({length:5},(_,i)=>$('buff-key-'+i).value.trim().toLowerCase());
  profile.hp_percent=Number($('hp-percent').value);profile.mp_percent=Number($('mp-percent').value);
  for(const [id,key] of Object.entries({gap:'action_gap',duration:'duration_minutes',radius:'radius','no-damage':'no_damage_seconds',stationary:'stationary_seconds'}))profile[key]=Number($(id).value);
