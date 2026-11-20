@@ -1,5 +1,12 @@
 # Alterações
 
+## 0.1.0-beta.23 — 2026-11-19
+
+- Retorno à Mina volta ao traçado pela caixa-d’água, com guias pelo lado livre dos barris e caixas.
+- Remove a restrição à faixa estreita da estrada anterior e mantém a máscara dos objetos e a colisão do terreno.
+- Corrige a tolerância de chegada ao portal, evitando ficar parado no último ponto sem liberar a entrada.
+- 277 testes Python e verificações do painel e atualizador passaram. Simulação com terreno real chegou em quatro orientações iniciais, entre 27,3 e 29,1 segundos; teste físico ao vivo pendente.
+
 ## 0.1.0-beta.22 — 2026-11-19
 
 - Opção Detectar escala da dificuldade automaticamente em Comportamento, ativada por padrão e preservada no perfil.

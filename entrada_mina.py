@@ -6,13 +6,16 @@ from circuito_termes import distancia_segmento
 from geometria_entrada import GeometriaEntrada
 
 PORTAL=(2716.,1611.)
-EIXO_ESTRADA=((2696.5,1715.5),(2699.5,1675.5),(2708.5,1645.5),PORTAL)
+EIXO_ESTRADA=((2685.5,1762.5),(2686.5,1754.5),(2686.5,1736.5),
+              (2704.5,1711.5),(2704.5,1695.5),(2702.5,1684.5),
+              (2706.5,1671.5),(2711.5,1651.5),PORTAL)
 
 def passagem_estrada(pos):
-    if not 1614<=pos[1]<=1718:return True
-    return min(distancia_segmento(pos,a,b) for a,b in zip(EIXO_ESTRADA,EIXO_ESTRADA[1:]))<=3
+    # Volta ao trajeto pela caixa-dagua. Reserva o lado livre dos objetos,
+    # sem prender o navegador na faixa estreita da estrada anterior.
+    return not(1678<=pos[1]<=1688 and 2707<=pos[0]<=2720)
 
-def recuo_caixas(pos):return (2709.5,min(1689.5,max(1685.5,pos[1]+2)))
+def recuo_caixas(pos):return (2702.5,min(1692.5,max(1689.5,pos[1]+2)))
 
 def bloqueadores_da_porta(mobs,pos):
     if math.dist(pos,PORTAL)>8:return set()
@@ -34,14 +37,14 @@ class EntradaMina:
         if recuo is not None:
             saida=g.caminho(pos,recuo,alcance=.5,limite=lambda q:passagem_estrada(q) or distancia_segmento(q,pos,recuo)<=2)
             if not saida:raise RuntimeError('Sem passagem validada para sair do canto das caixas.')
-        # Guias do centro da estrada impedem que o menor caminho do terreno
-        # corte pelo patio da caixa-dagua e das caixas, fora da estrada.
+        # Recupera o primeiro trajeto pela caixa-dagua, com a passagem
+        # deslocada para o lado livre antes dos barris e das caixas.
         metas=[q for q in EIXO_ESTRADA[:-1] if q[1]<pos[1]-1]+[PORTAL]
         rota=[];origem=recuo or pos
         for i,meta in enumerate(metas):
             limite=lambda q,a=origem,b=meta,i=i:passagem_estrada(q) or (i==0 and distancia_segmento(q,a,b)<=(12 if recuo is not None else 3))
             trecho=g.caminho(origem,meta,alcance=3 if meta==PORTAL else 1,max_nos=w*(y1-y0+1),limite=limite)
-            if not trecho:raise RuntimeError('Sem passagem validada pelo centro da estrada ate a Mina.')
+            if not trecho:raise RuntimeError('Sem passagem validada pela caixa-dagua ate a Mina.')
             rota.extend(trecho if not rota else trecho[1:]);origem=trecho[-1]
         if not rota or not all(g.passagem(g.celula(a),g.celula(b)) for a,b in zip(rota,rota[1:])):raise RuntimeError('Sem passagem validada do save atual ate o portal da Mina.')
         self.rota=rota;self.trechos=[dict(ate='entrada',caminho=rota)];self.trecho=0;self.voltas=0;self.indice=0
@@ -98,7 +101,10 @@ class EntradaMina:
     def pausar(self,*args):pass
 
     def destino(self,pos,agora):
-        if math.dist(pos,PORTAL)<=4.:return dict(estado='concluido',ponto='entrada',voltas=0)
+        # A rota termina a ate tres celulas do portal e o navegador aceita
+        # um metro da ultima celula. Essa margem precisa caber na chegada;
+        # senao ele fica em "chegou" sem liberar a etapa de entrar.
+        if math.dist(pos,PORTAL)<=5.:return dict(estado='concluido',ponto='entrada',voltas=0)
         if math.dist(pos,self.trilha[-1])>=1:self.trilha.append(tuple(pos));self.trilha=self.trilha[-24:]
         if 1679<=pos[1]<=1687 and pos[0]>=2712 and self.recuo is None:
             # Tambem permite retomar uma execucao que ja comecou presa ali.

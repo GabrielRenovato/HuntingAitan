@@ -31,6 +31,11 @@ class EntradaTeste(unittest.TestCase):
         self.assertFalse(m.contem((2713.124,1682.123)))
         self.assertTrue(m.contem((2697.5,1682.5)))
 
+    def test_trajeto_pela_caixa_dagua_nao_e_barrado_pela_estrada_antiga(self):
+        self.assertTrue(passagem_estrada((2704.5,1711.5)))
+        self.assertTrue(passagem_estrada((2702.5,1684.5)))
+        self.assertFalse(passagem_estrada((2713.124,1682.123)))
+
     def test_ja_preso_nas_caixas_recuar_para_o_lado_livre(self):
         m=percurso([(2710.5,1686.5),(2711.5,1680.5),(2713.5,1677.5)])
         a=m.destino((2713.124,1682.123),0)
@@ -74,6 +79,11 @@ class EntradaTeste(unittest.TestCase):
 
     def test_chegada_aceita_centro_da_ultima_celula(self):
         self.assertEqual(percurso().destino((2713.5,1613.5),0)['estado'],'concluido')
+
+    def test_chegada_nao_fica_parada_a_um_metro_da_ultima_celula(self):
+        m=percurso([(2712.5,1620.5),(2716.5,1614.5)])
+        self.assertEqual(m.destino((2716.0198,1615.1052),0)['estado'],'concluido')
+        self.assertEqual(m.destino((2716,1618),0)['estado'],'andar')
 
     def test_motor_nao_usa_tab_ou_ataque_com_hostil_selecionado_no_trajeto(self):
         import hunt_native as h
