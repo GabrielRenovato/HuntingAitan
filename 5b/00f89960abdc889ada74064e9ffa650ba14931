@@ -1,0 +1,46 @@
+aika_hunt_app/renderer.js
+  s_edfc50aef2ee58::t_c4cd45e45c7d43 22,37
+test_prioridade_janelas.py
+  s_edfc50aef2ee58::t_c4cd45e45c7d43 10
+package.json
+  s_edfc50aef2ee58::t_c4cd45e45c7d43 3
+test_rebuff.py
+  s_edfc50aef2ee58::t_c4cd45e45c7d43 7-18
+aika_hunt_app/package.json
+  s_edfc50aef2ee58::t_c4cd45e45c7d43 3
+test_busca_buffs_individuais.py
+  s_edfc50aef2ee58::t_2562b85633b14a 41,44,83-87
+  s_edfc50aef2ee58::t_c4cd45e45c7d43 88
+hunt_native.py
+  s_edfc50aef2ee58::t_c4cd45e45c7d43 161,163
+perfil_hunt.py
+  s_edfc50aef2ee58::t_c4cd45e45c7d43 11,34,42,71
+RELEASE_NOTES.md
+  s_edfc50aef2ee58::t_c4cd45e45c7d43 1,3,5
+test_morte_selecao.py
+  s_edfc50aef2ee58::t_c4cd45e45c7d43 42
+aika_hunt_app/index.html
+  s_edfc50aef2ee58::t_c4cd45e45c7d43 22
+hunt_core.py
+  s_edfc50aef2ee58::t_c4cd45e45c7d43 84-89
+aika_hunt_app/package-lock.json
+  s_edfc50aef2ee58::t_24966fd9c750e0 3,9
+package-lock.json
+  s_edfc50aef2ee58::t_6490a9391d31f2 3,9
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.6",
+  "base_commit_sha": "5b00f89960abdc889ada74064e9ffa650ba14931",
+  "prompts": {},
+  "sessions": {
+    "s_edfc50aef2ee58": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "01a1e01c-4c9b-7e00-b2fb-9c7ef8050eed",
+        "model": "unknown"
+      },
+      "human_author": "Gabriel Renovato <86806861+GabrielRenovato@users.noreply.github.com>"
+    }
+  }
+}
