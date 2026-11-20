@@ -1,0 +1,47 @@
+CHANGELOG.md
+  s_edfc50aef2ee58::t_3cac166d41336f 3-10
+README.md
+  s_edfc50aef2ee58::t_68f47f2b3dda07 34,36,57-58
+RELEASE_NOTES.md
+  s_edfc50aef2ee58::t_07ae75dce8f85f 1,3,5,7,9-11
+aika_hunt_app/index.html
+  s_edfc50aef2ee58::t_3593d01d16f632 27
+aika_hunt_app/package-lock.json
+  s_edfc50aef2ee58::t_28fdbcf67b7d87 3,9
+aika_hunt_app/package.json
+  s_edfc50aef2ee58::t_b63335e5f528e8 3
+aika_hunt_app/renderer.js
+  s_edfc50aef2ee58::t_cbe1409ff4efac 17,31
+ciclo_mina.py
+  s_edfc50aef2ee58::t_a9d90749285971 65
+hunt_native.py
+  s_edfc50aef2ee58::t_62e11bc40bf1b6 131
+package-lock.json
+  s_edfc50aef2ee58::t_a04e0f16e2523b 3,9
+package.json
+  s_edfc50aef2ee58::t_865b50af8e2349 3
+perfil_hunt.py
+  s_edfc50aef2ee58::t_54cb9b39d2a6fa 6,38
+interface_mina.py
+  s_edfc50aef2ee58::t_5e29387ff3a8f9 70-71,77-108
+jardim_aereo.py
+  s_edfc50aef2ee58::t_b571dfc0d8204a 15,19,22-23
+operacoes_mina.py
+  s_edfc50aef2ee58::t_963bbfe667d23d 67,94
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.6",
+  "base_commit_sha": "41ba82ec0f1c281f452c04f733cf631e32613be8",
+  "prompts": {},
+  "sessions": {
+    "s_edfc50aef2ee58": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "01a1e01c-4c9b-7e00-b2fb-9c7ef8050eed",
+        "model": "unknown"
+      },
+      "human_author": "Gabriel Renovato <86806861+GabrielRenovato@users.noreply.github.com>"
+    }
+  }
+}
