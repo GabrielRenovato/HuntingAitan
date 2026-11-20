@@ -1,0 +1,25 @@
+tools/mapear_verit_termes.py
+  s_edfc50aef2ee58::t_2e55dc183ddb0e 1-70
+docs/mapeamento_verit/verit_termes.json
+  s_edfc50aef2ee58::t_2e55dc183ddb0e 1-181
+docs/mapeamento_verit/verit_termes.csv
+  s_edfc50aef2ee58::t_2e55dc183ddb0e 1-21
+docs/mapeamento_verit/README.md
+  s_edfc50aef2ee58::t_4d0a0695859132 1-15
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.6",
+  "base_commit_sha": "23d1de1f2f21a5f27380b14b0b6556c62cf116c7",
+  "prompts": {},
+  "sessions": {
+    "s_edfc50aef2ee58": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "01a1e01c-4c9b-7e00-b2fb-9c7ef8050eed",
+        "model": "unknown"
+      },
+      "human_author": "Gabriel Renovato <86806861+GabrielRenovato@users.noreply.github.com>"
+    }
+  }
+}
