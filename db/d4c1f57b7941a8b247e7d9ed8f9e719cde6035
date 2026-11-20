@@ -1,0 +1,50 @@
+test_regressao_morte_penza.py
+  s_edfc50aef2ee58::t_80d4e4f2faef7d 40,57,60,69
+  s_edfc50aef2ee58::t_a8d71b38d09e7e 41
+  s_edfc50aef2ee58::t_38980af4769eeb 1-39,42-56,58-59,61-68,70-75
+cura_prioritaria.py
+  s_edfc50aef2ee58::t_fa7ae869d0a57d 12,20,25,29-31,45-46
+aika_hunt_app/package.json
+  s_edfc50aef2ee58::t_80d4e4f2faef7d 3
+package.json
+  s_edfc50aef2ee58::t_80d4e4f2faef7d 3
+hunt_core.py
+  s_edfc50aef2ee58::t_fa7ae869d0a57d 13,19-20,37,42
+  s_edfc50aef2ee58::t_0a585782fc5482 15,17,21,33
+hunt_native.py
+  s_edfc50aef2ee58::t_fa7ae869d0a57d 341-345,614-617,671-672
+  s_edfc50aef2ee58::t_80d4e4f2faef7d 527,540,576
+  s_edfc50aef2ee58::t_72663005852cea 647
+vigia_ataque.py
+  s_edfc50aef2ee58::t_fa7ae869d0a57d 6,13,18-23,26
+RELEASE_NOTES.md
+  s_edfc50aef2ee58::t_80d4e4f2faef7d 1,3,5-11
+aika_hunt_app/package-lock.json
+  s_edfc50aef2ee58::t_40b52b1736dc82 3,9
+package-lock.json
+  s_edfc50aef2ee58::t_e0eb73d4c1f362 3,9
+test_cadencia_rapida.py
+  s_edfc50aef2ee58::t_a418a94bd848d3 30-33
+test_cura_prioritaria.py
+  s_edfc50aef2ee58::t_38619921bb48fb 37-44
+test_morte_selecao.py
+  s_edfc50aef2ee58::t_70e701e8341169 36-37
+test_recargas_barra.py
+  s_edfc50aef2ee58::t_224fb3c867de52 24
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.6",
+  "base_commit_sha": "dbd4c1f57b7941a8b247e7d9ed8f9e719cde6035",
+  "prompts": {},
+  "sessions": {
+    "s_edfc50aef2ee58": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "01a1e01c-4c9b-7e00-b2fb-9c7ef8050eed",
+        "model": "unknown"
+      },
+      "human_author": "Gabriel Renovato <86806861+GabrielRenovato@users.noreply.github.com>"
+    }
+  }
+}
