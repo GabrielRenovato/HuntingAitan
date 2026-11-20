@@ -1,0 +1,181 @@
+{
+  "schema": 1,
+  "mob": "Verit Mutante",
+  "registro": 1378,
+  "formato": {
+    "nomes": "MN.bin: 4096 nomes de 128 bytes; decodificacao (byte-offset) mod 256",
+    "posicoes": "MobPos.bin: 4096 registros de 416 bytes; ID uint32, codigo de 12 bytes, 50 pares XY int32"
+  },
+  "pontos": [
+    {
+      "ponto": 1,
+      "slot": 1,
+      "x": 2748,
+      "y": 833,
+      "flags": 0,
+      "celula_livre": true
+    },
+    {
+      "ponto": 2,
+      "slot": 2,
+      "x": 2708,
+      "y": 867,
+      "flags": 0,
+      "celula_livre": true
+    },
+    {
+      "ponto": 3,
+      "slot": 3,
+      "x": 2672,
+      "y": 850,
+      "flags": 0,
+      "celula_livre": true
+    },
+    {
+      "ponto": 4,
+      "slot": 4,
+      "x": 2705,
+      "y": 922,
+      "flags": 0,
+      "celula_livre": true
+    },
+    {
+      "ponto": 5,
+      "slot": 5,
+      "x": 2779,
+      "y": 844,
+      "flags": 0,
+      "celula_livre": true
+    },
+    {
+      "ponto": 6,
+      "slot": 6,
+      "x": 2905,
+      "y": 820,
+      "flags": 0,
+      "celula_livre": true
+    },
+    {
+      "ponto": 7,
+      "slot": 7,
+      "x": 2912,
+      "y": 897,
+      "flags": 0,
+      "celula_livre": true
+    },
+    {
+      "ponto": 8,
+      "slot": 8,
+      "x": 2905,
+      "y": 738,
+      "flags": 0,
+      "celula_livre": true
+    },
+    {
+      "ponto": 9,
+      "slot": 9,
+      "x": 2868,
+      "y": 710,
+      "flags": 0,
+      "celula_livre": true
+    },
+    {
+      "ponto": 10,
+      "slot": 10,
+      "x": 2907,
+      "y": 757,
+      "flags": 0,
+      "celula_livre": true
+    },
+    {
+      "ponto": 11,
+      "slot": 11,
+      "x": 2889,
+      "y": 794,
+      "flags": 0,
+      "celula_livre": true
+    },
+    {
+      "ponto": 12,
+      "slot": 12,
+      "x": 2933,
+      "y": 769,
+      "flags": 0,
+      "celula_livre": true
+    },
+    {
+      "ponto": 13,
+      "slot": 13,
+      "x": 2877,
+      "y": 759,
+      "flags": 0,
+      "celula_livre": true
+    },
+    {
+      "ponto": 14,
+      "slot": 14,
+      "x": 2955,
+      "y": 876,
+      "flags": 0,
+      "celula_livre": true
+    },
+    {
+      "ponto": 15,
+      "slot": 15,
+      "x": 2957,
+      "y": 825,
+      "flags": 0,
+      "celula_livre": true
+    },
+    {
+      "ponto": 16,
+      "slot": 16,
+      "x": 2864,
+      "y": 821,
+      "flags": 0,
+      "celula_livre": true
+    },
+    {
+      "ponto": 17,
+      "slot": 17,
+      "x": 2876,
+      "y": 875,
+      "flags": 0,
+      "celula_livre": true
+    },
+    {
+      "ponto": 18,
+      "slot": 18,
+      "x": 2783,
+      "y": 877,
+      "flags": 0,
+      "celula_livre": true
+    },
+    {
+      "ponto": 19,
+      "slot": 19,
+      "x": 2699,
+      "y": 892,
+      "flags": 0,
+      "celula_livre": true
+    },
+    {
+      "ponto": 20,
+      "slot": 20,
+      "x": 2786,
+      "y": 847,
+      "flags": 0,
+      "celula_livre": true
+    }
+  ],
+  "fontes": {
+    "UI/MN.bin": "281aab5845b3f8b682a5a825cb9d7ded1068d6288d6e5a3730cebe15ad9c7104",
+    "UI/MobPos.bin": "cc0ac17247e143fcc984952b12dd43c18fbc98195d1d05cd0c0ccb657b5bd1e8",
+    "Env/AttributeS01.dat": "f50de453e46f8e89366d6651d2bbb505703978ab898bc20e60590e30a1a04cdc",
+    "Env/MMZ011002.jit": "a071218ee53af7828bae02811c8a3e22a42f996baf7d0807ef82f508d66176f3",
+    "Env/MMZ011102.jit": "504ab49e415b74c22afbe14eb25c30025e4327906f95944f18274d60716f7d04",
+    "Env/MMZ011003.jit": "0fa4f281c9726e128bebf023c8aabf61f38438dfe6101578537d72b59c96924b",
+    "Env/MMZ011103.jit": "cd20c53e661ffecd142b0a8d4902658f9d14d82fc55dd03b685d9a9c192ee6b9"
+  },
+  "nota": "Pontos cadastrados no cliente, nao entidades vivas nem garantia de respawn. Numeracao segue os slots do arquivo, nao uma rota. Celula livre valida apenas a flag estatica do terreno, sem objetos ou passagens entre pontos."
+}
