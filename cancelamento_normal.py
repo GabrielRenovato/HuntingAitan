@@ -74,20 +74,21 @@ def executar_cancelamento(pulso,permitido,ataque):
     return pulso(ataque)
 
 
-def executar_combo(pressionar,liberar,esperar,permitido,tecla,normal,skill_id=None,relogio=None):
+def executar_combo(pressionar,liberar,esperar,permitido,tecla,normal,skill_id=None,relogio=None,intervalo_teclas=0.):
     """Reproduz ordem, sobreposicao e liberacao independentes da calibracao."""
     perfil=perfil_combo(tecla,normal,skill_id)
     if not permitido():return (False,False)
     relogio=relogio or time.monotonic
     primaria=False;w_enviado=False;seguradas=[]
     if perfil and perfil.get('sequencia'):
-        for key in (tecla,'r','r',tecla,'w','w'):
+        for i,key in enumerate((tecla,'r','r',tecla,'w','w')):
             if not permitido():break
             try:
                 if pressionar(key) is False:break
                 if key==tecla:primaria=True
                 if key=='w':w_enviado=True
             finally:liberar(key)
+            if i<5 and intervalo_teclas>0:esperar(intervalo_teclas)
         return (primaria,primaria and w_enviado)
     if perfil is None:
         try:

@@ -5,11 +5,12 @@ from dados_internos import DadosInternos
 from perfil_hunt import validar
 from recuperacao_alvo import RecuperacaoAlvo
 from selecao_regional import BuscaRegional
-from entrada_segura import liberar_tecla,liberar_mouse
+from entrada_segura import liberar_tecla,liberar_mouse,preparar_pressao_sem_pausa
 from navegador_local import NavegadorLocal
 from cancelamento_normal import CancelamentoNormal,executar_combo,perfil_combo,duracao_tecla
 from cura_prioritaria import CuraPrioritaria
 from defesa_dg import DefesaDG
+from ritmo_padrao import configurar_ritmo
 from vigia_ataque import VigiaAtaque
 from controle_avisos import ObservadorAvisos
 from circuito_termes import CircuitoTermes,dentro_regiao,conferir_arquivos,distancia_segmento
@@ -64,7 +65,7 @@ def main(profile,event_sink,control,percurso=None):
     from controle_avisos import preparar_runtime_visual
     preparar_runtime_visual()
     import keyboard,pydirectinput as entrada
-    p=validar(profile);entrada.PAUSE=0
+    p=validar(profile);entrada.PAUSE=0;pressionar_sem_pausa=preparar_pressao_sem_pausa(entrada)
     if percurso is not None:p.update(patrol_mode='base',target='qualquer',radius=min(12,p['radius']))
     u=ctypes.windll.user32;u.GetForegroundWindow.restype=w.HWND
     u.ShowWindow.argtypes=[w.HWND,ctypes.c_int];u.SetForegroundWindow.argtypes=[w.HWND]
@@ -84,7 +85,7 @@ def main(profile,event_sink,control,percurso=None):
         with lock:
             if not ativo() or modal_bloqueia.is_set():return False
             if k not in seg:
-                if entrada.keyDown(k) is False:return False
+                if pressionar_sem_pausa(k) is False:return False
                 seg.add(k)
             return True
     def esperar(s):
@@ -151,6 +152,8 @@ def main(profile,event_sink,control,percurso=None):
         busca_destino=None;busca_ate=0.;reconhecer_buff_ate=0.;retorno_busca=False;buff_pausa_desde=None
         recuperacao=RecuperacaoAlvo()
         cancelamento=CancelamentoNormal(p['cancel_normal'])
+        ritmo=configurar_ritmo(p);repetindo_id=None
+        log('Ritmo do padrao configurado.',ativo=p['cancel_normal'],**ritmo)
         log('Cancelamento de ataque normal experimental.',ativo=p['cancel_normal'])
         buffs=getattr(control,'buff_agenda',None) if getattr(control,'cycle_context',False) else None
         if buffs is None:buffs=AgendaBuffs(inicio,p['buff_keys'],p['buff_minutes']*60,p['buff_gap'],p['buffs_enabled'])
@@ -623,8 +626,13 @@ def main(profile,event_sink,control,percurso=None):
                 em_alcance=math.dist(pos,target['position'])<=2.4
                 abrir_normal=mina and not progresso.abertura_enviada and cc.get('normal_ready') is not False
                 if abrir_normal and em_alcance and cc.get('normal_ready') is True:cadencia.normal_em=min(cadencia.normal_em,agora)
+                perfil_normal=perfil_combo('1',True,cc.get('normal_skill'))
+                repetir_normal=bool(perfil_normal and perfil_normal.get('sequencia') and cancelamento.permitir_combo(target,pos,progresso.id,progresso.dano))
+                if repetir_normal and repetindo_id!=progresso.id:
+                    cadencia.normal_em=min(cadencia.normal_em,agora);repetindo_id=progresso.id
+                elif not repetir_normal:repetindo_id=None
                 tecla=cadencia.escolher(agora,True,progresso.dano and agora-progresso.ultimo_dano<2.5,target['hp']/target['hp_max'],em_alcance=em_alcance,recargas_reais=cc.get('recargas_atalhos'),iniciar_normal=abrir_normal)
-                if tecla=='1' and cc.get('normal_ready') is False:tecla=None
+                if tecla=='1' and cc.get('normal_ready') is False and not repetir_normal:tecla=None
                 item=False
                 if agora>=cadencia.livre_em:
                     for v in p['items']:
@@ -640,16 +648,21 @@ def main(profile,event_sink,control,percurso=None):
                 inicio_envio=time.monotonic()
                 if tecla and not item:
                     atalho=p['attack_key'] if tecla=='1' else tecla
-                    if combo:enviada,combo=executar_combo(segurar,liberar,esperar,ativo,atalho,tecla=='1',skill_id=skill_id)
+                    if combo:enviada,combo=executar_combo(segurar,liberar,esperar,ativo,atalho,tecla=='1',skill_id=skill_id,intervalo_teclas=ritmo['pausa_teclas'] if tecla=='1' else 0.)
                     else:enviada=pulso(atalho,duracao_tecla(skill_id))
                 if enviada:
                     real=cc.get('recargas_atalhos',{}).get(tecla)
-                    event_sink(dict(event='action',key=p['attack_key'] if tecla=='1' else tecla,kind='normal' if tecla=='1' else 'skill',target_id=target['id'],normal_cooldown=cc.get('normal_cooldown'),skill_state=real,combo_w=timing['ordem'] if combo else None,combo_timing=timing if combo else None))
-                    cadencia.registrar(tecla,inicio_envio if combo and tecla=='1' else time.monotonic(),intervalo_normal=.17 if combo and tecla=='1' else None)
+                    event_sink(dict(event='action',key=p['attack_key'] if tecla=='1' else tecla,kind='normal' if tecla=='1' else 'skill',target_id=target['id'],normal_cooldown=cc.get('normal_cooldown'),skill_state=real,combo_w=timing['ordem'] if combo else None,combo_timing=timing if combo else None,combo_repeticao_ms=round(ritmo['intervalo_repeticao']*1000,3) if combo and tecla=='1' else None,combo_pausa_teclas_ms=ritmo['pausa_teclas']*1000 if combo and tecla=='1' else None))
+                    normal_repetido=bool(combo and tecla=='1')
+                    cadencia.registrar(tecla,time.monotonic(),intervalo_normal=ritmo['intervalo_repeticao'] if normal_repetido else None,normal_repetido=normal_repetido)
                     if tecla=='1':vigia_ataque.enviado();progresso.abertura_enviada=True
                     cancelamento.acao(tecla=='1',time.monotonic(),cadencia.livre_em)
                     if tecla!='1':log('Tecla de habilidade enviada.',tecla=tecla,intervalo=cadencia.recargas[tecla],recarga_real=real)
-                esperar(.015);continue
+                if repetir_normal:
+                    restante=max(cadencia.normal_em,cadencia.livre_em)-time.monotonic()
+                    esperar(max(.001,min(.015,restante)))
+                else:esperar(.015)
+                continue
             # Retorno sem cone de camera: deriva orientacao do deslocamento real.
             if math.dist(pos,base)<=3:
                 soltar();log('Retornou a base.');trilha=[base];estado='buscar';progresso=None;heading=None;origem_mov=None;retorno_busca=False;regional.reiniciar_busca(agora);verificador.observar(None,agora,False);continue

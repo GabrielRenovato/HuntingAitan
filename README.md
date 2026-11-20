@@ -31,9 +31,9 @@ O Python no PATH é usado no desenvolvimento. Para outro interpretador, defina `
 ## Publicar uma correção
 
 1. Faça a alteração, atualize `CHANGELOG.md` e rode `npm test`.
-2. Ajuste a mesma versão nos dois `package.json` e nos respectivos lockfiles. Exemplo: `0.1.0-beta.28` para a próxima beta.
+2. Ajuste a mesma versão nos dois `package.json` e nos respectivos lockfiles. Exemplo: `0.1.0-beta.29` para a próxima beta.
 3. Atualize `RELEASE_NOTES.md`, faça commit e push.
-4. Crie a tag correspondente e envie: `git tag v0.1.0-beta.28` e `git push origin v0.1.0-beta.28`.
+4. Crie a tag correspondente e envie: `git tag v0.1.0-beta.29` e `git push origin v0.1.0-beta.29`.
 
 O workflow verifica a versão, executa os testes, empacota o backend, gera o instalador NSIS e publica instalador, blockmap e metadados YAML na release. O token vem do GitHub Actions; não deve ser colocado no aplicativo. O workflow falha sem publicar se um desses passos falhar. Tags com sufixo beta são publicadas como pré-release.
 
@@ -60,3 +60,5 @@ Em **Comportamento → Escala da interface**, mantenha **Detectar escala da difi
 Se o Jardim informar indicador ilegível, use **Comportamento → Escala da interface → Abrir diagnósticos**. A pasta contém o recorte `jardim_dificuldade_*.png` e o JSON com as tentativas, salvos antes do primeiro OCR e atualizados em cada tentativa.
 
 No cliente em inglês, o indicador **Hard** é aceito como **Difícil** no Jardim; a escolha das demais dificuldades continua sendo verificada.
+
+Em **Comportamento → Ataque normal**, configure **Pausa entre teclas** e **Intervalo entre sequências** separadamente. Os padrões são 0 ms entre teclas e repetição estimada do Windows (valor 0). Os controles permitem ajustar o ritmo sem importar um perfil do X-Mouse.

@@ -16,6 +16,16 @@ Não houve evidência suficiente para um W imediato uniforme nas skills 3 e 6. A
 
 O perfil de combo é selecionado pelo ID nativo, não só pela posição na barra. O modo precisa estar ativado e exige alvo vivo, dano previamente observado e distância de até 2,2 unidades. Continua suspenso para o alvo se houver perda de alcance ou recuperação de ataque sem progresso. Itens, buffs e cura não recebem o combo ofensivo.
 
-No padrão calibrado, o limite mínimo entre tentativas é 170 ms, contado a partir do início do envio. O cliente precisa indicar que a recarga do ataque está liberada; não se repetem comandos durante uma recarga bloqueada. Sem combo, a cadência anterior é preservada.
+## Repetição sem perfil externo
+
+A pausa entre teclas e o intervalo entre sequências são separados no painel. Pausa entre teclas em 0 preserva a sequência sem esperas programadas. O envio também desativa a pausa interna da biblioteca de entrada, preservando seu wrapper de fail-safe.
+
+Intervalo entre sequências em 0 consulta `SPI_GETKEYBOARDSPEED` e estima o período correspondente entre 2,5 e 30 repetições/s. É uma aproximação; os tempos reais do Windows variam com hardware e escalonamento. Um valor positivo no painel define o intervalo manualmente, sem consultar essa preferência. Se a consulta falhar, usa 30 Hz e registra o fallback no log.
+
+O objetivo é reproduzir o modo comum de repetição de uma sequência enquanto o combate permanece válido, sem exigir arquivo do X-Mouse. Não foi demonstrada equivalência ao perfil específico de outro usuário. A interpretação de Auto repeat delay em 0 no XMBC está no [manual oficial](https://www.highrez.co.uk/downloads/X-Mouse%20Button%20Control%20User%20Guide.pdf); os limites e a variação de velocidade do Windows estão na [API SystemParametersInfoW](https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-systemparametersinfow).
+
+O repetidor começa após dano confirmado e dentro de 2,2 unidades do alvo. A leitura visual de recarga do ataque normal não bloqueia o envio repetido da sequência; o jogo decide quais golpes efetivar. Skills, cura e buffs mantêm suas recargas e exclusividade. Perda de foco, stun, distância ou recuperação por ausência de dano interrompem o padrão. A agenda calcula a próxima sequência a partir do fim da anterior e não acumula uma fila de envios atrasados.
+
+A cadência do ataque simples, sem combo, permanece separada.
 
 O primeiro trecho registrou 66 comandos de ataque e 12 quedas de HP; isso não equivale a 66 golpes. As medições não comprovam autoria de cada dano nem aumento de desempenho por cancelamento. Os testes automatizados validam a sequência de entrada e as proteções, sem demonstrar ganho de combate ao vivo.

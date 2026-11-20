@@ -29,14 +29,15 @@ class CadenciaCombate:
             if disponiveis:return min(disponiveis,key=lambda k:self.ultimo_envio.get(k,-float('inf')))
         return '1' if agora>=self.normal_em else None
 
-    def registrar(self,tecla,agora,intervalo_normal=None):
+    def registrar(self,tecla,agora,intervalo_normal=None,normal_repetido=False):
         if tecla in self.recargas:
             self.ultimo_envio[tecla]=agora
             self.pronta_em[tecla]=agora+self.recargas[tecla]
             self.livre_em=agora+self.intervalo
         elif tecla=='1':
-            self.normal_em=agora+(1. if intervalo_normal is None else max(.17,float(intervalo_normal)))
-            self.livre_em=agora+.12
+            intervalo=1. if intervalo_normal is None else max(.001 if normal_repetido else .17,float(intervalo_normal))
+            self.normal_em=agora+intervalo
+            self.livre_em=agora+(min(.12,intervalo) if normal_repetido else .12)
         elif tecla=='8':
             self.livre_em=max(self.livre_em,agora+.5)
 

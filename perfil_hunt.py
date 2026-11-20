@@ -4,7 +4,7 @@ from pathlib import Path
 DEFAULT={
  'version':3,'data_source':'native','auto_base':True,'base':[2767,846],'radius':20,'no_damage_seconds':5,'patrol_mode':'base',
  'mina_repeat':False,'mina_cycles':0,'auto_ui_scale':True,
- 'cancel_normal':False,'stationary_seconds':3,'unstuck_key':"'",'attack_key':'1','action_gap':.7,
+ 'cancel_normal':False,'combo_key_delay_ms':0,'combo_repeat_ms':0,'stationary_seconds':3,'unstuck_key':"'",'attack_key':'1','action_gap':.7,
  'hp_percent':40,'mp_percent':40,'hp_keys':['8','',''],'mp_keys':['','',''],
  'heal_enabled':True,'heal_key':'7',
  'return_key':'','duration_minutes':240,'target':'qualquer','minimize_on_start':True,
@@ -27,6 +27,10 @@ def validar(dados):
  # Migra a pausa padrao antiga sem alterar intervalos personalizados.
  if int(dados.get('version',1))<3 and float(p['action_gap'])==1.4:p['action_gap']=.7
  p['version']=3
+ for k,limite in [('combo_key_delay_ms',100),('combo_repeat_ms',2000)]:
+  if isinstance(p[k],bool):raise ValueError(k+': valor invalido')
+  p[k]=float(p[k])
+  if not 0<=p[k]<=limite:raise ValueError(k+': valor fora do intervalo')
  for k,a,b in [('radius',10,50),('no_damage_seconds',1,60),('stationary_seconds',1,20),('hp_percent',1,99),('mp_percent',1,99),('duration_minutes',0,1440),('action_gap',.4,10),('buff_minutes',1,120),('buff_gap',.5,10)]:
   p[k]=float(p[k])
   if not a<=p[k]<=b:raise ValueError(k+': valor fora do intervalo')

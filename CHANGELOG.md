@@ -1,5 +1,13 @@
 # Alterações
 
+## 0.1.0-beta.28 — 2026-11-20
+
+- Repetidor do padrão 1RR1WW independente de perfil externo, com pausa entre teclas e intervalo entre sequências separados.
+- Valor 0 entre sequências usa estimativa da repetição configurada no Windows; valores positivos permitem ajuste manual no painel.
+- Remove a pausa interna da biblioteca de entrada e o piso de 170/120 ms apenas no modo de repetição do combo. Ataque simples mantém a cadência anterior.
+- Após primeiro dano e dentro do alcance, repete entradas mesmo quando o indicador de recarga do normal está ocupado; skills, cura, buffs, foco e stun continuam com seus controles.
+- 316 testes Python e verificações do painel e atualizador passaram. Ganho de dano e equivalência a um perfil específico de XMBC ainda precisam de validação ao vivo.
+
 ## 0.1.0-beta.27 — 2026-11-20
 
 - Jardim segue até antes dos Lazapas Tempestuosos próximos do final; preserva os combates das áreas anteriores e sai do grupo sem enfrentar esse grupo ou Seridunn.

@@ -73,10 +73,10 @@ class ComboWTeste(unittest.TestCase):
         a['position']=(0,1);c.suspender_alvo(42)
         self.assertFalse(c.permitir_combo(a,(0,0),42,True))
 
-    def motor(self,skill,pronto_depois=0):
+    def motor(self,skill,pronto_depois=0,repeticoes=1,bloquear_apos_dano=False):
         import hunt_native as h
         from perfil_hunt import DEFAULT
-        p=copy.deepcopy(DEFAULT);p.update(cancel_normal=True,buffs_enabled=False,heal_enabled=False,minimize_on_start=False,hp_keys=['','',''])
+        p=copy.deepcopy(DEFAULT);p.update(cancel_normal=True,combo_repeat_ms=40,buffs_enabled=False,heal_enabled=False,minimize_on_start=False,hp_keys=['','',''])
         for v in p['skills']:v['enabled']=False
         if skill:p['skills'][2].update(key='4',seconds=1,enabled=True)
         c=SimpleNamespace(stop=threading.Event(),pause=threading.Event());t=[0.];hp=[100];teclas=[];eventos=[]
@@ -84,7 +84,7 @@ class ComboWTeste(unittest.TestCase):
         class Dados:
             hwnd=1
             def snapshot(self):return dict(player=dict(position=(0,0),height=0,hp=100,hp_max=100,mp=100,mp_max=100),target=alvo())
-            def estados_controle(self):return dict(normal_skill=1,normal_ready=t[0]>=pronto_depois)
+            def estados_controle(self):return dict(normal_skill=1,normal_ready=t[0]>=pronto_depois and (not bloquear_apos_dano or hp[0]==100))
             def recargas_atalhos(self):return {'4':dict(skill=177,ready=True,cooldown=0.)}
             def close(self):pass
         def down(k):
@@ -94,8 +94,8 @@ class ComboWTeste(unittest.TestCase):
             t[0]+=max(.001,s)
             if t[0]>5:c.stop.set()
         def emitir(e):
-            eventos.append(e)
-            if e.get('combo_w')==('w+skill' if skill else '1rr1ww'):c.stop.set()
+            eventos.append(dict(e,teste_t=t[0]))
+            if sum(v.get('combo_w')==('w+skill' if skill else '1rr1ww') for v in eventos)>=repeticoes:c.stop.set()
         u=MagicMock();u.GetWindowTextW.side_effect=lambda hwnd,buf,n:setattr(buf,'value','AikaClient')
         entrada=SimpleNamespace(PAUSE=0,keyDown=down,keyUp=lambda k:None)
         with patch.dict(sys.modules,keyboard=SimpleNamespace(is_pressed=lambda k:False),pydirectinput=entrada),patch.object(h,'DadosInternos',Dados),patch.object(h.ctypes.windll,'user32',u),patch.object(h.threading,'Thread'),patch.object(h.time,'monotonic',lambda:t[0]),patch.object(h.time,'sleep',dormir):h.main(p,emitir,c)
@@ -105,6 +105,14 @@ class ComboWTeste(unittest.TestCase):
         self.assertAlmostEqual(teclas[-1][1]-teclas[-2][1],.0035 if skill else 0.)
         if not skill:self.assertEqual([k for k,t in teclas[-6:]],list('1rr1ww'))
         self.assertTrue(all(instante>=pronto_depois for k,instante in teclas if k=='1'))
+        return acoes
+
+    def test_modo_repetido_continua_entradas_sem_depender_da_recarga_visual_do_normal(self):
+        acoes=self.motor(False,repeticoes=2,bloquear_apos_dano=True)
+        combos=[e for e in acoes if e.get('combo_w')=='1rr1ww']
+        self.assertEqual(len(combos),2)
+        self.assertAlmostEqual(combos[1]['teste_t']-combos[0]['teste_t'],.04,delta=.001)
+        self.assertEqual(combos[0]['combo_repeticao_ms'],40)
 
     def test_skill_5_usa_25ms_e_79ms_de_w(self):
         e=[];t=[0.]
