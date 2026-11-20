@@ -1,4 +1,4 @@
-"""Valida os dois blocos do Jardim e deriva o caminho ate o altar de Seridunn."""
+"""Valida os blocos do Jardim e deriva o limite anterior aos Lazapas finais."""
 import argparse,hashlib,json,math,struct,sys
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
@@ -26,9 +26,16 @@ def validar(pasta):
     candidatos=[g.mundo((x,y)) for x in range(math.floor(alvo[0]-3328)-8,math.floor(alvo[0]-3328)+9) for y in range(math.floor(alvo[1]-3072)-8,math.floor(alvo[1]-3072)+9) if g.livre((x,y))]
     meta=min(candidatos,key=lambda q:math.dist(q,alvo));rota=g.caminho((3351,3295),meta,max_nos=131072)
     if not rota or not all(g.passagem(g.celula(a),g.celula(b)) for a,b in zip(rota,rota[1:])):raise ValueError('Sem passagem validada ate o altar')
+    # Primeiro grupo de Lazapas Tempestuosos observado no trecho final de
+    # 19/11. Para 25 unidades antes
+    # desse trecho; a deteccao ao vivo pode antecipar ainda mais a saida.
+    referencia=(3756.95,3146.52)
+    i=min(range(len(rota)),key=lambda i:math.dist(rota[i],referencia));distancia=0.
+    while i>0 and distancia<25:distancia+=math.dist(rota[i],rota[i-1]);i-=1
+    rota=rota[:i+1];meta=rota[-1]
     fontes=['UI/Dun.bin','UI/Dungeon.bin','Objects/mirzaF0099.MS3']+[f'Env/z01{t}12.{ext}' for t in [13,14] for ext in ['att','hgt','dat']]
-    return dict(schema=1,nome='Jardim Aereo de Mirza',chefe='seridunn',dificuldade='dificil',registros_dun=[20,21,22,23],registro_dificil=21,origem=[3328,3072],entrada=[3351,3295],limites=[3328,3072,3840,3328],fontes={n:hashlib.sha256((p/n).read_bytes()).hexdigest() for n in fontes},pontos=[dict(id='altar_seridunn',pos=meta,modelo='Objects/mirzaF0099.MS3',chefe='seridunn',espera=15)],trechos=[dict(ate='altar_seridunn',caminho=rota,distancia=round(sum(math.dist(a,b) for a,b in zip(rota,rota[1:])),2))],criterio='Seridunn reconhecido, abate confirmado por vida zero e area final sem hostis por 15 segundos. Portoes e fases sao reconfirmados no cliente ao vivo.')
+    return dict(schema=1,nome='Jardim Aereo de Mirza',chefe='seridunn',objetivo='antes_lazapas',referencia_lazapas=referencia,dificuldade='dificil',registros_dun=[20,21,22,23],registro_dificil=21,origem=[3328,3072],entrada=[3351,3295],limites=[3328,3072,3840,3328],fontes={n:hashlib.sha256((p/n).read_bytes()).hexdigest() for n in fontes},pontos=[dict(id='antes_lazapas',pos=meta,chefe=None,espera=0)],trechos=[dict(ate='antes_lazapas',caminho=rota,distancia=round(sum(math.dist(a,b) for a,b in zip(rota,rota[1:])),2))],criterio='Encerrar o trecho antes dos primeiros Lazapas do trecho final, sem ataca-los; sair do grupo e confirmar posicao fora do Jardim. Nao registra conclusao da DG nem abate de Seridunn.')
 
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--game-dir',required=True);p.add_argument('--out',required=True);a=p.parse_args();d=validar(a.game_dir)
-    Path(a.out).write_text(json.dumps(d,ensure_ascii=False,indent=2),encoding='utf-8');print('Jardim: entrada',d['entrada'],'altar',d['pontos'][0]['pos'],'celulas',len(d['trechos'][0]['caminho']),'distancia',d['trechos'][0]['distancia'])
+    Path(a.out).write_text(json.dumps(d,ensure_ascii=False,indent=2),encoding='utf-8');print('Jardim: entrada',d['entrada'],'limite Lazapas finais',d['pontos'][0]['pos'],'celulas',len(d['trechos'][0]['caminho']),'distancia',d['trechos'][0]['distancia'])

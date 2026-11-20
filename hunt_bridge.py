@@ -94,6 +94,8 @@ def main():
     if perfil['data_source']=='native':
         if perfil['patrol_mode']=='mina_lenfer' and perfil['mina_repeat']:
             from ciclo_mina import main as executar
+        elif perfil['patrol_mode']=='jardim_aereo':
+            from ciclo_jardim import main as executar
         else:
             from hunt_native import main as executar
         executar(perfil,emitir,control)

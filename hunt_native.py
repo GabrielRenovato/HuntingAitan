@@ -14,7 +14,7 @@ from vigia_ataque import VigiaAtaque
 from controle_avisos import ObservadorAvisos
 from circuito_termes import CircuitoTermes,dentro_regiao,conferir_arquivos,distancia_segmento
 from mina_lenfer import MinaLenfer,dentro_mina
-from jardim_aereo import JardimAereo,dentro_jardim
+from jardim_aereo import JardimAereo,dentro_jardim,lazapa_protegido
 from hunt_core import CadenciaCombate,erro_angular,VerificadorMovimento,AgendaBuffs,executar_buff
 
 NOMES={'verit':'Verit Mutante','penza':'Penza Poderosa Mutante','croshu':'Croshu Mutante das Cinzas','tet':'Tet das Chamas'}
@@ -28,6 +28,7 @@ def alvo_permitido(target,player,base,profile):
         if not dentro_mina(target['position']):return False
     elif profile.get('patrol_mode')=='jardim_aereo':
         if not dentro_jardim(target['position']):return False
+        if nome_normal(target['name'])=='seridunn' or lazapa_protegido(target['name'],player['position']):return False
     elif math.dist(target['position'],base)>profile['radius']:return False
     if math.dist(target['position'],player['position'])>profile['radius']:return False
     return profile['target']=='qualquer' or nome_normal(target['name'])==nome_normal(NOMES[profile['target']])
@@ -131,7 +132,7 @@ def main(profile,event_sink,control,percurso=None):
                 if not conferir_dificil(auto_escala=p['auto_ui_scale'],emitir=event_sink,ativo=ativo,parar=parar):return
             circuito=(JardimAereo if jardim else MinaLenfer)(s['player']['position']);circuito.conferir(dados.caminho.parent);regiao=circuito.contem
             mapa_mina=dados.u32(dados.cena_validada()+0x38)
-            log('Jardim Aereo: caminho ate Seridunn iniciado.' if jardim else 'Mina LEnfer: caminho direto para Malik iniciado.',entrada=s['player']['position'],mapa=mapa_mina)
+            log('Jardim Aereo: percurso ate antes dos Lazapas finais iniciado.' if jardim else 'Mina LEnfer: caminho direto para Malik iniciado.',entrada=s['player']['position'],mapa=mapa_mina)
         trilha=[base];volta=[];estado='buscar';progresso=None;ultima_tab=0.;fim_busca=0.;ultima_telemetria=0.;inicio=time.monotonic();heading=None;origem_mov=None;falhas_desde=None;espera_na_base=False
         tecla_cura=p['heal_key'] if p['heal_enabled'] else ''
         cadencia=CadenciaCombate({'intervalo_skills':p['action_gap'],'recargas':{v['key']:v['seconds'] for v in p['skills'] if v['enabled'] and v['key']!=tecla_cura}})
@@ -233,6 +234,9 @@ def main(profile,event_sink,control,percurso=None):
             if percurso is not None and target and not percurso.permite_combate(target['id'],pos,target):target=None
             if mina and dados.u32(dados.cena_validada()+0x38)!=mapa_mina:
                 soltar();raise RuntimeError('A cena da DG mudou; percurso interrompido sem registrar conclusao.')
+            if jardim and circuito.atingiu_limite(pos):
+                soltar();control.reason='jardim_limite_lazapas'
+                event_sink(dict(event='jardim_limit',position=pos,message='Limite anterior aos Lazapas alcancado; preparando saida sem ataca-los.'));break
             if player['hp']<ultimo_hp:ultimo_ferimento=agora
             ultimo_hp=player['hp']
             if hasattr(dados,'caca_original_ativa') and agora>=nativo_em:
@@ -266,9 +270,13 @@ def main(profile,event_sink,control,percurso=None):
             if defendendo!=defesa_anterior:
                 pool_em=0.
                 log('Defesa da DG ativada: limpar hostis proximos antes de avancar.' if defendendo else 'Pressao encerrada e vida recuperada; percurso liberado.')
-            if estado!='combater' and hasattr(dados,'listar_mobs') and agora>=pool_em:
+            if (estado!='combater' or jardim) and hasattr(dados,'listar_mobs') and agora>=pool_em:
                 try:
-                    lista=dados.listar_mobs(pos if circuito else base,p['radius'],player)
+                    lista=dados.listar_mobs(pos if circuito else base,max(35,p['radius']) if jardim else p['radius'],player)
+                    lazapa=circuito.lazapa_proximo(lista,pos) if jardim else None
+                    if lazapa:
+                        soltar();control.reason='jardim_limite_lazapas'
+                        event_sink(dict(event='jardim_limit',position=pos,target=lazapa['name'],target_id=lazapa['id'],message='Lazapa do trecho final proximo; interrompendo antes de selecionar ou atacar.'));break
                     indisponiveis={id_:ate for id_,ate in indisponiveis.items() if ate>agora}
                     ignorados_selecao.intersection_update(indisponiveis)
                     mobs_regiao=[m for m in lista if (m['id'] not in indisponiveis or defendendo and m['id'] in ignorados_selecao) and alvo_permitido(m,player,base,p)]

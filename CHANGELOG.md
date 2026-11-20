@@ -1,5 +1,13 @@
 # Alterações
 
+## 0.1.0-beta.27 — 2026-11-20
+
+- Jardim segue até antes dos Lazapas Tempestuosos próximos do final; preserva os combates das áreas anteriores e sai do grupo sem enfrentar esse grupo ou Seridunn.
+- Limite de rota derivado dos logs e terreno; leitura de Lazapas próximos pode antecipar a saída. Encerramento exige posição fora do Jardim e não conta como DG completa.
+- Saída de grupo reutiliza confirmação visual e inclui fallback para textos em inglês/espanhol.
+- Ataque normal com cancelamento usa 1RR1WW sem esperas programadas entre as teclas. Skills mantêm calibração própria; primeiro dano, alcance, foco, cura e buffs continuam respeitados.
+- 305 testes Python e verificações do painel e atualizador passaram. Passagens do percurso foram reconferidas nos arquivos reais; validação completa ao vivo pendente.
+
 ## 0.1.0-beta.26 — 2026-11-20
 
 - Reconhece Hard como Difícil no indicador da DG, mantendo a rejeição de outras dificuldades.

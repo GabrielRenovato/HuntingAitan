@@ -3,10 +3,11 @@ A queda de HP e evidencia de dano, nao comprova a autoria do golpe.
 """
 import math,time
 
-# Medianas aproximadas das demonstracoes de 18/11/2026. IDs da barra validada;
-# outra habilidade no mesmo atalho nao herda este cancelamento.
+# Normal: sequencia informada em 20/11, sem esperas programadas.
+# Skills: medianas das demonstracoes de 18/11; outra skill no mesmo atalho
+# nao herda esse cancelamento.
 PERFIS_COMBO={
-    1:dict(ordem='ataque+w',atraso=.003,duracao_tecla=.065,duracao_w=.066),
+    1:dict(ordem='1rr1ww',sequencia='1rr1ww',atraso=0.,duracao_tecla=0.,duracao_w=0.),
     177:dict(ordem='w+skill',atraso=.0035,duracao_tecla=.073,duracao_w=.061),
     273:dict(ordem='w+skill',atraso=.025,duracao_tecla=.061,duracao_w=.079),
 }
@@ -79,6 +80,15 @@ def executar_combo(pressionar,liberar,esperar,permitido,tecla,normal,skill_id=No
     if not permitido():return (False,False)
     relogio=relogio or time.monotonic
     primaria=False;w_enviado=False;seguradas=[]
+    if perfil and perfil.get('sequencia'):
+        for key in (tecla,'r','r',tecla,'w','w'):
+            if not permitido():break
+            try:
+                if pressionar(key) is False:break
+                if key==tecla:primaria=True
+                if key=='w':w_enviado=True
+            finally:liberar(key)
+        return (primaria,primaria and w_enviado)
     if perfil is None:
         try:
             primaria=pressionar(tecla) is not False

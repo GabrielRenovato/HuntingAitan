@@ -9,7 +9,8 @@ DIFICULDADES={'normal':'normal','facil':'facil','easy':'facil',
               'dificil':'dificil','hard':'dificil','elite':'elite','infernal':'infernal'}
 
 class InterfaceMina:
-    def __init__(self):
+    def __init__(self,ocr=None):
+        self.ocr=ocr
         nomes=['grupo','sair_grupo','pergunta','confirmar','elite','titulo_calabouco','titulo_mazmorra','entrar','entrar_mazmorra','portal_bin','entrar_mina_bin']
         self.tpl={n:cv2.imread(str(P/f'tpl_mina_{n}.png'),0) for n in nomes}
         if any(t is None for t in self.tpl.values()):raise RuntimeError('Modelos de interface da Mina ausentes.')
@@ -47,6 +48,35 @@ class InterfaceMina:
         if grupo:
             x,y=grupo['xy'];s=grupo['escala']
             return dict(acao='abrir_menu_grupo',ponto=(round(x+60*s),round(y+32*s)),botao='right',score=grupo['score'])
+        return self.saida_texto(tela)
+
+    def saida_texto(self,tela):
+        # Fallback para os mesmos controles do cliente em ingles/espanhol.
+        # Botoes de confirmacao exigem a pergunta reconhecida por perto.
+        from dialogos_evento import normalizar
+        if self.ocr is None:
+            from rapidocr_onnxruntime import RapidOCR
+            self.ocr=RapidOCR(intra_op_num_threads=1,inter_op_num_threads=1,use_cls=False)
+        h,w=tela.shape[:2];fator=min(2.,1600/max(h,w))
+        linhas,_=self.ocr(cv2.resize(tela,None,fx=fator,fy=fator))
+        textos=[]
+        for caixa,texto,score in linhas or []:
+            if float(score)<.85:continue
+            c=np.asarray(caixa,dtype=float)/fator
+            if c.shape!=(4,2) or not np.isfinite(c).all():continue
+            textos.append(dict(nome=normalizar(texto),x=float(c[:,0].mean()),y=float(c[:,1].mean()),esquerda=float(c[:,0].min()),baixo=float(c[:,1].max()),altura=float(c[:,1].max()-c[:,1].min())))
+        sair={'sairdogrupo','leaveparty','leavetheparty','leavegroup','leavethegroup','salirdelgrupo'}
+        perguntas=[t for t in textos if t['nome'] in sair]
+        for q in perguntas:
+            confirmar=[t for t in textos if t['nome'] in ('confirmar','confirm','yes','sim','aceptar') and abs(t['x']-q['x'])<w*.22 and 8<t['y']-q['y']<h*.2]
+            if confirmar:
+                b=min(confirmar,key=lambda t:abs(t['x']-q['x']))
+                return dict(acao='confirmar_saida',ponto=(round(b['x']),round(b['y'])))
+            if q['x']<w*.35 and q['y']>h*.4:return dict(acao='sair_grupo',ponto=(round(q['x']),round(q['y'])))
+        for t in textos:
+            if t['x']<w*.3 and t['y']>h*.4 and any(n in t['nome'] for n in ('partyinformation','groupinformation','informacaodogrupo','grupoinformacao')):
+                escala=max(.6,min(2.5,t['altura']/12))
+                return dict(acao='abrir_menu_grupo',ponto=(round(t['esquerda']+60*escala),round(t['baixo']+20*escala)),botao='right')
         return dict(acao='aguardar_saida')
 
     def entrada(self,tela,elite_selecionado=False):

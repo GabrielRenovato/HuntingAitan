@@ -1,10 +1,14 @@
 import copy,sys,threading,unittest
 from types import SimpleNamespace
-from unittest.mock import patch,MagicMock
+from unittest.mock import patch,MagicMock,Mock
 from cancelamento_normal import CancelamentoNormal,executar_combo,perfil_combo
 
 
 class ComboWTeste(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        from controle_avisos import preparar_runtime_visual
+        preparar_runtime_visual()
     def executar(self,normal):
         eventos=[];t=[0.]
         def down(k):eventos.append(('down',k,t[0]));return True
@@ -12,12 +16,29 @@ class ComboWTeste(unittest.TestCase):
         def esperar(s):t[0]+=s
         r=executar_combo(down,up,esperar,lambda:True,'1' if normal else '4',normal,skill_id=1 if normal else 177,relogio=lambda:t[0])
         self.assertEqual(r,(True,True))
-        self.assertAlmostEqual(eventos[1][2]-eventos[0][2],.003 if normal else .0035)
-        self.assertAlmostEqual(t[0],.069 if normal else .0765)
+        self.assertAlmostEqual(eventos[1][2]-eventos[0][2],0 if normal else .0035)
+        self.assertAlmostEqual(t[0],0 if normal else .0765)
         return eventos
 
-    def test_padrao_1_antes_do_w_com_duracao_calibrada(self):
-        e=self.executar(True);self.assertEqual([v[:2] for v in e],[('down','1'),('down','w'),('up','1'),('up','w')])
+    def test_padrao_1rr1ww_sem_esperas_e_com_liberacao_de_cada_tecla(self):
+        e=self.executar(True)
+        self.assertEqual([v[:2] for v in e],[(acao,k) for k in '1rr1ww' for acao in ['down','up']])
+        self.assertTrue(all(v[2]==0 for v in e))
+
+    def test_padrao_nao_chama_esperar_nem_mesmo_com_zero(self):
+        esperar=Mock()
+        self.assertEqual(executar_combo(lambda k:True,lambda k:None,esperar,lambda:True,'1',True),(True,True))
+        esperar.assert_not_called()
+
+    def test_falha_no_r_libera_tecla_e_nao_continua_sequencia(self):
+        e=[]
+        def down(k):
+            e.append(('down',k))
+            if k=='r':raise RuntimeError('entrada interrompida')
+            return True
+        with self.assertRaisesRegex(RuntimeError,'entrada interrompida'):
+            executar_combo(down,lambda k:e.append(('up',k)),lambda s:None,lambda:True,'1',True)
+        self.assertEqual(e,[('down','1'),('up','1'),('down','r'),('up','r')])
 
     def test_skill_4_com_w_antes_e_liberacoes_independentes(self):
         e=self.executar(False);self.assertEqual([v[:2] for v in e],[('down','w'),('down','4'),('up','w'),('up','4')])
@@ -74,14 +95,15 @@ class ComboWTeste(unittest.TestCase):
             if t[0]>5:c.stop.set()
         def emitir(e):
             eventos.append(e)
-            if e.get('combo_w')==('w+skill' if skill else 'ataque+w'):c.stop.set()
+            if e.get('combo_w')==('w+skill' if skill else '1rr1ww'):c.stop.set()
         u=MagicMock();u.GetWindowTextW.side_effect=lambda hwnd,buf,n:setattr(buf,'value','AikaClient')
         entrada=SimpleNamespace(PAUSE=0,keyDown=down,keyUp=lambda k:None)
         with patch.dict(sys.modules,keyboard=SimpleNamespace(is_pressed=lambda k:False),pydirectinput=entrada),patch.object(h,'DadosInternos',Dados),patch.object(h.ctypes.windll,'user32',u),patch.object(h.threading,'Thread'),patch.object(h.time,'monotonic',lambda:t[0]),patch.object(h.time,'sleep',dormir):h.main(p,emitir,c)
         acoes=[e for e in eventos if e.get('event')=='action']
-        self.assertIsNone(acoes[0]['combo_w']);self.assertEqual(acoes[-1]['combo_w'],'w+skill' if skill else 'ataque+w')
-        self.assertEqual([k for k,t in teclas[-2:]],['w','4'] if skill else ['1','w'])
-        self.assertAlmostEqual(teclas[-1][1]-teclas[-2][1],.0035 if skill else .003)
+        self.assertIsNone(acoes[0]['combo_w']);self.assertEqual(acoes[-1]['combo_w'],'w+skill' if skill else '1rr1ww')
+        self.assertEqual([k for k,t in teclas[-2:]],['w','4'] if skill else ['w','w'])
+        self.assertAlmostEqual(teclas[-1][1]-teclas[-2][1],.0035 if skill else 0.)
+        if not skill:self.assertEqual([k for k,t in teclas[-6:]],list('1rr1ww'))
         self.assertTrue(all(instante>=pronto_depois for k,instante in teclas if k=='1'))
 
     def test_skill_5_usa_25ms_e_79ms_de_w(self):

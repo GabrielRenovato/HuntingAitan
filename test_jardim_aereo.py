@@ -1,6 +1,6 @@
 import copy,math,unittest
 from unittest.mock import patch
-from jardim_aereo import JardimAereo,dentro_jardim,plano_jardim
+from jardim_aereo import JardimAereo,dentro_jardim,plano_jardim,lazapa_protegido
 from mina_lenfer import MinaLenfer,plano_mina
 from perfil_hunt import validar
 from interface_mina import VerificadorElite
@@ -17,36 +17,55 @@ class JardimTeste(unittest.TestCase):
             self.assertFalse(dentro_jardim(p))
             with self.assertRaises(RuntimeError):JardimAereo(p)
 
-    def test_rota_percorre_passos_adjuntos_ate_altar_em_outro_bloco(self):
+    def test_rota_percorre_passos_adjuntos_ate_antes_dos_lazapas_finais(self):
         d=plano_jardim();r=d['trechos'][0]['caminho']
         self.assertEqual(d['registro_dificil'],21);self.assertEqual(d['entrada'],[3351,3295])
         self.assertGreater(len(r),2000)
         self.assertTrue(all(dentro_jardim(p) for p in r))
         self.assertTrue(all(math.dist(a,b)<=math.sqrt(2)+1e-5 for a,b in zip(r,r[1:])))
         self.assertLess(r[0][0],3584);self.assertGreater(r[-1][0],3584)
+        self.assertEqual(d['objetivo'],'antes_lazapas')
+        self.assertGreater(r[-1][0],3700)
+        self.assertGreaterEqual(math.dist(r[-1],d['referencia_lazapas']),20)
 
-    def test_somente_seridunn_do_jardim_confirma_conclusao(self):
+    def test_abates_nao_registram_dg_completa_no_percurso_curto(self):
         j=JardimAereo((3351,3295));pos=(3633.5,3212.5)
         for nome in ['Malik','Guarda de Seridunn','Seridunn Corrompido','Portao do Jardim','Administrador do Jardim Celeste']:
             self.assertIsNone(j.registrar_abate(1,nome,pos,0))
-        self.assertEqual(j.registrar_abate(2,'Seridunn',pos,0),'seridunn')
-        self.assertEqual(j.destino(pos,0)['estado'],'aguardar')
-        self.assertEqual(j.destino(pos,15)['estado'],'concluido')
+        self.assertIsNone(j.registrar_abate(2,'Seridunn',pos,0))
+        self.assertFalse(j.abates)
+        self.assertFalse(j.concluida)
 
-    def test_chegar_no_altar_nao_finge_abate(self):
+    def test_chegar_no_limite_inicia_saida_sem_fingir_abate(self):
         j=JardimAereo((3351,3295));pos=j.pontos[-1]['pos']
-        self.assertEqual(j.destino(pos,1000)['estado'],'aguardar_chefe')
+        self.assertEqual(j.destino(pos,1000)['estado'],'limite_lazapas')
         self.assertFalse(j.abates)
 
     def test_mina_continua_exigindo_malik(self):
         m=MinaLenfer((2850,3344));j=JardimAereo((3351,3295))
         self.assertTrue(m.eh_chefe('Malik'));self.assertFalse(m.eh_chefe('Seridunn'))
-        self.assertTrue(j.eh_chefe('Seridunn'));self.assertFalse(j.eh_chefe('Malik'))
+        self.assertFalse(j.eh_chefe('Seridunn'));self.assertFalse(j.eh_chefe('Malik'))
 
-    def test_filtro_prioriza_seridunn_sem_selecionar_por_parede(self):
+    def test_filtro_nao_persegue_seridunn_no_modo_curto(self):
         j=JardimAereo((3351,3295));j.grade=grade(16,8);j.rota_planejada=[(1.5,1.5),(14.5,1.5)]
         mobs=[dict(id=1,name='Guarda',position=(3.5,1.5)),dict(id=2,name='Seridunn',position=(10.5,1.5))]
-        self.assertEqual([m['id'] for m in j.filtrar_mobs(mobs,(1.5,1.5),20)],[2])
+        self.assertEqual([m['id'] for m in j.filtrar_mobs(mobs,(1.5,1.5),20)],[1])
+
+    def test_lazapas_iniciais_continuam_permitidos_e_finais_sao_protegidos(self):
+        self.assertFalse(lazapa_protegido('Lazapa da Furia',(3522,3235)))
+        self.assertTrue(lazapa_protegido('Lazapa Tempestuosa',(3757,3146)))
+        self.assertTrue(lazapa_protegido('Storm Lazapa',(3757,3146)))
+        self.assertTrue(lazapa_protegido('Lazapa',(3757,3146)))
+        self.assertFalse(lazapa_protegido('Soldado',(3757,3146)))
+
+    def test_detector_final_exige_passagem_e_ignora_as_areas_anteriores(self):
+        j=JardimAereo((3351,3295));j.grade=grade(30,20);j.grade.origem=(3740,3120)
+        mob=dict(id=1,name='Lazapa Tempestuosa',position=(3755.5,3125.5))
+        with patch('jardim_aereo.na_area_lazapas_finais',return_value=False):self.assertIsNone(j.lazapa_proximo([mob],(3745.5,3125.5)))
+        with patch('jardim_aereo.na_area_lazapas_finais',return_value=True):
+            self.assertEqual(j.lazapa_proximo([mob],(3745.5,3125.5)),mob)
+            j.grade=grade(30,20,[(10,y) for y in range(20)]);j.grade.origem=(3740,3120)
+            self.assertIsNone(j.lazapa_proximo([mob],(3745.5,3125.5)))
 
     def test_rota_de_uma_sessao_nao_altera_o_plano_da_outra_dg(self):
         antes=copy.deepcopy(plano_jardim());m=copy.deepcopy(plano_mina())

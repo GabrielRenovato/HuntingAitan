@@ -1,5 +1,5 @@
-"""Percurso do Jardim Aereo de Mirza, com conclusao exclusiva por Seridunn."""
-import hashlib,json,struct,time,os
+"""Percurso curto do Jardim, encerrado antes dos Lazapas do trecho final."""
+import hashlib,json,struct,time,os,math
 from functools import lru_cache
 from pathlib import Path
 from mina_lenfer import MinaLenfer,normalizar
@@ -11,6 +11,19 @@ def plano_jardim():return json.loads(Path(__file__).with_name('jardim_aereo_rota
 def dentro_jardim(pos,margem=0):
     x0,y0,x1,y1=plano_jardim()['limites']
     return x0-margem<=pos[0]<x1+margem and y0-margem<=pos[1]<y1+margem
+
+def eh_lazapa(nome):
+    n=normalizar(nome)
+    return 'lazapa' in n or 'lapaza' in n
+
+def na_area_lazapas_finais(pos):
+    rota=plano_jardim()['trechos'][0]['caminho']
+    i=min(range(len(rota)),key=lambda i:math.dist(pos,rota[i]))
+    return i>=max(0,len(rota)-120)
+
+def lazapa_protegido(nome,pos):
+    n=normalizar(nome)
+    return eh_lazapa(nome) and ('tempestu' in n or 'storm' in n or na_area_lazapas_finais(pos))
 
 def salvar_diagnostico_dificuldade(tela,leituras,arquivo=None,etapa='leitura_concluida'):
     import cv2
@@ -66,7 +79,27 @@ class JardimAereo(MinaLenfer):
     obter_plano=staticmethod(plano_jardim)
     contem=staticmethod(dentro_jardim)
 
-    def eh_chefe(self,nome):return normalizar(nome)=='seridunn'
+    def eh_chefe(self,nome):return False
+
+    def registrar_abate(self,*args):return None
+
+    def filtrar_mobs(self,mobs,pos,raio,defendendo=False):
+        permitidos=[m for m in mobs if normalizar(m['name'])!='seridunn' and not lazapa_protegido(m['name'],pos)]
+        return super().filtrar_mobs(permitidos,pos,raio,defendendo)
+
+    def atingiu_limite(self,pos):return math.dist(pos,self.pontos[-1]['pos'])<=3
+
+    def lazapa_proximo(self,mobs,pos):
+        if not na_area_lazapas_finais(pos):return None
+        for m in mobs:
+            if not eh_lazapa(m['name']) or math.dist(pos,m['position'])>27:continue
+            rota=self.grade.caminho(pos,m['position'],alcance=2,max_nos=4096)
+            if rota and sum(math.dist(a,b) for a,b in zip(rota,rota[1:]))<=25:return m
+        return None
+
+    def destino(self,pos,agora):
+        if self.atingiu_limite(pos):return dict(estado='limite_lazapas',ponto='antes_lazapas',voltas=0)
+        return super().destino(pos,agora)
 
     def conferir(self,pasta):
         p=Path(pasta)
@@ -79,5 +112,5 @@ class JardimAereo(MinaLenfer):
             for j in range(2):flags.extend(a[j][y*512:(y+1)*512:2]);alturas.extend(h[j][y*256:(y+1)*256])
         self.grade=Grade((3328,3072),(0,0),512,256,bytes(flags),tuple(alturas),1)
         rota=self.grade.caminho(self.inicio,self.pontos[-1]['pos'],max_nos=131072)
-        if not rota:raise RuntimeError('Sem passagem estatica ate o altar de Seridunn.')
+        if not rota:raise RuntimeError('Sem passagem estatica ate o limite anterior aos Lazapas.')
         self.trechos=[dict(ate=self.pontos[-1]['id'],caminho=rota)];self.rota_planejada=rota;self.indice=0

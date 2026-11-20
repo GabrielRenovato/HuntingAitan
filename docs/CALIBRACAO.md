@@ -1,10 +1,12 @@
-# Calibração de 18/11/2026
+# Cancelamento do padrão e calibração de skills
 
-Dois trechos locais de demonstração foram analisados: aproximadamente 15 segundos de padrão e 56 segundos com habilidades. As capturas brutas e os dados da sessão não fazem parte do repositório ou do instalador.
+Em 20/11/2026, o padrão foi atualizado por instrução do usuário para **1 → R → R → 1 → W → W**, sem chamadas de espera entre as teclas. Cada tecla recebe pressionamento e liberação; o tempo real de processamento depende do Windows e do jogo. A tecla de ataque configurada substitui o 1 se ela for alterada.
+
+Para as skills, dois trechos locais de demonstração de 18/11/2026 foram analisados: aproximadamente 15 segundos de padrão e 56 segundos com habilidades. As capturas brutas e os dados da sessão não fazem parte do repositório ou do instalador.
 
 | Ação identificada | Ordem | Separação | Tecla pressionada | W pressionado |
 | --- | --- | ---: | ---: | ---: |
-| Ataque normal, ID 1 | ataque → W | 3 ms | 65 ms | 66 ms |
+| Ataque normal, ID 1 | 1 → R → R → 1 → W → W | sem espera | sem espera | sem espera |
 | Skill ID 177, observada na tecla 4 | W → skill | 3,5 ms | 73 ms | 61 ms |
 | Skill ID 273, observada na tecla 5 | W → skill | 25 ms | 61 ms | 79 ms |
 

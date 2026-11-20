@@ -4,7 +4,7 @@ from ctypes import wintypes as w
 from interface_mina import InterfaceMina
 from mina_lenfer import dentro_mina
 
-def sair_grupo(dados,control,emitir,limite=120):
+def sair_grupo(dados,control,emitir,limite=120,dentro=dentro_mina,nome='Mina'):
     import keyboard,pydirectinput as entrada,mss
     from captura_aika import CapturaAika
     from avisos_hunt import DetectorAvisos,reconfirmar
@@ -27,7 +27,7 @@ def sair_grupo(dados,control,emitir,limite=120):
             if not ativo():time.sleep(.1);continue
             try:s=dados.snapshot()
             except RuntimeError:time.sleep(.2);continue
-            if not dentro_mina(s['player']['position']):
+            if not dentro(s['player']['position']):
                 fora+=1
                 if fora>=3:
                     emitir(dict(event='cycle',state='save_confirmado',position=s['player']['position'],hp=s['player']['hp']/s['player']['hp_max']));return True
@@ -42,7 +42,7 @@ def sair_grupo(dados,control,emitir,limite=120):
                     time.sleep(.2);continue
                 acao=detector.saida(tela)
                 if acao['acao']!=ultimo:
-                    emitir(dict(event='cycle',state=acao['acao'],message='Saida da Mina: '+acao['acao']));ultimo=acao['acao']
+                    emitir(dict(event='cycle',state=acao['acao'],message='Saida do '+nome+': '+acao['acao']));ultimo=acao['acao']
                 if 'ponto' in acao:
                     # Confirma o mesmo controle numa captura atual antes do clique.
                     atual=detector.saida(cap.capturar())
