@@ -1,0 +1,27 @@
+huntingaitan/dados/native_layout.json
+  s_584910f7c1e27f::t_ad6189d335f0ad 2-27
+huntingaitan/leitura/verificacao.py
+  s_584910f7c1e27f::t_894e072d0d8907 1-32
+tests/test_layout_multiplo.py
+  s_584910f7c1e27f::t_894e072d0d8907 1-62
+tools/verificar_layout.py
+  s_584910f7c1e27f::t_894e072d0d8907 1-23
+huntingaitan/leitura/dados_internos.py
+  s_584910f7c1e27f::t_ad6189d335f0ad 8-24,55-56,60-61,71,74-75,77,87,96,120-121,141,160,164,166,172
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.6",
+  "base_commit_sha": "f99bc570932bfaea038ee29d37109d1a3a4c0d10",
+  "prompts": {},
+  "sessions": {
+    "s_584910f7c1e27f": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "764d1c0c-78a7-4639-a7b2-8e651e7e4374",
+        "model": "claude-sonnet-5-5"
+      },
+      "human_author": "Gabriel Renovato <86806861+GabrielRenovato@users.noreply.github.com>"
+    }
+  }
+}
