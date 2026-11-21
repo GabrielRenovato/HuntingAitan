@@ -1,0 +1,28 @@
+docs/MANUTENCAO_DO_LEITOR.md
+  s_584910f7c1e27f::t_a2dc3b06ed3d51 55-88
+.gitignore
+  s_584910f7c1e27f::t_03dc233ca5bc49 25-27
+huntingaitan/leitura/captura.py
+  s_584910f7c1e27f::t_57686481db1cc3 1-137
+tests/test_captura.py
+  s_584910f7c1e27f::t_b8f741b54ef35f 1-91,93-103
+  s_584910f7c1e27f::t_eb97be04c01b91 92
+tools/capturar_estado.py
+  s_584910f7c1e27f::t_201614eea7888b 1-73
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.6",
+  "base_commit_sha": "f2a577c87c423b58f68407c1e123e70e57e2dd04",
+  "prompts": {},
+  "sessions": {
+    "s_584910f7c1e27f": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "764d1c0c-78a7-4639-a7b2-8e651e7e4374",
+        "model": "claude-sonnet-5-5"
+      },
+      "human_author": "Gabriel Renovato <86806861+GabrielRenovato@users.noreply.github.com>"
+    }
+  }
+}
