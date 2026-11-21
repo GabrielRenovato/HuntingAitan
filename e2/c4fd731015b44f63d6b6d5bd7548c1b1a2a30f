@@ -1,0 +1,33 @@
+huntingaitan/leitura/replay.py
+  s_584910f7c1e27f::t_cf3312c50d2456 1-15,20-48
+  s_584910f7c1e27f::t_bb7a1ea8fcd071 16-19
+huntingaitan/leitura/sessao.py
+  s_584910f7c1e27f::t_1e451f345cff94 1-86
+tests/test_sessao_replay.py
+  s_584910f7c1e27f::t_6a214311116f40 1-11,13-86
+  s_584910f7c1e27f::t_bb7a1ea8fcd071 12
+docs/MANUTENCAO_DO_LEITOR.md
+  s_584910f7c1e27f::t_f8159f04a68774 1-54
+huntingaitan/combate/hunt_native.py
+  s_584910f7c1e27f::t_2dc6a5c704615c 2,24-31,95
+README.md
+  s_584910f7c1e27f::t_774c2fbab2f54e 48-49
+tools/reproduzir_sessao.py
+  s_584910f7c1e27f::t_b0a5400f460292 1-27
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.6",
+  "base_commit_sha": "e2c4fd731015b44f63d6b6d5bd7548c1b1a2a30f",
+  "prompts": {},
+  "sessions": {
+    "s_584910f7c1e27f": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "764d1c0c-78a7-4639-a7b2-8e651e7e4374",
+        "model": "claude-sonnet-5-5"
+      },
+      "human_author": "Gabriel Renovato <86806861+GabrielRenovato@users.noreply.github.com>"
+    }
+  }
+}
