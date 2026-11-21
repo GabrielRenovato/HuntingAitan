@@ -27,6 +27,8 @@ def conferir_verit(pasta):
         if atual!=h:raise RuntimeError('Os dados de Termes mudaram: '+n+'. Revalide o circuito Verit.')
 
 class CircuitoVerit(CircuitoTermes):
+    contem=staticmethod(dentro_verit)
+
     def __init__(self,pos):
         if not dentro_verit(pos):raise RuntimeError('Circuito Verit: comece perto dos pontos marcados, por exemplo 2748, 833 ou 2779, 844.')
         self.trechos=plano_verit()['trechos'];self.voltas=0;self.espera_ate=None

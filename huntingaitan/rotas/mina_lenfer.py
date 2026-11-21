@@ -1,4 +1,5 @@
 """Percurso unico da primeira Mina, com combate e conclusao por abates confirmados."""
+from huntingaitan.rotas.base import Rota
 from huntingaitan.recursos import DADOS
 import copy,hashlib,heapq,json,math,struct,unicodedata
 from functools import lru_cache
@@ -15,7 +16,7 @@ def dentro_mina(pos,margem=0):
 
 def normalizar(nome):return ''.join(c for c in unicodedata.normalize('NFKD',nome.lower()) if 'a'<=c<='z')
 
-class MinaLenfer:
+class MinaLenfer(Rota):
     chefe='malik'
     def obter_plano(self):return plano_mina()
     contem=staticmethod(dentro_mina)

@@ -1,4 +1,5 @@
 """Circuito de Penza em Termes, com caminhos derivados da colisao local."""
+from huntingaitan.rotas.base import Rota
 from huntingaitan.recursos import DADOS
 import hashlib,json,math
 from functools import lru_cache
@@ -29,7 +30,9 @@ def conferir_arquivos(pasta):
         if atual!=esperado:
             raise RuntimeError('Os dados de terreno mudaram: '+nome+'. Revalide o circuito antes de usar.')
 
-class CircuitoTermes:
+class CircuitoTermes(Rota):
+    contem=staticmethod(dentro_regiao)
+
     def __init__(self,pos):
         if not dentro_regiao(pos):
             raise RuntimeError('Circuito de Termes: comece na faixa dos Penzas, por exemplo perto de 2584, 587 ou 2592, 697.')
