@@ -1,5 +1,5 @@
 """Motor por dados internos validados; nao usa minimapa para posicao, vida ou alvo."""
-import ctypes,time,math,threading,re,unicodedata
+import ctypes,os,time,math,threading,re,unicodedata
 from ctypes import wintypes as w
 from huntingaitan.leitura.dados_internos import DadosInternos
 from huntingaitan.configuracao.perfil_hunt import validar
@@ -21,6 +21,14 @@ from huntingaitan.combate.hunt_core import CadenciaCombate,erro_angular,Verifica
 from huntingaitan.entrada.teclas_controladas import TeclasControladas
 
 NOMES={'verit':'Verit Mutante','penza':'Penza Poderosa Mutante','croshu':'Croshu Mutante das Cinzas','tet':'Tet das Chamas'}
+def _gravar_se_pedido(dados,log):
+    """Com AIKA_GRAVAR_SESSAO definido, grava as leituras em app_sessions/ para reproducao offline."""
+    if not os.environ.get('AIKA_GRAVAR_SESSAO'):return dados
+    from huntingaitan.leitura.sessao import DadosGravador,caminho_gravacao
+    arquivo=caminho_gravacao()
+    log('Gravando leituras do cliente para reproducao offline.',arquivo=str(arquivo))
+    return DadosGravador(dados,arquivo)
+
 def nome_normal(s):return re.sub('[^a-z]','',unicodedata.normalize('NFKD',s.lower()))
 # Regras de area por modo de patrulha. Modos fora da tabela usam o raio em torno da base.
 REGRAS_AREA={
@@ -84,7 +92,7 @@ def main(profile,event_sink,control,percurso=None):
     def log(msg,**d):event_sink(dict(event='log',message=msg,**d))
     dados=None
     try:
-        dados=DadosInternos();s=dados.snapshot();s2=dados.snapshot()
+        dados=DadosInternos();dados=_gravar_se_pedido(dados,log);s=dados.snapshot();s2=dados.snapshot()
         if math.dist(s['player']['position'],s2['player']['position'])>5:raise RuntimeError('Posicao interna instavel; tente novamente com o personagem parado.')
         event_sink(dict(event='status',state='waiting',message='Dados internos validados. Volte ao Aika para capturar a base e comecar.'))
         threading.Thread(target=ent.vigiar,args=(fim,),daemon=True).start()

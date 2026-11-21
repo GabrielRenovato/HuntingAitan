@@ -45,6 +45,8 @@ Código, testes e recortes genéricos da interface usados pelo painel/detector. 
 
 Para reportar um problema, informe a versão mostrada no painel e envie apenas o trecho relevante do diagnóstico, revisando os dados pessoais antes de compartilhar. Recursos e marcas do Aika pertencem aos respectivos titulares; este é um projeto independente.
 
+Manutenção do leitor após atualizações do jogo, verificação de layout e replay offline de sessões: [docs/MANUTENCAO_DO_LEITOR.md](docs/MANUTENCAO_DO_LEITOR.md).
+
 A calibração do cancelamento e suas limitações estão em [docs/CALIBRACAO.md](docs/CALIBRACAO.md). Ative **Padrão 1RR1WW e skills calibradas** na aba Comportamento para usar esse modo.
 
 O fechamento de CTE, Arena Elter e conversas está descrito em [docs/JANELAS.md](docs/JANELAS.md), incluindo o que foi validado e as limitações.
