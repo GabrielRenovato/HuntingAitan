@@ -1,7 +1,7 @@
 from pathlib import Path
 import unittest,time
 import cv2,numpy as np
-from aviso_elter import DetectorElter
+from huntingaitan.visao.aviso_elter import DetectorElter
 
 class TesteElter(unittest.TestCase):
     @classmethod

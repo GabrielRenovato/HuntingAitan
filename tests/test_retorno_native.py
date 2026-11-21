@@ -4,8 +4,8 @@ from types import SimpleNamespace
 
 class RetornoTeste(unittest.TestCase):
  def simular(self,afastado):
-  import hunt_native as h
-  from perfil_hunt import DEFAULT
+  import huntingaitan.combate.hunt_native as h
+  from huntingaitan.configuracao.perfil_hunt import DEFAULT
   p=copy.deepcopy(DEFAULT);p.update(buffs_enabled=False,minimize_on_start=False,hp_keys=['','',''])
   for v in p['skills']:v['enabled']=False
   controle=SimpleNamespace(stop=threading.Event(),pause=threading.Event())

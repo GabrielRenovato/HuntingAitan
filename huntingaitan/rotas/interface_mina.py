@@ -1,9 +1,10 @@
 """Reconhece somente controles conhecidos da saida e entrada da Mina."""
+from huntingaitan.recursos import DADOS
 from pathlib import Path
 import cv2,numpy as np
-from avisos_hunt import melhor
+from huntingaitan.visao.avisos_hunt import melhor
 
-P=Path(__file__).resolve().parent/'dados'
+P=DADOS
 ESCALAS=(1.,.9,1.1,.8,1.25,1.5)
 DIFICULDADES={'normal':'normal','facil':'facil','easy':'facil',
               'dificil':'dificil','hard':'dificil','elite':'elite','infernal':'infernal'}
@@ -53,7 +54,7 @@ class InterfaceMina:
     def saida_texto(self,tela):
         # Fallback para os mesmos controles do cliente em ingles/espanhol.
         # Botoes de confirmacao exigem a pergunta reconhecida por perto.
-        from dialogos_evento import normalizar
+        from huntingaitan.visao.dialogos_evento import normalizar
         if self.ocr is None:
             from rapidocr_onnxruntime import RapidOCR
             self.ocr=RapidOCR(intra_op_num_threads=1,inter_op_num_threads=1,use_cls=False)
@@ -107,7 +108,7 @@ class VerificadorElite:
             # O HUD fica sempre na horizontal. O classificador de orientacao
             # girava "Hard" em 180 graus na captura real do cliente ingles.
             self.ocr=RapidOCR(intra_op_num_threads=1,inter_op_num_threads=1,use_cls=False)
-        from dialogos_evento import normalizar
+        from huntingaitan.visao.dialogos_evento import normalizar
         h,w=tela.shape[:2]
         areas=[(min(w,480),min(h,480),3.)]
         if self.auto_escala:

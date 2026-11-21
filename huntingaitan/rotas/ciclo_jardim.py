@@ -1,6 +1,6 @@
 """Percorre o Jardim ate os Lazapas finais e sai, sem repetir a entrada."""
 import time
-from jardim_aereo import dentro_jardim
+from huntingaitan.rotas.jardim_aereo import dentro_jardim
 
 
 def executar_trecho(perfil,emitir,control,motor,sair,parar=None):
@@ -27,9 +27,9 @@ def executar_trecho(perfil,emitir,control,motor,sair,parar=None):
 
 def main(perfil,emitir,control):
     import keyboard
-    from hunt_native import main as motor
-    from dados_internos import DadosInternos
-    from operacoes_mina import sair_grupo
+    from huntingaitan.combate.hunt_native import main as motor
+    from huntingaitan.leitura.dados_internos import DadosInternos
+    from huntingaitan.rotas.operacoes_mina import sair_grupo
     def parar():
         if keyboard.is_pressed('f12'):control.reason='F12';control.stop.set()
         return control.stop.is_set()

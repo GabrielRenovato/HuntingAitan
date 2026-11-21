@@ -1,8 +1,9 @@
 """Leitor somente leitura, limitado ao layout de AIKACL.exe verificado por hash."""
+from huntingaitan.recursos import DADOS
 import ctypes,struct,math,hashlib,json
 from ctypes import wintypes as w
 from pathlib import Path
-P=Path(__file__).resolve().parent/'dados'
+P=DADOS
 
 class MODULEENTRY32W(ctypes.Structure):
     _fields_=[('dwSize',w.DWORD),('th32ModuleID',w.DWORD),('th32ProcessID',w.DWORD),('GlblcntUsage',w.DWORD),('ProccntUsage',w.DWORD),('modBaseAddr',ctypes.POINTER(ctypes.c_ubyte)),('modBaseSize',w.DWORD),('hModule',w.HMODULE),('szModule',w.WCHAR*256),('szExePath',w.WCHAR*260)]
@@ -96,7 +97,7 @@ class DadosInternos:
         cena=self.cena_validada();assistente=self.u32(cena+0xeadf4)
         return bool(assistente and self.u32(assistente+0x1f4))
     def recargas_atalhos(self):
-        from recargas_barra import decodificar
+        from huntingaitan.leitura.recargas_barra import decodificar
         contexto=self.u32(self.base+0x2f9b1e0-0x400000)
         gestor=self.u32(self.base+0x322669c-0x400000)
         modo=self.u32(gestor+0x614)

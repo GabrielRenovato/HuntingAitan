@@ -4,9 +4,9 @@ from unittest.mock import patch,MagicMock
 
 class PrioridadeJanelaTeste(unittest.TestCase):
     def simular(self,morrer=False,buffs=False):
-        import hunt_native as h
-        import avisos_hunt  # Carrega OpenCV antes de simular o relogio do motor.
-        from perfil_hunt import DEFAULT
+        import huntingaitan.combate.hunt_native as h
+        import huntingaitan.visao.avisos_hunt  # Carrega OpenCV antes de simular o relogio do motor.
+        from huntingaitan.configuracao.perfil_hunt import DEFAULT
         p=copy.deepcopy(DEFAULT);p["f3_enabled"]=False;p["extra_buffs_enabled"]=False;p.update(buffs_enabled=buffs,heal_enabled=False,minimize_on_start=False,hp_keys=['','',''])
         for s in p['skills']:s['enabled']=False
         c=SimpleNamespace(stop=threading.Event(),pause=threading.Event());t=[0.];hp=[100];eventos=[];teclas=[];mouse=[];clicou=[False]
@@ -35,7 +35,7 @@ class PrioridadeJanelaTeste(unittest.TestCase):
         def clicar():clicou[0]=True;mouse.append(t[0])
         u=MagicMock();u.GetWindowTextW.side_effect=lambda hwnd,buf,n:setattr(buf,'value','AikaClient')
         entrada=SimpleNamespace(PAUSE=0,keyDown=down,keyUp=lambda k:None,moveTo=lambda *p:None,mouseDown=clicar,mouseUp=lambda:None)
-        with patch.dict(sys.modules,keyboard=SimpleNamespace(is_pressed=lambda k:False),pydirectinput=entrada),patch.object(h,'DadosInternos',Dados),patch.object(h,'ObservadorAvisos',Monitor),patch.object(h.ctypes.windll,'user32',u),patch.object(h.threading,'Thread'),patch.object(h.time,'monotonic',lambda:t[0]),patch.object(h.time,'sleep',dormir),patch('avisos_hunt.reconfirmar',reconfirmar):h.main(p,emitir,c)
+        with patch.dict(sys.modules,keyboard=SimpleNamespace(is_pressed=lambda k:False),pydirectinput=entrada),patch.object(h,'DadosInternos',Dados),patch.object(h,'ObservadorAvisos',Monitor),patch.object(h.ctypes.windll,'user32',u),patch.object(h.threading,'Thread'),patch.object(h.time,'monotonic',lambda:t[0]),patch.object(h.time,'sleep',dormir),patch('huntingaitan.visao.avisos_hunt.reconfirmar',reconfirmar):h.main(p,emitir,c)
         return eventos,teclas,mouse,hp[0]
 
     def test_motor_nao_ataca_apos_clique_ate_janela_sumir(self):

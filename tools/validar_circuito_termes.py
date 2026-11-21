@@ -2,7 +2,7 @@
 import argparse,hashlib,json,math,struct,sys
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
-from navegacao_grade import Grade
+from huntingaitan.rotas.navegacao_grade import Grade
 
 PONTOS=[(6,(2584,587)),(5,(2585,654)),(4,(2577,674)),(7,(2592,697)),(8,(2584,712)),(9,(2612,748))]
 
@@ -27,7 +27,7 @@ def validar(pasta,pontos=None,mob="Penza Poderosa Mutante",fechado=False):
         off=(y*4096+x0)*2;flags.extend(atributos[off:off+w*2:2]);hs.extend(struct.unpack_from('<'+'h'*w,alturas,off+4))
     grade=Grade((0,0),(x0,y0),w,y1-y0+1,bytes(flags),tuple(hs),1)
     def dentro(pos):
-        from circuito_termes import distancia_segmento
+        from huntingaitan.rotas.circuito_termes import distancia_segmento
         return min(distancia_segmento(pos,a[1],b[1]) for a,b in zip(pontos,pontos[1:]+([pontos[0]] if fechado else [])))<=20
     caminho=pontos+([pontos[0]] if fechado else list(reversed(pontos[:-1])));trechos=[]
     for (id_a,a),(id_b,b) in zip(caminho,caminho[1:]):

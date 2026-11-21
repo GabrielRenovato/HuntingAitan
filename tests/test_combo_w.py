@@ -1,13 +1,13 @@
 import copy,sys,threading,unittest
 from types import SimpleNamespace
 from unittest.mock import patch,MagicMock,Mock
-from cancelamento_normal import CancelamentoNormal,executar_combo,perfil_combo
+from huntingaitan.combate.cancelamento_normal import CancelamentoNormal,executar_combo,perfil_combo
 
 
 class ComboWTeste(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        from controle_avisos import preparar_runtime_visual
+        from huntingaitan.visao.controle_avisos import preparar_runtime_visual
         preparar_runtime_visual()
     def executar(self,normal):
         eventos=[];t=[0.]
@@ -74,8 +74,8 @@ class ComboWTeste(unittest.TestCase):
         self.assertFalse(c.permitir_combo(a,(0,0),42,True))
 
     def motor(self,skill,pronto_depois=0,repeticoes=1,bloquear_apos_dano=False):
-        import hunt_native as h
-        from perfil_hunt import DEFAULT
+        import huntingaitan.combate.hunt_native as h
+        from huntingaitan.configuracao.perfil_hunt import DEFAULT
         p=copy.deepcopy(DEFAULT);p.update(cancel_normal=True,combo_repeat_ms=40,buffs_enabled=False,heal_enabled=False,minimize_on_start=False,hp_keys=['','',''])
         for v in p['skills']:v['enabled']=False
         if skill:p['skills'][2].update(key='4',seconds=1,enabled=True)

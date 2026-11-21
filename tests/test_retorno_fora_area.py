@@ -1,8 +1,8 @@
 import math,unittest,copy,sys,threading
 from types import SimpleNamespace
 from unittest.mock import patch,MagicMock
-from navegacao_grade import Grade
-from navegador_local import NavegadorLocal
+from huntingaitan.rotas.navegacao_grade import Grade
+from huntingaitan.rotas.navegador_local import NavegadorLocal
 
 
 def janela(pos,raio=48,bloqueios=()):
@@ -44,8 +44,8 @@ class RetornoForaAreaTeste(unittest.TestCase):
         self.assertIsNone(g.caminho(pos,dest,limite=(pos,10)))
 
     def test_motor_prioriza_retorno_e_permite_reentrada(self):
-        import hunt_native as h
-        from perfil_hunt import DEFAULT
+        import huntingaitan.combate.hunt_native as h
+        from huntingaitan.configuracao.perfil_hunt import DEFAULT
         perfil=copy.deepcopy(DEFAULT);perfil.update(buffs_enabled=False,minimize_on_start=False,hp_keys=['','',''],radius=30)
         for s in perfil['skills']:s['enabled']=False
         controle=SimpleNamespace(stop=threading.Event(),pause=threading.Event());tempo=[0.];passos=[];teclas=[];eventos=[]

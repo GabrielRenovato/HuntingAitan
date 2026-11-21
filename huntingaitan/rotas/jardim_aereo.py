@@ -1,12 +1,13 @@
 """Percurso curto do Jardim, encerrado antes dos Lazapas do trecho final."""
+from huntingaitan.recursos import DADOS,RAIZ
 import hashlib,json,struct,time,os,math
 from functools import lru_cache
 from pathlib import Path
-from mina_lenfer import MinaLenfer,normalizar
-from navegacao_grade import Grade
+from huntingaitan.rotas.mina_lenfer import MinaLenfer,normalizar
+from huntingaitan.rotas.navegacao_grade import Grade
 
 @lru_cache(maxsize=1)
-def plano_jardim():return json.loads((Path(__file__).parent/'dados'/'jardim_aereo_rota.json').read_text(encoding='utf-8'))
+def plano_jardim():return json.loads((DADOS/'jardim_aereo_rota.json').read_text(encoding='utf-8'))
 
 def dentro_jardim(pos,margem=0):
     x0,y0,x1,y1=plano_jardim()['limites']
@@ -27,7 +28,7 @@ def lazapa_protegido(nome,pos):
 
 def salvar_diagnostico_dificuldade(tela,leituras,arquivo=None,etapa='leitura_concluida'):
     import cv2
-    pasta=Path(os.environ.get('AIKA_DATA_DIR',str(Path(__file__).parent)))/'app_sessions'
+    pasta=Path(os.environ.get('AIKA_DATA_DIR',str(RAIZ)))/'app_sessions'
     pasta.mkdir(parents=True,exist_ok=True)
     arquivo=Path(arquivo) if arquivo else pasta/('jardim_dificuldade_'+time.strftime('%Y%m%d_%H%M%S')+'_'+str(os.getpid()))
     h,w=tela.shape[:2];largura=min(w,max(480,round(w*.4)));altura=min(h,max(480,round(h*.75)))
@@ -37,8 +38,8 @@ def salvar_diagnostico_dificuldade(tela,leituras,arquivo=None,etapa='leitura_con
 
 def conferir_dificil(auto_escala=True,emitir=None,ativo=None,parar=None):
     import mss
-    from captura_aika import CapturaAika
-    from interface_mina import VerificadorElite
+    from huntingaitan.visao.captura_aika import CapturaAika
+    from huntingaitan.rotas.interface_mina import VerificadorElite
     verificador=VerificadorElite(dificuldade='dificil',auto_escala=auto_escala)
     with (getattr(mss,'MSS',None) or mss.mss)() as sct:
         cap=CapturaAika(sct);confirmacoes=0;leituras=[];tela=None;pausado=False;arquivo=None

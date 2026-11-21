@@ -1,13 +1,13 @@
 """Operacoes de interface da Mina com reconhecimento e confirmacao de transicoes."""
 import ctypes,math,time
 from ctypes import wintypes as w
-from interface_mina import InterfaceMina
-from mina_lenfer import dentro_mina
+from huntingaitan.rotas.interface_mina import InterfaceMina
+from huntingaitan.rotas.mina_lenfer import dentro_mina
 
 def sair_grupo(dados,control,emitir,limite=120,dentro=dentro_mina,nome='Mina'):
     import keyboard,pydirectinput as entrada,mss
-    from captura_aika import CapturaAika
-    from avisos_hunt import DetectorAvisos,reconfirmar
+    from huntingaitan.visao.captura_aika import CapturaAika
+    from huntingaitan.visao.avisos_hunt import DetectorAvisos,reconfirmar
     entrada.PAUSE=0;dados.u.GetForegroundWindow.restype=w.HWND
     detector=InterfaceMina();avisos=DetectorAvisos();inicio=time.monotonic();acao_em=0.;ultimo=None;fora=0;erro_em=-100.
     def ativo():return not control.stop.is_set() and not keyboard.is_pressed('f12') and dados.u.GetForegroundWindow()==dados.hwnd and not control.pause.is_set()
@@ -59,10 +59,10 @@ def sair_grupo(dados,control,emitir,limite=120,dentro=dentro_mina,nome='Mina'):
 
 def entrar_elite(dados,control,emitir,limite=120):
     import keyboard,pydirectinput as entrada,mss
-    from captura_aika import CapturaAika
-    from avisos_hunt import DetectorAvisos,reconfirmar
-    from interface_mina import VerificadorElite
-    from entrada_mina import PORTAL,bloqueadores_da_porta
+    from huntingaitan.visao.captura_aika import CapturaAika
+    from huntingaitan.visao.avisos_hunt import DetectorAvisos,reconfirmar
+    from huntingaitan.rotas.interface_mina import VerificadorElite
+    from huntingaitan.rotas.entrada_mina import PORTAL,bloqueadores_da_porta
     entrada.PAUSE=0;dados.u.GetForegroundWindow.restype=w.HWND
     detector=InterfaceMina();verificador=VerificadorElite(auto_escala=getattr(control,'auto_ui_scale',True));avisos=DetectorAvisos();inicio=time.monotonic();acao_em=0.;ultimo=None;elite=False;confirmacoes=0;erro_em=-100.
     progresso_em=inicio;ferido_em=-float('inf');hp_anterior=None;control.bloqueadores_portal=set();verificar_mob_em=0.

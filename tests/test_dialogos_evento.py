@@ -3,8 +3,8 @@ import threading,unittest
 from types import SimpleNamespace
 from unittest.mock import patch
 import cv2,numpy as np
-from dialogos_evento import DetectorEventos,tipo_convite
-from controle_avisos import ObservadorAvisos
+from huntingaitan.visao.dialogos_evento import DetectorEventos,tipo_convite
+from huntingaitan.visao.controle_avisos import ObservadorAvisos
 
 P=Path(__file__).parent/'fixtures'
 
@@ -109,7 +109,7 @@ class MonitorTeste(unittest.TestCase):
                 if len(chamadas)==1:raise RuntimeError('primeira captura falhou')
                 if len(chamadas)>=4:m.fim.encerrado=True
                 return None
-        with patch.dict('sys.modules',mss=SimpleNamespace(MSS=Contexto)),patch('captura_aika.CapturaAika',Captura):m.executar()
+        with patch.dict('sys.modules',mss=SimpleNamespace(MSS=Contexto)),patch('huntingaitan.visao.captura_aika.CapturaAika',Captura):m.executar()
         self.assertGreaterEqual(len(aberturas),2);self.assertFalse(m.bloqueio.is_set())
 
 if __name__=='__main__':unittest.main()

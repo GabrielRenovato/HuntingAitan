@@ -1,7 +1,7 @@
 import copy,sys,threading,unittest
 from types import SimpleNamespace
 from unittest.mock import patch,MagicMock
-from vigia_ataque import VigiaAtaque
+from huntingaitan.combate.vigia_ataque import VigiaAtaque
 
 
 class VigiaAtaqueTeste(unittest.TestCase):
@@ -32,8 +32,8 @@ class VigiaAtaqueTeste(unittest.TestCase):
         self.assertFalse(v.iniciar(10,2))
 
     def test_motor_reposiciona_sem_tab_extra_e_so_registra_morte_com_hp_zero(self):
-        import hunt_native as h
-        from perfil_hunt import DEFAULT
+        import huntingaitan.combate.hunt_native as h
+        from huntingaitan.configuracao.perfil_hunt import DEFAULT
         p=copy.deepcopy(DEFAULT);p.update(buffs_enabled=False,minimize_on_start=False,hp_keys=['','',''])
         for skill in p['skills']:skill['enabled']=False
         c=SimpleNamespace(stop=threading.Event(),pause=threading.Event());tempo=[0.];hp=[5500];pos=[(0,0)];teclas=[];eventos=[];navs=[]

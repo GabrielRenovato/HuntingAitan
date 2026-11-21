@@ -1,9 +1,10 @@
 """Circuito de Penza em Termes, com caminhos derivados da colisao local."""
+from huntingaitan.recursos import DADOS
 import hashlib,json,math
 from functools import lru_cache
 from pathlib import Path
 
-ARQUIVO=Path(__file__).resolve().parent/'dados'/'circuito_termes_penza.json'
+ARQUIVO=DADOS/'circuito_termes_penza.json'
 
 def distancia_segmento(p,a,b):
     dx,dy=b[0]-a[0],b[1]-a[1];den=dx*dx+dy*dy

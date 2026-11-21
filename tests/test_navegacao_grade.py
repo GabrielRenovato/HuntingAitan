@@ -1,5 +1,5 @@
 import unittest
-from navegacao_grade import Grade
+from huntingaitan.rotas.navegacao_grade import Grade
 
 def grade(w,h,bloqueios=(),alturas=None):
  f=bytearray(w*h)

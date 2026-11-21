@@ -2,13 +2,13 @@
 import copy,sys,threading,unittest
 from types import SimpleNamespace
 from unittest.mock import patch,MagicMock
-from hunt_core import CadenciaCombate
-from vigia_ataque import VigiaAtaque
+from huntingaitan.combate.hunt_core import CadenciaCombate
+from huntingaitan.combate.vigia_ataque import VigiaAtaque
 
 class RegressaoPenzaTeste(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        from controle_avisos import preparar_runtime_visual
+        from huntingaitan.visao.controle_avisos import preparar_runtime_visual
         preparar_runtime_visual()
 
     def test_skills_sempre_prontas_nao_excluem_normal(self):
@@ -34,8 +34,8 @@ class RegressaoPenzaTeste(unittest.TestCase):
         v.observar(dict(id=7,hp=122000),12);self.assertEqual(v.recuperacoes,0)
 
     def test_motor_recupera_com_skills_e_cura_falhando_sem_fingir_abate(self):
-        import hunt_native as h
-        from perfil_hunt import DEFAULT
+        import huntingaitan.combate.hunt_native as h
+        from huntingaitan.configuracao.perfil_hunt import DEFAULT
         p=copy.deepcopy(DEFAULT);p.update(buffs_enabled=False,minimize_on_start=False,hp_keys=['','',''],hp_percent=70,cancel_normal=False)
         c=SimpleNamespace(stop=threading.Event(),pause=threading.Event());tempo=[0.];eventos=[];pos=[(0,0)];ignorado_em=[None]
         def alvo():return dict(ref=1,id=7271,name='Penza Poderosa Mutante',hp=125000 if tempo[0]<5 else 122649,hp_max=138888,position=(2.25,0),height=0,hostile=True)

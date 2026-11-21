@@ -1,7 +1,7 @@
 import ctypes,unittest
 from types import SimpleNamespace
 import numpy as np
-from captura_aika import CapturaAika
+from huntingaitan.visao.captura_aika import CapturaAika
 
 
 class DpiTeste(unittest.TestCase):

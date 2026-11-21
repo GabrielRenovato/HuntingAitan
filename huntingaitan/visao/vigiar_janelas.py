@@ -1,13 +1,13 @@
 """Fecha somente os avisos autorizados com o painel ocioso."""
 import ctypes,threading,time,json
 from ctypes import wintypes as w
-from controle_avisos import ObservadorAvisos
+from huntingaitan.visao.controle_avisos import ObservadorAvisos
 
 
 def main(emitir,entrada_controle):
     import pydirectinput as entrada
-    from avisos_hunt import reconfirmar
-    from entrada_segura import liberar_mouse
+    from huntingaitan.visao.avisos_hunt import reconfirmar
+    from huntingaitan.entrada.entrada_segura import liberar_mouse
     fim=threading.Event();entrada.PAUSE=0
     u=ctypes.windll.user32;u.GetForegroundWindow.restype=w.HWND
     def foco():

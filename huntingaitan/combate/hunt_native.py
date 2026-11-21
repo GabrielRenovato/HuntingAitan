@@ -1,24 +1,24 @@
 """Motor por dados internos validados; nao usa minimapa para posicao, vida ou alvo."""
 import ctypes,time,math,threading,re,unicodedata
 from ctypes import wintypes as w
-from dados_internos import DadosInternos
-from perfil_hunt import validar
-from recuperacao_alvo import RecuperacaoAlvo
-from selecao_regional import BuscaRegional
-from entrada_segura import liberar_tecla,liberar_mouse,preparar_pressao_sem_pausa
-from navegador_local import NavegadorLocal
-from cancelamento_normal import CancelamentoNormal,executar_combo,perfil_combo,duracao_tecla
-from cura_prioritaria import CuraPrioritaria
-from defesa_dg import DefesaDG
-from ritmo_padrao import configurar_ritmo
-from vigia_ataque import VigiaAtaque
-from controle_avisos import ObservadorAvisos
-from circuito_termes import CircuitoTermes,dentro_regiao,conferir_arquivos,distancia_segmento
-from circuito_verit import CircuitoVerit,dentro_verit,conferir_verit
-from mina_lenfer import MinaLenfer,dentro_mina
-from jardim_aereo import JardimAereo,dentro_jardim,lazapa_protegido
-from hunt_core import CadenciaCombate,erro_angular,VerificadorMovimento,AgendaBuffs,executar_buff
-from teclas_controladas import TeclasControladas
+from huntingaitan.leitura.dados_internos import DadosInternos
+from huntingaitan.configuracao.perfil_hunt import validar
+from huntingaitan.combate.recuperacao_alvo import RecuperacaoAlvo
+from huntingaitan.combate.selecao_regional import BuscaRegional
+from huntingaitan.entrada.entrada_segura import liberar_tecla,liberar_mouse,preparar_pressao_sem_pausa
+from huntingaitan.rotas.navegador_local import NavegadorLocal
+from huntingaitan.combate.cancelamento_normal import CancelamentoNormal,executar_combo,perfil_combo,duracao_tecla
+from huntingaitan.combate.cura_prioritaria import CuraPrioritaria
+from huntingaitan.combate.defesa_dg import DefesaDG
+from huntingaitan.combate.ritmo_padrao import configurar_ritmo
+from huntingaitan.combate.vigia_ataque import VigiaAtaque
+from huntingaitan.visao.controle_avisos import ObservadorAvisos
+from huntingaitan.rotas.circuito_termes import CircuitoTermes,dentro_regiao,conferir_arquivos,distancia_segmento
+from huntingaitan.rotas.circuito_verit import CircuitoVerit,dentro_verit,conferir_verit
+from huntingaitan.rotas.mina_lenfer import MinaLenfer,dentro_mina
+from huntingaitan.rotas.jardim_aereo import JardimAereo,dentro_jardim,lazapa_protegido
+from huntingaitan.combate.hunt_core import CadenciaCombate,erro_angular,VerificadorMovimento,AgendaBuffs,executar_buff
+from huntingaitan.entrada.teclas_controladas import TeclasControladas
 
 NOMES={'verit':'Verit Mutante','penza':'Penza Poderosa Mutante','croshu':'Croshu Mutante das Cinzas','tet':'Tet das Chamas'}
 def nome_normal(s):return re.sub('[^a-z]','',unicodedata.normalize('NFKD',s.lower()))
@@ -67,7 +67,7 @@ class ProgressoNativo:
 
 
 def main(profile,event_sink,control,percurso=None):
-    from controle_avisos import preparar_runtime_visual
+    from huntingaitan.visao.controle_avisos import preparar_runtime_visual
     preparar_runtime_visual()
     import keyboard,pydirectinput as entrada
     p=validar(profile);entrada.PAUSE=0;pressionar_sem_pausa=preparar_pressao_sem_pausa(entrada)
@@ -111,7 +111,7 @@ def main(profile,event_sink,control,percurso=None):
             log('Circuito Termes ativado: 6, 5, 4, 7, 8, 9 e volta pelo mesmo corredor. Apenas Penza Poderosa Mutante.')
         elif mina:
             if jardim:
-                from jardim_aereo import conferir_dificil
+                from huntingaitan.rotas.jardim_aereo import conferir_dificil
                 if not conferir_dificil(auto_escala=p['auto_ui_scale'],emitir=event_sink,ativo=ativo,parar=parar):return
             circuito=(JardimAereo if jardim else MinaLenfer)(s['player']['position']);circuito.conferir(dados.caminho.parent);regiao=circuito.contem
             mapa_mina=dados.u32(dados.cena_validada()+0x38)
@@ -125,7 +125,7 @@ def main(profile,event_sink,control,percurso=None):
         defesa=DefesaDG(hp_retomada=max(.7,p['hp_percent']/100));defesa_log_em=-100.
         if mina:defesa.observar(inicio,s['player']['hp']/s['player']['hp_max'],{})
         if percurso is not None and hasattr(percurso,'geometria'):
-            from navegacao_grade import ler_grade
+            from huntingaitan.rotas.navegacao_grade import ler_grade
             navegador=NavegadorLocal(leitor=lambda leitor,posicao:percurso.geometria.aplicar(ler_grade(leitor,posicao),saida=posicao))
         else:navegador=NavegadorLocal()
         cc={};cc_em=0.;cc_desde=None;cc_log=False;cc_motivo=None;nav_log_em=-100.;aprox_pos=None;reaprox_id=None
@@ -186,7 +186,7 @@ def main(profile,event_sink,control,percurso=None):
                             control.reason='personagem_sem_vida';log('Personagem sem vida com janela bloqueante aberta; caca encerrada.');break
                 conhecido=aviso and aviso['tipo'] in ('cte_elter','arena_elter','conversa_amigo')
                 if conhecido and agora_modal-aviso['capturado']<=1. and agora_modal>=clique_modal_em:
-                    from avisos_hunt import reconfirmar
+                    from huntingaitan.visao.avisos_hunt import reconfirmar
                     try:ponto=reconfirmar(aviso)
                     except Exception as e:
                         log('Nao consegui reconfirmar o aviso.',detail=str(e));ponto=None

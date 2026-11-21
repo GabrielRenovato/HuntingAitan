@@ -1,6 +1,6 @@
 """Envio de teclas do motor: so com o Aika em foco, sem teclas presas e com liberacao garantida."""
 import threading,time
-from entrada_segura import liberar_tecla
+from huntingaitan.entrada.entrada_segura import liberar_tecla
 
 class TeclasControladas:
     """Mantem o conjunto de teclas seguradas e garante a liberacao ao parar, perder foco ou abrir modal."""

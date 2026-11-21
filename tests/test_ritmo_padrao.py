@@ -2,11 +2,11 @@ import ctypes,unittest
 from types import SimpleNamespace
 from ctypes import wintypes as w
 from unittest.mock import Mock,patch
-from ritmo_padrao import configurar_ritmo,intervalo_por_velocidade,ler_velocidade_windows
-from hunt_core import CadenciaCombate
-from perfil_hunt import validar
-from cancelamento_normal import executar_combo
-from entrada_segura import preparar_pressao_sem_pausa
+from huntingaitan.combate.ritmo_padrao import configurar_ritmo,intervalo_por_velocidade,ler_velocidade_windows
+from huntingaitan.combate.hunt_core import CadenciaCombate
+from huntingaitan.configuracao.perfil_hunt import validar
+from huntingaitan.combate.cancelamento_normal import executar_combo
+from huntingaitan.entrada.entrada_segura import preparar_pressao_sem_pausa
 
 
 class RitmoTeste(unittest.TestCase):
@@ -36,7 +36,7 @@ class RitmoTeste(unittest.TestCase):
         consulta.assert_not_called()
 
     def test_consulta_apenas_le_a_velocidade_do_teclado(self):
-        with patch('ritmo_padrao.ctypes.windll.user32.SystemParametersInfoW') as spi:
+        with patch('huntingaitan.combate.ritmo_padrao.ctypes.windll.user32.SystemParametersInfoW') as spi:
             def ler(acao,ui,ptr,flags):
                 self.assertEqual(acao,0x000A)
                 ctypes.cast(ptr,ctypes.POINTER(w.DWORD)).contents.value=31;return 1

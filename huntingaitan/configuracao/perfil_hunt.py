@@ -77,7 +77,7 @@ def validar(dados):
  return p
 
 def importar_nativo(caminho,atual=None):
- from config_nativa import decodificar_config
+ from huntingaitan.configuracao.config_nativa import decodificar_config
  raw=decodificar_config(Path(caminho).read_bytes());p=copy.deepcopy(atual or DEFAULT)
  p.update(auto_base=True,radius=max(10,min(50,raw['alcance'])),hp_percent=max(1,min(99,raw['hp_percentual'])),mp_percent=max(1,min(99,raw['mp_percentual'])))
  for i,(id_,cd) in enumerate(zip(raw['skills'],raw['intervalos_skills'])):

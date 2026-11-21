@@ -1,7 +1,7 @@
 import copy,sys,threading,unittest
 from types import SimpleNamespace
 from unittest.mock import patch,MagicMock
-from cura_prioritaria import CuraPrioritaria
+from huntingaitan.combate.cura_prioritaria import CuraPrioritaria
 
 
 class CuraTeste(unittest.TestCase):
@@ -43,8 +43,8 @@ class CuraTeste(unittest.TestCase):
         c.enviada(7,.3);c.observar(8,.3,dict(ready=False));self.assertEqual(c.falhas,0)
 
     def motor(self,efeito=None):
-        import hunt_native as h
-        from perfil_hunt import DEFAULT
+        import huntingaitan.combate.hunt_native as h
+        from huntingaitan.configuracao.perfil_hunt import DEFAULT
         p=copy.deepcopy(DEFAULT);p.update(buffs_enabled=False,minimize_on_start=False,hp_keys=['','',''],hp_percent=70)
         c=SimpleNamespace(stop=threading.Event(),pause=threading.Event());tempo=[0.];entradas=[];eventos=[]
         class Dados:

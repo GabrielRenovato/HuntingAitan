@@ -1,6 +1,6 @@
 import unittest
-from cancelamento_normal import CancelamentoNormal,executar_cancelamento
-from perfil_hunt import validar
+from huntingaitan.combate.cancelamento_normal import CancelamentoNormal,executar_cancelamento
+from huntingaitan.configuracao.perfil_hunt import validar
 
 class CancelamentoTeste(unittest.TestCase):
  def preparar(self):

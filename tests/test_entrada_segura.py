@@ -1,6 +1,6 @@
 import unittest
 from types import SimpleNamespace
-from entrada_segura import liberar_tecla,liberar_mouse
+from huntingaitan.entrada.entrada_segura import liberar_tecla,liberar_mouse
 
 class EntradaTeste(unittest.TestCase):
  def test_canto_bloqueia_novas_acoes_mas_permite_soltar(self):

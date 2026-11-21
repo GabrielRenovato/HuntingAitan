@@ -17,7 +17,7 @@ class ObservadorAvisos:
         # sua primeira importacao entre a thread do monitor e a de interface.
         if self.detector is None:
             preparar_runtime_visual()
-            from avisos_hunt import DetectorAvisos
+            from huntingaitan.visao.avisos_hunt import DetectorAvisos
             self.detector=DetectorAvisos()
 
     def iniciar(self):
@@ -50,8 +50,8 @@ class ObservadorAvisos:
         while not self.fim.is_set():
             try:
                 import mss
-                from captura_aika import CapturaAika
-                from avisos_hunt import DetectorAvisos
+                from huntingaitan.visao.captura_aika import CapturaAika
+                from huntingaitan.visao.avisos_hunt import DetectorAvisos
                 if self.detector is None:self.detector=DetectorAvisos()
                 with (getattr(mss,'MSS',None) or mss.mss)() as sct:
                     cap=CapturaAika(sct)

@@ -1,5 +1,5 @@
 import unittest,struct
-from dados_internos import DadosInternos
+from huntingaitan.leitura.dados_internos import DadosInternos
 
 class EstadosTeste(unittest.TestCase):
  def leitor(self,efeitos):

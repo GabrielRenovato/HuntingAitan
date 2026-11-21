@@ -1,8 +1,9 @@
 """Reconhece convites CTE/Elter e a janela Social com conversa aberta."""
+from huntingaitan.recursos import DADOS
 from pathlib import Path
 import cv2,numpy as np
-from aviso_elter import DetectorElter
-P=Path(__file__).resolve().parent/'dados'
+from huntingaitan.visao.aviso_elter import DetectorElter
+P=DADOS
 ESCALAS=(1.,.8,.9,1.1,1.25,1.5)
 
 def melhor(im,tpl):
@@ -35,7 +36,7 @@ class DetectorConversa:
 
 class DetectorAvisos:
     def __init__(self):
-        from dialogos_evento import DetectorEventos
+        from huntingaitan.visao.dialogos_evento import DetectorEventos
         self.elter=DetectorElter();self.conversa=DetectorConversa();self.eventos=DetectorEventos()
     def localizar(self,tela,ao_bloquear=None):
         ponto=self.elter.localizar(tela)
@@ -53,13 +54,13 @@ class DetectorAvisos:
 def reconfirmar(aviso):
     # MSS e local a esta thread; nao reutiliza a captura da thread observadora.
     import mss
-    from captura_aika import CapturaAika
+    from huntingaitan.visao.captura_aika import CapturaAika
     with (getattr(mss,'MSS',None) or mss.mss)() as sct:
         cap=CapturaAika(sct);tela=cap.capturar();ponto=None
         if aviso['tipo']=='cte_elter' and 'referencia' not in aviso:ponto=DetectorElter().localizar(tela)
         elif aviso['tipo']=='conversa_amigo':ponto=DetectorConversa().localizar(tela)
         elif aviso['tipo'] in ('cte_elter','arena_elter') and 'referencia' in aviso:
-            from dialogos_evento import DetectorEventos
+            from huntingaitan.visao.dialogos_evento import DetectorEventos
             ponto=DetectorEventos().reconfirmar(tela,aviso)
         if ponto:
             x,y=ponto;return (cap.area['left']+x,cap.area['top']+y)

@@ -2,15 +2,15 @@ import threading,unittest,sys
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import Mock,patch,MagicMock
-from ciclo_jardim import executar_trecho
-from hunt_native import alvo_permitido
-from perfil_hunt import DEFAULT
+from huntingaitan.rotas.ciclo_jardim import executar_trecho
+from huntingaitan.combate.hunt_native import alvo_permitido
+from huntingaitan.configuracao.perfil_hunt import DEFAULT
 
 
 class TrechoTeste(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        from controle_avisos import preparar_runtime_visual
+        from huntingaitan.visao.controle_avisos import preparar_runtime_visual
         preparar_runtime_visual()
     def setUp(self):
         self.control=SimpleNamespace(stop=threading.Event(),pause=threading.Event(),reason='jardim_limite_lazapas')
@@ -21,7 +21,7 @@ class TrechoTeste(unittest.TestCase):
 
     def test_saida_e_confirmada_antes_de_finalizar_sem_contar_dg(self):
         sair=Mock(side_effect=[False,True])
-        with patch('ciclo_jardim.time.sleep'):executar_trecho({},self.eventos.append,self.control,self.motor,sair)
+        with patch('huntingaitan.rotas.ciclo_jardim.time.sleep'):executar_trecho({},self.eventos.append,self.control,self.motor,sair)
         self.assertEqual(sair.call_count,2)
         self.assertEqual(self.control.reason,'jardim_trecho_encerrado')
         self.assertEqual(len([e for e in self.eventos if e['event']=='finished']),1)
@@ -48,8 +48,8 @@ class TrechoTeste(unittest.TestCase):
         self.assertTrue(alvo_permitido(alvo,player,player['position'],p))
 
     def test_motor_interrompe_antes_de_qualquer_tab_ou_ataque_no_lazapa_final(self):
-        import hunt_native as h
-        from jardim_aereo import JardimAereo
+        import huntingaitan.combate.hunt_native as h
+        from huntingaitan.rotas.jardim_aereo import JardimAereo
         from tests.test_navegacao_grade import grade
         pos=(3750.5,3140.5);teclas=[];t=[0.];eventos=[]
         mob=dict(ref=1,id=2408,name='Lazapa Tempestuosa',position=(3757.5,3142.5),height=0,hp=100,hp_max=100,hostile=True)
@@ -67,7 +67,7 @@ class TrechoTeste(unittest.TestCase):
         u=MagicMock();u.GetWindowTextW.side_effect=lambda hwnd,buf,n:setattr(buf,'value','AikaClient')
         entrada=SimpleNamespace(PAUSE=0,keyDown=teclas.append,keyUp=lambda k:None)
         p=dict(DEFAULT,patrol_mode='jardim_aereo',buffs_enabled=False,minimize_on_start=False)
-        with patch.dict(sys.modules,keyboard=SimpleNamespace(is_pressed=lambda k:False),pydirectinput=entrada),patch('jardim_aereo.conferir_dificil',return_value=True),patch.object(JardimAereo,'conferir',conferir),patch.object(h,'DadosInternos',Dados),patch.object(h.ctypes.windll,'user32',u),patch.object(h.threading,'Thread'),patch.object(h.time,'monotonic',lambda:t[0]),patch.object(h.time,'sleep',sleep):
+        with patch.dict(sys.modules,keyboard=SimpleNamespace(is_pressed=lambda k:False),pydirectinput=entrada),patch('huntingaitan.rotas.jardim_aereo.conferir_dificil',return_value=True),patch.object(JardimAereo,'conferir',conferir),patch.object(h,'DadosInternos',Dados),patch.object(h.ctypes.windll,'user32',u),patch.object(h.threading,'Thread'),patch.object(h.time,'monotonic',lambda:t[0]),patch.object(h.time,'sleep',sleep):
             h.main(p,eventos.append,self.control)
         self.assertEqual(self.control.reason,'jardim_limite_lazapas')
         self.assertEqual(teclas,[])
@@ -75,8 +75,8 @@ class TrechoTeste(unittest.TestCase):
         self.assertFalse(any(e['event']=='action' for e in eventos))
 
     def test_saida_do_jardim_nao_e_confundida_com_estar_fora_da_mina(self):
-        from operacoes_mina import sair_grupo
-        from jardim_aereo import dentro_jardim
+        from huntingaitan.rotas.operacoes_mina import sair_grupo
+        from huntingaitan.rotas.jardim_aereo import dentro_jardim
         estados=[(3351,3295),(2700,1700),(2700,1700),(2700,1700)]
         d=SimpleNamespace(hwnd=1,u=MagicMock());d.u.GetForegroundWindow.return_value=1
         d.snapshot=Mock(side_effect=[dict(player=dict(position=q,hp=100,hp_max=100)) for q in estados])
@@ -84,7 +84,7 @@ class TrechoTeste(unittest.TestCase):
             def __enter__(self):return self
             def __exit__(self,*a):pass
         cap=SimpleNamespace(capturar=lambda:None)
-        with patch.dict(sys.modules,keyboard=SimpleNamespace(is_pressed=lambda k:False),pydirectinput=MagicMock(),mss=SimpleNamespace(MSS=MSS)),patch('captura_aika.CapturaAika',return_value=cap),patch('operacoes_mina.InterfaceMina') as ui,patch('avisos_hunt.DetectorAvisos') as avisos,patch('operacoes_mina.time.sleep'):
+        with patch.dict(sys.modules,keyboard=SimpleNamespace(is_pressed=lambda k:False),pydirectinput=MagicMock(),mss=SimpleNamespace(MSS=MSS)),patch('huntingaitan.visao.captura_aika.CapturaAika',return_value=cap),patch('huntingaitan.rotas.operacoes_mina.InterfaceMina') as ui,patch('huntingaitan.visao.avisos_hunt.DetectorAvisos') as avisos,patch('huntingaitan.rotas.operacoes_mina.time.sleep'):
             ui.return_value.saida.return_value=dict(acao='aguardar_saida');avisos.return_value.localizar.return_value=None
             self.assertTrue(sair_grupo(d,self.control,self.eventos.append,dentro=dentro_jardim,nome='Jardim'))
         self.assertEqual(d.snapshot.call_count,4)

@@ -1,5 +1,5 @@
 import unittest
-from navegador_local import NavegadorLocal
+from huntingaitan.rotas.navegador_local import NavegadorLocal
 from tests.test_navegacao_grade import grade
 
 class NavegadorTeste(unittest.TestCase):

@@ -2,9 +2,9 @@ import copy,sys,threading,unittest
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch,MagicMock
-from defesa_dg import DefesaDG
-from mina_lenfer import MinaLenfer
-from perfil_hunt import DEFAULT
+from huntingaitan.combate.defesa_dg import DefesaDG
+from huntingaitan.rotas.mina_lenfer import MinaLenfer
+from huntingaitan.configuracao.perfil_hunt import DEFAULT
 from tests.test_navegacao_grade import grade
 
 
@@ -56,9 +56,9 @@ class DefesaTeste(unittest.TestCase):
         self.assertEqual([v['id'] for v in m.filtrar_mobs(mobs,(1.5,1.5),50,True)],[1])
 
     def test_motor_nao_avanca_apos_timeout_de_selecao_enquanto_ferido(self):
-        from controle_avisos import preparar_runtime_visual
+        from huntingaitan.visao.controle_avisos import preparar_runtime_visual
         preparar_runtime_visual()
-        import hunt_native as h
+        import huntingaitan.combate.hunt_native as h
         pos=(2850.5,3344.5)
         plano=dict(limites=[2816,3328,3072,3584],entrada=pos,
                    pontos=[dict(id=0,pos=(2860.5,3344.5),chefe='malik',espera=15)],
@@ -88,7 +88,7 @@ class DefesaTeste(unittest.TestCase):
             if t[0]>16:control.stop.set()
         u=MagicMock();u.GetWindowTextW.side_effect=lambda hwnd,buf,n:setattr(buf,'value','AikaClient')
         entrada=SimpleNamespace(PAUSE=0,keyDown=lambda k:None,keyUp=lambda k:None)
-        with patch.dict(sys.modules,keyboard=SimpleNamespace(is_pressed=lambda k:False),pydirectinput=entrada),patch('mina_lenfer.plano_mina',return_value=plano),patch.object(MinaLenfer,'conferir'),patch.object(MinaLenfer,'filtrar_mobs',side_effect=lambda mobs,*a:mobs),patch.object(h,'DadosInternos',Dados),patch.object(h,'NavegadorLocal',Nav),patch.object(h.ctypes.windll,'user32',u),patch.object(h.threading,'Thread'),patch.object(h.time,'monotonic',lambda:t[0]),patch.object(h.time,'sleep',sleep):
+        with patch.dict(sys.modules,keyboard=SimpleNamespace(is_pressed=lambda k:False),pydirectinput=entrada),patch('huntingaitan.rotas.mina_lenfer.plano_mina',return_value=plano),patch.object(MinaLenfer,'conferir'),patch.object(MinaLenfer,'filtrar_mobs',side_effect=lambda mobs,*a:mobs),patch.object(h,'DadosInternos',Dados),patch.object(h,'NavegadorLocal',Nav),patch.object(h.ctypes.windll,'user32',u),patch.object(h.threading,'Thread'),patch.object(h.time,'monotonic',lambda:t[0]),patch.object(h.time,'sleep',sleep):
             h.main(p,events.append,control)
         self.assertTrue(any(.1<=tempo<8 and chave[0]=='busca' for tempo,chave in movimentos),movimentos)
         self.assertFalse(any(.1<=tempo<8 and chave[0]=='circuito' for tempo,chave in movimentos),movimentos)

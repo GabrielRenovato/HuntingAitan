@@ -14,7 +14,7 @@ O modo calcula o caminho da posição atual até a referência da sala final da 
 
 Na conferência ao vivo de 19/11/2026, a posição de entrada foi 2850,3999 / 3344,3999, com altura 21,0773. A cena reportou 30005. Nas 2.009 células comparáveis, os bits de colisão coincidiram integralmente com os arquivos, e a diferença de alturas foi zero.
 
-O caminho estático desde a entrada tem 534 células e aproximadamente 560,75 unidades na grade. O arquivo `dados/mina_lenfer_rota.json` contém a referência e os SHA-256 necessários. Ao iniciar em outro ponto da mesma área, o caminho é recalculado. A execução também reconfirma a grade carregada, inclusive diante de objetos ou bloqueios dinâmicos.
+O caminho estático desde a entrada tem 534 células e aproximadamente 560,75 unidades na grade. O arquivo `huntingaitan/dados/mina_lenfer_rota.json` contém a referência e os SHA-256 necessários. Ao iniciar em outro ponto da mesma área, o caminho é recalculado. A execução também reconfirma a grade carregada, inclusive diante de objetos ou bloqueios dinâmicos.
 
 Monstros fora da faixa do trajeto são desconsiderados. A busca dos mobs comuns fica limitada a 12 unidades caminháveis, para seguir o caminho sem interromper a marcha para perseguir alvos a 20–50 unidades. Malik conserva o alcance configurado. A distância caminhável na grade filtra alvos separados por paredes. Ao reconhecer Malik, a busca prioriza esse alvo. A lista é atualizada a cada 200 ms fora de combate. Ao chegar ao alcance, abre a luta com ataque normal e depois libera as habilidades, respeitando recargas, execução e intervalos. Atordoamento, cura, buffs exclusivos e fechamento de avisos mantêm prioridade.
 
@@ -46,7 +46,7 @@ O retorno está limitado à região do save validada junto à entrada. Saves de 
 
 A grade do chão não contém toda a ocupação das pedras, caixas e construções. O planejamento externo cruza os objetos posicionados nos arquivos DAT dos tiles próximos com as malhas MS3, aplicando posição, escala e rotação. O leitor suporta os modelos com e sem lightmap, verifica o tamanho dos blocos e os índices dos triângulos. O inventário registra 379 instâncias que acrescentam ocupação e nenhum modelo com formato não lido nessa região.
 
-Os triângulos inclinados ou verticais são recortados à faixa entre 0,35 e 1,8 acima do terreno, com margem horizontal de 0,6. Pisos e rampas são excluídos desse bloqueio. Essa é uma aproximação conservadora para navegação baseada na geometria visível, não a reprodução exata da colisão interna do servidor. Instâncias animadas ficam fora da máscara. O arquivo `dados/entrada_mina_geometria.json` contém máscara, inventário e hashes SHA-256 dos arquivos usados; a execução reconfirma essas fontes.
+Os triângulos inclinados ou verticais são recortados à faixa entre 0,35 e 1,8 acima do terreno, com margem horizontal de 0,6. Pisos e rampas são excluídos desse bloqueio. Essa é uma aproximação conservadora para navegação baseada na geometria visível, não a reprodução exata da colisão interna do servidor. Instâncias animadas ficam fora da máscara. O arquivo `huntingaitan/dados/entrada_mina_geometria.json` contém máscara, inventário e hashes SHA-256 dos arquivos usados; a execução reconfirma essas fontes.
 
 O eixo da estrada passa por 2696,5 / 1715,5 e 2699,5 / 1675,5 antes de subir até o portal. As guias restringem o caminho ao centro da estrada, sem cortar o pátio da caixa-d'água em 2713,1682. A célula observada da colisão nas pedras em 2683,1714 passa a ser bloqueada. A máscara de objetos vale tanto para o caminho estático quanto para a condução com a grade carregada.
 
@@ -57,7 +57,7 @@ Em outros bloqueios físicos do retorno, a falta de deslocamento com avanço env
 Para regenerar o inventário após revalidar uma alteração no cliente:
 
 ```powershell
-python tools/validar_entrada_mina.py --game-dir "C:\GoLevel\AikaOnline" --out dados/entrada_mina_geometria.json
+python tools/validar_entrada_mina.py --game-dir "C:\GoLevel\AikaOnline" --out huntingaitan/dados/entrada_mina_geometria.json
 ```
 
 ## Verificação ao vivo de 19/11/2026
@@ -69,5 +69,5 @@ Após corrigir o carregamento nativo e o reconhecimento do botão, o ciclo compl
 ## Regeneração
 
 ```powershell
-python tools/validar_mina_lenfer.py --game-dir "C:\GoLevel\AikaOnline" --out dados/mina_lenfer_rota.json
+python tools/validar_mina_lenfer.py --game-dir "C:\GoLevel\AikaOnline" --out huntingaitan/dados/mina_lenfer_rota.json
 ```

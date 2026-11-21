@@ -1,9 +1,9 @@
 import unittest,copy,sys,threading
 from types import SimpleNamespace
 from unittest.mock import patch,MagicMock
-from selecao_regional import BuscaRegional
-from hunt_core import AgendaBuffs
-from cura_prioritaria import CuraPrioritaria
+from huntingaitan.combate.selecao_regional import BuscaRegional
+from huntingaitan.combate.hunt_core import AgendaBuffs
+from huntingaitan.combate.cura_prioritaria import CuraPrioritaria
 
 
 class MorteSelecaoTeste(unittest.TestCase):
@@ -38,8 +38,8 @@ class MorteSelecaoTeste(unittest.TestCase):
         c.observar(.3,.5,dict(ready=False));self.assertFalse(c.aguardando_inicio(.31))
 
     def test_motor_conclui_rebuff_antes_de_atacar_mesmo_recebendo_dano(self):
-        import hunt_native as h
-        from perfil_hunt import DEFAULT
+        import huntingaitan.combate.hunt_native as h
+        from huntingaitan.configuracao.perfil_hunt import DEFAULT
         p=copy.deepcopy(DEFAULT);p["f3_enabled"]=False;p["extra_buffs_enabled"]=False;p.update(minimize_on_start=False,heal_enabled=False,hp_keys=['','',''],buff_gap=3)
         for s in p['skills']:s['enabled']=False
         controle=SimpleNamespace(stop=threading.Event(),pause=threading.Event());t=[0.];recebeu_buff=[False];selecionado=[False];hp_mob=[100];ctrl=[False];eventos=[];teclas=[]

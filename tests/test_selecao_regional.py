@@ -1,8 +1,8 @@
 import unittest,struct,copy,threading,sys
 from unittest.mock import patch,MagicMock
 from types import SimpleNamespace
-from dados_internos import DadosInternos
-from selecao_regional import BuscaRegional
+from huntingaitan.leitura.dados_internos import DadosInternos
+from huntingaitan.combate.selecao_regional import BuscaRegional
 
 class ListaTeste(unittest.TestCase):
  def leitor(self):
@@ -68,8 +68,8 @@ class EscolhaTeste(unittest.TestCase):
 
 class FluxoRegionalTeste(unittest.TestCase):
  def test_mata_dois_verits_sem_retornar_ou_atacar_tet(self):
-  import hunt_native as h
-  from perfil_hunt import DEFAULT
+  import huntingaitan.combate.hunt_native as h
+  from huntingaitan.configuracao.perfil_hunt import DEFAULT
   p=copy.deepcopy(DEFAULT);p.update(target='verit',buffs_enabled=False,minimize_on_start=False,hp_keys=['','',''])
   for v in p['skills']:v['enabled']=False
   c=SimpleNamespace(stop=threading.Event(),pause=threading.Event())

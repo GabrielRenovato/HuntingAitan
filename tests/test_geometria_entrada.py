@@ -1,7 +1,7 @@
 import base64,json,math,struct,unittest,zlib
 from unittest.mock import patch
 from pathlib import Path
-from geometria_entrada import GeometriaEntrada,plano_geometria
+from huntingaitan.rotas.geometria_entrada import GeometriaEntrada,plano_geometria
 from tools.validar_entrada_mina import ler_ms3,transformar,ocupa,recortar_y
 from tests.test_navegacao_grade import grade
 
@@ -24,7 +24,7 @@ class GeometriaTeste(unittest.TestCase):
 
     def test_mascara_completa_corrompida_nao_e_aceita(self):
         d=dict(plano_geometria(),mascara=base64.b64encode(zlib.compress(b'')).decode())
-        with patch('geometria_entrada.plano_geometria',return_value=d):
+        with patch('huntingaitan.rotas.geometria_entrada.plano_geometria',return_value=d):
             with self.assertRaisesRegex(RuntimeError,'invalida'):GeometriaEntrada('cliente')
 
     def test_extensao_da_grade_bloqueia_a_celula_das_pedras(self):
@@ -53,7 +53,7 @@ class GeometriaTeste(unittest.TestCase):
         self.assertIsNone(nova.caminho(pos,(2684.5,1751.5)))
 
     def test_navegador_consegue_comandar_saida_da_celula_ocupada(self):
-        from navegador_local import NavegadorLocal
+        from huntingaitan.rotas.navegador_local import NavegadorLocal
         geo=self.geometria();g=grade(16,20);g.origem=(2678,1748)
         pos=(2682.51,1758.75)
         n=NavegadorLocal(leitor=lambda dados,p:geo.aplicar(g,saida=p))
@@ -90,7 +90,7 @@ class GeometriaTeste(unittest.TestCase):
         self.assertEqual(tri.tolist(),[[0,1,2]])
 
     def test_conducao_nao_corta_objetos_marcados_na_grade(self):
-        from navegador_local import NavegadorLocal
+        from huntingaitan.rotas.navegador_local import NavegadorLocal
         base=grade(40,40);base.origem=(2672,1703)
         geometria=self.geometria();n=NavegadorLocal(leitor=lambda *a:geometria.aplicar(base))
         r=n.planejar(None,(2694.5,1724.5),170,(2696.5,1715.5),'entrada',0,limite=geometria.livre)

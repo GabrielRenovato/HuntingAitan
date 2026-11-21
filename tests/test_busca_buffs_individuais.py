@@ -1,8 +1,8 @@
 import copy,sys,threading,unittest
 from types import SimpleNamespace
 from unittest.mock import patch,MagicMock
-from selecao_regional import BuscaRegional
-from hunt_core import AgendaBuffs,executar_buff
+from huntingaitan.combate.selecao_regional import BuscaRegional
+from huntingaitan.combate.hunt_core import AgendaBuffs,executar_buff
 
 
 class BuscaBuffsTeste(unittest.TestCase):
@@ -39,8 +39,8 @@ class BuscaBuffsTeste(unittest.TestCase):
         self.assertEqual(eventos[-1],('up','ctrl'))
 
     def motor(self,buff,renovacao=False,extras=False,f3=False):
-        import hunt_native as h
-        from perfil_hunt import DEFAULT
+        import huntingaitan.combate.hunt_native as h
+        from huntingaitan.configuracao.perfil_hunt import DEFAULT
         p=copy.deepcopy(DEFAULT);p["f3_enabled"]=f3;p["extra_buffs_enabled"]=extras;p.update(buffs_enabled=buff,heal_enabled=False,minimize_on_start=False,hp_keys=['','',''],buff_gap=3)
         for v in p['skills']:v['enabled']=False
         c=SimpleNamespace(stop=threading.Event(),pause=threading.Event());t=[0.];pos=[(0,0)];alvo_selecionado=[False];aproximou=[False];ctrl=[False];buff1=[False];buff2=[False];hp=[100];eventos=[];teclas=[];navs=[]

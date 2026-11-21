@@ -2,9 +2,9 @@ import copy,sys,threading,unittest
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import MagicMock,patch
-from entrada_mina import EntradaMina,PORTAL,passagem_estrada,bloqueadores_da_porta
+from huntingaitan.rotas.entrada_mina import EntradaMina,PORTAL,passagem_estrada,bloqueadores_da_porta
 from tests.test_navegacao_grade import grade
-from perfil_hunt import DEFAULT
+from huntingaitan.configuracao.perfil_hunt import DEFAULT
 
 
 def percurso(rota=None):
@@ -45,7 +45,7 @@ class EntradaTeste(unittest.TestCase):
 
     def test_colisao_real_recuar_e_planejar_rota_diferente(self):
         m=percurso([(1.5,4.5),(17.5,4.5)]);m.grade=grade(20,12);m.trilha=[(1.5,4.5),(2.5,4.5),(4.5,4.5)]
-        with patch('entrada_mina.PORTAL',(17.5,4.5)):
+        with patch('huntingaitan.rotas.entrada_mina.PORTAL',(17.5,4.5)):
             self.assertTrue(m.observar_navegacao((4.5,4.5),2,dict(estado='replanejar',ponto=(10.5,4.5))))
             self.assertEqual(m.recuo,(2.5,4.5));self.assertEqual(m.revisao,1)
             self.assertTrue(all(m.passagem(p) for p in m.rota))
@@ -86,7 +86,7 @@ class EntradaTeste(unittest.TestCase):
         self.assertEqual(m.destino((2716,1618),0)['estado'],'andar')
 
     def test_motor_nao_usa_tab_ou_ataque_com_hostil_selecionado_no_trajeto(self):
-        import hunt_native as h
+        import huntingaitan.combate.hunt_native as h
         m=percurso([(2700.,1611.),PORTAL]);pos=[(2700.,1611.)];tempo=[0.];teclas=[];eventos=[]
         alvo=dict(ref=1,id=17,name='Hostil do caminho',position=(2701,1611),height=0,hp=100,hp_max=100,hostile=True)
         class Dados:

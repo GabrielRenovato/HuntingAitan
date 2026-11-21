@@ -1,7 +1,7 @@
 """Alterna combate, saida, retorno ao portal e entrada Elite confirmada."""
 import copy,math,threading,time
-from entrada_mina import EntradaMina,PORTAL
-from mina_lenfer import dentro_mina
+from huntingaitan.rotas.entrada_mina import EntradaMina,PORTAL
+from huntingaitan.rotas.mina_lenfer import dentro_mina
 
 
 class CicloMina:
@@ -64,8 +64,8 @@ class CicloMina:
 def main(perfil,emitir,control):
     control.auto_ui_scale=perfil.get('auto_ui_scale',True)
     import keyboard
-    from dados_internos import DadosInternos
-    from hunt_native import main as executar
+    from huntingaitan.leitura.dados_internos import DadosInternos
+    from huntingaitan.combate.hunt_native import main as executar
     inicio=time.monotonic();fim=threading.Event();control.cycle_context=True
     def evento(e):
         if e.get('event')=='telemetry':e=dict(e,elapsed=time.monotonic()-inicio)
@@ -80,7 +80,7 @@ def main(perfil,emitir,control):
         evento(dict(event='status',state='initializing',message='Preparando saida do grupo.' if nome=='sair_grupo' else 'Preparando entrada da Mina no Elite.'))
         # Carrega reconhecimento visual somente ao chegar a uma interface.
         # Importar OpenCV aqui no inicio atrasava a primeira navegacao.
-        import operacoes_mina
+        import huntingaitan.rotas.operacoes_mina
         fn=getattr(operacoes_mina,nome)
         d=DadosInternos()
         try:return fn(d,control,evento)
@@ -92,7 +92,7 @@ def main(perfil,emitir,control):
                 control.reason='tempo_encerrado';control.stop.set();return
     ciclo=CicloMina(perfil,control,evento,contexto,executar,lambda:operacao('sair_grupo'),lambda:operacao('entrar_elite'))
     if not control.stop.is_set():
-        from controle_avisos import preparar_runtime_visual
+        from huntingaitan.visao.controle_avisos import preparar_runtime_visual
         preparar_runtime_visual()
     threading.Thread(target=vigiar,daemon=True).start()
     try:

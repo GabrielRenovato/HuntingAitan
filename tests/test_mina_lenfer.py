@@ -2,14 +2,14 @@ import copy,json,math,sys,threading,unittest
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch,MagicMock
-from mina_lenfer import MinaLenfer,plano_mina,dentro_mina
-from perfil_hunt import validar,DEFAULT
+from huntingaitan.rotas.mina_lenfer import MinaLenfer,plano_mina,dentro_mina
+from huntingaitan.configuracao.perfil_hunt import validar,DEFAULT
 from tests.test_navegacao_grade import grade
 
 class MinaTeste(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        from controle_avisos import preparar_runtime_visual
+        from huntingaitan.visao.controle_avisos import preparar_runtime_visual
         preparar_runtime_visual()
 
     def test_replanejar_usa_ponto_proximo_e_nao_repete_sem_movimento(self):
@@ -83,7 +83,7 @@ class MinaTeste(unittest.TestCase):
         self.assertEqual([v['id'] for v in m.filtrar_mobs(mobs,(1.5,1.5),8)],[1])
 
     def test_motor_confirma_abates_antes_de_finalizar(self):
-        import hunt_native as h
+        import huntingaitan.combate.hunt_native as h
         d=dict(limites=[2816,3328,3072,3584],entrada=[2850,3344],pontos=[],trechos=[])
         for i,(chefe,nome) in enumerate([('malik','Malik')]):
             pos=(2854.5+i*4,3344.5);d['pontos'].append(dict(id=i,pos=pos,chefe=chefe,espera=15));d['trechos'].append(dict(ate=i,caminho=[(2850.5,3344.5),pos]))
@@ -111,7 +111,7 @@ class MinaTeste(unittest.TestCase):
             if t[0]>60:control.stop.set()
         u=MagicMock();u.GetWindowTextW.side_effect=lambda hwnd,buf,n:setattr(buf,'value','AikaClient')
         entrada=SimpleNamespace(PAUSE=0,keyDown=down,keyUp=lambda k:None)
-        with patch.dict(sys.modules,keyboard=SimpleNamespace(is_pressed=lambda k:False),pydirectinput=entrada),patch('mina_lenfer.plano_mina',return_value=d),patch.object(MinaLenfer,'conferir'),patch.object(MinaLenfer,'filtrar_mobs',side_effect=lambda mobs,*a:mobs),patch.object(h,'DadosInternos',Dados),patch.object(h,'NavegadorLocal',Nav),patch.object(h.ctypes.windll,'user32',u),patch.object(h.threading,'Thread'),patch.object(h.time,'monotonic',lambda:t[0]),patch.object(h.time,'sleep',sleep):
+        with patch.dict(sys.modules,keyboard=SimpleNamespace(is_pressed=lambda k:False),pydirectinput=entrada),patch('huntingaitan.rotas.mina_lenfer.plano_mina',return_value=d),patch.object(MinaLenfer,'conferir'),patch.object(MinaLenfer,'filtrar_mobs',side_effect=lambda mobs,*a:mobs),patch.object(h,'DadosInternos',Dados),patch.object(h,'NavegadorLocal',Nav),patch.object(h.ctypes.windll,'user32',u),patch.object(h.threading,'Thread'),patch.object(h.time,'monotonic',lambda:t[0]),patch.object(h.time,'sleep',sleep):
             h.main(p,events.append,control)
         self.assertEqual(vida,[0]);self.assertEqual(keys.count('tab'),1)
         self.assertTrue(any(e.get('event')=='dungeon_complete' for e in events))

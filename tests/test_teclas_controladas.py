@@ -1,6 +1,6 @@
 import threading,unittest
 from types import SimpleNamespace
-from teclas_controladas import TeclasControladas
+from huntingaitan.entrada.teclas_controladas import TeclasControladas
 
 class EntradaFalsa:
     def __init__(self):self.pressionadas=[];self.soltas=[]

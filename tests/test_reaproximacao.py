@@ -1,7 +1,7 @@
 import unittest,copy,threading,sys
 from types import SimpleNamespace
 from unittest.mock import patch,MagicMock
-from hunt_native import ProgressoNativo
+from huntingaitan.combate.hunt_native import ProgressoNativo
 
 class ReaproximacaoTeste(unittest.TestCase):
  def test_reproduz_log_do_verit_ferido_a_3_22(self):
@@ -14,8 +14,8 @@ class ReaproximacaoTeste(unittest.TestCase):
   a=dict(ref=1,id=7980,name='Verit Mutante',hp=100);p=ProgressoNativo(a,0);p.observar(dict(a,hp=50),1)
   self.assertFalse(p.precisa_aproximar(1.3,2.6));self.assertTrue(p.precisa_aproximar(3,2.6))
  def test_motor_reaproxima_e_mata_o_mesmo_alvo_sem_tab(self):
-  import hunt_native as h
-  from perfil_hunt import DEFAULT
+  import huntingaitan.combate.hunt_native as h
+  from huntingaitan.configuracao.perfil_hunt import DEFAULT
   perfil=copy.deepcopy(DEFAULT);perfil.update(buffs_enabled=False,minimize_on_start=False,cancel_normal=True,hp_keys=['','',''])
   for v in perfil['skills']:v['enabled']=False
   c=SimpleNamespace(stop=threading.Event(),pause=threading.Event())

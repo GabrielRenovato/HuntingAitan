@@ -2,7 +2,7 @@
 import argparse,collections,hashlib,json,math,struct,sys
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
-from navegacao_grade import Grade
+from huntingaitan.rotas.navegacao_grade import Grade
 
 ORDEM=[15]
 CHEFES={15:'malik'}

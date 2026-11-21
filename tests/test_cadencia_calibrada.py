@@ -1,5 +1,5 @@
 import unittest
-from hunt_core import CadenciaCombate
+from huntingaitan.combate.hunt_core import CadenciaCombate
 
 
 class CadenciaCalibradaTeste(unittest.TestCase):

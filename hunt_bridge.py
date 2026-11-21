@@ -13,10 +13,10 @@ def emitir(d):
         print(json.dumps(d,ensure_ascii=False),flush=True)
 
 def main():
-    from perfil_hunt import DEFAULT,validar,importar_nativo
+    from huntingaitan.configuracao.perfil_hunt import DEFAULT,validar,importar_nativo
     modo=sys.argv[1]
     if modo=='watch':
-        from vigiar_janelas import main as vigiar
+        from huntingaitan.visao.vigiar_janelas import main as vigiar
         vigiar(emitir,sys.stdin);return
     if modo!='run':
         d=json.loads(sys.stdin.read() or '{}')
@@ -24,23 +24,23 @@ def main():
         elif modo=='selftest-monitor':
             # Executado em processo novo para detectar a disputa de imports
             # que bloqueava a entrada/saida no executavel congelado.
-            from controle_avisos import ObservadorAvisos
+            from huntingaitan.visao.controle_avisos import ObservadorAvisos
             fim=threading.Event()
             monitor=ObservadorAvisos(fim,lambda:False,lambda *a,**k:None)
             tarefa=monitor.iniciar()
             try:
                 import keyboard
                 keyboard.is_pressed('f12')
-                from interface_mina import InterfaceMina
+                from huntingaitan.rotas.interface_mina import InterfaceMina
                 InterfaceMina()
             finally:fim.set();tarefa.join(timeout=3)
             if tarefa.is_alive():raise RuntimeError('Monitor nao encerrou apos preparar a interface')
             r=dict(monitor=True,interface=True)
         elif modo=='selftest':
-            import keyboard,pydirectinput,mss,hunt_native
-            from avisos_hunt import DetectorAvisos
+            import keyboard,pydirectinput,mss,huntingaitan.combate.hunt_native
+            from huntingaitan.visao.avisos_hunt import DetectorAvisos
             DetectorAvisos()
-            from dialogos_evento import DetectorEventos,tipo_convite
+            from huntingaitan.visao.dialogos_evento import DetectorEventos,tipo_convite
             detector=DetectorEventos();detector.preparar_ocr()
             import cv2,numpy as np
             teste=np.zeros((160,430,3),np.uint8)
@@ -48,23 +48,23 @@ def main():
             cv2.putText(teste,'Tempo restante: 111 seg',(15,105),cv2.FONT_HERSHEY_SIMPLEX,.7,(255,255,255),2)
             linhas,_=detector.ocr(teste)
             if tipo_convite([(l[1],float(l[2])) for l in linhas or []])!='arena_elter':raise RuntimeError('OCR empacotado nao reconheceu a amostra de teste')
-            from circuito_termes import plano,dentro_regiao
+            from huntingaitan.rotas.circuito_termes import plano,dentro_regiao
             if len(plano()['trechos'])!=2*(len(plano()['pontos'])-1) or not dentro_regiao((2585,654)):raise RuntimeError('Circuito nao incluido no motor')
-            from circuito_verit import plano_verit,dentro_verit
+            from huntingaitan.rotas.circuito_verit import plano_verit,dentro_verit
             if len(plano_verit()['trechos'])!=8 or not dentro_verit((2748,833)):raise RuntimeError('Circuito Verit nao incluido no motor')
-            from mina_lenfer import plano_mina,dentro_mina
+            from huntingaitan.rotas.mina_lenfer import plano_mina,dentro_mina
             if not plano_mina()['trechos'] or not dentro_mina((2850,3344)):raise RuntimeError('Rota da Mina nao incluida no motor')
-            from interface_mina import InterfaceMina
-            from ciclo_mina import CicloMina
+            from huntingaitan.rotas.interface_mina import InterfaceMina
+            from huntingaitan.rotas.ciclo_mina import CicloMina
             InterfaceMina()
-            from geometria_entrada import plano_geometria
+            from huntingaitan.rotas.geometria_entrada import plano_geometria
             if not plano_geometria()['objetos']:raise RuntimeError('Geometria externa nao incluida no motor')
-            from jardim_aereo import plano_jardim,dentro_jardim
+            from huntingaitan.rotas.jardim_aereo import plano_jardim,dentro_jardim
             if not plano_jardim()['trechos'] or not dentro_jardim((3351,3295)):raise RuntimeError('Rota do Jardim nao incluida no motor')
             r=dict(backend=True,templates=True,ocr=True,circuito=True,mina=True)
         elif modo=='validate':r=validar(d)
         elif modo=='position':
-            from dados_internos import DadosInternos
+            from huntingaitan.leitura.dados_internos import DadosInternos
             leitor=DadosInternos()
             try:
                 snap=leitor.snapshot();p=snap['player'];r=dict(position=p['position'],hp=p['hp']/p['hp_max'],mp=p['mp']/p['mp_max'] if p['mp_max'] else None,source='native',target=snap['target']['name'] if snap['target'] else None)
@@ -78,7 +78,7 @@ def main():
     perfil=validar(json.loads(Path(sys.argv[2]).read_text(encoding='utf-8')))
     emitir(dict(event='status',state='initializing',message='Inicializando motor '+perfil['data_source'],source=perfil['data_source']))
     emitir(dict(event='status',state='initializing',message='Preparando reconhecimento antes dos controles de teclado.'))
-    from controle_avisos import preparar_runtime_visual
+    from huntingaitan.visao.controle_avisos import preparar_runtime_visual
     preparar_runtime_visual()
     control=type('Control',(),{'stop':threading.Event(),'pause':threading.Event()})()
     def comandos():
@@ -95,11 +95,11 @@ def main():
     threading.Thread(target=comandos,daemon=True).start()
     if perfil['data_source']=='native':
         if perfil['patrol_mode']=='mina_lenfer' and perfil['mina_repeat']:
-            from ciclo_mina import main as executar
+            from huntingaitan.rotas.ciclo_mina import main as executar
         elif perfil['patrol_mode']=='jardim_aereo':
-            from ciclo_jardim import main as executar
+            from huntingaitan.rotas.ciclo_jardim import main as executar
         else:
-            from hunt_native import main as executar
+            from huntingaitan.combate.hunt_native import main as executar
         executar(perfil,emitir,control)
     else:
         raise RuntimeError('Esta distribuicao oferece apenas o motor por dados internos.')

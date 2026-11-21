@@ -3,7 +3,7 @@ from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import Mock,patch
 import numpy as np
-from jardim_aereo import conferir_dificil,salvar_diagnostico_dificuldade
+from huntingaitan.rotas.jardim_aereo import conferir_dificil,salvar_diagnostico_dificuldade
 
 
 class ConfirmacaoTeste(unittest.TestCase):
@@ -14,7 +14,7 @@ class ConfirmacaoTeste(unittest.TestCase):
             def __exit__(self,*args):pass
         v=Mock();v.confirmar.side_effect=resultados;v.diagnostico=dict(resolucao=[1366,768],indicador=None)
         v.resumo.return_value='esperado dificil; indicador ilegivel; tela 1366x768'
-        with patch.dict('sys.modules',mss=SimpleNamespace(MSS=MSS)),patch('captura_aika.CapturaAika',return_value=SimpleNamespace(capturar=capturar)),patch('interface_mina.VerificadorElite',return_value=v),patch('jardim_aereo.time.sleep'),patch('jardim_aereo.salvar_diagnostico_dificuldade',return_value='recorte.png',side_effect=erro_salvar) as salvar:
+        with patch.dict('sys.modules',mss=SimpleNamespace(MSS=MSS)),patch('huntingaitan.visao.captura_aika.CapturaAika',return_value=SimpleNamespace(capturar=capturar)),patch('huntingaitan.rotas.interface_mina.VerificadorElite',return_value=v),patch('huntingaitan.rotas.jardim_aereo.time.sleep'),patch('huntingaitan.rotas.jardim_aereo.salvar_diagnostico_dificuldade',return_value='recorte.png',side_effect=erro_salvar) as salvar:
             resultado=conferir_dificil(emitir=eventos.append,ativo=ativo,parar=parar)
         return resultado,capturar,eventos,salvar
 
@@ -74,7 +74,7 @@ class ConfirmacaoTeste(unittest.TestCase):
                 raise RuntimeError('OCR interrompido')
             v=Mock();v.confirmar.side_effect=ocr
             cap=SimpleNamespace(capturar=lambda:np.zeros((768,1366,3),np.uint8))
-            with patch.dict('sys.modules',mss=SimpleNamespace(MSS=MSS)),patch('captura_aika.CapturaAika',return_value=cap),patch('interface_mina.VerificadorElite',return_value=v),patch('jardim_aereo.time.sleep'):
+            with patch.dict('sys.modules',mss=SimpleNamespace(MSS=MSS)),patch('huntingaitan.visao.captura_aika.CapturaAika',return_value=cap),patch('huntingaitan.rotas.interface_mina.VerificadorElite',return_value=v),patch('huntingaitan.rotas.jardim_aereo.time.sleep'):
                 with self.assertRaisesRegex(RuntimeError,'OCR interrompido'):conferir_dificil()
             self.assertTrue(list((Path(pasta)/'app_sessions').glob('jardim_dificuldade_*.png')))
 

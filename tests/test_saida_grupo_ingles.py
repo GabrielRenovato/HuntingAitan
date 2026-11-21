@@ -1,6 +1,6 @@
 import unittest
 import numpy as np
-from interface_mina import InterfaceMina
+from huntingaitan.rotas.interface_mina import InterfaceMina
 
 
 class SaidaInglesTeste(unittest.TestCase):

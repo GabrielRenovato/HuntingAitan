@@ -2,7 +2,7 @@
 import argparse,hashlib,json,math,struct,sys
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
-from navegacao_grade import Grade
+from huntingaitan.rotas.navegacao_grade import Grade
 
 def carregar_grade(pasta):
     p=Path(pasta)/'Env';a=[(p/f'z01{t}12.att').read_bytes() for t in [13,14]]

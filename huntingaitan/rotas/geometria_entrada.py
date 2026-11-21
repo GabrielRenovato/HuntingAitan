@@ -1,11 +1,12 @@
 """Ocupacao externa derivada das malhas do cliente; sem carregar bibliotecas graficas."""
+from huntingaitan.recursos import DADOS
 import base64,hashlib,json,math,zlib
 from functools import lru_cache
 from pathlib import Path
-from navegacao_grade import Grade
+from huntingaitan.rotas.navegacao_grade import Grade
 
 @lru_cache(maxsize=1)
-def plano_geometria():return json.loads((Path(__file__).parent/'dados'/'entrada_mina_geometria.json').read_text(encoding='utf-8'))
+def plano_geometria():return json.loads((DADOS/'entrada_mina_geometria.json').read_text(encoding='utf-8'))
 
 class GeometriaEntrada:
     def __init__(self,pasta):

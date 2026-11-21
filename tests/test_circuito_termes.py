@@ -2,9 +2,9 @@ import copy,hashlib,json,math,sys,tempfile,threading,unittest
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch,MagicMock
-from circuito_termes import CircuitoTermes,dentro_regiao,plano,conferir_arquivos
-from perfil_hunt import validar,DEFAULT
-from hunt_native import alvo_permitido
+from huntingaitan.rotas.circuito_termes import CircuitoTermes,dentro_regiao,plano,conferir_arquivos
+from huntingaitan.configuracao.perfil_hunt import validar,DEFAULT
+from huntingaitan.combate.hunt_native import alvo_permitido
 from tests.test_navegacao_grade import grade
 
 
@@ -83,13 +83,13 @@ class CircuitoTermesTeste(unittest.TestCase):
     def test_arquivos_alterados_invalidam_tracado(self):
         with tempfile.TemporaryDirectory() as td:
             p=Path(td)/'terreno';p.write_bytes(b'original')
-            with patch('circuito_termes.plano',return_value=dict(fontes={'terreno':hashlib.sha256(b'original').hexdigest()})):
+            with patch('huntingaitan.rotas.circuito_termes.plano',return_value=dict(fontes={'terreno':hashlib.sha256(b'original').hexdigest()})):
                 conferir_arquivos(td)
                 p.write_bytes(b'alterado')
                 with self.assertRaises(RuntimeError):conferir_arquivos(td)
 
     def executar_motor(self,bloqueado=False):
-        import hunt_native as h
+        import huntingaitan.combate.hunt_native as h
         p=copy.deepcopy(DEFAULT);p.update(patrol_mode='termes_penza',radius=50,buffs_enabled=False,heal_enabled=False,minimize_on_start=False,hp_keys=['','',''])
         for s in p['skills']:s['enabled']=False
         ctrl=SimpleNamespace(stop=threading.Event(),pause=threading.Event());tempo=[0.];pos=[(2584.5,587.5)];hp=[100];selecionado=[False];eventos=[];navs=[];inputs=[]

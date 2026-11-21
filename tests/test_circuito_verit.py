@@ -2,14 +2,14 @@ import copy,hashlib,json,math,sys,tempfile,threading,unittest
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch,MagicMock
-from circuito_verit import CircuitoVerit,dentro_verit,plano_verit,conferir_verit
-from perfil_hunt import validar,DEFAULT
-from hunt_native import alvo_permitido
+from huntingaitan.rotas.circuito_verit import CircuitoVerit,dentro_verit,plano_verit,conferir_verit
+from huntingaitan.configuracao.perfil_hunt import validar,DEFAULT
+from huntingaitan.combate.hunt_native import alvo_permitido
 
 class CircuitoVeritTeste(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        from controle_avisos import preparar_runtime_visual
+        from huntingaitan.visao.controle_avisos import preparar_runtime_visual
         preparar_runtime_visual()
 
     def test_perfil_forca_verit_sem_alterar_modo_antigo(self):
@@ -57,12 +57,12 @@ class CircuitoVeritTeste(unittest.TestCase):
     def test_hashes_recusam_arquivos_alterados(self):
         with tempfile.TemporaryDirectory() as td:
             p=Path(td)/'terreno';p.write_bytes(b'original')
-            with patch('circuito_verit.plano_verit',return_value=dict(fontes={'terreno':hashlib.sha256(b'original').hexdigest()})):
+            with patch('huntingaitan.rotas.circuito_verit.plano_verit',return_value=dict(fontes={'terreno':hashlib.sha256(b'original').hexdigest()})):
                 conferir_verit(td);p.write_bytes(b'mudou')
                 with self.assertRaises(RuntimeError):conferir_verit(td)
 
     def motor(self,bloqueado=False):
-        import hunt_native as h
+        import huntingaitan.combate.hunt_native as h
         p=copy.deepcopy(DEFAULT);p.update(patrol_mode='termes_verit',radius=50,buffs_enabled=False,heal_enabled=False,minimize_on_start=False,hp_keys=['','',''])
         for s in p['skills']:s['enabled']=False
         c=SimpleNamespace(stop=threading.Event(),pause=threading.Event());tempo=[0.];pos=[(2748.5,833.5)];hp=[100];selecionado=[False];eventos=[];navs=[];inputs=[]

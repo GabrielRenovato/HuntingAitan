@@ -44,7 +44,7 @@ Todos os dez trechos possuem passagem nos arquivos analisados:
 | 4 → 5 | 21 | 23,31 |
 | 5 → 6 | 68 | 67,41 |
 
-`dados/circuito_termes_penza.json` contém os caminhos derivados e os SHA-256 dos dois
+`huntingaitan/dados/circuito_termes_penza.json` contém os caminhos derivados e os SHA-256 dos dois
 arquivos de terreno. Ao iniciar, o aplicativo exige que os arquivos locais
 correspondam à validação. Uma atualização do terreno exige gerar e conferir
 o circuito novamente. A ferramenta não modifica o cliente nem controla o personagem.
@@ -52,7 +52,7 @@ o circuito novamente. A ferramenta não modifica o cliente nem controla o person
 Exemplo de regeneração, a partir da raiz do projeto:
 
 ```powershell
-python tools/validar_circuito_termes.py --game-dir "C:\GoLevel\AikaOnline" --out dados/circuito_termes_penza.json
+python tools/validar_circuito_termes.py --game-dir "C:\GoLevel\AikaOnline" --out huntingaitan/dados/circuito_termes_penza.json
 ```
 
 ## Limites da validação

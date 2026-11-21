@@ -1,12 +1,13 @@
 """Percurso unico da primeira Mina, com combate e conclusao por abates confirmados."""
+from huntingaitan.recursos import DADOS
 import copy,hashlib,heapq,json,math,struct,unicodedata
 from functools import lru_cache
 from pathlib import Path
-from navegacao_grade import Grade
-from circuito_termes import distancia_segmento
+from huntingaitan.rotas.navegacao_grade import Grade
+from huntingaitan.rotas.circuito_termes import distancia_segmento
 
 @lru_cache(maxsize=1)
-def plano_mina():return json.loads((Path(__file__).resolve().parent/'dados'/'mina_lenfer_rota.json').read_text(encoding='utf-8'))
+def plano_mina():return json.loads((DADOS/'mina_lenfer_rota.json').read_text(encoding='utf-8'))
 
 def dentro_mina(pos,margem=0):
     x0,y0,x1,y1=plano_mina()['limites']

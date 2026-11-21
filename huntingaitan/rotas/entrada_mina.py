@@ -1,9 +1,9 @@
 """Caminho do save atual ate o portal, derivado da grade dos arquivos locais."""
 import math,struct
 from pathlib import Path
-from navegacao_grade import Grade
-from circuito_termes import distancia_segmento
-from geometria_entrada import GeometriaEntrada
+from huntingaitan.rotas.navegacao_grade import Grade
+from huntingaitan.rotas.circuito_termes import distancia_segmento
+from huntingaitan.rotas.geometria_entrada import GeometriaEntrada
 
 PORTAL=(2716.,1611.)
 EIXO_ESTRADA=((2685.5,1762.5),(2686.5,1754.5),(2686.5,1736.5),

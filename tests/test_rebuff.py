@@ -1,6 +1,6 @@
 import unittest,copy
-from hunt_core import AgendaBuffs,executar_buff
-from perfil_hunt import DEFAULT,validar
+from huntingaitan.combate.hunt_core import AgendaBuffs,executar_buff
+from huntingaitan.configuracao.perfil_hunt import DEFAULT,validar
 K=['ctrl+1','ctrl+2','ctrl+3','ctrl+4','ctrl+5']
 
 class TesteRebuff(unittest.TestCase):

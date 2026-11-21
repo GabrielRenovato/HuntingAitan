@@ -1,10 +1,11 @@
 """Circuito fechado de Verit Mutante em Termes."""
+from huntingaitan.recursos import DADOS
 import hashlib,json,math
 from functools import lru_cache
 from pathlib import Path
-from circuito_termes import CircuitoTermes,distancia_segmento
+from huntingaitan.rotas.circuito_termes import CircuitoTermes,distancia_segmento
 
-ARQUIVO=Path(__file__).resolve().parent/'dados'/'circuito_termes_verit.json'
+ARQUIVO=DADOS/'circuito_termes_verit.json'
 
 @lru_cache(maxsize=1)
 def plano_verit():

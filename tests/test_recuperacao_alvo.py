@@ -1,7 +1,7 @@
 import unittest,sys,threading,copy
 from types import SimpleNamespace
 from unittest.mock import patch,MagicMock
-from recuperacao_alvo import RecuperacaoAlvo
+from huntingaitan.combate.recuperacao_alvo import RecuperacaoAlvo
 
 class RecuperacaoTeste(unittest.TestCase):
  def test_id_sumido_nao_produz_tab_infinito(self):
@@ -17,8 +17,8 @@ class RecuperacaoTeste(unittest.TestCase):
   self.assertEqual(r.decidir(100.5),'tab')
   self.assertEqual(r.decidir(105),'indisponivel')
  def test_motor_abandona_id_irrecuperavel_e_ataca_selecionado(self):
-  import hunt_native as h
-  from perfil_hunt import DEFAULT
+  import huntingaitan.combate.hunt_native as h
+  from huntingaitan.configuracao.perfil_hunt import DEFAULT
   p=copy.deepcopy(DEFAULT);p.update(buffs_enabled=False,minimize_on_start=False,hp_keys=['','',''])
   for v in p['skills']:v['enabled']=False
   control=SimpleNamespace(stop=threading.Event(),pause=threading.Event())

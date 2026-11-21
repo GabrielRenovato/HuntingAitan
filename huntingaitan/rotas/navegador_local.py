@@ -1,6 +1,6 @@
 """Segue rotas da grade com realimentacao de posicao e orientacao reais."""
 import math
-from navegacao_grade import ler_grade
+from huntingaitan.rotas.navegacao_grade import ler_grade
 
 class NavegadorLocal:
     def __init__(self,leitor=ler_grade):

@@ -3,9 +3,9 @@ from types import SimpleNamespace
 from unittest.mock import Mock
 import cv2,numpy as np
 from pathlib import Path
-from ciclo_mina import CicloMina
-from interface_mina import InterfaceMina,VerificadorElite
-from perfil_hunt import DEFAULT,validar
+from huntingaitan.rotas.ciclo_mina import CicloMina
+from huntingaitan.rotas.interface_mina import InterfaceMina,VerificadorElite
+from huntingaitan.configuracao.perfil_hunt import DEFAULT,validar
 
 
 class CicloTeste(unittest.TestCase):

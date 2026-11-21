@@ -1,7 +1,7 @@
 import unittest
 from pathlib import Path
 import cv2,numpy as np
-from avisos_hunt import DetectorAvisos
+from huntingaitan.visao.avisos_hunt import DetectorAvisos
 P=Path(__file__).parent
 
 class AvisosTeste(unittest.TestCase):

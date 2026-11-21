@@ -1,9 +1,9 @@
 import copy,math,unittest
 from unittest.mock import patch
-from jardim_aereo import JardimAereo,dentro_jardim,plano_jardim,lazapa_protegido
-from mina_lenfer import MinaLenfer,plano_mina
-from perfil_hunt import validar
-from interface_mina import VerificadorElite
+from huntingaitan.rotas.jardim_aereo import JardimAereo,dentro_jardim,plano_jardim,lazapa_protegido
+from huntingaitan.rotas.mina_lenfer import MinaLenfer,plano_mina
+from huntingaitan.configuracao.perfil_hunt import validar
+from huntingaitan.rotas.interface_mina import VerificadorElite
 from tests.test_navegacao_grade import grade
 
 class JardimTeste(unittest.TestCase):
@@ -61,8 +61,8 @@ class JardimTeste(unittest.TestCase):
     def test_detector_final_exige_passagem_e_ignora_as_areas_anteriores(self):
         j=JardimAereo((3351,3295));j.grade=grade(30,20);j.grade.origem=(3740,3120)
         mob=dict(id=1,name='Lazapa Tempestuosa',position=(3755.5,3125.5))
-        with patch('jardim_aereo.na_area_lazapas_finais',return_value=False):self.assertIsNone(j.lazapa_proximo([mob],(3745.5,3125.5)))
-        with patch('jardim_aereo.na_area_lazapas_finais',return_value=True):
+        with patch('huntingaitan.rotas.jardim_aereo.na_area_lazapas_finais',return_value=False):self.assertIsNone(j.lazapa_proximo([mob],(3745.5,3125.5)))
+        with patch('huntingaitan.rotas.jardim_aereo.na_area_lazapas_finais',return_value=True):
             self.assertEqual(j.lazapa_proximo([mob],(3745.5,3125.5)),mob)
             j.grade=grade(30,20,[(10,y) for y in range(20)]);j.grade.origem=(3740,3120)
             self.assertIsNone(j.lazapa_proximo([mob],(3745.5,3125.5)))

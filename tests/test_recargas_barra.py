@@ -1,8 +1,8 @@
 import struct
 import unittest
-from hunt_core import CadenciaCombate
-from recargas_barra import decodificar
-from dados_internos import DadosInternos
+from huntingaitan.combate.hunt_core import CadenciaCombate
+from huntingaitan.leitura.recargas_barra import decodificar
+from huntingaitan.leitura.dados_internos import DadosInternos
 
 
 class RecargasBarraTeste(unittest.TestCase):

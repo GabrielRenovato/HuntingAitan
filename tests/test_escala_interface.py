@@ -1,8 +1,8 @@
 import unittest
 from unittest.mock import patch
 import numpy as np
-from interface_mina import VerificadorElite
-from perfil_hunt import validar
+from huntingaitan.rotas.interface_mina import VerificadorElite
+from huntingaitan.configuracao.perfil_hunt import validar
 
 
 class EscalaTeste(unittest.TestCase):

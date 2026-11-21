@@ -1,6 +1,6 @@
 import unittest,copy
-from hunt_core import CadenciaCombate
-from perfil_hunt import validar,DEFAULT
+from huntingaitan.combate.hunt_core import CadenciaCombate
+from huntingaitan.configuracao.perfil_hunt import validar,DEFAULT
 
 class CadenciaRapidaTeste(unittest.TestCase):
  def test_abertura_normal_tem_prioridade_em_alcance_sem_ignorar_intervalo(self):

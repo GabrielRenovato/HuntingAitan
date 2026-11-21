@@ -1,8 +1,8 @@
 import unittest,copy,struct,json,math
 from pathlib import Path
-from perfil_hunt import DEFAULT,validar
-from hunt_native import alvo_permitido,ProgressoNativo
-from dados_internos import DadosInternos
+from huntingaitan.configuracao.perfil_hunt import DEFAULT,validar
+from huntingaitan.combate.hunt_native import alvo_permitido,ProgressoNativo
+from huntingaitan.leitura.dados_internos import DadosInternos
 
 class TestePerfil(unittest.TestCase):
  def test_perfil_antigo_da_janela_nao_desativa_atalhos_preenchidos(self):
