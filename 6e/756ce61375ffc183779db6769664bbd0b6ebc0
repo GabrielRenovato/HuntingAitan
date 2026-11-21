@@ -1,0 +1,177 @@
+docs/CIRCUITO_VERIT.md
+  s_584910f7c1e27f::t_aec94943a5dffc 9,12
+huntingaitan/visao/avisos_hunt.py
+  s_584910f7c1e27f::t_72eebe55864dac 5-63
+  s_584910f7c1e27f::t_4a9243bba7d05e 2
+huntingaitan/rotas/operacoes_mina.py
+  s_584910f7c1e27f::t_72eebe55864dac 1-135
+docs/CIRCUITO_TERMES.md
+  s_584910f7c1e27f::t_aec94943a5dffc 47,55
+huntingaitan/visao/controle_avisos.py
+  s_584910f7c1e27f::t_72eebe55864dac 1-64
+docs/JARDIM_AEREO.md
+  s_584910f7c1e27f::t_aec94943a5dffc 24
+hunt_bridge.py
+  s_584910f7c1e27f::t_a9de32cb674c61 40
+  s_584910f7c1e27f::t_1a18a234135561 16,19,27,34,41,43,51,53,55,57-58,60,62,67,81,98,100,102
+tools/build_backend.py
+  s_584910f7c1e27f::t_aec94943a5dffc 6,8,10
+huntingaitan/visao/vigiar_janelas.py
+  s_584910f7c1e27f::t_72eebe55864dac 1-51
+docs/MINA_LENFER.md
+  s_584910f7c1e27f::t_aec94943a5dffc 17,49,60,72
+huntingaitan/rotas/mina_lenfer.py
+  s_584910f7c1e27f::t_72eebe55864dac 6-7
+  s_584910f7c1e27f::t_a3ee53709d6164 2,10
+tests/test_monitor_inicializacao.py
+  s_584910f7c1e27f::t_a9de32cb674c61 32
+  s_584910f7c1e27f::t_3a32a01ffbefa0 4,10,16,23,36
+huntingaitan/rotas/jardim_aereo.py
+  s_584910f7c1e27f::t_72eebe55864dac 6-42
+  s_584910f7c1e27f::t_7cab4ee7118c85 2
+huntingaitan/rotas/navegador_local.py
+  s_584910f7c1e27f::t_72eebe55864dac 1-78
+huntingaitan/rotas/interface_mina.py
+  s_584910f7c1e27f::t_72eebe55864dac 5-111
+  s_584910f7c1e27f::t_68af4f620ef81c 2
+huntingaitan/__init__.py
+  s_584910f7c1e27f::t_9130a90e8cfdbe 1
+huntingaitan/combate/hunt_native.py
+  s_edfc50aef2ee58::t_545112ce46040f 4-21,70,114,128,189
+huntingaitan/configuracao/perfil_hunt.py
+  s_edfc50aef2ee58::t_2a0e192654a2fc 80
+huntingaitan/entrada/teclas_controladas.py
+  s_584910f7c1e27f::t_d076f25f2a3ebd 3
+huntingaitan/leitura/dados_internos.py
+  s_edfc50aef2ee58::t_9302c5aecda65c 2,6,100
+huntingaitan/recursos.py
+  s_584910f7c1e27f::t_4d31e51dafe1ee 1-5
+huntingaitan/rotas/ciclo_mina.py
+  s_edfc50aef2ee58::t_8fcc4ffb9f2798 3-4,67-68,83,95
+huntingaitan/rotas/circuito_verit.py
+  s_edfc50aef2ee58::t_c0c11fae2f7077 2,6,8
+huntingaitan/visao/aviso_elter.py
+  s_edfc50aef2ee58::t_443567790850ec 2,5
+tests/test_aviso_elter.py
+  s_edfc50aef2ee58::t_295d591e58059a 4
+tests/test_avisos_hunt.py
+  s_edfc50aef2ee58::t_5090baee3fb926 4
+tests/test_busca_buffs_individuais.py
+  s_edfc50aef2ee58::t_f7c947b1ddb056 4-5,42-43
+tests/test_cadencia_rapida.py
+  s_edfc50aef2ee58::t_88394739a835da 2-3
+tests/test_cancelamento_normal.py
+  s_edfc50aef2ee58::t_87a4073b5a907f 2-3
+tests/test_circuito_verit.py
+  s_edfc50aef2ee58::t_5c7cdf70dce779 5-7,12,60,65
+tests/test_combo_w.py
+  s_edfc50aef2ee58::t_68be36fc2591a2 4,10,77-78
+tests/test_cura_prioritaria.py
+  s_edfc50aef2ee58::t_869f335f22e4f0 4,46-47
+tests/test_entrada_segura.py
+  s_edfc50aef2ee58::t_0a795959046680 3
+tests/test_estados_controle.py
+  s_edfc50aef2ee58::t_8c7f388399ed28 2
+tests/test_hunt_app.py
+  s_edfc50aef2ee58::t_48604cbcbc32ef 3-5
+tests/test_jardim_aereo.py
+  s_edfc50aef2ee58::t_8d0f345ea73b5f 3-6,64-65
+tests/test_morte_selecao.py
+  s_edfc50aef2ee58::t_995c75b565ac42 4-6,41-42
+tests/test_native_startup.py
+  s_edfc50aef2ee58::t_2efdac62bf2ecc 6,9,13
+tests/test_navegacao_grade.py
+  s_edfc50aef2ee58::t_3eea8a0eea85b6 2
+tests/test_navegador_local.py
+  s_edfc50aef2ee58::t_5b920887fe45c8 2
+tests/test_reaproximacao.py
+  s_edfc50aef2ee58::t_73a0e534432870 4,17-18
+tests/test_rebuff.py
+  s_edfc50aef2ee58::t_7d6971d22a99a6 2-3
+tests/test_recargas_barra.py
+  s_edfc50aef2ee58::t_3d5e3ce19b295a 3-5
+tests/test_recuperacao_alvo.py
+  s_edfc50aef2ee58::t_f68d701d8af427 4,20-21
+tests/test_regressao_morte_penza.py
+  s_edfc50aef2ee58::t_0fcd5e7bf7e8b3 5-6,11,37-38
+tests/test_retorno_fora_area.py
+  s_edfc50aef2ee58::t_3ac0ef3ad9433b 4-5,47-48
+tests/test_retorno_native.py
+  s_edfc50aef2ee58::t_42c4be05099c59 7-8
+tests/test_selecao_regional.py
+  s_edfc50aef2ee58::t_7e96a253ee5c22 4-5,71-72
+tests/test_teclas_controladas.py
+  s_584910f7c1e27f::t_df0fc756f6130e 3
+tests/test_vigia_ataque.py
+  s_edfc50aef2ee58::t_aaf3dcce9bbfbc 4,35-36
+huntingaitan/rotas/ciclo_jardim.py
+  s_edfc50aef2ee58::t_c0f3422d01b933 3,30-32
+huntingaitan/rotas/circuito_termes.py
+  s_edfc50aef2ee58::t_83372ebbb30f3e 2,7
+huntingaitan/rotas/entrada_mina.py
+  s_584910f7c1e27f::t_c6acbd5e5c121f 4-6
+huntingaitan/rotas/geometria_entrada.py
+  s_584910f7c1e27f::t_764ac3f4ddb8b2 2,6,9
+huntingaitan/visao/dialogos_evento.py
+  s_edfc50aef2ee58::t_e78c1a65559ff9 2,7
+tests/test_cadencia_calibrada.py
+  s_edfc50aef2ee58::t_978ae6f6a9857b 2
+tests/test_captura_dpi.py
+  s_edfc50aef2ee58::t_a21ac3cac886ac 4
+tests/test_ciclo_jardim.py
+  s_edfc50aef2ee58::t_b41387d32e7dc7 5-7,13,24,51-52,70,78-79,87
+tests/test_ciclo_mina.py
+  s_edfc50aef2ee58::t_75ddd1ad889250 6-8
+tests/test_circuito_termes.py
+  s_edfc50aef2ee58::t_43aa06a6abc634 5-7,86,92
+tests/test_confirmacao_jardim.py
+  s_edfc50aef2ee58::t_f488a127798390 6,17,77
+tests/test_defesa_dg.py
+  s_edfc50aef2ee58::t_6a4d715513a524 5-7,59,61,91
+tests/test_dialogos_evento.py
+  s_edfc50aef2ee58::t_90d98fe5ad4c2c 6-7,112
+tests/test_entrada_mina.py
+  s_edfc50aef2ee58::t_2e2ca6b9a10a15 5,7,48,89
+tests/test_escala_interface.py
+  s_edfc50aef2ee58::t_51d4633cfddfe7 4-5
+tests/test_geometria_entrada.py
+  s_edfc50aef2ee58::t_363f90a4d19ea2 4,27,56,93
+tests/test_mina_lenfer.py
+  s_edfc50aef2ee58::t_4355772e8a88a6 5-6,12,86,114
+tests/test_prioridade_janelas.py
+  s_edfc50aef2ee58::t_56ba5168b4973c 7-9,38
+tests/test_ritmo_padrao.py
+  s_edfc50aef2ee58::t_20e38e37f9945f 5-9,39
+tests/test_saida_grupo_ingles.py
+  s_edfc50aef2ee58::t_01ff7b3b47becc 3
+tools/validar_circuito_termes.py
+  s_edfc50aef2ee58::t_d7a16e244c643d 5,30
+tools/validar_jardim_aereo.py
+  s_edfc50aef2ee58::t_6aa8747df7c06c 5
+tools/validar_mina_lenfer.py
+  s_edfc50aef2ee58::t_821f1e97299252 5
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.6",
+  "base_commit_sha": "6e756ce61375ffc183779db6769664bbd0b6ebc0",
+  "prompts": {},
+  "sessions": {
+    "s_584910f7c1e27f": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "764d1c0c-78a7-4639-a7b2-8e651e7e4374",
+        "model": "claude-haiku-5-5"
+      },
+      "human_author": "Gabriel Renovato <86806861+GabrielRenovato@users.noreply.github.com>"
+    },
+    "s_edfc50aef2ee58": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "01a1e01c-4c9b-7e00-b2fb-9c7ef8050eed",
+        "model": "unknown"
+      },
+      "human_author": "Gabriel Renovato <86806861+GabrielRenovato@users.noreply.github.com>"
+    }
+  }
+}
