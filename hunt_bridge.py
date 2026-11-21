@@ -50,6 +50,8 @@ def main():
             if tipo_convite([(l[1],float(l[2])) for l in linhas or []])!='arena_elter':raise RuntimeError('OCR empacotado nao reconheceu a amostra de teste')
             from circuito_termes import plano,dentro_regiao
             if len(plano()['trechos'])!=2*(len(plano()['pontos'])-1) or not dentro_regiao((2585,654)):raise RuntimeError('Circuito nao incluido no motor')
+            from circuito_verit import plano_verit,dentro_verit
+            if len(plano_verit()['trechos'])!=8 or not dentro_verit((2748,833)):raise RuntimeError('Circuito Verit nao incluido no motor')
             from mina_lenfer import plano_mina,dentro_mina
             if not plano_mina()['trechos'] or not dentro_mina((2850,3344)):raise RuntimeError('Rota da Mina nao incluida no motor')
             from interface_mina import InterfaceMina

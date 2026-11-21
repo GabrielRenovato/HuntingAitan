@@ -6,34 +6,36 @@ from navegacao_grade import Grade
 
 PONTOS=[(6,(2584,587)),(5,(2585,654)),(4,(2577,674)),(7,(2592,697)),(8,(2584,712)),(9,(2612,748))]
 
-def validar(pasta):
+def validar(pasta,pontos=None,mob="Penza Poderosa Mutante",fechado=False):
+    pontos=PONTOS if pontos is None else pontos
     nomes=['Env/AttributeS01.dat','Env/z01.hgt']
     buffers=[(Path(pasta)/n).read_bytes() for n in nomes];atributos,alturas=buffers
     if len(atributos)!=4096*4096*2 or len(alturas)!=4+4096*4096*2 or struct.unpack_from('<I',alturas)[0]!=1:
         raise ValueError('Formato do terreno diferente do validado.')
     # Os arquivos por tile comprovam a orientacao e o encaixe da grade global.
-    for tx in range(min(p[0] for _,p in PONTOS)//256,max(p[0] for _,p in PONTOS)//256+1):
-        for ext,global_,skip in [('att',atributos,0),('hgt',alturas,4)]:
-            nome=f'Env/z01{tx:02d}02.{ext}';tile=(Path(pasta)/nome).read_bytes()
-            if len(tile)!=256*256*2:raise ValueError('Tile com tamanho inesperado: '+nome)
-            for y in range(256):
-                off=skip+((2*256+y)*4096+tx*256)*2
-                if tile[y*512:(y+1)*512]!=global_[off:off+512]:raise ValueError('Orientacao do tile divergente: '+nome)
-    x0=min(p[0] for _,p in PONTOS)-30;y0=min(p[1] for _,p in PONTOS)-30
-    x1=max(p[0] for _,p in PONTOS)+30;y1=max(p[1] for _,p in PONTOS)+30;w=x1-x0+1;flags=bytearray();hs=[]
+    for tx in range(min(p[0] for _,p in pontos)//256,max(p[0] for _,p in pontos)//256+1):
+        for ty in range(min(p[1] for _,p in pontos)//256,max(p[1] for _,p in pontos)//256+1):
+            for ext,global_,skip in [('att',atributos,0),('hgt',alturas,4)]:
+                nome=f'Env/z01{tx:02d}{ty:02d}.{ext}';tile=(Path(pasta)/nome).read_bytes()
+                if len(tile)!=256*256*2:raise ValueError('Tile com tamanho inesperado: '+nome)
+                for y in range(256):
+                    off=skip+((ty*256+y)*4096+tx*256)*2
+                    if tile[y*512:(y+1)*512]!=global_[off:off+512]:raise ValueError('Orientacao do tile divergente: '+nome)
+    x0=min(p[0] for _,p in pontos)-30;y0=min(p[1] for _,p in pontos)-30
+    x1=max(p[0] for _,p in pontos)+30;y1=max(p[1] for _,p in pontos)+30;w=x1-x0+1;flags=bytearray();hs=[]
     for y in range(y0,y1+1):
         off=(y*4096+x0)*2;flags.extend(atributos[off:off+w*2:2]);hs.extend(struct.unpack_from('<'+'h'*w,alturas,off+4))
     grade=Grade((0,0),(x0,y0),w,y1-y0+1,bytes(flags),tuple(hs),1)
     def dentro(pos):
         from circuito_termes import distancia_segmento
-        return min(distancia_segmento(pos,a[1],b[1]) for a,b in zip(PONTOS,PONTOS[1:]))<=20
-    caminho=PONTOS+list(reversed(PONTOS[:-1]));trechos=[]
+        return min(distancia_segmento(pos,a[1],b[1]) for a,b in zip(pontos,pontos[1:]+([pontos[0]] if fechado else [])))<=20
+    caminho=pontos+([pontos[0]] if fechado else list(reversed(pontos[:-1])));trechos=[]
     for (id_a,a),(id_b,b) in zip(caminho,caminho[1:]):
         rota=grade.caminho(a,b,max_nos=30000,limite=dentro)
         if not rota:raise ValueError(f'Sem passagem entre {id_a} e {id_b}.')
         if not all(grade.passagem(grade.celula(a),grade.celula(b)) for a,b in zip(rota,rota[1:])):raise ValueError('Passagem invalida.')
         trechos.append(dict(de=id_a,ate=id_b,caminho=rota,distancia=round(sum(math.dist(a,b) for a,b in zip(rota,rota[1:])),2)))
-    return dict(schema=1,faixa=20,mob='Penza Poderosa Mutante',pontos=[dict(id=i,pos=p) for i,p in PONTOS],fontes={n:hashlib.sha256(b).hexdigest() for n,b in zip(nomes,buffers)},trechos=trechos,nota='Colisao e alturas estaticas validadas. Requer reconfirmacao na grade carregada durante a navegacao.')
+    return dict(schema=1,faixa=20,mob=mob,pontos=[dict(id=i,pos=p) for i,p in pontos],fontes={n:hashlib.sha256(b).hexdigest() for n,b in zip(nomes,buffers)},trechos=trechos,nota='Colisao e alturas estaticas validadas. Requer reconfirmacao na grade carregada durante a navegacao.')
 
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--game-dir',required=True);p.add_argument('--out',required=True);a=p.parse_args()

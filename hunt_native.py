@@ -14,6 +14,7 @@ from ritmo_padrao import configurar_ritmo
 from vigia_ataque import VigiaAtaque
 from controle_avisos import ObservadorAvisos
 from circuito_termes import CircuitoTermes,dentro_regiao,conferir_arquivos,distancia_segmento
+from circuito_verit import CircuitoVerit,dentro_verit,conferir_verit
 from mina_lenfer import MinaLenfer,dentro_mina
 from jardim_aereo import JardimAereo,dentro_jardim,lazapa_protegido
 from hunt_core import CadenciaCombate,erro_angular,VerificadorMovimento,AgendaBuffs,executar_buff
@@ -25,6 +26,8 @@ def alvo_permitido(target,player,base,profile):
     if abs(target['height']-player['height'])>5:return False
     if profile.get('patrol_mode')=='termes_penza':
         if not dentro_regiao(target['position']):return False
+    elif profile.get('patrol_mode')=='termes_verit':
+        if not dentro_verit(target['position']):return False
     elif profile.get('patrol_mode')=='mina_lenfer':
         if not dentro_mina(target['position']):return False
     elif profile.get('patrol_mode')=='jardim_aereo':
@@ -119,10 +122,14 @@ def main(profile,event_sink,control,percurso=None):
             time.sleep(.04)
         s=dados.snapshot();base=tuple(s['player']['position']) if p['auto_base'] else tuple(p['base'])
         event_sink(dict(event='base',base=base));log('Base capturada por dados internos.',posicao=base)
-        circuito=None;circuito_log=None;circuito_replanejar_em=0.;regiao=dentro_regiao;mina=p['patrol_mode'] in ('mina_lenfer','jardim_aereo');jardim=p['patrol_mode']=='jardim_aereo';mapa_mina=None
+        circuito=None;circuito_log=None;circuito_replanejar_em=0.;regiao=dentro_regiao;verit=p['patrol_mode']=='termes_verit';mina=p['patrol_mode'] in ('mina_lenfer','jardim_aereo');jardim=p['patrol_mode']=='jardim_aereo';mapa_mina=None
         if percurso is not None:
             circuito=percurso;regiao=percurso.contem
             log('Retorno ao portal da Mina iniciado por coordenadas e colisao.')
+        elif verit:
+            circuito=CircuitoVerit(s['player']['position']);regiao=dentro_verit
+            conferir_verit(dados.caminho.parent)
+            log('Circuito Verit ativado: 1, 5, 20, 18, 4, 19, 2, 3 e volta ao 1. Apenas Verit Mutante.')
         elif p['patrol_mode']=='termes_penza':
             circuito=CircuitoTermes(s['player']['position'])
             conferir_arquivos(dados.caminho.parent)
@@ -458,7 +465,7 @@ def main(profile,event_sink,control,percurso=None):
                         if mina:
                             msg='Aguardando confirmacao do chefe da sala.' if passo['estado']=='aguardar_chefe' else 'Verificando sala limpa.' if passo['estado'].startswith('aguardar') else 'Percorrendo Jardim Aereo por caminho validado.' if jardim else 'Percorrendo Mina LEnfer por caminho validado.'
                         elif percurso is not None:msg='Seguindo caminho ate a entrada da Mina.'
-                        else:msg='Procurando Penzas por 5s no ponto.' if passo['estado']=='aguardar' else 'Percorrendo circuito de Termes por caminho validado.'
+                        else:msg=('Procurando Verits por 5s no ponto.' if verit else 'Procurando Penzas por 5s no ponto.') if passo['estado']=='aguardar' else ('Percorrendo circuito Verit de Termes por caminho validado.' if verit else 'Percorrendo circuito de Termes por caminho validado.')
                         log(msg,ponto=passo['ponto'],voltas=passo['voltas'],chefe=passo.get('chefe'));circuito_log=marca
                     if passo['estado'].startswith('aguardar'):soltar();esperar(.03);continue
                     nav=seguir_grade(passo['destino'],passo['chave'],.9)
@@ -470,7 +477,7 @@ def main(profile,event_sink,control,percurso=None):
                     esperar(.015);continue
                 if estado=='percorrer':
                     soltar();estado='buscar';regional.confirmar_alvo();retorno_busca=False
-                    log('Mob bloqueando a entrada; liberando o acesso ao portal.' if percurso is not None else 'Hostil proximo; percurso pausado para combate.' if mina else 'Penza encontrado no corredor; percurso pausado para combate.')
+                    log('Mob bloqueando a entrada; liberando o acesso ao portal.' if percurso is not None else 'Hostil proximo; percurso pausado para combate.' if mina else ('Verit encontrado no corredor; percurso pausado para combate.' if verit else 'Penza encontrado no corredor; percurso pausado para combate.'))
             if not circuito and math.dist(pos,base)>p['radius']+2 and estado!='retornar':
                 soltar();pulso('s',.06)
                 navegador.invalidar();estado='retornar';progresso=None;pool_em=0.

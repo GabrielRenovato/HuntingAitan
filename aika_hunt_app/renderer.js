@@ -6,7 +6,7 @@ function message(title,detail='',type='idle'){$('state-label').textContent=title
 function fail(e){lastError=true;message('Confira a configuração',String(e.message||e).replace(/^Error invoking remote method '[^']+': Error: /,''),'error');}
 async function action(fn){try{await fn();}catch(e){fail(e);}}
 function log(text){lines.push(new Date().toLocaleTimeString('pt-BR')+' · '+text);if(lines.length>120)lines.shift();$('log-lines').textContent=lines.join('\n');$('log-lines').scrollTop=$('log-lines').scrollHeight;}
-function baseLabel(){if(profile.patrol_mode!=='base'){$('base-value').textContent=profile.patrol_mode==='mina_lenfer'?'Mina L’Enfer → Malik':profile.patrol_mode==='jardim_aereo'?'Jardim Aéreo · Lazapas finais':'Circuito de ida e volta';$('manual-base').classList.add('hidden');return;}const p=profile.base;$('base-value').textContent=profile.auto_base?(startedAt?`${Math.round(p[0])}, ${Math.round(p[1])}`:'Capturada ao começar'):`${Math.round(p[0])}, ${Math.round(p[1])}`;$('manual-base').classList.toggle('hidden',profile.auto_base);}
+function baseLabel(){if(profile.patrol_mode!=='base'){$('base-value').textContent=profile.patrol_mode==='mina_lenfer'?'Mina L’Enfer → Malik':profile.patrol_mode==='jardim_aereo'?'Jardim Aéreo · Lazapas finais':profile.patrol_mode==='termes_verit'?'Circuito Verit · Termes':'Circuito de ida e volta';$('manual-base').classList.add('hidden');return;}const p=profile.base;$('base-value').textContent=profile.auto_base?(startedAt?`${Math.round(p[0])}, ${Math.round(p[1])}`:'Capturada ao começar'):`${Math.round(p[0])}, ${Math.round(p[1])}`;$('manual-base').classList.toggle('hidden',profile.auto_base);}
 function slotButton(kind,index,icon,key,enabled=true){const b=document.createElement('button');b.className='slot'+(enabled?'':' inactive');b.type='button';b.title=(kind==='skills'?'Habilidade '+(index+1):kind==='items'?'Item '+(index+1):kind.toUpperCase()+' '+(index+1))+' · clique para configurar';if(icon){const img=document.createElement('img');img.src='assets/'+icon;img.alt='';b.append(img);}const k=document.createElement('span');k.className='key';k.textContent=key?key.toUpperCase():'';b.append(k);b.addEventListener('click',()=>openSlot(kind,index));return b;}
 function renderSlots(){
  for(const kind of ['hp','mp']){const box=$(kind+'-slots');box.replaceChildren();profile[kind+'_keys'].forEach((key,i)=>box.append(slotButton(kind,i,i===0?kind+'.png':null,key,!!key)));}
@@ -16,7 +16,7 @@ function renderSlots(){
 function render(){
  $('auto-ui-scale').checked=profile.auto_ui_scale;
  $('jardim-hint').classList.toggle('hidden',profile.patrol_mode!=='jardim_aereo');$('mina-repeat').checked=!!profile.mina_repeat;$('mina-cycles').value=profile.mina_cycles||0;
- $('target').disabled=profile.patrol_mode!=='base';$('patrol-mode').value=profile.patrol_mode||'base';$('patrol-hint').classList.toggle('hidden',profile.patrol_mode!=='termes_penza');$('mina-hint').classList.toggle('hidden',profile.patrol_mode!=='mina_lenfer');
+ $('target').disabled=profile.patrol_mode!=='base';$('patrol-mode').value=profile.patrol_mode||'base';$('patrol-hint').classList.toggle('hidden',profile.patrol_mode!=='termes_penza');$('verit-hint').classList.toggle('hidden',profile.patrol_mode!=='termes_verit');$('mina-hint').classList.toggle('hidden',profile.patrol_mode!=='mina_lenfer');
  $('cancel-normal').checked=!!profile.cancel_normal;$('combo-key-delay').value=profile.combo_key_delay_ms;$('combo-repeat').value=profile.combo_repeat_ms;
  $('heal-enabled').checked=profile.heal_enabled;$('heal-key').value=profile.heal_key;
  $('f3-enabled').checked=profile.f3_enabled;$('f3-minutes').value=profile.f3_minutes;
@@ -39,6 +39,7 @@ function collect(){
  profile.buffs_enabled=$('buff-enabled').checked;profile.buff_minutes=Number($('buff-minutes').value);profile.buff_gap=Number($('buff-gap').value);profile.buff_keys=Array.from({length:5},(_,i)=>$('buff-key-'+i).value.trim().toLowerCase());
  profile.hp_percent=Number($('hp-percent').value);profile.mp_percent=Number($('mp-percent').value);
  for(const [id,key] of Object.entries({gap:'action_gap',duration:'duration_minutes',radius:'radius','no-damage':'no_damage_seconds',stationary:'stationary_seconds'}))profile[key]=Number($(id).value);
+ if(profile.patrol_mode==='termes_verit')$('target').value='verit';
  if(profile.patrol_mode==='termes_penza')$('target').value='penza';
  if(['mina_lenfer','jardim_aereo'].includes(profile.patrol_mode))$('target').value='qualquer';
  profile.attack_key=$('attack').value.trim().toLowerCase();profile.unstuck_key=$('unstuck').value.trim().toLowerCase();profile.target=$('target').value;profile.auto_base=$('auto-base').checked;profile.minimize_on_start=$('minimize-start').checked;
@@ -60,7 +61,7 @@ $('slot-form').addEventListener('submit',e=>{e.preventDefault();const {kind,inde
 });
 $('slot-cancel').addEventListener('click',()=>$('slot-dialog').close());$('return-slot').addEventListener('click',()=>openSlot('return'));
 for(const b of document.querySelectorAll('[data-tab]'))b.addEventListener('click',()=>{document.querySelectorAll('[data-tab]').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.tab-panel').forEach(x=>x.classList.toggle('hidden',x.id!==b.dataset.tab));});
-$('patrol-mode').addEventListener('change',()=>{collect();baseLabel();$('target').disabled=profile.patrol_mode!=='base';$('patrol-hint').classList.toggle('hidden',profile.patrol_mode!=='termes_penza');$('mina-hint').classList.toggle('hidden',profile.patrol_mode!=='mina_lenfer');});
+$('patrol-mode').addEventListener('change',()=>{collect();baseLabel();$('target').disabled=profile.patrol_mode!=='base';$('patrol-hint').classList.toggle('hidden',profile.patrol_mode!=='termes_penza');$('verit-hint').classList.toggle('hidden',profile.patrol_mode!=='termes_verit');$('mina-hint').classList.toggle('hidden',profile.patrol_mode!=='mina_lenfer');});
 $('auto-base').addEventListener('change',()=>{collect();baseLabel();});
 $('save').addEventListener('click',()=>action(async()=>{profile=await window.hunt.save(collect());render();message('Configuração salva','Ela será carregada automaticamente na próxima abertura.');}));
 $('reset').addEventListener('click',()=>action(async()=>{if(running)return;profile=await window.hunt.load();render();message('Configuração recarregada');}));
