@@ -18,21 +18,23 @@ from circuito_verit import CircuitoVerit,dentro_verit,conferir_verit
 from mina_lenfer import MinaLenfer,dentro_mina
 from jardim_aereo import JardimAereo,dentro_jardim,lazapa_protegido
 from hunt_core import CadenciaCombate,erro_angular,VerificadorMovimento,AgendaBuffs,executar_buff
+from teclas_controladas import TeclasControladas
 
 NOMES={'verit':'Verit Mutante','penza':'Penza Poderosa Mutante','croshu':'Croshu Mutante das Cinzas','tet':'Tet das Chamas'}
 def nome_normal(s):return re.sub('[^a-z]','',unicodedata.normalize('NFKD',s.lower()))
+# Regras de area por modo de patrulha. Modos fora da tabela usam o raio em torno da base.
+REGRAS_AREA={
+    'termes_penza':lambda t,pl:dentro_regiao(t['position']),
+    'termes_verit':lambda t,pl:dentro_verit(t['position']),
+    'mina_lenfer':lambda t,pl:dentro_mina(t['position']),
+    'jardim_aereo':lambda t,pl:dentro_jardim(t['position']) and nome_normal(t['name'])!='seridunn' and not lazapa_protegido(t['name'],pl['position']),
+}
 def alvo_permitido(target,player,base,profile):
     if not target or not target['hostile'] or target['hp']<=0:return False
     if abs(target['height']-player['height'])>5:return False
-    if profile.get('patrol_mode')=='termes_penza':
-        if not dentro_regiao(target['position']):return False
-    elif profile.get('patrol_mode')=='termes_verit':
-        if not dentro_verit(target['position']):return False
-    elif profile.get('patrol_mode')=='mina_lenfer':
-        if not dentro_mina(target['position']):return False
-    elif profile.get('patrol_mode')=='jardim_aereo':
-        if not dentro_jardim(target['position']):return False
-        if nome_normal(target['name'])=='seridunn' or lazapa_protegido(target['name'],player['position']):return False
+    regra=REGRAS_AREA.get(profile.get('patrol_mode'))
+    if regra is not None:
+        if not regra(target,player):return False
     elif math.dist(target['position'],base)>profile['radius']:return False
     if math.dist(target['position'],player['position'])>profile['radius']:return False
     return profile['target']=='qualquer' or nome_normal(target['name'])==nome_normal(NOMES[profile['target']])
@@ -76,43 +78,16 @@ def main(profile,event_sink,control,percurso=None):
         t=ctypes.create_unicode_buffer(256);u.GetWindowTextW(u.GetForegroundWindow(),t,256);return t.value=='AikaClient'
     def parar():return control.stop.is_set() or keyboard.is_pressed('f12')
     def ativo():return foco() and not parar() and not control.pause.is_set()
-    seg=set();lock=threading.RLock();fim=threading.Event();ultima=[time.monotonic()];modal_bloqueia=threading.Event()
-    def soltar():
-        with lock:
-            for k in list(seg):
-                if liberar_tecla(entrada,k) is not False:seg.discard(k)
-    def liberar(k):
-        with lock:
-            if k in seg and liberar_tecla(entrada,k) is not False:seg.discard(k)
-    def segurar(k):
-        with lock:
-            if not ativo() or modal_bloqueia.is_set():return False
-            if k not in seg:
-                if pressionar_sem_pausa(k) is False:return False
-                seg.add(k)
-            return True
-    def esperar(s):
-        ate=time.monotonic()+s
-        while ativo():
-            restante=ate-time.monotonic()
-            if restante<=0:break
-            time.sleep(min(.005,restante))
-    def pulso(k,s=.045):
-        if not k or not ativo():return False
-        if not segurar(k):return False
-        try:esperar(s)
-        finally:liberar(k)
-        return True
+    fim=threading.Event();modal_bloqueia=threading.Event()
+    ent=TeclasControladas(entrada,pressionar_sem_pausa,ativo,modal_bloqueia)
+    seg=ent.seg;ultima=ent.ultima;soltar=ent.soltar;liberar=ent.liberar;segurar=ent.segurar;esperar=ent.esperar;pulso=ent.pulso
     def log(msg,**d):event_sink(dict(event='log',message=msg,**d))
-    def vigia():
-        while not fim.wait(.03):
-            if not ativo() or modal_bloqueia.is_set() or time.monotonic()-ultima[0]>.5:soltar()
     dados=None
     try:
         dados=DadosInternos();s=dados.snapshot();s2=dados.snapshot()
         if math.dist(s['player']['position'],s2['player']['position'])>5:raise RuntimeError('Posicao interna instavel; tente novamente com o personagem parado.')
         event_sink(dict(event='status',state='waiting',message='Dados internos validados. Volte ao Aika para capturar a base e comecar.'))
-        threading.Thread(target=vigia,daemon=True).start()
+        threading.Thread(target=ent.vigiar,args=(fim,),daemon=True).start()
         # Pedido normal de foco apos o usuario clicar em Comecar.
         if p['minimize_on_start'] and not control.pause.is_set() and not parar():
             u.ShowWindow(dados.hwnd,9)
