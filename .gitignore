@@ -22,3 +22,6 @@ profile.json
 *.pem
 *.pfx
 *.p12
+
+capturas_leitor/
+*.cap.zip

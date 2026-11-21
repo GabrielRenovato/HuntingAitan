@@ -52,3 +52,37 @@ decisões de combate, cura, buffs e seleção de alvo. As leituras são devolvid
 uma mudança de comportamento que altere a ordem das chamadas aparece como divergência.
 
 As gravações contêm o nome do personagem e posições. Revise antes de compartilhar.
+
+## Descobrir campos novos no cliente
+
+Para trocar a leitura visual por leitura de estado (janela ou convite aberto, dificuldade da DG),
+ler a duração de buffs ou saber quais mobs atacam o personagem, é preciso achar onde o cliente guarda
+essas informações. `tools/capturar_estado.py` ajuda a achar candidatos, sempre só lendo a memória, em
+objetos que o projeto já usa: cena, contexto, jogador, alvo e, com `--mob`, o mob mais próximo.
+
+1. Com o jogo aberto, no mapa e com o aplicativo como administrador, capture cada estado 5 vezes,
+   com o personagem parado:
+
+   ```powershell
+   python tools/capturar_estado.py capturar dialogo_fechado --n 5
+   python tools/capturar_estado.py capturar dialogo_aberto --n 5
+   ```
+2. Compare. Ficam as palavras de 4 bytes estáveis dentro de cada grupo e diferentes entre eles; posição,
+   timers e contadores variam dentro do grupo e são descartados:
+
+   ```powershell
+   python tools/capturar_estado.py comparar dialogo_fechado dialogo_aberto
+   ```
+   Os candidatos saem ordenados: `flag 0/1`, depois `nulo <-> ponteiro` (um objeto de interface passa a
+   existir), depois `zero <-> valor`.
+3. Para ver o que um ponteiro candidato aponta, capture de novo com `--extra cena+0x1a8->0x400`
+   (região `+` offset do ponteiro `->` bytes a ler, no máximo `0x2000`) e compare a região
+   `cena+0x1a8`.
+4. Confirme: repita a troca de estado e capture um terceiro par. Um campo verdadeiro muda sempre, e só
+   com o estado. Com o offset confirmado, ele entra no layout e vira um método do leitor.
+
+Sugestões de pares: **convite/janela**: fechada × aberta. **Buff**: sem × com. **Perigo**: mob parado ×
+atacando o personagem (use `--mob`, mantendo o mesmo mob nos dois grupos).
+
+Com menos de 2 capturas por estado o ruído não é filtrado. As capturas ficam em `capturas_leitor/`,
+ignorada pelo Git, e contêm dados do processo do jogo (nomes, textos): não as compartilhe.
