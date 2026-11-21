@@ -5,6 +5,23 @@ from ctypes import wintypes as w
 from pathlib import Path
 P=DADOS
 
+# Valores do cliente validado. O native_layout.json pode sobrescrever qualquer um deles,
+# entao uma nova versao do jogo vira uma nova entrada de layout, sem editar o codigo.
+PADROES={
+    'context_rva':0x2f9b1e0-0x400000,'bar_manager_rva':0x322669c-0x400000,
+    'effect_table_rva':0xf9c1f4-0x400000,'mob_flag_rva':0x2f9e08c-0x400000,
+    'ent_id':4,'ent_rot':0x28,'ent_pos':0x1c,'ent_status':0x134,'ent_hpmp':0x498,'ent_nome':0x19ac,
+}
+
+def escolher_layout(conteudo,sha):
+    """Aceita um layout unico ou {"layouts":[...]} e devolve o que corresponde ao hash do cliente."""
+    dados=json.loads(conteudo) if isinstance(conteudo,(str,bytes)) else conteudo
+    candidatos=dados['layouts'] if 'layouts' in dados else [dados]
+    for layout in candidatos:
+        if layout['sha256']==sha:return layout
+    conhecidos=', '.join(l['sha256'][:12] for l in candidatos)
+    raise RuntimeError(f'O cliente Aika mudou de versao (SHA-256 {sha}). Versoes validadas: {conhecidos}. O layout interno precisa ser validado novamente.')
+
 class MODULEENTRY32W(ctypes.Structure):
     _fields_=[('dwSize',w.DWORD),('th32ModuleID',w.DWORD),('th32ProcessID',w.DWORD),('GlblcntUsage',w.DWORD),('ProccntUsage',w.DWORD),('modBaseAddr',ctypes.POINTER(ctypes.c_ubyte)),('modBaseSize',w.DWORD),('hModule',w.HMODULE),('szModule',w.WCHAR*256),('szExePath',w.WCHAR*260)]
 
@@ -35,11 +52,13 @@ class DadosInternos:
                     ok=self.k.Module32NextW(snap,ctypes.byref(e))
             finally:self.k.CloseHandle(snap)
             if self.base is None:raise RuntimeError('Modulo AIKACL.exe nao encontrado.')
-            self.layout=json.loads((P/'native_layout.json').read_text())
-            if hashlib.sha256(self.caminho.read_bytes()).hexdigest()!=self.layout['sha256']:raise RuntimeError('O cliente Aika mudou de versao. O layout interno precisa ser validado novamente.')
+            self.sha256=hashlib.sha256(self.caminho.read_bytes()).hexdigest()
+            self.layout=escolher_layout((P/'native_layout.json').read_text(),self.sha256)
         except Exception:self.close();raise
     def close(self):
         if self.handle:self.k.CloseHandle(self.handle);self.handle=None
+    def cfg(self,nome):
+        return getattr(self,'layout',{}).get(nome,PADROES[nome])
     def read(self,address,size):
         if not 0x10000<=address<=0xffff0000 or not 1<=size<=8192:raise RuntimeError('Endereco interno fora dos limites esperados.')
         buf=ctypes.create_string_buffer(size);n=ctypes.c_size_t()
@@ -49,13 +68,13 @@ class DadosInternos:
     def entidade(self,ptr):
         if not ptr:return None
         # Campos usados pela validacao de alvo e pelo calculo de HP/MP do assistente.
-        id_=self.u32(ptr+4);pos=struct.unpack('<3f',self.read(ptr+0x1c,12));hp,hpmax,mp,mpmax=struct.unpack('<4i',self.read(ptr+0x498,16))
+        id_=self.u32(ptr+self.cfg('ent_id'));pos=struct.unpack('<3f',self.read(ptr+self.cfg('ent_pos'),12));hp,hpmax,mp,mpmax=struct.unpack('<4i',self.read(ptr+self.cfg('ent_hpmp'),16))
         if not all(math.isfinite(v) and abs(v)<100000 for v in pos):raise RuntimeError('Coordenadas internas nao passaram na validacao.')
         if not 0<=hp<=hpmax<=100000000 or hpmax==0 or not 0<=mp<=mpmax<=100000000:raise RuntimeError('HP/MP internos nao passaram na validacao.')
-        nome=self.read(ptr+0x19ac,128).split(b'\0')[0].decode('cp1252',errors='replace')
-        status=struct.unpack('<H',self.read(ptr+0x134,2))[0]
+        nome=self.read(ptr+self.cfg('ent_nome'),128).split(b'\0')[0].decode('cp1252',errors='replace')
+        status=struct.unpack('<H',self.read(ptr+self.cfg('ent_status'),2))[0]
         hostil=0x800<=id_<0x2800 and status==0
-        rotacao=struct.unpack('<f',self.read(ptr+0x28,4))[0]
+        rotacao=struct.unpack('<f',self.read(ptr+self.cfg('ent_rot'),4))[0]
         heading=math.degrees(rotacao)%360 if math.isfinite(rotacao) and abs(rotacao)<100000 else None
         return dict(ref=ptr,id=id_,name=nome,position=pos[:2],height=pos[2],heading=heading,hp=hp,hp_max=hpmax,mp=mp,mp_max=mpmax,hostile=hostil)
     def cena_validada(self):
@@ -65,7 +84,7 @@ class DadosInternos:
         return cena
     def estados_controle(self):
         # 0x4f2125..4f21e3: consulta efeitos 73/219/235 antes da skill.
-        contexto=self.u32(self.base+0x2f9b1e0-0x400000);raiz=contexto+0x7fea0
+        contexto=self.u32(self.base+self.cfg('context_rva'));raiz=contexto+0x7fea0
         ids=set()
         for offset in (0xd4,0x11b8,0x1230):
             ids.update(v for v in struct.unpack('<20h',self.read(raiz+offset,40)) if 0<v<12000)
@@ -74,7 +93,7 @@ class DadosInternos:
         for skill in ids:
             if skill not in cache:
                 # 0x428830: quatro tipos e quatro magnitudes, stride 0x2d0.
-                raw=self.read(self.base+0xf9c1f4-0x400000+skill*0x2d0,32)
+                raw=self.read(self.base+self.cfg('effect_table_rva')+skill*0x2d0,32)
                 cache[skill]=struct.unpack('<8i',raw)
             valores=cache[skill];relevante=False
             for tipo,valor in zip(valores[:4],valores[4:]):
@@ -98,8 +117,8 @@ class DadosInternos:
         return bool(assistente and self.u32(assistente+0x1f4))
     def recargas_atalhos(self):
         from huntingaitan.leitura.recargas_barra import decodificar
-        contexto=self.u32(self.base+0x2f9b1e0-0x400000)
-        gestor=self.u32(self.base+0x322669c-0x400000)
+        contexto=self.u32(self.base+self.cfg('context_rva'))
+        gestor=self.u32(self.base+self.cfg('bar_manager_rva'))
         modo=self.u32(gestor+0x614)
         endereco=contexto+0x8129c
         if modo==1:
@@ -119,7 +138,7 @@ class DadosInternos:
         return decodificar(slots,recargas)
     def camera_regional(self):
         # Camera usada no setor de selecao em 0x50a021 e 0x50a0ef.
-        contexto=self.u32(self.base+0x2f9b1e0-0x400000)
+        contexto=self.u32(self.base+self.cfg('context_rva'))
         cam=self.u32(contexto+0x8d2a8)
         yaw=struct.unpack('<f',self.read(cam+8,4))[0]
         pos=struct.unpack('<3f',self.read(cam+0x28,12))
@@ -138,19 +157,19 @@ class DadosInternos:
         passo=self.layout['entity_stride']
         if not 1<=quantidade<=1024 or passo!=0x39bc or not 0x10000<=pool<=0xffff0000-quantidade*passo:
             raise RuntimeError('Lista de entidades fora dos limites validados')
-        encontrados=[];vistos=set()
+        encontrados=[];vistos=set();tam_cab=max(0x40,self.cfg('ent_pos')+12,self.cfg('ent_id')+4)
         for i in range(quantidade):
             ptr=pool+i*passo
             try:
-                cab=self.read(ptr,0x40);id_=struct.unpack_from('<I',cab,4)[0]
+                cab=self.read(ptr,tam_cab);id_=struct.unpack_from('<I',cab,self.cfg('ent_id'))[0]
                 if not 0x800<=id_<0x2800 or id_ in vistos:continue
-                pos=struct.unpack_from('<3f',cab,0x1c)
+                pos=struct.unpack_from('<3f',cab,self.cfg('ent_pos'))
                 if not all(math.isfinite(v) for v in pos) or math.dist(pos[:2],centro)>raio or abs(pos[2]-player['height'])>5:continue
                 mob=self.entidade(ptr)
                 if not mob or mob['id']!=id_ or not mob['hostile'] or mob['hp']<=0:continue
                 # Duas exclusoes diretas da validacao original 0x5e2480.
                 if struct.unpack('<h',self.read(ptr+0x1dc,2))[0]<0:continue
-                if self.read(ptr+0x450,1)[0] and not self.u32(self.base+0x2f9e08c-0x400000):continue
+                if self.read(ptr+0x450,1)[0] and not self.u32(self.base+self.cfg('mob_flag_rva')):continue
                 mob['slot']=i;encontrados.append(mob);vistos.add(id_)
             except RuntimeError:continue
         if self.u32(self.base+self.layout['active_scene_rva'])!=cena or self.u32(gerente+self.layout['entity_array_offset'])!=pool:
