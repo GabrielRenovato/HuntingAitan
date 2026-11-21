@@ -6,7 +6,7 @@ from mina_lenfer import MinaLenfer,normalizar
 from navegacao_grade import Grade
 
 @lru_cache(maxsize=1)
-def plano_jardim():return json.loads(Path(__file__).with_name('jardim_aereo_rota.json').read_text(encoding='utf-8'))
+def plano_jardim():return json.loads((Path(__file__).parent/'dados'/'jardim_aereo_rota.json').read_text(encoding='utf-8'))
 
 def dentro_jardim(pos,margem=0):
     x0,y0,x1,y1=plano_jardim()['limites']

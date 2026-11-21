@@ -3,7 +3,7 @@ from pathlib import Path
 import re,unicodedata
 import cv2,numpy as np
 
-P=Path(__file__).resolve().parent
+P=Path(__file__).resolve().parent/'dados'
 ESCALAS=(1.,.8,.9,1.1,1.25,1.5,1.75,2.)
 
 def normalizar(texto):

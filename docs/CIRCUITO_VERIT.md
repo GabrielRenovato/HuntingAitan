@@ -6,10 +6,10 @@ A volta segue os pontos do mapeamento: **1 → 5 → 20 → 18 → 4 → 19 → 
 
 O motor usa a posicao interna, a lista de entidades e a grade de colisao carregada. Somente Verit Mutante dentro da faixa do circuito e do alcance configurado e aceito. Pausa a navegacao para lutar, mantem o alvo ate o abate ou recuperacao por falha de progresso, procura outros Verits elegiveis e retoma o trecho. Ha busca de cinco segundos em cada ponto; a luta e as pausas nao consomem essa espera. A entrada pode ocorrer perto de qualquer trecho, sem exigir voltar ao ponto 1.
 
-Os oito caminhos foram derivados de `UI/MN.bin`, `UI/MobPos.bin`, `Env/AttributeS01.dat` e `Env/z01.hgt`, conferindo a orientacao das grades pelos tiles locais. Os hashes dessas fontes ficam em `circuito_termes_verit.json` e sao verificados antes de iniciar. O registro de Verit Mutante e 1378; os numeros da rota correspondem aos slots do mapeamento cadastrado.
+Os oito caminhos foram derivados de `UI/MN.bin`, `UI/MobPos.bin`, `Env/AttributeS01.dat` e `Env/z01.hgt`, conferindo a orientacao das grades pelos tiles locais. Os hashes dessas fontes ficam em `dados/circuito_termes_verit.json` e sao verificados antes de iniciar. O registro de Verit Mutante e 1378; os numeros da rota correspondem aos slots do mapeamento cadastrado.
 
 ```powershell
-python tools/validar_circuito_verit.py --game-dir "C:\GoLevel\AikaOnline" --out circuito_termes_verit.json
+python tools/validar_circuito_verit.py --game-dir "C:\GoLevel\AikaOnline" --out dados/circuito_termes_verit.json
 ```
 
 Passagens estaticas e simulacoes de navegacao/combate foram validadas. Isso nao comprova uma volta fisica no jogo: objetos, entidades, latencia e mudancas no servidor podem afetar a navegacao. Os pontos cadastrados nao garantem monstros vivos. Sem passagem local o motor aguarda e rele a grade, sem pular o ponto.

@@ -3,7 +3,7 @@ from pathlib import Path
 import cv2,numpy as np
 from avisos_hunt import melhor
 
-P=Path(__file__).resolve().parent
+P=Path(__file__).resolve().parent/'dados'
 ESCALAS=(1.,.9,1.1,.8,1.25,1.5)
 DIFICULDADES={'normal':'normal','facil':'facil','easy':'facil',
               'dificil':'dificil','hard':'dificil','elite':'elite','infernal':'infernal'}

@@ -7,8 +7,8 @@ P=Path(__file__).parent
 class AvisosTeste(unittest.TestCase):
  @classmethod
  def setUpClass(cls):
-  cls.d=DetectorAvisos();cls.chat=cv2.imread(str(P/'fixture_conversa_social.png'))
-  cls.elter=cv2.imread(str(Path(__file__).parent/'fixture_elter.png'))
+  cls.d=DetectorAvisos();cls.chat=cv2.imread(str(P/'fixtures'/'fixture_conversa_social.png'))
+  cls.elter=cv2.imread(str(Path(__file__).parent/'fixtures'/'fixture_elter.png'))
  def test_conversa_fecha_x_externo(self):
   a=self.d.localizar(self.chat)
   self.assertEqual(a['tipo'],'conversa_amigo')

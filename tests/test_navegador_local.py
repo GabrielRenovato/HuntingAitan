@@ -1,6 +1,6 @@
 import unittest
 from navegador_local import NavegadorLocal
-from test_navegacao_grade import grade
+from tests.test_navegacao_grade import grade
 
 class NavegadorTeste(unittest.TestCase):
  def test_bloqueio_informa_o_ponto_para_planejar_desvio(self):

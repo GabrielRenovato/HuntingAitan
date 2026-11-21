@@ -4,7 +4,7 @@ from jardim_aereo import JardimAereo,dentro_jardim,plano_jardim,lazapa_protegido
 from mina_lenfer import MinaLenfer,plano_mina
 from perfil_hunt import validar
 from interface_mina import VerificadorElite
-from test_navegacao_grade import grade
+from tests.test_navegacao_grade import grade
 
 class JardimTeste(unittest.TestCase):
     def test_perfil_fixa_hostis_e_fonte_nativa_sem_ativar_ciclo_da_mina(self):

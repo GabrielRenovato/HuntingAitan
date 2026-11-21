@@ -25,7 +25,7 @@ class InicializacaoMonitorTeste(unittest.TestCase):
             fabrica.assert_not_called();self.assertIs(m.detector,detector)
 
     def test_monitor_e_interface_carregam_em_processo_novo(self):
-        r=subprocess.run([sys.executable,str(Path(__file__).with_name('hunt_bridge.py')),'selftest-monitor'],input='{}',capture_output=True,text=True,timeout=20,check=True)
+        r=subprocess.run([sys.executable,str(Path(__file__).resolve().parents[1]/'hunt_bridge.py'),'selftest-monitor'],input='{}',capture_output=True,text=True,timeout=20,check=True)
         self.assertEqual(json.loads(r.stdout)['data'],dict(monitor=True,interface=True))
 
     def test_run_prepara_extensoes_antes_de_criar_threads_de_controle(self):

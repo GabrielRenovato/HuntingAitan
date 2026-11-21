@@ -50,7 +50,7 @@ class TrechoTeste(unittest.TestCase):
     def test_motor_interrompe_antes_de_qualquer_tab_ou_ataque_no_lazapa_final(self):
         import hunt_native as h
         from jardim_aereo import JardimAereo
-        from test_navegacao_grade import grade
+        from tests.test_navegacao_grade import grade
         pos=(3750.5,3140.5);teclas=[];t=[0.];eventos=[]
         mob=dict(ref=1,id=2408,name='Lazapa Tempestuosa',position=(3757.5,3142.5),height=0,hp=100,hp_max=100,hostile=True)
         class Dados:

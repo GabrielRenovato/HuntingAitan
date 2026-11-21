@@ -90,7 +90,7 @@ class InterfaceTeste(unittest.TestCase):
 
     def test_entrar_mazmorra_reconhece_realce_sem_hover_manual(self):
         tela=self.tela();self.colar(tela,'titulo_mazmorra',350,80)
-        botao=cv2.imread(str(Path(__file__).parent/'tests/fixtures/mina_entrar_realce.png'))
+        botao=cv2.imread(str(Path(__file__).parent/'fixtures/mina_entrar_realce.png'))
         self.assertIsNotNone(botao)
         h,w=botao.shape[:2];tela[380:380+h,360:360+w]=botao
         acao=self.ui.entrada(tela,True)

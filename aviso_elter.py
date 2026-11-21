@@ -1,7 +1,7 @@
 """Reconhece apenas o convite da escola de Elter e seu botao Cancelar."""
 from pathlib import Path
 import cv2,numpy as np
-P=Path(__file__).resolve().parent
+P=Path(__file__).resolve().parent/'dados'
 
 class DetectorElter:
     def __init__(self):

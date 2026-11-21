@@ -5,7 +5,7 @@ from unittest.mock import patch,MagicMock
 from defesa_dg import DefesaDG
 from mina_lenfer import MinaLenfer
 from perfil_hunt import DEFAULT
-from test_navegacao_grade import grade
+from tests.test_navegacao_grade import grade
 
 
 class DefesaTeste(unittest.TestCase):

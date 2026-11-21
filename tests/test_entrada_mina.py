@@ -3,7 +3,7 @@ from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import MagicMock,patch
 from entrada_mina import EntradaMina,PORTAL,passagem_estrada,bloqueadores_da_porta
-from test_navegacao_grade import grade
+from tests.test_navegacao_grade import grade
 from perfil_hunt import DEFAULT
 
 

@@ -3,7 +3,7 @@ from unittest.mock import patch
 from pathlib import Path
 from geometria_entrada import GeometriaEntrada,plano_geometria
 from tools.validar_entrada_mina import ler_ms3,transformar,ocupa,recortar_y
-from test_navegacao_grade import grade
+from tests.test_navegacao_grade import grade
 
 class GeometriaTeste(unittest.TestCase):
     def geometria(self):

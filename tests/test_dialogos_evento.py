@@ -6,7 +6,7 @@ import cv2,numpy as np
 from dialogos_evento import DetectorEventos,tipo_convite
 from controle_avisos import ObservadorAvisos
 
-P=Path(__file__).parent
+P=Path(__file__).parent/'fixtures'
 
 def ocr_arena(im):return [[None,'Arena Elter',.99],[None,'Arena Elter começará em breve.',.99]],None
 

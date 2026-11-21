@@ -2,7 +2,7 @@
 import ctypes,struct,math,hashlib,json
 from ctypes import wintypes as w
 from pathlib import Path
-P=Path(__file__).resolve().parent
+P=Path(__file__).resolve().parent/'dados'
 
 class MODULEENTRY32W(ctypes.Structure):
     _fields_=[('dwSize',w.DWORD),('th32ModuleID',w.DWORD),('th32ProcessID',w.DWORD),('GlblcntUsage',w.DWORD),('ProccntUsage',w.DWORD),('modBaseAddr',ctypes.POINTER(ctypes.c_ubyte)),('modBaseSize',w.DWORD),('hModule',w.HMODULE),('szModule',w.WCHAR*256),('szExePath',w.WCHAR*260)]

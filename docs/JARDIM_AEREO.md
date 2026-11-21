@@ -21,5 +21,5 @@ O JSON registra fontes, hashes e 2.266 células até o limite. O caminho foi rec
 ## Regeneração
 
 ```powershell
-python tools/validar_jardim_aereo.py --game-dir "C:\GoLevel\AikaOnline" --out jardim_aereo_rota.json
+python tools/validar_jardim_aereo.py --game-dir "C:\GoLevel\AikaOnline" --out dados/jardim_aereo_rota.json
 ```

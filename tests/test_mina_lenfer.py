@@ -4,7 +4,7 @@ from types import SimpleNamespace
 from unittest.mock import patch,MagicMock
 from mina_lenfer import MinaLenfer,plano_mina,dentro_mina
 from perfil_hunt import validar,DEFAULT
-from test_navegacao_grade import grade
+from tests.test_navegacao_grade import grade
 
 class MinaTeste(unittest.TestCase):
     @classmethod

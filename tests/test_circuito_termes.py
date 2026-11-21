@@ -5,7 +5,7 @@ from unittest.mock import patch,MagicMock
 from circuito_termes import CircuitoTermes,dentro_regiao,plano,conferir_arquivos
 from perfil_hunt import validar,DEFAULT
 from hunt_native import alvo_permitido
-from test_navegacao_grade import grade
+from tests.test_navegacao_grade import grade
 
 
 class CircuitoTermesTeste(unittest.TestCase):

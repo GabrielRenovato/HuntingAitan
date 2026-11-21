@@ -6,13 +6,13 @@ from aviso_elter import DetectorElter
 class TesteElter(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.im=cv2.imread(str(Path(__file__).parent/'fixture_elter.png'))
+        cls.im=cv2.imread(str(Path(__file__).parent/'fixtures'/'fixture_elter.png'))
         cls.d=DetectorElter()
     def test_anexo_clica_cancelar(self):
         x,y=self.d.localizar(self.im)
         self.assertTrue(245<x<331 and 241<y<267)
     def test_captura_atual_do_usuario(self):
-        im=cv2.imread(str(Path(__file__).parent/'fixture_elter.png'))
+        im=cv2.imread(str(Path(__file__).parent/'fixtures'/'fixture_elter.png'))
         x,y=self.d.localizar(im)
         self.assertTrue(259<x<346 and 229<y<256)
     def test_posicao_da_janela_pode_mudar(self):

@@ -6,7 +6,7 @@ from navegacao_grade import Grade
 from circuito_termes import distancia_segmento
 
 @lru_cache(maxsize=1)
-def plano_mina():return json.loads(Path(__file__).resolve().with_name('mina_lenfer_rota.json').read_text(encoding='utf-8'))
+def plano_mina():return json.loads((Path(__file__).resolve().parent/'dados'/'mina_lenfer_rota.json').read_text(encoding='utf-8'))
 
 def dentro_mina(pos,margem=0):
     x0,y0,x1,y1=plano_mina()['limites']

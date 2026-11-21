@@ -2,7 +2,7 @@
 from pathlib import Path
 import cv2,numpy as np
 from aviso_elter import DetectorElter
-P=Path(__file__).resolve().parent
+P=Path(__file__).resolve().parent/'dados'
 ESCALAS=(1.,.8,.9,1.1,1.25,1.5)
 
 def melhor(im,tpl):
