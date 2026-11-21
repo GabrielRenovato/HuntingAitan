@@ -1,0 +1,77 @@
+tests/test_native_startup.py
+  s_584910f7c1e27f::t_1266fc5a2a692a 1-17
+package.json
+  s_584910f7c1e27f::t_a3d0f9e90f8e2a 6
+tests/test_avisos_hunt.py
+  s_584910f7c1e27f::t_1266fc5a2a692a 10-11
+dialogos_evento.py
+  s_584910f7c1e27f::t_ce3442de022927 6
+circuito_termes.py
+  s_584910f7c1e27f::t_ce3442de022927 6
+geometria_entrada.py
+  s_584910f7c1e27f::t_ce3442de022927 8
+interface_mina.py
+  s_584910f7c1e27f::t_ce3442de022927 6
+tests/test_jardim_aereo.py
+  s_584910f7c1e27f::t_1266fc5a2a692a 1-82
+docs/CIRCUITO_VERIT.md
+  s_584910f7c1e27f::t_c438cb8689194c 9,12
+aviso_elter.py
+  s_584910f7c1e27f::t_ce3442de022927 4
+tests/test_ciclo_mina.py
+  s_584910f7c1e27f::t_1266fc5a2a692a 1-114
+mina_lenfer.py
+  s_584910f7c1e27f::t_ce3442de022927 9
+avisos_hunt.py
+  s_584910f7c1e27f::t_ce3442de022927 5
+tests/test_navegador_local.py
+  s_584910f7c1e27f::t_1266fc5a2a692a 1-71
+tests/test_circuito_termes.py
+  s_584910f7c1e27f::t_1266fc5a2a692a 1-142
+tests/test_entrada_mina.py
+  s_584910f7c1e27f::t_1266fc5a2a692a 1-114
+tests/test_aviso_elter.py
+  s_584910f7c1e27f::t_1266fc5a2a692a 9,15
+docs/CIRCUITO_TERMES.md
+  s_584910f7c1e27f::t_c438cb8689194c 47,55
+tools/build_backend.py
+  s_584910f7c1e27f::t_ed99a599080289 6,8-10
+tests/test_mina_lenfer.py
+  s_584910f7c1e27f::t_1266fc5a2a692a 1-120
+jardim_aereo.py
+  s_584910f7c1e27f::t_ce3442de022927 9
+circuito_verit.py
+  s_584910f7c1e27f::t_ce3442de022927 7
+dados_internos.py
+  s_584910f7c1e27f::t_ce3442de022927 5
+docs/JARDIM_AEREO.md
+  s_584910f7c1e27f::t_c438cb8689194c 24
+tests/test_ciclo_jardim.py
+  s_584910f7c1e27f::t_1266fc5a2a692a 1-93
+tests/test_monitor_inicializacao.py
+  s_584910f7c1e27f::t_1266fc5a2a692a 1-44
+tests/test_geometria_entrada.py
+  s_584910f7c1e27f::t_1266fc5a2a692a 1-101
+docs/MINA_LENFER.md
+  s_584910f7c1e27f::t_c438cb8689194c 17,49,60,72
+tests/test_dialogos_evento.py
+  s_584910f7c1e27f::t_1266fc5a2a692a 9
+tests/test_defesa_dg.py
+  s_584910f7c1e27f::t_1266fc5a2a692a 1-99
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.6",
+  "base_commit_sha": "7f12169979671021cfaf729ec7cdd91e84dd7d53",
+  "prompts": {},
+  "sessions": {
+    "s_584910f7c1e27f": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "764d1c0c-78a7-4639-a7b2-8e651e7e4374",
+        "model": "claude-haiku-5-5"
+      },
+      "human_author": "Gabriel Renovato <86806861+GabrielRenovato@users.noreply.github.com>"
+    }
+  }
+}
