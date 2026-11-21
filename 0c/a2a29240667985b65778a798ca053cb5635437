@@ -1,0 +1,27 @@
+huntingaitan/rotas/circuito_verit.py
+  s_584910f7c1e27f::t_77c908cea8669f 30-31
+tests/test_rotas_contrato.py
+  s_584910f7c1e27f::t_263c2c3a86a62f 1-37
+huntingaitan/rotas/circuito_termes.py
+  s_584910f7c1e27f::t_77c908cea8669f 2,33-35
+huntingaitan/rotas/base.py
+  s_584910f7c1e27f::t_77c908cea8669f 1-20
+huntingaitan/rotas/mina_lenfer.py
+  s_584910f7c1e27f::t_77c908cea8669f 2,19
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.6",
+  "base_commit_sha": "0ca2a29240667985b65778a798ca053cb5635437",
+  "prompts": {},
+  "sessions": {
+    "s_584910f7c1e27f": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "764d1c0c-78a7-4639-a7b2-8e651e7e4374",
+        "model": "claude-haiku-5-5"
+      },
+      "human_author": "Gabriel Renovato <86806861+GabrielRenovato@users.noreply.github.com>"
+    }
+  }
+}
