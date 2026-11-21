@@ -1,0 +1,20 @@
+huntingaitan/combate/hunt_native.py
+  s_584910f7c1e27f::t_e63d4b2197fe0a 193-195
+  s_584910f7c1e27f::t_0a0e5e9b682460 157-192,196-477,735-737,742-749,751-752
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.6",
+  "base_commit_sha": "6919654f4bd3c0db7d74f02d3d3c21cacde9edb7",
+  "prompts": {},
+  "sessions": {
+    "s_584910f7c1e27f": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "764d1c0c-78a7-4639-a7b2-8e651e7e4374",
+        "model": "claude-haiku-5-5"
+      },
+      "human_author": "Gabriel Renovato <86806861+GabrielRenovato@users.noreply.github.com>"
+    }
+  }
+}
