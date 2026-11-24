@@ -1,0 +1,739 @@
+huntingaitan/configuracao/perfil_hunt.py
+  s_edfc50aef2ee58::t_be4ddb9955e028 3,16-17,29-31,48-49,66-67,69,71-75,96-99,102
+  s_edfc50aef2ee58::t_9a399791362658 70,76
+  s_edfc50aef2ee58::t_ba7eb849ff1ef4 6,13,22-23,50,60-65,68,91,100-101,103-107
+  s_edfc50aef2ee58::t_80f6641f2276d1 8
+tools/mapear_croshu_cinzenta.py
+  s_edfc50aef2ee58::t_f4e221373bd349 1-82
+huntingaitan/dados/jardim_aereo_rota.json
+  s_edfc50aef2ee58::t_f03d5a6a8c989a 5,45,47-48,56,8735,8738-8742
+huntingaitan/entrada/ponte_camera.py
+  s_edfc50aef2ee58::t_1a417836cce02d 1-197,200-226,230-251,253-259,261-269,271-277,289-290,299-307,309-325
+  s_edfc50aef2ee58::t_71e910cfb6f59b 198-199,227-229,252,260,270,278-288,291-298,308
+tools/testar_controles_ao_fundo.py
+  s_edfc50aef2ee58::t_7aebbd2abf8c39 1-53
+docs/mapeamento_plantas_ungor/plantas_ungor.json
+  s_edfc50aef2ee58::t_ca11dc498a4803 1-115
+docs/mapeamento_buto/buto_floresta.json
+  s_edfc50aef2ee58::t_ce8ec8af22a918 1-111
+tools/reabrir_guerreiro_transicoes.py
+  s_edfc50aef2ee58::t_05706c92c0c3cb 1-35
+docs/mapeamento_plantas_ungor/plantas_ungor.csv
+  s_edfc50aef2ee58::t_ca11dc498a4803 1-11
+huntingaitan/dados/jardim_geometria.json
+  s_edfc50aef2ee58::t_28b49b306eb24c 1-17308
+tests/test_entrada_mina.py
+  s_edfc50aef2ee58::t_008377214db706 109
+  s_edfc50aef2ee58::t_010252854b332a 112
+  s_edfc50aef2ee58::t_fffdcc4e4bbee6 95,102-105,111,117-120
+tools/reabrir_dois_motor_base.py
+  s_edfc50aef2ee58::t_609541e8c73216 1-25
+huntingaitan/rotas/circuito_cinzas.py
+  s_edfc50aef2ee58::t_f618cab7c9d5e2 1-37
+tests/test_recuperacao_alvo.py
+  s_edfc50aef2ee58::t_008377214db706 43
+tools/testar_templaria_leste.py
+  s_edfc50aef2ee58::t_ea1856007c96e3 21-25,29-33,60
+  s_edfc50aef2ee58::t_529753d434bdc1 1-20,26-28,34-59,61-85
+huntingaitan/rotas/operacoes_mina.py
+  s_edfc50aef2ee58::t_29491017a7d671 65-77,82-86,88,106,114-115,118-119,146-148,154-155
+  s_edfc50aef2ee58::t_d166bfd337998d 6,17-18,93-94
+  s_edfc50aef2ee58::t_f03d5a6a8c989a 121
+  s_edfc50aef2ee58::t_df8f1144039a6a 32-33,110-111,149-150,157
+docs/JARDIM_NAVEGACAO.md
+  s_edfc50aef2ee58::t_f9d0ddae89f88c 1-15
+tests/test_jardim_aereo.py
+  s_edfc50aef2ee58::t_d166bfd337998d 27,41
+tools/testar_teclas_camera.py
+  s_edfc50aef2ee58::t_a74383df5e058a 1-45
+tools/ativar_verit_leste.py
+  s_edfc50aef2ee58::t_adf14355a450f1 44
+  s_edfc50aef2ee58::t_7d244b2c8eddb6 1-17,19-43,45-48
+  s_edfc50aef2ee58::t_4395afaa258eeb 18
+tests/test_reacoes_perfil.py
+  s_584910f7c1e27f::t_42acb45c136a1a 1-30
+tools/abrir_teclas_barra.py
+  s_edfc50aef2ee58::t_b1112d665177cc 1-28
+tools/verificar_layout.py
+  s_584910f7c1e27f::t_c5969e3d64de78 6,8,12-14
+tools/abrir_segundo_hunting.py
+  s_edfc50aef2ee58::t_3295f672f01a49 1-21
+tests/test_reacoes.py
+  s_edfc50aef2ee58::t_f82fb9cb93b135 1-121
+tests/test_mina_lenfer.py
+  s_edfc50aef2ee58::t_008377214db706 112
+aika_hunt_app/preload.cjs
+  s_584910f7c1e27f::t_9c1bdbebef67ca 5
+  s_edfc50aef2ee58::t_8c57813b352620 8
+huntingaitan/combate/hunt_native.py
+  s_584910f7c1e27f::t_8cedadd5279178 582-584
+  s_edfc50aef2ee58::t_c436b47f82ffb7 33
+  s_584910f7c1e27f::t_087d75a64e3050 198,200
+  s_584910f7c1e27f::t_61362bb5716f2c 894
+  s_edfc50aef2ee58::t_fb78b9c2d149b7 29,52,196,760-761,803,805-806
+  s_edfc50aef2ee58::t_4907820013e43d 153,346,358
+  s_edfc50aef2ee58::t_c887ebfccff6b3 5,25,47,93,136,148-151,170-173,208,214,217,511,518-521,525,542,573-575,599-600,1018,1062
+  s_edfc50aef2ee58::t_7880ed117d1f52 689-690
+  s_584910f7c1e27f::t_b80eb461261179 924-926,928-929
+  s_edfc50aef2ee58::t_330c9f09441de6 1085
+  s_edfc50aef2ee58::t_b6a8a15da851cc 528,572,697,741,831,853,857-869,873-887,934-936,946-947,956,970-971,1034
+  s_edfc50aef2ee58::t_11c23d9ce354da 207,209-210,215,330-333,1080,1082-1083,1086
+  s_edfc50aef2ee58::t_29491017a7d671 345
+  s_584910f7c1e27f::t_dcc9d6cc58e523 854
+  s_584910f7c1e27f::t_51dddce2f3c487 922-923,943-944,952-955,957-961,963-969
+  s_edfc50aef2ee58::t_ba7eb849ff1ef4 111,118,135,141,233-234,236,244,720
+  s_584910f7c1e27f::t_a19226316cc341 786-789
+  s_584910f7c1e27f::t_b5c8a039a46fdf 13
+  s_584910f7c1e27f::t_8f07c58e424485 445-447
+  s_edfc50aef2ee58::t_3ba3a75a8d881f 435,452,496,504-505
+  s_edfc50aef2ee58::t_fffdcc4e4bbee6 110,156,229-231,238,941
+  s_584910f7c1e27f::t_8d34acfc8fec60 14-16
+  s_edfc50aef2ee58::t_96fa19e6d8d18a 24
+  s_edfc50aef2ee58::t_15359db0000d77 26-27
+  s_edfc50aef2ee58::t_69a5f572e7f104 45-46
+  s_edfc50aef2ee58::t_076fb7eb82c0c5 94
+  s_edfc50aef2ee58::t_c0d4a6c9e1f9d2 112-114
+  s_edfc50aef2ee58::t_f7b535829d144d 132-134
+  s_edfc50aef2ee58::t_a678b507aa1b5f 157-159
+  s_edfc50aef2ee58::t_2e004f67d5c816 174-176
+  s_584910f7c1e27f::t_690eee8686c3dd 199
+  s_edfc50aef2ee58::t_fb0c5a406028c8 213
+  s_edfc50aef2ee58::t_5038a551cf5831 216
+  s_edfc50aef2ee58::t_3779d37ced8a2e 218
+  s_edfc50aef2ee58::t_7b0460c2e0d3ef 243
+  s_edfc50aef2ee58::t_28c9a8163cde15 245
+  s_edfc50aef2ee58::t_01472d7cfdda7e 506-510
+  s_edfc50aef2ee58::t_6ba3895f15f7ce 526-527
+  s_edfc50aef2ee58::t_4268a93b92c314 529-531,539-541
+  s_edfc50aef2ee58::t_09af0ba94262b2 569-571
+  s_edfc50aef2ee58::t_7c59bf53370d09 576-578
+  s_edfc50aef2ee58::t_d9b2bb769feaad 598
+  s_edfc50aef2ee58::t_cb182d548de9d7 688
+  s_edfc50aef2ee58::t_32914f2ce80568 850-852
+  s_edfc50aef2ee58::t_1bf4de1bd17c34 870-872
+  s_edfc50aef2ee58::t_f9bd37c51e83af 888-890
+  s_584910f7c1e27f::t_8b38f98e0363d6 927
+  s_edfc50aef2ee58::t_e51e8617ec23c4 937-940
+  s_584910f7c1e27f::t_9dc8c0205ceb96 962
+  s_edfc50aef2ee58::t_bc8996b597e053 1015-1017
+  s_edfc50aef2ee58::t_bd9dc24e9a9d64 1063-1065
+  s_edfc50aef2ee58::t_8b2fd0b7860212 20,50,62,68,71-78,81-84,123-125,128,131,160-165,177-185,289-308,312-313,353,368-386,421-425,450,458,461,466,470,472-474,480,488-490,532-538,552-555,560,566-567,579-580,612,614,630,642-648,684-685,737,794,800,811-813,816-817,835-849,855-856,902-905,917-919,930-933,942,945,948-951,1022-1026,1050-1055,1066-1076,1090,1093-1094,1098-1101,1126-1128,1130
+docs/mapeamento_croshu_cinzenta/croshu_cinzenta.json
+  s_edfc50aef2ee58::t_f4e221373bd349 1-120
+tools/reabrir_segundo_plano.py
+  s_edfc50aef2ee58::t_af501fc0fdfe0b 1-38
+tests/test_circuito_verit.py
+  s_edfc50aef2ee58::t_008377214db706 92
+aika_hunt_app/fluxo.js
+  s_edfc50aef2ee58::t_0055cbc60b257d 2
+  s_edfc50aef2ee58::t_a43614b1e456cc 1,3-73
+huntingaitan/leitura/escolha_cliente.py
+  s_584910f7c1e27f::t_f3a52cae3ad87c 1-21
+tools/aplicar_reacoes.py
+  s_584910f7c1e27f::t_6cbf68fffd7e10 1-32
+tests/test_circuito_verit_leste.py
+  s_edfc50aef2ee58::t_3a8c2aeaf8c5af 1-51
+docs/RECUPERACAO_PADRAO_TEMPLARIA.md
+  s_edfc50aef2ee58::t_cbecae6f8a04ee 1-28
+  s_edfc50aef2ee58::t_938057f022c393 29-30
+tests/test_defesa_dg.py
+  s_edfc50aef2ee58::t_008377214db706 89
+huntingaitan/dados/native_layout.json
+  s_edfc50aef2ee58::t_546ad3667b23d8 26-50
+tools/testar_captura_janela.py
+  s_edfc50aef2ee58::t_5be1eed8e0cc74 1-27
+huntingaitan/rotas/visitas_circuito.py
+  s_edfc50aef2ee58::t_4c5efdef66ed58 1-49
+docs/mapeamento_croshu_cinzenta/croshu_cinzenta.csv
+  s_edfc50aef2ee58::t_f4e221373bd349 1-12
+tests/test_circuito_termes.py
+  s_edfc50aef2ee58::t_008377214db706 119
+tools/testar_numeros_segundo_plano.py
+  s_edfc50aef2ee58::t_144d30cc2ccbec 1-94
+docs/CIRCUITO_VERIT.md
+  s_edfc50aef2ee58::t_3a8c2aeaf8c5af 3-29
+huntingaitan/entrada/entrada_motor.py
+  s_edfc50aef2ee58::t_ab7ddcaea34086 1-7,9-38,40-42,45-59,61-66,73,79-90
+  s_edfc50aef2ee58::t_7871041f616214 8,39,43-44,60,67-72,74-78,91
+tools/reabrir_colisao.py
+  s_edfc50aef2ee58::t_f7d2ea05c43772 1-55
+tools/mapear_contratos_hunting.py
+  s_edfc50aef2ee58::t_49ed53ae4bf900 1-31
+tools/abrir_dois_hunting.py
+  s_edfc50aef2ee58::t_ac245a3c405b4e 1-6
+tools/testar_ponte_motor_real.py
+  s_edfc50aef2ee58::t_e1c5b379e56329 1-34
+tools/testar_guerreiro_croshu.py
+  s_edfc50aef2ee58::t_c0466f06a5896e 1-85
+docs/DESTRAVAR_COLISAO.md
+  s_edfc50aef2ee58::t_9f39abbeefe4e3 1-18
+tests/test_vigia_reacao.py
+  s_584910f7c1e27f::t_9a597fc3272e30 1-67,69-72,79-80
+  s_584910f7c1e27f::t_214cfcb05c445c 68
+  s_584910f7c1e27f::t_2f53679cb5595a 73-78
+huntingaitan/entrada/entrada_janela.py
+  s_584910f7c1e27f::t_b037e7ae1c4134 21
+  s_584910f7c1e27f::t_3162a0620bcbda 77
+  s_584910f7c1e27f::t_41a82f35dfaef7 5
+  s_edfc50aef2ee58::t_f485ef807edb5e 1-4,6-20,22-36,47-50,54,59,67,69-76,78-85,88-90,93-108
+  s_584910f7c1e27f::t_ff6299f6e96d12 60-66,68
+  s_edfc50aef2ee58::t_3665f561e0af53 37-39,44-46
+  s_edfc50aef2ee58::t_86feb040d6745f 51-53
+  s_edfc50aef2ee58::t_f25638e3632981 55-58
+  s_edfc50aef2ee58::t_241529e592a76d 86-87
+  s_edfc50aef2ee58::t_dca5ab13788c07 91-92
+  s_584910f7c1e27f::t_8b1858759e05bf 40-43
+aika_hunt_app/style.css
+  s_edfc50aef2ee58::t_f2d944912815b9 6-10
+  s_edfc50aef2ee58::t_9a8cd54088f410 4-5
+huntingaitan/dados/entrada_jardim_geometria.json
+  s_edfc50aef2ee58::t_059647368ebeb0 1-1334
+tools/validar_entrada_mina.py
+  s_edfc50aef2ee58::t_a67611150f8a5f 58,60-61,108
+hunt_bridge.py
+  s_584910f7c1e27f::t_9c1bdbebef67ca 81-82,88-94
+  s_edfc50aef2ee58::t_652192c7c87ddb 24-26,44-48,63-68,86-87,103-104
+tools/record_combo.py
+  s_edfc50aef2ee58::t_47a6570bcb5267 1-100
+tests/test_busca_sem_tab.py
+  s_584910f7c1e27f::t_a9ff3d97850a2a 52-55
+  s_584910f7c1e27f::t_cfbbcd282bb214 58,61,63-72
+  s_584910f7c1e27f::t_0120824b5b8cd3 59-60,62
+  s_584910f7c1e27f::t_9ef875afece0c4 73-104
+  s_584910f7c1e27f::t_45a6f5d426521b 1-11,21-51,56-57,105-118
+  s_584910f7c1e27f::t_925834c6fa2af6 12,15-19
+  s_584910f7c1e27f::t_55656b64c985ac 13-14,20
+tests/test_morte_selecao.py
+  s_edfc50aef2ee58::t_008377214db706 65
+tests/test_vigia_ataque.py
+  s_584910f7c1e27f::t_e7d6b30ed5b16a 41-50,54,90
+  s_edfc50aef2ee58::t_008377214db706 82
+  s_584910f7c1e27f::t_23758875e1adb6 2,36-40,56,63,73-75
+tools/exportar_skills.py
+  s_584910f7c1e27f::t_83a7316173bc03 1-8,10,12-16,21-29
+  s_584910f7c1e27f::t_3fa7f6fed65afd 9,11,17-20
+huntingaitan/rotas/ciclo_jardim.py
+  s_edfc50aef2ee58::t_d51b2bd73dbf0f 68,70
+  s_edfc50aef2ee58::t_80f6641f2276d1 29,33,46,61-64,67,69,71-82,129-134
+  s_edfc50aef2ee58::t_f03d5a6a8c989a 2,28,30-32,35-37,39-45,47-49,51-53,55-60,65-66,83-98,103-116,121-122,124-128,135-143
+  s_edfc50aef2ee58::t_fb78b9c2d149b7 1,15,19
+  s_edfc50aef2ee58::t_11c23d9ce354da 34,38,50,54
+huntingaitan/rotas/entrada_jardim.py
+  s_edfc50aef2ee58::t_f03d5a6a8c989a 1-13,17-19,21-37,39-43,45-54,56-57,59,61-68,70-72
+  s_edfc50aef2ee58::t_9acf452bd3c0fa 14-16,20,38,44,55,58,60,69
+tools/abrir_editor_atalho.py
+  s_edfc50aef2ee58::t_beab67ba3b3892 1-31
+tools/abrir_dois_aproximacao.py
+  s_edfc50aef2ee58::t_e85590a34ccdcf 1-6
+tools/testar_duracao_giros.py
+  s_edfc50aef2ee58::t_7b6bbbe5769dc2 1-45
+tests/test_combo_w.py
+  s_edfc50aef2ee58::t_008377214db706 99
+aika_hunt_app/validacao.js
+  s_edfc50aef2ee58::t_ba7eb849ff1ef4 1-9,12-18,20-25
+  s_edfc50aef2ee58::t_f82fb9cb93b135 10-11,19
+tests/test_regressao_morte_penza.py
+  s_edfc50aef2ee58::t_008377214db706 61
+tools/ler_barra_segundo_plano.py
+  s_edfc50aef2ee58::t_688991ff3b8193 1-21
+package.json
+  s_edfc50aef2ee58::t_4580a6c00de360 3
+  s_edfc50aef2ee58::t_5e3a4eb7f06825 6
+huntingaitan/leitura/sessao.py
+  s_584910f7c1e27f::t_9d99096a6aa6d5 11
+  s_584910f7c1e27f::t_ef06442a719290 70,85-87
+tests/test_reacoes_motor.py
+  s_584910f7c1e27f::t_d49554a18ba025 1-5,7-8,10,12-64,101-121
+  s_584910f7c1e27f::t_a809883a45b5da 6,9,11,65-92,95-100
+  s_584910f7c1e27f::t_42acb45c136a1a 93-94
+tools/testar_alvo_selecionado.py
+  s_edfc50aef2ee58::t_6ce464b4bd2d0a 1-24
+huntingaitan/rotas/operacoes_npc.py
+  s_edfc50aef2ee58::t_2f9c67c3579757 2-3,13,20,29-30,43-46,51,114-122,124-126,131,163,201-207
+  s_edfc50aef2ee58::t_d04cf8a7d0ec6d 1,6-10,12,14-18,21-27,33-42,47-50,52-64,66-76,78-79,81-84,113,123,128-130,169-170,176,193,197-200,208-209
+  s_edfc50aef2ee58::t_ce525ffbd3c4f6 133-142,148,160,165,194
+  s_edfc50aef2ee58::t_0613a86b05a4c1 4,89-112
+  s_edfc50aef2ee58::t_1623990d068c87 65,77,80,147,159,161
+  s_edfc50aef2ee58::t_b01fbb31020290 5
+  s_edfc50aef2ee58::t_7336226a95ff7e 11
+  s_edfc50aef2ee58::t_a35a2019ce9092 19
+  s_edfc50aef2ee58::t_4d61f55b7bdee6 28
+  s_edfc50aef2ee58::t_38c145f6055f6c 31-32
+  s_edfc50aef2ee58::t_7beb9bf36657e3 85-88
+  s_edfc50aef2ee58::t_0a12ded1f3f51d 127
+  s_edfc50aef2ee58::t_1d861d39b71357 132
+  s_edfc50aef2ee58::t_0065e8719e53b6 143-146
+  s_edfc50aef2ee58::t_69dd7911c10854 149-151,156-158
+  s_edfc50aef2ee58::t_f43dbb1b978cfa 162
+  s_edfc50aef2ee58::t_4f1333c8c767cc 164
+  s_edfc50aef2ee58::t_81f436a7193d3b 166-168
+  s_edfc50aef2ee58::t_028575f20a6f1c 171-175
+  s_edfc50aef2ee58::t_c6995af94f34d3 177-179,190-192
+  s_edfc50aef2ee58::t_bc36e11d0fe2fc 195-196
+  s_edfc50aef2ee58::t_cdc2f233e3fc47 152-155,180-189
+tests/test_retorno_native.py
+  s_edfc50aef2ee58::t_008377214db706 25
+tests/test_repeticao_jardim.py
+  s_edfc50aef2ee58::t_a13ce6083ef75b 1-153
+tools/testar_tecla_janela.py
+  s_edfc50aef2ee58::t_a923fb7e3def20 1-9,12-22,25,27,31-34,42,45-52,55-60,62-63,67-69
+  s_edfc50aef2ee58::t_0387b0bc55dd50 11,26,28-30
+  s_edfc50aef2ee58::t_cdecf75b1660e8 23-24
+  s_edfc50aef2ee58::t_e4a95b78bf3159 70
+  s_edfc50aef2ee58::t_0caa9aaa7d7da1 10,35-41,43-44,53-54,61,64-66
+tests/test_barra_painel.py
+  s_584910f7c1e27f::t_de204baaa86946 1-25,30-56
+  s_584910f7c1e27f::t_c24a29ad8e7dc9 26-29
+tools/analisar_hunting_nativo.py
+  s_edfc50aef2ee58::t_2dc7d2f855f3ce 18
+  s_edfc50aef2ee58::t_9a9021ef5095f7 1-17
+huntingaitan/dados/circuito_cinzenta_croshu.json
+  s_edfc50aef2ee58::t_9fbfcf987f2f16 9-10,40-68,72,76,80,84,88,92,96,100,104,108,112,116,120,124,128,132,136,140,144,148,152,156,160,164,168,172,176,180,184,188,192,196,204,322,326,330,334,338,342,346,350,354,358,362,366,370,374,378,382,386,390,394,398,402,406,410,414,418,422,426,430,434,438,442,446,450,454,458,462,466,470,474,478,482,486,490,494,498,502,504-531,534,538-570
+  s_edfc50aef2ee58::t_6fc32a5224016b 1-8,11-39,69-71,73-75,77-79,81-83,85-87,89-91,93-95,97-99,101-103,105-107,109-111,113-115,117-119,121-123,125-127,129-131,133-135,137-139,141-143,145-147,149-151,153-155,157-159,161-163,165-167,169-171,173-175,177-179,181-183,185-187,189-191,193-195,197-203,205-321,323-325,327-329,331-333,335-337,339-341,343-345,347-349,351-353,355-357,359-361,363-365,367-369,371-373,375-377,379-381,383-385,387-389,391-393,395-397,399-401,403-405,407-409,411-413,415-417,419-421,423-425,427-429,431-433,435-437,439-441,443-445,447-449,451-453,455-457,459-461,463-465,467-469,471-473,475-477,479-481,483-485,487-489,491-493,495-497,499-501,503,532-533,535-537,571-574
+huntingaitan/rotas/circuito_verit_leste.py
+  s_edfc50aef2ee58::t_f618cab7c9d5e2 1-41
+tools/capturar_estado.py
+  s_584910f7c1e27f::t_c5969e3d64de78 22-23,67
+tests/test_grupo_buto.py
+  s_edfc50aef2ee58::t_008377214db706 1-76
+tools/inspecionar_loja.py
+  s_edfc50aef2ee58::t_07d23096cc61fc 14-17
+  s_edfc50aef2ee58::t_49cf72f8e41944 1-13,18-22
+tools/validar_segundo_plano.py
+  s_edfc50aef2ee58::t_ceab69284e4478 1-30
+huntingaitan/combate/escolha_por_caminho.py
+  s_edfc50aef2ee58::t_4c5efdef66ed58 1-37
+docs/GRUPO_CROSHU_CINZAS.md
+  s_edfc50aef2ee58::t_b8c91ab4ee7c73 1-8,10-41
+  s_edfc50aef2ee58::t_f7203ee374135c 9
+tests/test_reaproximacao.py
+  s_edfc50aef2ee58::t_008377214db706 52
+  s_edfc50aef2ee58::t_3a49f739d1f1ff 7-11
+tools/inspecionar_selecao_ao_fundo.py
+  s_edfc50aef2ee58::t_567f172e639efb 1-23
+tools/reabrir_destravar.py
+  s_584910f7c1e27f::t_9348f651b5a217 5
+  s_584910f7c1e27f::t_c2fe0ad78bfb67 28-29
+  s_584910f7c1e27f::t_5bd3f329b2d5ff 1-4,6-27,30-55
+huntingaitan/dados/circuito_ungor_plantas.json
+  s_edfc50aef2ee58::t_0c297ad05c2098 1-491
+tests/test_prioridade_janelas.py
+  s_edfc50aef2ee58::t_008377214db706 36
+test_monitor_lifecycle.cjs
+  s_edfc50aef2ee58::t_7abc0cb97a7899 14,21-23,27-28
+tools/testar_motor_duplo_fundo.py
+  s_edfc50aef2ee58::t_3b0ef980581f48 1-14
+aika_hunt_app/fluxo-modelo.js
+  s_edfc50aef2ee58::t_0055cbc60b257d 1-45,47-85
+  s_edfc50aef2ee58::t_ba7eb849ff1ef4 46
+tests/test_inventario.py
+  s_edfc50aef2ee58::t_0613a86b05a4c1 1,3-41,44
+  s_edfc50aef2ee58::t_cfbf78c0ffed3b 2,42-43,45-49
+docs/mapeamento_croshu_ungor/croshu_ungor.csv
+  s_edfc50aef2ee58::t_282a4a2d4c2509 1-8
+tools/testar_dois_alvos.py
+  s_edfc50aef2ee58::t_f51acf7064f2f8 1-27
+huntingaitan/leitura/skills_cliente.py
+  s_584910f7c1e27f::t_4bfba6efe3faf4 87-120
+  s_584910f7c1e27f::t_85b34282654d38 1-7,9-32
+  s_584910f7c1e27f::t_9c1bdbebef67ca 140
+  s_584910f7c1e27f::t_c3361f587c5334 60-61
+  s_584910f7c1e27f::t_9c6b791a63c563 50-52,54-57,59,62,64
+  s_584910f7c1e27f::t_c24a29ad8e7dc9 144
+  s_584910f7c1e27f::t_9df897f78b3946 33-49,53,58,63,65-86
+  s_584910f7c1e27f::t_4c62a7714c6396 121-139,141-143,145-159
+  s_584910f7c1e27f::t_e28cf3f29dfb8d 8
+tests/test_busca_buffs_individuais.py
+  s_edfc50aef2ee58::t_008377214db706 78
+  s_edfc50aef2ee58::t_f8a345e64697dc 108
+tools/testar_ponte_camera_real.py
+  s_edfc50aef2ee58::t_b12b22f58767c6 1-21
+aika_hunt_app/main.cjs
+  s_edfc50aef2ee58::t_9637607c1f95ba 1,6-7,15,18,25,34,47,86-90,102,114-126
+docs/mapeamento_croshu_ungor/croshu_ungor.json
+  s_edfc50aef2ee58::t_282a4a2d4c2509 1-92
+huntingaitan/configuracao/predefinicoes.py
+  s_584910f7c1e27f::t_3c11f9e29e1541 1-26
+tests/test_operacoes_npc.py
+  s_edfc50aef2ee58::t_1623990d068c87 14-15
+  s_edfc50aef2ee58::t_01892f980bd6a2 11-13
+  s_edfc50aef2ee58::t_6d3cc6df4e8bac 16-18
+  s_edfc50aef2ee58::t_548c560530d354 1-10,19-98
+tools/testar_ponte_emulador.py
+  s_edfc50aef2ee58::t_7f5cd1850e2352 1-9,11-46,51-58
+  s_edfc50aef2ee58::t_50a3237388c066 59
+  s_edfc50aef2ee58::t_b2795ff1e11af3 10,47-50
+tools/testar_motor_duplo_interno.py
+  s_edfc50aef2ee58::t_a99a3bc99cf21a 1-14
+tools/ler_barra.py
+  s_584910f7c1e27f::t_89b290b4be899a 1
+  s_584910f7c1e27f::t_4bfba6efe3faf4 2-29
+huntingaitan/combate/caca_templaria.py
+  s_edfc50aef2ee58::t_f618cab7c9d5e2 1-57
+tests/test_grupo_croshu_cinzas.py
+  s_edfc50aef2ee58::t_bae63d3104bad0 1,13,29-50,56-57,59,63-64,72,77-79,82-87
+  s_edfc50aef2ee58::t_c4aeb2c833fefa 2-12,14-28,51-55,61-62,65-71,74-76,80-81,88-89
+  s_edfc50aef2ee58::t_8d72fef42da13d 58,60,73
+huntingaitan/leitura/dados_internos.py
+  s_584910f7c1e27f::t_9c57d6f1130d1d 139
+  s_584910f7c1e27f::t_5b04faf344e39b 122
+  s_584910f7c1e27f::t_b614e9d394d962 144-147
+  s_584910f7c1e27f::t_1a5b28294b3532 121
+  s_584910f7c1e27f::t_6abe1b5fa47bab 140-141
+  s_584910f7c1e27f::t_e2a02cf6b45da5 143
+  s_584910f7c1e27f::t_b196b64af8eb12 3,14,30,39-41,49,53,78-81,115
+tools/ler_barra_atual_segundo_plano.py
+  s_edfc50aef2ee58::t_1b4764ad866014 1-22
+docs/FORMATO_SKILLS.md
+  s_584910f7c1e27f::t_f839e6d77993d7 1-45
+tests/test_skills_decodificador.py
+  s_584910f7c1e27f::t_14a219d2bcf725 14,32-33,54-55,78,80,83,86-87,89-90,93-95,99-100,103-108
+  s_584910f7c1e27f::t_89b290b4be899a 1-13,15-31,34-53,56-77,79,81-82,84-85,88,91-92,96-98,101-102
+requirements.txt
+  s_edfc50aef2ee58::t_f82fb9cb93b135 8-9
+  s_edfc50aef2ee58::t_c390882b8ff72e 10
+tests/test_selecao_regional.py
+  s_edfc50aef2ee58::t_008377214db706 103
+  s_edfc50aef2ee58::t_905081e3c90c5c 51-57
+tests/test_ciclo_jardim.py
+  s_edfc50aef2ee58::t_008377214db706 67
+  s_edfc50aef2ee58::t_d166bfd337998d 55,72
+aika_hunt_app/package.json
+  s_edfc50aef2ee58::t_4580a6c00de360 3,22-25,28-29
+docs/IDENTIDADE_MUTANTES.md
+  s_edfc50aef2ee58::t_ea1856007c96e3 26-27
+  s_edfc50aef2ee58::t_5e64f365313be0 1-25
+tools/reabrir_guerreiro_colisao.py
+  s_edfc50aef2ee58::t_cd26f188961b91 1-35
+tools/abrir_dois_motor_interno.py
+  s_edfc50aef2ee58::t_724cc897b3504f 1-6
+tests/test_predefinicoes.py
+  s_584910f7c1e27f::t_729a47ff1daa97 1-12,14-36
+  s_584910f7c1e27f::t_42acb45c136a1a 13
+test_fluxo_modelo.cjs
+  s_edfc50aef2ee58::t_e215fb48e8a3d4 1-7
+  s_edfc50aef2ee58::t_a8a73c40e4e640 8-15
+aika_hunt_app/renderer.js
+  s_edfc50aef2ee58::t_80f6641f2276d1 80,102,156
+  s_edfc50aef2ee58::t_fb78b9c2d149b7 154
+  s_edfc50aef2ee58::t_9a399791362658 81,110
+  s_edfc50aef2ee58::t_3a8c2aeaf8c5af 66
+  s_edfc50aef2ee58::t_9637607c1f95ba 4-5,7-47,50-65,72,75-77,96,115-118,136,138,140,146,152-153,158,161,163-165,169-173
+  s_edfc50aef2ee58::t_f82fb9cb93b135 78,84-85,98-100
+tools/testar_ataque_real_ao_fundo.py
+  s_edfc50aef2ee58::t_01c59db3b9b843 19-30
+  s_edfc50aef2ee58::t_a2ba5169fc3b88 1-18,31-36
+huntingaitan/rotas/jardim_aereo.py
+  s_edfc50aef2ee58::t_f9d0ddae89f88c 20-23,25,88-109,115,120-126,136-144,156-159
+tools/reabrir_dois_alvo.py
+  s_edfc50aef2ee58::t_44f267dd053a03 1-25
+huntingaitan/leitura/recargas_barra.py
+  s_584910f7c1e27f::t_471b208f8783af 16
+  s_584910f7c1e27f::t_eee4a0e4819866 5-9
+  s_584910f7c1e27f::t_2fef2e00dd4729 10-15
+  s_584910f7c1e27f::t_fd5a3b47885427 17-19
+  s_584910f7c1e27f::t_eec064ee3d38bf 20-22,28-31,39
+tools/testar_motor_duplo_aproximacao.py
+  s_edfc50aef2ee58::t_9f5f7ed1407f2e 1-14
+huntingaitan/leitura/replay.py
+  s_edfc50aef2ee58::t_008377214db706 31
+tests/test_retorno_fora_area.py
+  s_edfc50aef2ee58::t_008377214db706 66
+huntingaitan/visao/avisos_hunt.py
+  s_edfc50aef2ee58::t_f485ef807edb5e 59-71
+tools/inspecionar_duas_barras.py
+  s_edfc50aef2ee58::t_ff2d4a1835a3a4 1-19
+huntingaitan/dados/circuito_ungor_croshu.json
+  s_edfc50aef2ee58::t_2a2bf0f5aec7e1 1-864
+aika_hunt_app/reacoes.css
+  s_584910f7c1e27f::t_722da4bf059c0c 13,16,20
+  s_584910f7c1e27f::t_88dd6472fd8d56 1-12,14-15,17-19,21-25
+aika_hunt_app/reacoes.js
+  s_edfc50aef2ee58::t_0055cbc60b257d 1-135
+tools/validar_jardim_aereo.py
+  s_edfc50aef2ee58::t_fb78b9c2d149b7 32,34,37
+tests/test_servico_npc.py
+  s_edfc50aef2ee58::t_d5d56c5620e83a 5,71,73,81-85
+  s_edfc50aef2ee58::t_1623990d068c87 1-4,6-70,87-88,97,112,119-141
+  s_edfc50aef2ee58::t_e19a54ca09b099 72
+  s_edfc50aef2ee58::t_37c79798327974 74-76,78-80
+  s_edfc50aef2ee58::t_36586828896b89 86
+  s_edfc50aef2ee58::t_e058c6cc258baa 89-91,94-96
+  s_edfc50aef2ee58::t_71cb4cab448236 98-100,109-111
+  s_edfc50aef2ee58::t_966c086e59aa7c 113-118
+  s_edfc50aef2ee58::t_bea315b06c45bb 77,92-93,101-108
+tools/abrir_opcoes_barra.py
+  s_edfc50aef2ee58::t_6eff31fdb382d0 1-27
+tests/test_skills_cliente.py
+  s_584910f7c1e27f::t_d45ee04b43d82b 1-34
+tests/test_cura_prioritaria.py
+  s_edfc50aef2ee58::t_008377214db706 62
+tests/test_escolha_cliente.py
+  s_584910f7c1e27f::t_678be57dbdfde2 1-26
+huntingaitan/configuracao/perfil_templario.py
+  s_edfc50aef2ee58::t_08d0b0b321a2fc 33-36
+  s_edfc50aef2ee58::t_57373a87462f47 30-32
+  s_edfc50aef2ee58::t_b78233a0ff456a 37-39
+  s_edfc50aef2ee58::t_fbaf8309c2a4f3 1-29,40-76
+huntingaitan/dados/circuito_termes_verit_leste.json
+  s_edfc50aef2ee58::t_391e06ba617249 1-63,66-67,70-71,74-75,78-79,82-83,86-87,90-91,94-95,98-99,102-103,106-107,110-111,114-115,118-119,122-123,126-127,130-131,134-135,138-139,142-143,146-147,150-151,154-155,158-159,162-163,166-167,170-171,174-175,178-179,182-183,186-187,190-191,194-195,198-199,202-203,206-207,210-211,214-215,218-219,222-223,226-227,230-231,234-235,238-239,242-243,246-247,250-251,254-255,258-259,262-263,266-267,270-271,274-275,277-278,281-282,285-286,289-290,293-294,297-298,301-302,305-306,309-310,313-314,317-318,321-322,325-326,329-330,333-334,337-338,341-342,345-346,349-350,353-354,357-358,361-362,365-366,369-370,373-375,377-378,381-382,385-386,389-390,393-394,397-398,401-402,405-406,409-410,413-414,417-418,421-422,425-426,429-430,433-434,437-438,441-442,445-446,449-450,453-454,465,468-469,472-473,476-477,480-481,484-485,488-489,492-493,496-497,500-501,504-505,508-509,512-513,516-517,520-521,524-525,528-529,532-533,536-537,540-541,544-545,548-549,552-553,556-557,560-561,564-565,568-569,572-573,576-577,580-581,584-585,588-589,592-593,596-597,600-601,604-605,608-609,612-613,615-616,619-620,623-624,627-628,631-632,635-636,639-640,643-644,647-648,651-652,655-656,659-660,663-664,667-668,671-672,675-676,679-680,683-684,687-688,691-692,695-696,699-700,703-704,707-708,711-712,715-716,719-720,722-724,727-728,731-732,735-736,739-740,743-744,747-748,751-752,755-756,759-760,763-764,767-768,771-772,775-776,779-780,783-784,787-788,791-792,795-796,799-800,803-804,807-808,811-812,815-816,819-820,823-824,839-840,842-843,846-847,850-851,854-855,858-859,862-863,866-867,870-871,874-875,878-879,882-883,886-887,890-891,894-895,898-899,902-903,906-907,910-911,914-915,918-919,922-923,926-927,930-931,934-935,938-939,942-943,946-947,950-951,954-955,958-959,962-963,966-967,970-971,974-975,978-979,982-983,986-987,990-991,994-995,998-999,1002-1003,1006-1007,1010-1011,1014-1015,1017-1018,1021-1023,1025-1027,1029-1031,1033-1035,1037-1039,1041-1043,1045-1047,1049-1051,1053-1055,1057-1058,1061-1062,1065-1066,1069-1070,1073-1074,1077-1078,1081-1082,1085-1086,1089-1090,1093-1094,1097-1098,1101-1102,1105-1106,1109-1110,1113-1114,1117-1118,1121-1122,1125-1126,1129-1130,1132-1133,1136-1137,1140-1141,1144-1145,1148-1149,1152-1153,1156-1157,1160-1161,1164-1165,1168-1169,1172-1173,1176-1177,1180-1181,1184-1185,1188-1189,1192-1193,1196-1197,1200-1201,1204-1205,1208-1209,1212-1213,1216-1217,1220-1221,1224-1225,1228-1229,1232-1233,1236-1237,1240-1241,1244-1245,1248-1249,1252-1253,1256-1257,1260-1261,1264-1265,1268-1269,1272-1273,1276-1277,1280-1281,1284-1285,1288-1289,1292-1293,1296-1297,1300-1301,1304-1305,1308-1309,1312-1313,1316-1317,1320-1321,1324-1325,1328-1329,1332-1333,1336-1337,1340-1341,1344-1345,1348-1349,1352-1353,1356-1357,1360-1361,1364-1365,1368-1369,1372-1373,1376-1377,1380-1381,1384-1385,1388-1389,1392-1393,1396-1397,1400-1401,1404-1405,1408-1409,1412-1413,1415-1418,1648-1649
+  s_edfc50aef2ee58::t_fa7dd287faa40f 64-65,68-69,72-73,76-77,80-81,84-85,88-89,92-93,96-97,100-101,104-105,108-109,112-113,116-117,120-121,124-125,128-129,132-133,136-137,140-141,144-145,148-149,152-153,156-157,160-161,164-165,168-169,172-173,176-177,180-181,184-185,188-189,192-193,196-197,200-201,204-205,208-209,212-213,216-217,220-221,224-225,228-229,232-233,236-237,240-241,244-245,248-249,252-253,256-257,260-261,264-265,268-269,272-273,276,279-280,283-284,287-288,291-292,295-296,299-300,303-304,307-308,311-312,315-316,319-320,323-324,327-328,331-332,335-336,339-340,343-344,347-348,351-352,355-356,359-360,363-364,367-368,371-372,376,379-380,383-384,387-388,391-392,395-396,399-400,403-404,407-408,411-412,415-416,419-420,423-424,427-428,431-432,435-436,439-440,443-444,447-448,451-452,455-464,466-467,470-471,474-475,478-479,482-483,486-487,490-491,494-495,498-499,502-503,506-507,510-511,514-515,518-519,522-523,526-527,530-531,534-535,538-539,542-543,546-547,550-551,554-555,558-559,562-563,566-567,570-571,574-575,578-579,582-583,586-587,590-591,594-595,598-599,602-603,606-607,610-611,614,617-618,621-622,625-626,629-630,633-634,637-638,641-642,645-646,649-650,653-654,657-658,661-662,665-666,669-670,673-674,677-678,681-682,685-686,689-690,693-694,697-698,701-702,705-706,709-710,713-714,717-718,721,725-726,729-730,733-734,737-738,741-742,745-746,749-750,753-754,757-758,761-762,765-766,769-770,773-774,777-778,781-782,785-786,789-790,793-794,797-798,801-802,805-806,809-810,813-814,817-818,821-822,825-838,841,844-845,848-849,852-853,856-857,860-861,864-865,868-869,872-873,876-877,880-881,884-885,888-889,892-893,896-897,900-901,904-905,908-909,912-913,916-917,920-921,924-925,928-929,932-933,936-937,940-941,944-945,948-949,952-953,956-957,960-961,964-965,968-969,972-973,976-977,980-981,984-985,988-989,992-993,996-997,1000-1001,1004-1005,1008-1009,1012-1013,1016,1019-1020,1024,1028,1032,1036,1040,1044,1048,1052,1056,1059-1060,1063-1064,1067-1068,1071-1072,1075-1076,1079-1080,1083-1084,1087-1088,1091-1092,1095-1096,1099-1100,1103-1104,1107-1108,1111-1112,1115-1116,1119-1120,1123-1124,1127-1128,1131,1134-1135,1138-1139,1142-1143,1146-1147,1150-1151,1154-1155,1158-1159,1162-1163,1166-1167,1170-1171,1174-1175,1178-1179,1182-1183,1186-1187,1190-1191,1194-1195,1198-1199,1202-1203,1206-1207,1210-1211,1214-1215,1218-1219,1222-1223,1226-1227,1230-1231,1234-1235,1238-1239,1242-1243,1246-1247,1250-1251,1254-1255,1258-1259,1262-1263,1266-1267,1270-1271,1274-1275,1278-1279,1282-1283,1286-1287,1290-1291,1294-1295,1298-1299,1302-1303,1306-1307,1310-1311,1314-1315,1318-1319,1322-1323,1326-1327,1330-1331,1334-1335,1338-1339,1342-1343,1346-1347,1350-1351,1354-1355,1358-1359,1362-1363,1366-1367,1370-1371,1374-1375,1378-1379,1382-1383,1386-1387,1390-1391,1394-1395,1398-1399,1402-1403,1406-1407,1410-1411,1414,1419-1647
+tests/test_layout_teclado.py
+  s_584910f7c1e27f::t_22d0b2a8d4f965 1-57
+huntingaitan/visao/controle_avisos.py
+  s_edfc50aef2ee58::t_f485ef807edb5e 10,13-14,33,51-69,71,74-83,86-89
+aika_hunt_app/index.html
+  s_edfc50aef2ee58::t_05706c92c0c3cb 30
+  s_edfc50aef2ee58::t_f82fb9cb93b135 23,28
+  s_edfc50aef2ee58::t_80f6641f2276d1 31
+  s_edfc50aef2ee58::t_088ccf1ed5363b 2,5,8,25,34,45-48,56
+docs/mapeamento_buto/buto_floresta.csv
+  s_edfc50aef2ee58::t_ce8ec8af22a918 1-11
+tools/reabrir_retomada.py
+  s_edfc50aef2ee58::t_7a06b1b881f544 1-26
+huntingaitan/combate/reacoes.py
+  s_edfc50aef2ee58::t_ba7eb849ff1ef4 1-60,62-180
+  s_edfc50aef2ee58::t_9c6d1da9ca7373 61
+tools/testar_wgc.py
+  s_edfc50aef2ee58::t_bcb3346b0a6da6 1-29
+huntingaitan/entrada/layout_teclado.py
+  s_584910f7c1e27f::t_69209e8d4e53c4 1-37
+RELEASE_NOTES.md
+  s_edfc50aef2ee58::t_9754159f6bc614 1,3,5-13,15,17
+aika_hunt_app/package-lock.json
+  s_edfc50aef2ee58::t_99a1d1c960b448 3,9
+huntingaitan/combate/confirmacao_buff.py
+  s_edfc50aef2ee58::t_9f728d6104eb70 1-40
+huntingaitan/combate/hunt_core.py
+  s_edfc50aef2ee58::t_bff6db21101d92 87-93
+huntingaitan/combate/selecao_regional.py
+  s_edfc50aef2ee58::t_c96d5313e90357 67
+huntingaitan/combate/vigia_ataque.py
+  s_edfc50aef2ee58::t_a424747c456dfa 12
+huntingaitan/entrada/entrada_segura.py
+  s_edfc50aef2ee58::t_3d5ff24d5e43c7 4-33
+huntingaitan/rotas/geometria_jardim.py
+  s_edfc50aef2ee58::t_93eca52cd597e6 1-23
+huntingaitan/rotas/navegacao_grade.py
+  s_edfc50aef2ee58::t_d0dc39a89b2944 14-15,24,40-41
+huntingaitan/rotas/navegador_local.py
+  s_edfc50aef2ee58::t_73abc722e5847b 3,11-12,14-22,26,41-42,47,54-56,70,73,83-93,96-105,110
+huntingaitan/visao/captura_aika.py
+  s_edfc50aef2ee58::t_a09cf0d22ac20a 5,37
+huntingaitan/visao/captura_janela.py
+  s_edfc50aef2ee58::t_81f842e3b9adbb 1-62
+huntingaitan/visao/vigiar_janelas.py
+  s_edfc50aef2ee58::t_ba320f2ffaa998 5,15-16
+package-lock.json
+  s_edfc50aef2ee58::t_32bb6c8ed6a80f 3,9
+tests/test_buff_continuo.py
+  s_edfc50aef2ee58::t_7090eecd6fd739 1-43
+tests/test_navegador_local.py
+  s_edfc50aef2ee58::t_265583b3a58af8 6-25,80-98
+tests/test_segundo_plano.py
+  s_edfc50aef2ee58::t_830679a19e532c 1-86
+tools/abrir_atalhos_barra.py
+  s_edfc50aef2ee58::t_2259ab39a95da3 1-31
+tools/abrir_controles_barra.py
+  s_edfc50aef2ee58::t_c610fc1d349ba5 1-29
+tools/inspecionar_buffs_ativos.py
+  s_edfc50aef2ee58::t_958886b44795e6 1-19
+tools/reabrir_launcher.py
+  s_edfc50aef2ee58::t_6b88b98476bc88 1-19
+tools/testar_ctrl_janela.py
+  s_edfc50aef2ee58::t_3a137414a3f372 1-35
+tools/testar_mouse_camera.py
+  s_edfc50aef2ee58::t_2c8090a55fe8a7 1-49
+tools/testar_movimento_templaria.py
+  s_edfc50aef2ee58::t_9880552e671e22 1-28
+tools/validar_circuito_verit.py
+  s_edfc50aef2ee58::t_f0fe0866a68e11 2,9-10,12-20,22-27,33-34
+tools/validar_entrada_jardim.py
+  s_edfc50aef2ee58::t_c1f33e944a06d8 1-16
+.gitignore
+  s_edfc50aef2ee58::t_d69a259c5836e5 28-31
+CHANGELOG.md
+  s_edfc50aef2ee58::t_746735563e2f07 3-14
+README.md
+  s_edfc50aef2ee58::t_f48c094c06911c 33-34,44-45
+aika_hunt_app/fluxo.css
+  s_edfc50aef2ee58::t_ed78896040ef25 1-31
+docs/CIRCUITO_CROSHU.md
+  s_edfc50aef2ee58::t_46b9a303823c7c 1-29
+docs/CIRCUITO_PLANTAS.md
+  s_edfc50aef2ee58::t_24b8f26bb559bf 1-26
+docs/COMPARACAO_CANCELAMENTO.md
+  s_edfc50aef2ee58::t_639d458f706393 1-17
+docs/GRUPO_BUTO.md
+  s_edfc50aef2ee58::t_193a0fb76b7df2 1-19
+docs/MOTOR_SEGUNDO_PLANO.md
+  s_edfc50aef2ee58::t_2fefeeea5cd1d4 1-27
+docs/RENOVACAO_GIOVANNI.md
+  s_edfc50aef2ee58::t_ee6ad86b7ddbf5 1-85
+docs/SELETOR_CLIENTE.md
+  s_edfc50aef2ee58::t_da2fd0220fb465 1-11
+docs/TRANSICOES_CROSHU.md
+  s_edfc50aef2ee58::t_d2531ea3f578fa 1-13
+docs/TRANSICOES_TEMPLARIA.md
+  s_edfc50aef2ee58::t_1854a6c391b73e 1-27
+docs/mapeamento_buto/README.md
+  s_edfc50aef2ee58::t_fb94dbd7f7d7e9 1-34
+docs/mapeamento_croshu_cinzenta/README.md
+  s_edfc50aef2ee58::t_e29c8de5915ffd 1-35
+docs/mapeamento_croshu_ungor/README.md
+  s_edfc50aef2ee58::t_5969f97608dd41 1-31
+docs/mapeamento_plantas_ungor/README.md
+  s_edfc50aef2ee58::t_9f76df6b3066bb 1-30
+huntingaitan/combate/aproximacao_janela.py
+  s_edfc50aef2ee58::t_babf06c32760b9 1-15
+huntingaitan/combate/confirmacao_reacao.py
+  s_edfc50aef2ee58::t_8a4693dbddc8a5 1-105
+huntingaitan/combate/destravar_colisao.py
+  s_edfc50aef2ee58::t_d2e98617d0530e 1-24
+huntingaitan/combate/identidade_mob.py
+  s_edfc50aef2ee58::t_b66740d173ae4a 1-13
+huntingaitan/combate/normal_templaria.py
+  s_edfc50aef2ee58::t_78ef2ef9b71b7f 1-31
+huntingaitan/combate/teste_cancelamento.py
+  s_edfc50aef2ee58::t_0408160244b96a 1-30
+huntingaitan/dados/renovacao_giovanni.json
+  s_edfc50aef2ee58::t_5884f881176eab 1-50
+huntingaitan/leitura/clientes.py
+  s_edfc50aef2ee58::t_6c2297db18836d 1-20
+huntingaitan/leitura/inventario.py
+  s_edfc50aef2ee58::t_3e1b080fd2a8cd 1-53
+huntingaitan/leitura/janela_cliente.py
+  s_edfc50aef2ee58::t_e19c4079157743 1-66
+huntingaitan/rotas/circuito_croshu.py
+  s_edfc50aef2ee58::t_7717e88fe17adf 1-55
+huntingaitan/rotas/circuito_plantas.py
+  s_edfc50aef2ee58::t_6961b1afb50d60 1-34
+huntingaitan/rotas/evitar_mobs.py
+  s_edfc50aef2ee58::t_377a27f5d3de50 1-23
+huntingaitan/rotas/geometria_dg_jardim.py
+  s_edfc50aef2ee58::t_db96b719ce22bc 1-32
+huntingaitan/rotas/interface_jardim.py
+  s_edfc50aef2ee58::t_4d8c23c5c6cfd6 1-99
+huntingaitan/rotas/interface_npc.py
+  s_edfc50aef2ee58::t_63675fa585f367 1-182
+huntingaitan/rotas/recuperacao_jardim.py
+  s_edfc50aef2ee58::t_54dc048d2a743c 1-56
+huntingaitan/rotas/renovacao_giovanni.py
+  s_edfc50aef2ee58::t_2967462e8d1c2b 1-37
+huntingaitan/rotas/servico_npc.py
+  s_edfc50aef2ee58::t_81aa76361fbe24 1-93
+requirements-dev.txt
+  s_edfc50aef2ee58::t_45d301997a3206 1-5
+test_client_selector.cjs
+  s_edfc50aef2ee58::t_b3598fa45c2c30 1-13
+tests/test_aproximacao_janela.py
+  s_edfc50aef2ee58::t_1d49b3bb864dec 1-17
+tests/test_caca_templaria.py
+  s_edfc50aef2ee58::t_d9faa4b3b4e4c4 1-60
+tests/test_circuito_croshu.py
+  s_edfc50aef2ee58::t_cc9a0a80366582 1-94
+tests/test_circuito_plantas.py
+  s_edfc50aef2ee58::t_8e86c7828f0e2e 1-81
+tests/test_confirmacao_buff.py
+  s_edfc50aef2ee58::t_fa09502905ccad 1-36
+tests/test_confirmacao_reacao.py
+  s_edfc50aef2ee58::t_ff307925d46db7 1-84
+tests/test_destravar_colisao.py
+  s_edfc50aef2ee58::t_ddd863dd47af0a 1-26
+tests/test_diagnostico_reacoes.py
+  s_edfc50aef2ee58::t_6c4a328c7ce6ac 1-48
+tests/test_dialogos_evento.py
+  s_edfc50aef2ee58::t_d99524a1c0e20b 106
+tests/test_entrada_motor.py
+  s_edfc50aef2ee58::t_89cefc95988c29 1-98
+tests/test_janela_cliente.py
+  s_edfc50aef2ee58::t_20fa5ffbd32e65 1-43
+tests/test_limpeza_templaria.py
+  s_edfc50aef2ee58::t_494b9a54291c6b 1-73
+tests/test_motor_limpeza_templaria.py
+  s_edfc50aef2ee58::t_0de045fc276629 1-92
+tests/test_normal_templaria.py
+  s_edfc50aef2ee58::t_c840d33d564342 1-42
+tests/test_perfil_templario.py
+  s_edfc50aef2ee58::t_e7bfb3b86890c8 1-29
+tests/test_ponte_sem_cena.py
+  s_edfc50aef2ee58::t_51c15c5bb10b9a 1-18
+tests/test_prazo_pos_aproximacao.py
+  s_edfc50aef2ee58::t_bfda69ce526256 1-43
+tests/test_recuperacao_jardim.py
+  s_edfc50aef2ee58::t_d715a8df761cf0 1-66
+tests/test_renovacao_giovanni.py
+  s_edfc50aef2ee58::t_4e5727b53ff3a1 1-35
+tests/test_seletor_cliente.py
+  s_edfc50aef2ee58::t_8ea99c8e067f54 1-42
+tests/test_templario_pve.py
+  s_edfc50aef2ee58::t_e021c2f0b868a8 1-31
+tests/test_teste_cancelamento.py
+  s_edfc50aef2ee58::t_2e01855e05e86f 1-38
+tests/test_transicoes_croshu.py
+  s_edfc50aef2ee58::t_37e1c0c9b84eb6 1-33
+tests/test_transicoes_templaria.py
+  s_edfc50aef2ee58::t_e0c8795e3e0930 1-46
+tools/abrir_dois_motor_estavel.py
+  s_edfc50aef2ee58::t_f83c747854d586 1-12
+tools/analisar_gold_npc.py
+  s_edfc50aef2ee58::t_fd4a3c588f9ba0 1-51
+tools/build_backend.py
+  s_edfc50aef2ee58::t_606837cf524844 11
+tools/comparar_cancelamento_templaria.py
+  s_edfc50aef2ee58::t_915d46766bbb0c 1-93
+tools/conferir_atalho_desbugar.py
+  s_edfc50aef2ee58::t_3403588f3a7e41 1-28
+tools/conferir_identidade_mutantes.py
+  s_edfc50aef2ee58::t_d9433369713b72 1-23
+tools/mapear_buto_floresta.py
+  s_edfc50aef2ee58::t_6bcd99a07662a5 1-81
+tools/mapear_croshu_ungor.py
+  s_edfc50aef2ee58::t_f0810cfe54899b 1-75
+tools/mapear_plantas_ungor.py
+  s_edfc50aef2ee58::t_a3a78b8a3dcfe8 1-88
+tools/preflight_giovanni.py
+  s_edfc50aef2ee58::t_70a67e7fa39079 1-27
+tools/recuperar_ponte_giovanni.py
+  s_edfc50aef2ee58::t_cced54d26d33dc 1-69
+tools/reservar_f5_cidade.py
+  s_edfc50aef2ee58::t_b05ffbd0957e10 1-42
+tools/testar_ciclo_giovanni.py
+  s_edfc50aef2ee58::t_62c990cecabf1c 1-203
+tools/validar_circuito_cinzas.py
+  s_edfc50aef2ee58::t_a49504b83a0bc5 1-28
+tools/validar_circuito_croshu.py
+  s_edfc50aef2ee58::t_2b0825ff255fa2 1-60
+tools/validar_circuito_plantas.py
+  s_edfc50aef2ee58::t_9edb3ccf83f7fd 1-26
+tools/validar_circuito_termes.py
+  s_edfc50aef2ee58::t_aaf30e248b2171 9,29-31
+tools/validar_geometria_jardim.py
+  s_edfc50aef2ee58::t_325f8d26581a79 1-21
+tools/validar_motor_estavel.py
+  s_edfc50aef2ee58::t_8e9015bc840f2b 1-83
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.6",
+  "base_commit_sha": "6a80efdeb9e2b30e50c1e95ab354c2307bce6a51",
+  "prompts": {},
+  "sessions": {
+    "s_584910f7c1e27f": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "764d1c0c-78a7-4639-a7b2-8e651e7e4374",
+        "model": "claude-sonnet-5-5"
+      },
+      "human_author": "Gabriel Renovato <86806861+GabrielRenovato@users.noreply.github.com>"
+    },
+    "s_edfc50aef2ee58": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "01a1e01c-4c9b-7e00-b2fb-9c7ef8050eed",
+        "model": "unknown"
+      },
+      "human_author": "Gabriel Renovato <86806861+GabrielRenovato@users.noreply.github.com>"
+    }
+  }
+}
