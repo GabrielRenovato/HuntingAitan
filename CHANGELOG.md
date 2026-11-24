@@ -1,5 +1,17 @@
 # Alterações
 
+## 0.1.0-beta.33 — 2026-11-24
+
+- Consolida a organização do motor, layouts por hash e gravação/reprodução de leituras para diagnóstico.
+- Adiciona seletor de cliente, editor visual de regras e leitura de barra, recargas e efeitos ativos.
+- Inclui a ponte experimental na thread da janela para câmera, seleção, habilidades e deslocamento, com verificação de versão, isolamento por cliente e remoção confirmada.
+- Compartilha seleção por custo de caminho e transições rápidas entre circuitos de Verits e Croshus; acrescenta circuitos de Butos, plantas e Croshus e limpeza local da templária.
+- Corrige a passagem excluída na recuperação de colisão, layout do apóstrofo e remoção da ponte quando a cena está indisponível durante teleporte.
+- Melhora recuperação do alvo, cadência, confirmação de buffs/curas, navegação e operações de entrada, saída, reparo e venda no Jardim.
+- Mantém a renovação de Giovanni desativada. Os testes dessa investigação não confirmaram a concessão da bênção nem um ciclo completo.
+- Capturas locais completas com chat ficam fora da publicação; as regressões correspondentes usam dados de OCR simulados e imagens genéricas.
+- Validação local: 659 testes Python, verificações Node do painel/atualizador e emulação x86 da ponte aprovados.
+
 ## 0.1.0-beta.28 — 2026-11-20
 
 - Repetidor do padrão 1RR1WW independente de perfil externo, com pausa entre teclas e intervalo entre sequências separados.

@@ -1,0 +1,1334 @@
+{
+  "schema": 1,
+  "limites": [
+    1810,
+    1050,
+    1900,
+    1130
+  ],
+  "largura": 90,
+  "altura": 80,
+  "mascara": "eNrFWNuWhCAMa/7/p/fsKgq9kQKe9WVmlAkxvVIR94K9A0h+4XdRug6LyPeqDBkWmcNt0GCFiG4m0AUeNEQJ2dcC/pMK7qV8IJCBKVHOkLehC8i8Hn9O6P7//TI+nUOjlwKSQCtg2UN+EF+Y5zcJ3NbH0YbmxZcyUxv2OkoYLCpCui3mrtZ4uJsPSlwZh+b8oEeJE26oIkRV+0ICFsMi1HNW/H7W5RaQ56RlJjACZHgCjqLlPvEGgHEqhxUU6SwVu8aOfZVU2hDtI4ZBzsxhiDZlSMpIXWL0NmNJTbInE5ToKSmIAy0zjwicVj25hYkEdKI/r/IwCQpE69J7KnLCZrNmCEe/0VyU8ibJa0JjsSC16Ne2+4HN7w0DmZPwmIbdsK3nT5eMdI3QxeLNQoitW7hsagyMWEf2zJj2BjXe4qjhuMO8EYab6AcXGJ2qUDXhlq5OdLaLsrZAVMkA9QFOzNDKNjpZmw3v6xz36n07LDTXJTyWnHZ9mFRv2K2ShmvMMn1JcN4fhYYk9DM3qZklmwfh5QNi5fhMIQft+WxAQECH5Uz2kVdmA1coL0g9O/4Rx8Nlw+56R3qiPM+ZS5jHPPwA2a+QP+SMj16LK0nyr5dN+UegjgaDbny2iJraJORZkJqvqX6dGKCuNG9b08Vaf1MbtuKjZAF+OmS7oxl0ofnAYphkMppRWUm2TBnnIMsn2berxoEspSY/UI3nkQz2nuK34jhjvRNrWT3Tg6VVROiJ6gngYGZyqnz5yDlwo/MDy+UFFA==",
+  "fontes": {
+    "Objects/MeshList.txt": "75b1f52c3913488e9087f2190fc37a70b48cbf538c818c91458aefbfe4a73fca",
+    "Env/z010704.dat": "c8715c4c6bdb81389555f41d20cac3f06b962941c184570ba1260b033056c850",
+    "Objects//mirzaF0007.MS3": "e8d9f1148e62bee71c55961165af5669247e38c2d1cfe67acc9ebf97a8c5a3da",
+    "Objects//mirzaF0046.MS3": "029a51416b54407ea22d4a0af2c26cf4a7c8006dbfd49719f4fb611212bfcf0b",
+    "Objects//mirzaF0022.MS3": "a29362101a6a08e23a93964a0bf3c4ee9f99724b72ec8a4b70339b10841ded4b",
+    "Objects//mirzaF0003.MS3": "a035d2a1281432ca8ed95223606d491ec5daa69887953474a34309339c5f1ea7",
+    "Objects//mirzaF0021.MS3": "485ec8631baed253fc4d926dd00e25a7d17f1f9329d6990cae2403c36a153774",
+    "Objects//mirzaF0023.MS3": "43f290db75039e27a9a849540f41a4b42ce5982e81ed2dac2bec0211446b356b",
+    "Objects//mirzaF0005.MS3": "f96c3bf1f8b1465138ffa80815b781b740ab26b0f6fa4bb63502a332da73a51e",
+    "Objects//FL13010201.MS3": "86c7ab2bee9d28aeb01b3ce4bc3bb3f91a08407d722764a9a66413a7954cc26e",
+    "Objects//mirzaF0006.MS3": "1083f5db191ac803a76d3c228b62bf20bc4cb4a276b3c1153c05349314d7d8d5",
+    "Objects//mirzaF0004.MS3": "536d6eb111754e079673fe0533f0e98037b04f0df1f1a1fa917ab514e7d3e02e",
+    "Objects//RlenfF0018.MS3": "32ed736ef0664defc70ab9e5449751044797bd2a032355182cd92e65eee539e5",
+    "Objects//mirzaF0049.MS3": "62ae35a0d6c71be77fcd465fe01cf0f4c274347454bdee386f772deba04770e3",
+    "Objects//mirzaF0048.MS3": "7c750bdc15f3143f18e654f6790c03dcac366a5d82861019237881058897d2e4",
+    "Objects//mirzaF0051.MS3": "18c5dd24802859d6ccf10ba02c82887e7dc3e1b594c42ebe706f36c2a07f9d00",
+    "Objects//mirzaF0050.MS3": "03ddce0750c4e30ea1f90ddfdf013669902d97c03bed4acf2f573e91cc856252",
+    "Objects//mirzaF0020.MS3": "7c9edf28e7ebebbbe43162049a99591cea388377079a11798ad09fccbff2db6e",
+    "Objects//FL13010101.MS3": "d844840f085a3ac423a2c51eee55a657968c4fb6360da0eced1042a4bef56c5f",
+    "Objects//mirzaF0047.MS3": "505fd29d0d50599c2c069847e3091d85b7b4bbe1618c0b9c3357970e1e4dbcae",
+    "Objects//nlafarm078.MS3": "bef43e0e6dde8972657e41fa5901bbe1bc35e13dd84d5ee134294a25a133d3c9",
+    "Objects//amaN000014.MS3": "c3523c83fd55849e9f7eb2dff6ff680495b799d95febcad26c92393054843a8b",
+    "Objects//mirzaF0018.MS3": "dd006e5ab3c963dbeda5c4c7fca84a77d92115b1fe0721409b38f464a102f6e2",
+    "Objects//mirzaF0034.MS3": "4ab799e25884ce0649a887aad1625727aadd335f5dfcd79a422cbdd68ff8d2e6",
+    "Objects//mirzaF0019.MS3": "502df476c41e3215ad3f51ec32c15180c46239c59d31b50c775ccdf0652f09fd",
+    "Objects//nlafarm042.MS3": "07f1218c9562f464d0b6df53639a2bbbd9f81bdb1bd4e2b07931ffa80d9c9241",
+    "Objects//lakifarm01.MS3": "2099858533de215eebed70c330cc7e08a00a4dab5fc3b80434cc5ee1f6cb418c",
+    "Objects//nlafarm023.MS3": "115e58b07d3491551eda1c2e4f73b5486882c5f059c6e3971dc1d01e11022e5f",
+    "Objects//nlafarm047.MS3": "1c4c35f4e62f9226ca9b4c5f0e64e6b313fa949ed4bfe1ab3da1470e79fda71c",
+    "Objects//amaN000013.MS3": "4a75e156f2b2bd36b9429fcbfb1278b3a00daf7a31e13cc4ae78c3b96dacba7c",
+    "Objects//amaN000004.MS3": "3028e52e0cd5cfcf1324ac23f614b5dd29a6ee05d15aae5ba8c083eec18aed00",
+    "Objects//nlafarm074.MS3": "fd350601a8fac438f6c421a0c7fa3ace7c1785b3b5921507c1a85d2e7b245213",
+    "Objects//nlafarm076.MS3": "4eed564419b5405dc399d0c46740d0930ec74cfef34843eaa18a7b75cf3e22c4",
+    "Objects//nlafarm049.MS3": "2ae1ee38d94ef7893328783929180799e8d1106da00513a9646e37b5dfd42423",
+    "Objects//GR01010201.MS3": "3afd4207057e21980d6e1c8f2f07808d6769bf9b4ce4b415a2e5a906809e2c63",
+    "Objects//amaN000015.MS3": "9f10baf6a8d3c0eb547c0ceef23b1b314bf36b006ad3caa777cf58733cdd341c",
+    "Objects//mirzaF0016.MS3": "486b6881839fc372402facaec1f17fe78171720065088d82912b4ef0a28aa0e5",
+    "Objects//lakifarm02.MS3": "c9643c0a011157fc16c241a1871149d8abd3c3b90f084368a463939e988fcb46",
+    "Objects//nlafarm075.MS3": "2ee3c9a989635d9a9e824a05303ca539cd457df2e42569302b17a33be358e511",
+    "Objects//lakifarm03.MS3": "4bbb756e1b841942549b2c0b2f4521d8742bca66f25c6aedebdda455aca8300e",
+    "Objects//mirzaF0052.MS3": "5343fc4a632e0cc34dedb98268a49865e89d0e60bbb8d83c71fd11f58feaf577",
+    "Objects//mirzaF0015.MS3": "207d5d58b96d69427231b629ed0e4a244c62f00bdce9d6f13f9371dfb7eac86e",
+    "Objects//TR12010101.MS3": "23ea341c64c63fee2f71ef672893881da358ec5baf5f7f1c6ed199ed563be49a",
+    "Objects//TR12010201.MS3": "d0d0abb5ccdbce0d243eed214dc4f335220fb0be6084a007b5dea07ed098f770",
+    "Objects//nlafarm026.MS3": "c2b0985e87eae4a0b9f509dc519f80efdb795154934fc66883fe73f6ccef505d",
+    "Objects//nlafarm077.MS3": "c48434c6b4fac8414f9556f56580686c6867de046137e0b743b21dbb217c7b45",
+    "Objects//nlafarm064.MS3": "d79ac55f7c9151e3add2e4bc2f43e496522e9d4d3478ed908ab652b33b7a15d7",
+    "Objects//nlafarm051.MS3": "7b3ae9a860595745505c87e6c3dde8d2d839f58ed9598d8ed1eae42f1e889822",
+    "Objects//nlafarm027.MS3": "654ffbabbbeeb9f29b01eff1201b1a3bc146eaf12b1dfc3e0d44ccaedc1b9fa9",
+    "Objects//nlafarm019.MS3": "37639560558f32f73f21a6206fb5fc1df81ae54b434ecda75f3738e758fdc5d7",
+    "Objects//nlafarm044.MS3": "67913ca1c98ec5f240bed7d94774f6e888427a62156298ad470f8967a5be0069",
+    "Objects//GR03010901.MS3": "41b62cc2fd1bc5bf5ae600bcf946e5f8c3f4098f4cf7b6f414796868e583376d",
+    "Objects//amaN000007.MS3": "f0d11a2cef014b5a2cc7082064962f136c47498bf06d6ba1d7ef9235e2e8effb",
+    "Objects//GR02010302.MS3": "da8c35e1c0d799deace457a9c091b9ab27d35e19cd7db82b036091850e7efa45",
+    "Objects//GR02010301.MS3": "3fd5d0e0ddc87c74f463a13ed93d39b8d5d4cd16aad03e241374c168bad31f65",
+    "Objects//GR02010303.MS3": "7b241c75a0e575737d83ee7f07d39c2e7cb0440ed92656a6f5e6b63c073e9b57",
+    "Objects//GR03010701.MS3": "55677e18c005013dabd1c978f4baffe1a4ff43da32f78ec208677e484956de20",
+    "Objects//GR03010702.MS3": "8408622b5d41c9f5f86cde9bbd62a3aa9f6f65f255452239637b95b3fd2932e1",
+    "Objects//GR02010502.MS3": "06dcfac9fab507084dc171003711ce3d238da1087a80896b9b02dc318ce0389d",
+    "Objects//GR02010501.MS3": "08dc0a4852c9e656d212260c29263a87ad70ef45d514095fa2dfeb828b67901f",
+    "Objects//nlafarm020.MS3": "4dfad8586c0960bd459e0c28c933e4acb4946476b21debf58db2b6cbbe2f9f2b",
+    "Objects//TR12010301.MS3": "ee2c9f500008b3e615f027a55f8f81089a8814cedfcfb6b9851b4160fb1299bb",
+    "Objects//amaN000005.MS3": "92a3ccdd14bf1fb5b1a807ff7b5ca1c33490b67ff558941952796eb70a9bd87d",
+    "Objects//nlafarm041.MS3": "2ccce4aa554ea39438604e0778a97261b4c3ccba5ee4f25fa1123e27a904510a",
+    "Objects//GR03010101.MS3": "b7f07b2fe449f3568ee66b404159881f5af5382507a1b22fbed4d89fa861f9e6",
+    "Objects//nlafarm028.MS3": "df4e009aaf739151f759314d9b3da7e015fb4823a6977389303516260cd3a880",
+    "Objects//mirzaN0003.MS3": "7129b0fb66109d6d398d5184519679834059489c27f16cb864485e26864e1021",
+    "Objects//nlafarm043.MS3": "9718b6f94628acc28fc9bd6c0e078dc1d8a9372cec05c8435f9d0ef9dfd2e6da",
+    "Objects//mirzaN0004.MS3": "3eb544e25800810c0c7c9ea442c4fe39a725015028d57fef5e770a9b6b0293ae",
+    "Objects//nlafarm062.MS3": "0a9d86c94edd90cf1f693c97301d106a93c6006f9b3d8f8c69e66da1cc9100d9",
+    "Objects//nlafarm031.MS3": "b9799d75042a7950e88f6b94b6bb4012346fef3eb972b52ff286ba9ea18bbc39",
+    "Objects//nlafarm040.MS3": "884688db195c96cc99874444577922337ebf44e6f5598d21fe45c4172814e12e",
+    "Objects//GR05010401.MS3": "80ce01f853a7201835542f3d6229fac63610ba6d310d09d678cd1423f73a603e",
+    "Env/AttributeS01.dat": "f50de453e46f8e89366d6651d2bbb505703978ab898bc20e60590e30a1a04cdc",
+    "Env/z01.hgt": "2d965763c5bb5d2762d6e41e6010a7ae06285b470f2aeae7529b1a23cc4dc020"
+  },
+  "objetos": [
+    {
+      "id": 3646,
+      "modelo": "Objects//mirzaF0046.MS3",
+      "pos": [
+        1867.0,
+        1053.0,
+        31.30000114440918
+      ],
+      "rot": [
+        -2.356194257736206,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 276
+    },
+    {
+      "id": 3592,
+      "modelo": "Objects//mirzaF0022.MS3",
+      "pos": [
+        1830.0,
+        1044.0,
+        55.0
+      ],
+      "rot": [
+        -0.4188790023326874,
+        0.0,
+        -0.5235987305641174
+      ],
+      "escala": 1.0,
+      "celulas": 7
+    },
+    {
+      "id": 3591,
+      "modelo": "Objects//mirzaF0021.MS3",
+      "pos": [
+        1822.0,
+        1084.5,
+        34.350059509277344
+      ],
+      "rot": [
+        0.2617993652820587,
+        0.0,
+        0.0
+      ],
+      "escala": 1.2099997997283936,
+      "celulas": 215
+    },
+    {
+      "id": 3593,
+      "modelo": "Objects//mirzaF0023.MS3",
+      "pos": [
+        1811.0,
+        1104.0,
+        36.99998474121094
+      ],
+      "rot": [
+        0.4363323450088501,
+        0.5235987901687622,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 31
+    },
+    {
+      "id": 3593,
+      "modelo": "Objects//mirzaF0023.MS3",
+      "pos": [
+        1852.5,
+        1075.0,
+        32.90005111694336
+      ],
+      "rot": [
+        3.787355899810791,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 90
+    },
+    {
+      "id": 3590,
+      "modelo": "Objects//mirzaF0020.MS3",
+      "pos": [
+        1900.5,
+        1132.5,
+        5.299999713897705
+      ],
+      "rot": [
+        -0.6108653545379639,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 5
+    },
+    {
+      "id": 3647,
+      "modelo": "Objects//mirzaF0047.MS3",
+      "pos": [
+        1834.5,
+        1089.5,
+        31.70003890991211
+      ],
+      "rot": [
+        -2.6179938316345215,
+        0.0,
+        0.0
+      ],
+      "escala": 0.49000048637390137,
+      "celulas": 38
+    },
+    {
+      "id": 2594,
+      "modelo": "Objects//nlafarm078.MS3",
+      "pos": [
+        1888.5,
+        1044.5,
+        32.60002899169922
+      ],
+      "rot": [
+        -2.0943949222564697,
+        0.0,
+        0.0
+      ],
+      "escala": 1.1899998188018799,
+      "celulas": 1
+    },
+    {
+      "id": 2513,
+      "modelo": "Objects//amaN000014.MS3",
+      "pos": [
+        1893.5,
+        1054.5,
+        33.94998550415039
+      ],
+      "rot": [
+        0.3490658402442932,
+        -0.7853980660438538,
+        -0.6108651757240295
+      ],
+      "escala": 1.0,
+      "celulas": 15
+    },
+    {
+      "id": 3589,
+      "modelo": "Objects//mirzaF0019.MS3",
+      "pos": [
+        1863.0,
+        1127.5,
+        4.599998950958252
+      ],
+      "rot": [
+        -0.6981317400932312,
+        0.0872664824128151,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 17
+    },
+    {
+      "id": 3589,
+      "modelo": "Objects//mirzaF0019.MS3",
+      "pos": [
+        1857.0,
+        1132.5,
+        4.199997901916504
+      ],
+      "rot": [
+        0.3490658700466156,
+        0.1745329201221466,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 7
+    },
+    {
+      "id": 2631,
+      "modelo": "Objects//nlafarm042.MS3",
+      "pos": [
+        1896.0,
+        1061.5,
+        31.399999618530273
+      ],
+      "rot": [
+        0.9599310159683228,
+        1.4835296869277954,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 18
+    },
+    {
+      "id": 2631,
+      "modelo": "Objects//nlafarm042.MS3",
+      "pos": [
+        1838.0,
+        1067.5,
+        33.100013732910156
+      ],
+      "rot": [
+        -0.6981316208839417,
+        0.0,
+        0.0
+      ],
+      "escala": 0.8900001049041748,
+      "celulas": 10
+    },
+    {
+      "id": 2631,
+      "modelo": "Objects//nlafarm042.MS3",
+      "pos": [
+        1895.5,
+        1054.5,
+        32.1500129699707
+      ],
+      "rot": [
+        -0.8726645112037659,
+        0.0,
+        0.0
+      ],
+      "escala": 1.249999761581421,
+      "celulas": 8
+    },
+    {
+      "id": 2631,
+      "modelo": "Objects//nlafarm042.MS3",
+      "pos": [
+        1894.7599487304688,
+        1056.5,
+        30.84999656677246
+      ],
+      "rot": [
+        1.919861912727356,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 8
+    },
+    {
+      "id": 2631,
+      "modelo": "Objects//nlafarm042.MS3",
+      "pos": [
+        1837.0,
+        1068.5,
+        33.80004119873047
+      ],
+      "rot": [
+        1.134463906288147,
+        0.0,
+        0.0
+      ],
+      "escala": 1.3799996376037598,
+      "celulas": 12
+    },
+    {
+      "id": 4591,
+      "modelo": "Objects//lakifarm01.MS3",
+      "pos": [
+        1862.2699508666992,
+        1124.5,
+        1.3000017404556274
+      ],
+      "rot": [
+        -0.9599310159683228,
+        -0.1745329350233078,
+        0.0
+      ],
+      "escala": 1.1899998188018799,
+      "celulas": 20
+    },
+    {
+      "id": 4591,
+      "modelo": "Objects//lakifarm01.MS3",
+      "pos": [
+        1880.5,
+        1096.0,
+        21.424989700317383
+      ],
+      "rot": [
+        2.0943949222564697,
+        0.0,
+        -0.2617994546890259
+      ],
+      "escala": 1.4099996089935303,
+      "celulas": 26
+    },
+    {
+      "id": 4591,
+      "modelo": "Objects//lakifarm01.MS3",
+      "pos": [
+        1887.0,
+        1087.0,
+        21.59999656677246
+      ],
+      "rot": [
+        1.3962632417678833,
+        1.0471974611282349,
+        0.6981316804885864
+      ],
+      "escala": 1.8299992084503174,
+      "celulas": 17
+    },
+    {
+      "id": 4591,
+      "modelo": "Objects//lakifarm01.MS3",
+      "pos": [
+        1840.5,
+        1120.5,
+        5.799983501434326
+      ],
+      "rot": [
+        0.8726645708084106,
+        0.8726645708084106,
+        0.9599310159683228
+      ],
+      "escala": 1.729999303817749,
+      "celulas": 27
+    },
+    {
+      "id": 4591,
+      "modelo": "Objects//lakifarm01.MS3",
+      "pos": [
+        1858.690040588379,
+        1115.6199188232422,
+        11.125003814697266
+      ],
+      "rot": [
+        2.6179935932159424,
+        -1.4835296869277954,
+        -1.4901161193847656e-08
+      ],
+      "escala": 1.7599992752075195,
+      "celulas": 32
+    },
+    {
+      "id": 2636,
+      "modelo": "Objects//nlafarm047.MS3",
+      "pos": [
+        1840.0099983215332,
+        1072.0,
+        32.674991607666016
+      ],
+      "rot": [
+        -0.5235987901687622,
+        -0.2617993950843811,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 19
+    },
+    {
+      "id": 2512,
+      "modelo": "Objects//amaN000013.MS3",
+      "pos": [
+        1899.5,
+        1063.5,
+        31.374998092651367
+      ],
+      "rot": [
+        -0.2617993950843811,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 3
+    },
+    {
+      "id": 2510,
+      "modelo": "Objects//amaN000004.MS3",
+      "pos": [
+        1876.0,
+        1062.5,
+        32.45000076293945
+      ],
+      "rot": [
+        0.6981316208839417,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 1
+    },
+    {
+      "id": 2638,
+      "modelo": "Objects//nlafarm049.MS3",
+      "pos": [
+        1879.9299850463867,
+        1077.489917755127,
+        30.69999885559082
+      ],
+      "rot": [
+        -5.148720741271973,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 23
+    },
+    {
+      "id": 2638,
+      "modelo": "Objects//nlafarm049.MS3",
+      "pos": [
+        1889.0,
+        1113.0,
+        9.424992561340332
+      ],
+      "rot": [
+        2.443460702896118,
+        0.0,
+        1.0471974611282349
+      ],
+      "escala": 1.2899997234344482,
+      "celulas": 20
+    },
+    {
+      "id": 4592,
+      "modelo": "Objects//lakifarm02.MS3",
+      "pos": [
+        1845.0,
+        1116.5,
+        20.449983596801758
+      ],
+      "rot": [
+        0.0,
+        0.3490658700466156,
+        0.0872664675116539
+      ],
+      "escala": 1.5199995040893555,
+      "celulas": 9
+    },
+    {
+      "id": 4592,
+      "modelo": "Objects//lakifarm02.MS3",
+      "pos": [
+        1870.0,
+        1113.5,
+        19.624988555908203
+      ],
+      "rot": [
+        -1.221730351448059,
+        -0.4363323152065277,
+        0.0
+      ],
+      "escala": 1.2699997425079346,
+      "celulas": 22
+    },
+    {
+      "id": 4593,
+      "modelo": "Objects//lakifarm03.MS3",
+      "pos": [
+        1856.5,
+        1115.5,
+        24.67499351501465
+      ],
+      "rot": [
+        -1.4835296869277954,
+        -0.2617993950843811,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 19
+    },
+    {
+      "id": 3585,
+      "modelo": "Objects//mirzaF0015.MS3",
+      "pos": [
+        1882.5,
+        1090.5,
+        32.47500991821289
+      ],
+      "rot": [
+        0.8726645708084106,
+        -0.0872664526104927,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 14
+    },
+    {
+      "id": 2653,
+      "modelo": "Objects//nlafarm064.MS3",
+      "pos": [
+        1875.0,
+        1094.5,
+        30.675661087036133
+      ],
+      "rot": [
+        1.919861912727356,
+        0.0,
+        0.0
+      ],
+      "escala": 2.089998960494995,
+      "celulas": 14
+    },
+    {
+      "id": 2653,
+      "modelo": "Objects//nlafarm064.MS3",
+      "pos": [
+        1902.5,
+        1082.5,
+        30.77499771118164
+      ],
+      "rot": [
+        -1.3089967966079712,
+        0.0,
+        0.0
+      ],
+      "escala": 2.159998893737793,
+      "celulas": 4
+    },
+    {
+      "id": 2653,
+      "modelo": "Objects//nlafarm064.MS3",
+      "pos": [
+        1884.0,
+        1111.0,
+        18.000001907348633
+      ],
+      "rot": [
+        1.8325955867767334,
+        0.2617993950843811,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 6
+    },
+    {
+      "id": 2653,
+      "modelo": "Objects//nlafarm064.MS3",
+      "pos": [
+        1866.0,
+        1114.5,
+        23.990280151367188
+      ],
+      "rot": [
+        1.7453290224075317,
+        0.1745329201221466,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 5
+    },
+    {
+      "id": 2653,
+      "modelo": "Objects//nlafarm064.MS3",
+      "pos": [
+        1861.0,
+        1115.5,
+        24.981428146362305
+      ],
+      "rot": [
+        1.7453291416168213,
+        0.1745329201221466,
+        0.0
+      ],
+      "escala": 1.1299998760223389,
+      "celulas": 5
+    },
+    {
+      "id": 2653,
+      "modelo": "Objects//nlafarm064.MS3",
+      "pos": [
+        1879.5,
+        1112.5,
+        20.47500228881836
+      ],
+      "rot": [
+        1.7453290224075317,
+        0.5235987901687622,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 6
+    },
+    {
+      "id": 2653,
+      "modelo": "Objects//nlafarm064.MS3",
+      "pos": [
+        1887.0,
+        1089.5,
+        31.375
+      ],
+      "rot": [
+        -4.1887898445129395,
+        0.0,
+        0.0
+      ],
+      "escala": 1.4599995613098145,
+      "celulas": 10
+    },
+    {
+      "id": 2640,
+      "modelo": "Objects//nlafarm051.MS3",
+      "pos": [
+        1887.0,
+        1119.5,
+        6.450000762939453
+      ],
+      "rot": [
+        -2.6179935932159424,
+        0.0,
+        -0.2617993950843811
+      ],
+      "escala": 1.0,
+      "celulas": 7
+    },
+    {
+      "id": 2640,
+      "modelo": "Objects//nlafarm051.MS3",
+      "pos": [
+        1891.0,
+        1069.0,
+        31.200000762939453
+      ],
+      "rot": [
+        -2.181661367416382,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 11
+    },
+    {
+      "id": 2633,
+      "modelo": "Objects//nlafarm044.MS3",
+      "pos": [
+        1846.5,
+        1108.5,
+        28.72499656677246
+      ],
+      "rot": [
+        0.0,
+        0.1745329201221466,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 4
+    },
+    {
+      "id": 2633,
+      "modelo": "Objects//nlafarm044.MS3",
+      "pos": [
+        1866.0,
+        1093.5,
+        32.125003814697266
+      ],
+      "rot": [
+        1.0471975803375244,
+        -0.3490658700466156,
+        0.08726642280817032
+      ],
+      "escala": 1.1499998569488525,
+      "celulas": 7
+    },
+    {
+      "id": 2506,
+      "modelo": "Objects//amaN000007.MS3",
+      "pos": [
+        1839.5,
+        1088.5,
+        32.2318229675293
+      ],
+      "rot": [
+        0.6981316804885864,
+        0.0,
+        -0.3490658700466156
+      ],
+      "escala": 1.8699991703033447,
+      "celulas": 5
+    },
+    {
+      "id": 2506,
+      "modelo": "Objects//amaN000007.MS3",
+      "pos": [
+        1832.5,
+        1095.0,
+        32.543453216552734
+      ],
+      "rot": [
+        -1.134463906288147,
+        0.2617993950843811,
+        -0.0872664824128151
+      ],
+      "escala": 1.0,
+      "celulas": 3
+    },
+    {
+      "id": 2506,
+      "modelo": "Objects//amaN000007.MS3",
+      "pos": [
+        1864.5,
+        1076.5,
+        31.897430419921875
+      ],
+      "rot": [
+        -0.9599310159683228,
+        0.3490658700466156,
+        0.0
+      ],
+      "escala": 1.7699992656707764,
+      "celulas": 3
+    },
+    {
+      "id": 2506,
+      "modelo": "Objects//amaN000007.MS3",
+      "pos": [
+        1861.5,
+        1075.5,
+        32.17766571044922
+      ],
+      "rot": [
+        0.8726645708084106,
+        -1.3089967966079712,
+        0.1745329350233078
+      ],
+      "escala": 1.429999589920044,
+      "celulas": 6
+    },
+    {
+      "id": 2506,
+      "modelo": "Objects//amaN000007.MS3",
+      "pos": [
+        1861.0,
+        1077.5,
+        32.045745849609375
+      ],
+      "rot": [
+        -0.17453289031982422,
+        -1.221730351448059,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 5
+    },
+    {
+      "id": 7532,
+      "modelo": "Objects//TR12010301.MS3",
+      "pos": [
+        1894.0,
+        1062.5,
+        31.399999618530273
+      ],
+      "rot": [
+        2.443460702896118,
+        0.0,
+        0.0
+      ],
+      "escala": 1.429999589920044,
+      "celulas": 11
+    },
+    {
+      "id": 7532,
+      "modelo": "Objects//TR12010301.MS3",
+      "pos": [
+        1895.0,
+        1058.5,
+        31.700000762939453
+      ],
+      "rot": [
+        0.9599310159683228,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 4
+    },
+    {
+      "id": 7532,
+      "modelo": "Objects//TR12010301.MS3",
+      "pos": [
+        1851.0,
+        1068.5,
+        31.875091552734375
+      ],
+      "rot": [
+        1.134463906288147,
+        0.0,
+        0.0
+      ],
+      "escala": 1.5399994850158691,
+      "celulas": 10
+    },
+    {
+      "id": 7532,
+      "modelo": "Objects//TR12010301.MS3",
+      "pos": [
+        1896.5,
+        1079.5,
+        31.399999618530273
+      ],
+      "rot": [
+        4.712388515472412,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 9
+    },
+    {
+      "id": 7532,
+      "modelo": "Objects//TR12010301.MS3",
+      "pos": [
+        1888.0,
+        1065.0,
+        31.350000381469727
+      ],
+      "rot": [
+        -0.7853981256484985,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 7
+    },
+    {
+      "id": 7532,
+      "modelo": "Objects//TR12010301.MS3",
+      "pos": [
+        1867.0,
+        1080.5,
+        31.469249725341797
+      ],
+      "rot": [
+        0.8726645708084106,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 7
+    },
+    {
+      "id": 7532,
+      "modelo": "Objects//TR12010301.MS3",
+      "pos": [
+        1851.0,
+        1084.5,
+        32.8568000793457
+      ],
+      "rot": [
+        3.4033915996551514,
+        0.0,
+        0.0
+      ],
+      "escala": 1.5299994945526123,
+      "celulas": 16
+    },
+    {
+      "id": 7532,
+      "modelo": "Objects//TR12010301.MS3",
+      "pos": [
+        1864.5,
+        1078.5,
+        31.55474853515625
+      ],
+      "rot": [
+        0.3490658700466156,
+        0.0,
+        0.0
+      ],
+      "escala": 1.6599993705749512,
+      "celulas": 10
+    },
+    {
+      "id": 2505,
+      "modelo": "Objects//amaN000005.MS3",
+      "pos": [
+        1857.5,
+        1072.0,
+        32.1508674621582
+      ],
+      "rot": [
+        0.5235987901687622,
+        0.4363323450088501,
+        0.0
+      ],
+      "escala": 1.8999991416931152,
+      "celulas": 2
+    },
+    {
+      "id": 2505,
+      "modelo": "Objects//amaN000005.MS3",
+      "pos": [
+        1841.0,
+        1088.5,
+        32.295982360839844
+      ],
+      "rot": [
+        -3.839724063873291,
+        0.2617993950843811,
+        0.0872664675116539
+      ],
+      "escala": 1.0,
+      "celulas": 3
+    },
+    {
+      "id": 2505,
+      "modelo": "Objects//amaN000005.MS3",
+      "pos": [
+        1833.5,
+        1094.0,
+        33.46857452392578
+      ],
+      "rot": [
+        -0.8726646304130554,
+        0.1745329350233078,
+        0.0
+      ],
+      "escala": 1.8199992179870605,
+      "celulas": 4
+    },
+    {
+      "id": 7731,
+      "modelo": "Objects//nlafarm041.MS3",
+      "pos": [
+        1897.8000030517578,
+        1059.7999992370605,
+        31.84000015258789
+      ],
+      "rot": [
+        2.7367022037506104,
+        5.919349193572998,
+        0.0
+      ],
+      "escala": 1.1399999856948853,
+      "celulas": 5
+    },
+    {
+      "id": 7731,
+      "modelo": "Objects//nlafarm041.MS3",
+      "pos": [
+        1861.1999969482422,
+        1073.2999992370605,
+        32.665000915527344
+      ],
+      "rot": [
+        2.8632922172546387,
+        5.934088230133057,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 3
+    },
+    {
+      "id": 7731,
+      "modelo": "Objects//nlafarm041.MS3",
+      "pos": [
+        1853.0,
+        1072.0,
+        31.549999237060547
+      ],
+      "rot": [
+        2.356194496154785,
+        6.212590217590332,
+        0.0
+      ],
+      "escala": 1.9799995422363281,
+      "celulas": 10
+    },
+    {
+      "id": 7731,
+      "modelo": "Objects//nlafarm041.MS3",
+      "pos": [
+        1858.0,
+        1074.2000007629395,
+        31.979999542236328
+      ],
+      "rot": [
+        2.158801794052124,
+        6.104824066162109,
+        0.0
+      ],
+      "escala": 1.4199997186660767,
+      "celulas": 2
+    },
+    {
+      "id": 7731,
+      "modelo": "Objects//nlafarm041.MS3",
+      "pos": [
+        1896.6999969482422,
+        1057.5,
+        32.474998474121094
+      ],
+      "rot": [
+        2.7468018531799316,
+        5.706809997558594,
+        0.0
+      ],
+      "escala": 1.7899993658065796,
+      "celulas": 4
+    },
+    {
+      "id": 7721,
+      "modelo": "Objects//nlafarm028.MS3",
+      "pos": [
+        1856.599998474121,
+        1098.099998474121,
+        30.424999237060547
+      ],
+      "rot": [
+        2.8632922172546387,
+        5.934088230133057,
+        0.0
+      ],
+      "escala": 1.0700000524520874,
+      "celulas": 8
+    },
+    {
+      "id": 7721,
+      "modelo": "Objects//nlafarm028.MS3",
+      "pos": [
+        1885.900001525879,
+        1088.1999969482422,
+        31.474998474121094
+      ],
+      "rot": [
+        -1.051651120185852,
+        5.899998188018799,
+        0.0
+      ],
+      "escala": 1.699999451637268,
+      "celulas": 9
+    },
+    {
+      "id": 7721,
+      "modelo": "Objects//nlafarm028.MS3",
+      "pos": [
+        1884.0,
+        1120.0,
+        6.000000476837158
+      ],
+      "rot": [
+        2.677945613861084,
+        6.063197612762451,
+        0.0
+      ],
+      "escala": 1.8899996280670166,
+      "celulas": 13
+    },
+    {
+      "id": 7721,
+      "modelo": "Objects//nlafarm028.MS3",
+      "pos": [
+        1892.5,
+        1072.900001525879,
+        31.100000381469727
+      ],
+      "rot": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "escala": 1.4900000095367432,
+      "celulas": 10
+    },
+    {
+      "id": 7721,
+      "modelo": "Objects//nlafarm028.MS3",
+      "pos": [
+        1855.440040588379,
+        1072.1400108337402,
+        31.744003295898438
+      ],
+      "rot": [
+        0.0,
+        0.0,
+        0.09966856986284256
+      ],
+      "escala": 1.4200000762939453,
+      "celulas": 4
+    },
+    {
+      "id": 7721,
+      "modelo": "Objects//nlafarm028.MS3",
+      "pos": [
+        1868.5,
+        1094.1999969482422,
+        32.79999923706055
+      ],
+      "rot": [
+        -0.3805076777935028,
+        6.020164966583252,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 5
+    },
+    {
+      "id": 7721,
+      "modelo": "Objects//nlafarm028.MS3",
+      "pos": [
+        1870.400001525879,
+        1094.099998474121,
+        32.48999786376953
+      ],
+      "rot": [
+        -1.2490438222885132,
+        5.9769086837768555,
+        0.0
+      ],
+      "escala": 1.6299999952316284,
+      "celulas": 7
+    },
+    {
+      "id": 7721,
+      "modelo": "Objects//nlafarm028.MS3",
+      "pos": [
+        1883.0,
+        1087.400001525879,
+        31.5
+      ],
+      "rot": [
+        -0.19739262759685516,
+        6.033552646636963,
+        0.0
+      ],
+      "escala": 1.369999647140503,
+      "celulas": 6
+    },
+    {
+      "id": 7721,
+      "modelo": "Objects//nlafarm028.MS3",
+      "pos": [
+        1874.8000030517578,
+        1091.1999969482422,
+        31.119998931884766
+      ],
+      "rot": [
+        0.3217524588108063,
+        6.126369953155518,
+        0.0
+      ],
+      "escala": 1.2100000381469727,
+      "celulas": 9
+    },
+    {
+      "id": 2632,
+      "modelo": "Objects//nlafarm043.MS3",
+      "pos": [
+        1880.0,
+        1082.5,
+        31.16499900817871
+      ],
+      "rot": [
+        0.0872664675116539,
+        0.0872664675116539,
+        0.0
+      ],
+      "escala": 1.1999998092651367,
+      "celulas": 2
+    },
+    {
+      "id": 2632,
+      "modelo": "Objects//nlafarm043.MS3",
+      "pos": [
+        1840.5,
+        1094.5,
+        31.94999885559082
+      ],
+      "rot": [
+        -0.3490658700466156,
+        0.0,
+        -0.0872664675116539
+      ],
+      "escala": 1.6999993324279785,
+      "celulas": 4
+    },
+    {
+      "id": 2632,
+      "modelo": "Objects//nlafarm043.MS3",
+      "pos": [
+        1898.5,
+        1120.5,
+        8.785000801086426
+      ],
+      "rot": [
+        0.0,
+        0.0,
+        0.2617993950843811
+      ],
+      "escala": 1.0,
+      "celulas": 2
+    },
+    {
+      "id": 2632,
+      "modelo": "Objects//nlafarm043.MS3",
+      "pos": [
+        1836.5,
+        1094.5,
+        32.45997619628906
+      ],
+      "rot": [
+        -1.3089967966079712,
+        -0.0872664675116539,
+        -0.0872664675116539
+      ],
+      "escala": 1.0,
+      "celulas": 1
+    },
+    {
+      "id": 2632,
+      "modelo": "Objects//nlafarm043.MS3",
+      "pos": [
+        1878.5,
+        1066.5,
+        31.655000686645508
+      ],
+      "rot": [
+        -0.3490658700466156,
+        0.0,
+        0.0
+      ],
+      "escala": 1.0,
+      "celulas": 1
+    }
+  ],
+  "ignorados": [
+    {
+      "modelo": "Objects//FL13010201.MS3",
+      "motivo": "Tamanho MS3 divergente"
+    },
+    {
+      "modelo": "Objects//GR01010201.MS3",
+      "motivo": "Tamanho MS3 divergente"
+    },
+    {
+      "modelo": "Objects//GR03010701.MS3",
+      "motivo": "Tamanho MS3 divergente"
+    },
+    {
+      "modelo": "Objects//GR02010502.MS3",
+      "motivo": "Tamanho MS3 divergente"
+    },
+    {
+      "modelo": "Objects//GR02010501.MS3",
+      "motivo": "Tamanho MS3 divergente"
+    },
+    {
+      "modelo": "Objects//GR03010101.MS3",
+      "motivo": "Tamanho MS3 divergente"
+    }
+  ],
+  "criterio": "Triangulos estaticos na faixa de .35 a 1.8 acima do terreno, margem horizontal .6; geometrias animadas excluidas."
+}

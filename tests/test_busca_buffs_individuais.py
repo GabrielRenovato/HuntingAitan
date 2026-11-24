@@ -75,7 +75,7 @@ class BuscaBuffsTeste(unittest.TestCase):
         def emitir(e):
             eventos.append(e)
             if e.get('message')=='Mob abatido; procurando o proximo.':c.stop.set()
-        u=MagicMock();u.GetWindowTextW.side_effect=lambda hwnd,buf,n:setattr(buf,'value','AikaClient')
+        u=MagicMock();u.GetForegroundWindow.return_value=1;u.GetWindowTextW.side_effect=lambda hwnd,buf,n:setattr(buf,'value','AikaClient')
         entrada=SimpleNamespace(PAUSE=0,keyDown=down,keyUp=up)
         with patch.dict(sys.modules,keyboard=SimpleNamespace(is_pressed=lambda k:False),pydirectinput=entrada),patch.object(h,'AgendaBuffs',lambda inicio,*args:AgendaBuffs(inicio+2 if renovacao else inicio,*args)),patch.object(h,'DadosInternos',Dados),patch.object(h,'NavegadorLocal',Nav),patch.object(h.ctypes.windll,'user32',u),patch.object(h.threading,'Thread'),patch.object(h.time,'monotonic',lambda:t[0]),patch.object(h.time,'sleep',dormir):h.main(p,emitir,c)
         self.assertEqual(hp[0],0);self.assertFalse(ctrl[0]);return eventos,teclas,navs
@@ -105,7 +105,7 @@ class BuscaBuffsTeste(unittest.TestCase):
     def test_motor_aproxima_apos_oito_segundos_sem_alvo_e_retoma_combate(self):
         eventos,teclas,navs=self.motor(False)
         self.assertTrue(navs);self.assertGreaterEqual(navs[0],8)
-        self.assertTrue(any(e.get('message') in ['Alvo confirmado apos aproximacao de busca.','Alvo confirmado por dados internos.'] for e in eventos))
+        self.assertTrue(any(e.get('message') in ['Alvo confirmado apos aproximacao de busca.','Alvo confirmado por dados internos.','Alvo selecionado valido; busca encerrada sem novo TAB.'] for e in eventos))
 
     def test_ciclo_buffs_nao_envia_tab_ou_ataques_entre_slots_mesmo_com_dano(self):
         eventos,teclas,navs=self.motor(True)

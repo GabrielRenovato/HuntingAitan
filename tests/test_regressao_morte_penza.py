@@ -58,7 +58,7 @@ class RegressaoPenzaTeste(unittest.TestCase):
         def emitir(e):
             eventos.append(dict(e,sim_t=tempo[0]))
             if e.get('message','').startswith('Alvo sem dano apos tres recuperacoes;'):ignorado_em[0]=tempo[0]
-        u=MagicMock();u.GetWindowTextW.side_effect=lambda hwnd,buf,n:setattr(buf,'value','AikaClient')
+        u=MagicMock();u.GetForegroundWindow.return_value=1;u.GetWindowTextW.side_effect=lambda hwnd,buf,n:setattr(buf,'value','AikaClient')
         entrada=SimpleNamespace(PAUSE=0,keyDown=lambda k:None,keyUp=lambda k:None)
         with patch.dict(sys.modules,keyboard=SimpleNamespace(is_pressed=lambda k:False),pydirectinput=entrada),patch.object(h,'DadosInternos',Dados),patch.object(h,'NavegadorLocal',Nav),patch.object(h.ctypes.windll,'user32',u),patch.object(h.threading,'Thread'),patch.object(h.time,'monotonic',lambda:tempo[0]),patch.object(h.time,'sleep',dormir):h.main(p,emitir,c)
         self.assertTrue(any(e.get('kind')=='normal' for e in eventos))

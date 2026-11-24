@@ -84,6 +84,13 @@ class AgendaBuffs:
         self.pendentes.remove(self.indice)
         self.indice=self.pendentes[0] if self.pendentes else None
 
+    def adiar(self,agora,segundos):
+        if self.indice is None:return
+        self.vencimentos[self.teclas[self.indice]]=agora+max(.2,segundos)
+        self.proxima_acao=agora+.2
+        self.pendentes.remove(self.indice)
+        self.indice=self.pendentes[0] if self.pendentes else None
+
 
 def executar_buff(atalho,pressionar,liberar,esperar,permitido):
     if '+' not in atalho:

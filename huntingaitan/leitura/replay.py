@@ -28,7 +28,7 @@ def reproduzir(registros,perfil=None,limite_segundos=120.):
     nada=lambda *a,**k:None
     entrada=SimpleNamespace(PAUSE=0,keyDown=registrar('down'),keyUp=registrar('up'),press=registrar('press'),
                             moveTo=nada,mouseDown=nada,mouseUp=nada,click=nada,doubleClick=nada)
-    janela=MagicMock();janela.GetWindowTextW.side_effect=lambda hwnd,buf,n:setattr(buf,'value','AikaClient')
+    janela=MagicMock();janela.GetForegroundWindow.return_value=1;janela.GetWindowTextW.side_effect=lambda hwnd,buf,n:setattr(buf,'value','AikaClient')
     erro=None
     with patch.dict(sys.modules,keyboard=SimpleNamespace(is_pressed=lambda k:False),pydirectinput=entrada),\
          patch.object(h,'DadosInternos',lambda:dados),patch.object(h.ctypes.windll,'user32',janela),\

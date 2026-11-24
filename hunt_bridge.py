@@ -21,6 +21,9 @@ def main():
     if modo!='run':
         d=json.loads(sys.stdin.read() or '{}')
         if modo=='defaults':r=DEFAULT
+        elif modo=='clients':
+            from huntingaitan.leitura.clientes import listar_clientes
+            r=listar_clientes()
         elif modo=='selftest-monitor':
             # Executado em processo novo para detectar a disputa de imports
             # que bloqueava a entrada/saida no executavel congelado.
@@ -38,6 +41,11 @@ def main():
             r=dict(monitor=True,interface=True)
         elif modo=='selftest':
             import keyboard,pydirectinput,mss,huntingaitan.combate.hunt_native
+            from windows_capture import WindowsCapture
+            from huntingaitan.entrada.ponte_camera import montar
+            if len(montar(0x10000000,0x10010000,0x400000))<100:raise RuntimeError('Montador da ponte interna indisponivel')
+            from huntingaitan.entrada.entrada_janela import EntradaJanela
+            from huntingaitan.visao.captura_janela import CapturaJanela
             from huntingaitan.visao.avisos_hunt import DetectorAvisos
             DetectorAvisos()
             from huntingaitan.visao.dialogos_evento import DetectorEventos,tipo_convite
@@ -52,6 +60,12 @@ def main():
             if len(plano()['trechos'])!=2*(len(plano()['pontos'])-1) or not dentro_regiao((2585,654)):raise RuntimeError('Circuito nao incluido no motor')
             from huntingaitan.rotas.circuito_verit import plano_verit,dentro_verit
             if len(plano_verit()['trechos'])!=8 or not dentro_verit((2748,833)):raise RuntimeError('Circuito Verit nao incluido no motor')
+            from huntingaitan.rotas.circuito_plantas import plano_plantas,dentro_plantas
+            if len(plano_plantas()['trechos'])!=4 or not dentro_plantas((2440,1360)):raise RuntimeError('Circuito das Plantas nao incluido no motor')
+            from huntingaitan.rotas.circuito_croshu import plano_croshu,dentro_croshu
+            if len(plano_croshu()['trechos'])!=3 or not dentro_croshu((1895,1155)):raise RuntimeError('Circuito de Croshu nao incluido no motor')
+            from huntingaitan.rotas.circuito_cinzas import plano_cinzas,dentro_cinzas
+            if len(plano_cinzas()['trechos'])!=3 or not dentro_cinzas((2882,1154)):raise RuntimeError('Busca dos tres Croshus nao incluida no motor')
             from huntingaitan.rotas.mina_lenfer import plano_mina,dentro_mina
             if not plano_mina()['trechos'] or not dentro_mina((2850,3344)):raise RuntimeError('Rota da Mina nao incluida no motor')
             from huntingaitan.rotas.interface_mina import InterfaceMina
@@ -64,10 +78,20 @@ def main():
             r=dict(backend=True,templates=True,ocr=True,circuito=True,mina=True)
         elif modo=='validate':r=validar(d)
         elif modo=='position':
+            from huntingaitan.leitura.janela_cliente import configurar_cliente
+            configurar_cliente(validar(d))
             from huntingaitan.leitura.dados_internos import DadosInternos
             leitor=DadosInternos()
             try:
-                snap=leitor.snapshot();p=snap['player'];r=dict(position=p['position'],hp=p['hp']/p['hp_max'],mp=p['mp']/p['mp_max'] if p['mp_max'] else None,source='native',target=snap['target']['name'] if snap['target'] else None)
+                snap=leitor.snapshot();p=snap['player'];r=dict(position=p['position'],player=p['name'],client_pid=leitor.pid,client_hwnd=leitor.hwnd,hp=p['hp']/p['hp_max'],mp=p['mp']/p['mp_max'] if p['mp_max'] else None,source='native',target=snap['target']['name'] if snap['target'] else None)
+            finally:leitor.close()
+        elif modo=='barra':
+            from huntingaitan.leitura.janela_cliente import configurar_cliente
+            configurar_cliente(validar(d))
+            from huntingaitan.leitura.dados_internos import DadosInternos
+            from huntingaitan.leitura.skills_cliente import descrever_barra,barra_para_painel
+            leitor=DadosInternos()
+            try:r=dict(slots=barra_para_painel(descrever_barra(leitor)),client_pid=leitor.pid,client_hwnd=leitor.hwnd)
             finally:leitor.close()
         elif modo=='native':r=importar_nativo(d['path'],d.get('profile'))
         else:raise ValueError('Comando desconhecido')
@@ -76,6 +100,8 @@ def main():
     pasta=Path(os.environ.get('AIKA_DATA_DIR',str(Path(__file__).resolve().parent)))/'app_sessions';pasta.mkdir(exist_ok=True)
     DIARIO=(pasta/('run_'+time.strftime('%Y%m%d_%H%M%S')+'.jsonl')).open('w',encoding='utf-8')
     perfil=validar(json.loads(Path(sys.argv[2]).read_text(encoding='utf-8')))
+    from huntingaitan.leitura.janela_cliente import configurar_cliente
+    configurar_cliente(perfil)
     emitir(dict(event='status',state='initializing',message='Inicializando motor '+perfil['data_source'],source=perfil['data_source']))
     emitir(dict(event='status',state='initializing',message='Preparando reconhecimento antes dos controles de teclado.'))
     from huntingaitan.visao.controle_avisos import preparar_runtime_visual

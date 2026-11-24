@@ -103,6 +103,7 @@ class MonitorTeste(unittest.TestCase):
             def __enter__(self):aberturas.append(1);return self
             def __exit__(self,*args):pass
         class Captura:
+            area=dict(left=0,top=0,width=1920,height=1080)
             def __init__(self,sct):pass
             def capturar(self):
                 chamadas.append(1)

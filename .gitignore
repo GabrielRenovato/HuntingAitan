@@ -25,3 +25,7 @@ profile.json
 
 capturas_leitor/
 *.cap.zip
+
+# Capturas completas locais usadas na investigacao (contem chat/personagens).
+tests/fixtures/npc_tooltip_botas.png
+tests/fixtures/npc_venda_rembrandt.png

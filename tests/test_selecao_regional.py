@@ -48,6 +48,13 @@ class EscolhaTeste(unittest.TestCase):
  def test_aceita_alvo_valido_sem_tab_adicional(self):
   b=BuscaRegional();m=dict(id=3,hp=50,position=(5,0));b.atualizar([m])
   self.assertEqual(b.decidir(0,m,None)[0],'aceitar')
+ def test_orienta_apos_duas_tentativas_sem_esperar_oito_tabs(self):
+  b=BuscaRegional();m=dict(id=3,hp=50,position=(5,2.9));b.atualizar([m])
+  camera=dict(yaw=0,position=(0,0))
+  self.assertEqual(b.decidir(0,None,camera)[0],'tab')
+  self.assertEqual(b.decidir(.31,None,camera)[0],'tab')
+  self.assertEqual(b.decidir(.62,None,camera)[0],'orientar')
+  self.assertEqual(b.decidir(.8,m,camera)[0],'aceitar')
  def test_giro_so_quando_candidato_esta_fora_do_setor(self):
   b=BuscaRegional();b.atualizar([dict(id=3,hp=50,position=(-5,0))])
   self.assertEqual(b.decidir(0,None,dict(yaw=0,position=(0,0)))[0],'orientar')
@@ -93,7 +100,7 @@ class FluxoRegionalTeste(unittest.TestCase):
    passos.append(k)
    if k=='tab':alvo[0]=42 if mobs[42]['hp']>0 else 43
    if k=='1':ataques.append(alvo[0]);mobs[alvo[0]]['hp']=max(0,mobs[alvo[0]]['hp']-40)
-  u=MagicMock();u.GetWindowTextW.side_effect=lambda hwnd,buf,n:setattr(buf,'value','AikaClient')
+  u=MagicMock();u.GetForegroundWindow.return_value=1;u.GetWindowTextW.side_effect=lambda hwnd,buf,n:setattr(buf,'value','AikaClient')
   entrada=SimpleNamespace(PAUSE=0,keyDown=down,keyUp=lambda k:None)
   with patch.dict(sys.modules,keyboard=SimpleNamespace(is_pressed=lambda k:False),pydirectinput=entrada),patch.object(h,'DadosInternos',Dados),patch.object(h.ctypes.windll,'user32',u),patch.object(h.threading,'Thread'),patch.object(h.time,'monotonic',lambda:t[0]),patch.object(h.time,'sleep',dormir):h.main(p,evento,c)
   self.assertEqual(ataques,[42,42,43,43])

@@ -2,6 +2,7 @@
 import ctypes,os,time,math,threading,re,unicodedata
 from ctypes import wintypes as w
 from huntingaitan.leitura.dados_internos import DadosInternos
+from huntingaitan.leitura.janela_cliente import janela_em_foco
 from huntingaitan.configuracao.perfil_hunt import validar
 from huntingaitan.combate.recuperacao_alvo import RecuperacaoAlvo
 from huntingaitan.combate.selecao_regional import BuscaRegional
@@ -9,18 +10,27 @@ from huntingaitan.entrada.entrada_segura import liberar_tecla,liberar_mouse,prep
 from huntingaitan.rotas.navegador_local import NavegadorLocal
 from huntingaitan.combate.cancelamento_normal import CancelamentoNormal,executar_combo,perfil_combo,duracao_tecla
 from huntingaitan.combate.cura_prioritaria import CuraPrioritaria
+from huntingaitan.combate.reacoes import Reacoes
+from huntingaitan.combate.confirmacao_reacao import ConfirmacaoReacao
+from huntingaitan.combate.confirmacao_buff import ConfirmacaoBuff
+from huntingaitan.combate.identidade_mob import verit_mutante
 from huntingaitan.combate.defesa_dg import DefesaDG
 from huntingaitan.combate.ritmo_padrao import configurar_ritmo
 from huntingaitan.combate.vigia_ataque import VigiaAtaque
+from huntingaitan.combate.destravar_colisao import DestravarColisao
 from huntingaitan.visao.controle_avisos import ObservadorAvisos
 from huntingaitan.rotas.circuito_termes import CircuitoTermes,dentro_regiao,conferir_arquivos,distancia_segmento
 from huntingaitan.rotas.circuito_verit import CircuitoVerit,dentro_verit,conferir_verit
+from huntingaitan.rotas.circuito_verit_leste import CircuitoVeritLeste,dentro_leste,conferir_leste
+from huntingaitan.rotas.circuito_plantas import CircuitoPlantas,dentro_plantas,conferir_plantas
+from huntingaitan.rotas.circuito_croshu import CircuitoCroshu,dentro_croshu,longe_menores,conferir_croshu
+from huntingaitan.rotas.circuito_cinzas import CircuitoCinzas,dentro_cinzas,conferir_cinzas
 from huntingaitan.rotas.mina_lenfer import MinaLenfer,dentro_mina
-from huntingaitan.rotas.jardim_aereo import JardimAereo,dentro_jardim,lazapa_protegido
+from huntingaitan.rotas.jardim_aereo import JardimAereo,dentro_jardim,lazapa_protegido,eh_shiraz_infernal
 from huntingaitan.combate.hunt_core import CadenciaCombate,erro_angular,VerificadorMovimento,AgendaBuffs,executar_buff
 from huntingaitan.entrada.teclas_controladas import TeclasControladas
 
-NOMES={'verit':'Verit Mutante','penza':'Penza Poderosa Mutante','croshu':'Croshu Mutante das Cinzas','tet':'Tet das Chamas'}
+NOMES={'verit':'Verit Mutante','penza':'Penza Poderosa Mutante','croshu':'Croshu Mutante das Cinzas','tet':'Tet das Chamas','buto':'Buto Mutante','planta':'Planta Carnívora Mutante','croshu_ungor':'Cão Mutante Croshu'}
 def _gravar_se_pedido(dados,log):
     """Com AIKA_GRAVAR_SESSAO definido, grava as leituras em app_sessions/ para reproducao offline."""
     if not os.environ.get('AIKA_GRAVAR_SESSAO'):return dados
@@ -32,10 +42,14 @@ def _gravar_se_pedido(dados,log):
 def nome_normal(s):return re.sub('[^a-z]','',unicodedata.normalize('NFKD',s.lower()))
 # Regras de area por modo de patrulha. Modos fora da tabela usam o raio em torno da base.
 REGRAS_AREA={
+    'cinzenta_croshu_trio':lambda t,pl:dentro_cinzas(t['position']),
+    'ungor_croshu':lambda t,pl:dentro_croshu(t['position']) and longe_menores(t['position']),
+    'ungor_plantas':lambda t,pl:dentro_plantas(t['position']),
     'termes_penza':lambda t,pl:dentro_regiao(t['position']),
     'termes_verit':lambda t,pl:dentro_verit(t['position']),
+    'termes_verit_leste':lambda t,pl:dentro_leste(t['position']),
     'mina_lenfer':lambda t,pl:dentro_mina(t['position']),
-    'jardim_aereo':lambda t,pl:dentro_jardim(t['position']) and nome_normal(t['name'])!='seridunn' and not lazapa_protegido(t['name'],pl['position']),
+    'jardim_aereo':lambda t,pl:dentro_jardim(t['position']) and nome_normal(t['name'])!='seridunn' and not eh_shiraz_infernal(t['name']) and not lazapa_protegido(t['name'],pl['position']),
 }
 def alvo_permitido(target,player,base,profile):
     if not target or not target['hostile'] or target['hp']<=0:return False
@@ -45,16 +59,29 @@ def alvo_permitido(target,player,base,profile):
         if not regra(target,player):return False
     elif math.dist(target['position'],base)>profile['radius']:return False
     if math.dist(target['position'],player['position'])>profile['radius']:return False
+    if profile['target']=='verit':return verit_mutante(target)
     return profile['target']=='qualquer' or nome_normal(target['name'])==nome_normal(NOMES[profile['target']])
 
 class ProgressoNativo:
     def __init__(self,alvo,agora):
         self.ref=alvo['ref'];self.id=alvo['id'];self.nome=nome_normal(alvo['name']);self.hp=alvo['hp'];self.posicao=alvo.get('position');self.nome_original=alvo['name']
+        self.template_id=alvo.get('template_id')
         self.ultimo_dano=agora;self.dano=False;self.zero_desde=None;self.leituras_zero=0
         self.abertura_enviada=False
+        self.confirmacao_desde=None
+
+    def pausar_confirmacao(self,agora):
+        if self.confirmacao_desde is None:self.confirmacao_desde=agora
+
+    def retomar_confirmacao(self,agora):
+        if self.confirmacao_desde is not None:
+            self.ultimo_dano+=max(0,agora-self.confirmacao_desde);self.confirmacao_desde=None
     def observar(self,alvo,agora):
         if alvo is None:return 'ausente'
-        if alvo['id']!=self.id or nome_normal(alvo['name'])!=self.nome:return 'outro'
+        if alvo['id']!=self.id:return 'outro'
+        if self.template_id is not None and alvo.get('template_id') is not None:
+            if alvo['template_id']!=self.template_id:return 'outro'
+        elif nome_normal(alvo['name'])!=self.nome:return 'outro'
         # O endereco pode mudar na atualizacao do cliente; o ID continua sendo
         # a identidade do mob. Aceita a nova referencia sem buscar com TAB.
         self.ref=alvo['ref'];self.posicao=alvo.get('position',self.posicao)
@@ -63,7 +90,8 @@ class ProgressoNativo:
             self.leituras_zero+=1
             return 'morto' if self.leituras_zero>=2 and agora-self.zero_desde>=.25 else 'confirmando_morte'
         self.zero_desde=None;self.leituras_zero=0
-        if alvo['hp']<self.hp:self.hp=alvo['hp'];self.ultimo_dano=agora;self.dano=True
+        if alvo['hp']<self.hp:self.ultimo_dano=agora;self.dano=True
+        self.hp=alvo['hp']
         return 'mesmo'
     def precisa_aproximar(self,agora,distancia):
         # Tambem vale depois de acertar: stun, deslocamento do mob ou um toque
@@ -79,40 +107,82 @@ def main(profile,event_sink,control,percurso=None):
     preparar_runtime_visual()
     import keyboard,pydirectinput as entrada
     p=validar(profile);entrada.PAUSE=0;pressionar_sem_pausa=preparar_pressao_sem_pausa(entrada)
-    if percurso is not None:p.update(patrol_mode='base',target='qualquer',radius=min(12,p['radius']))
+    if percurso is not None:p.update(patrol_mode='base',target='qualquer',radius=min(12,p['radius']),buffs_enabled=False)
+    if p['background_keys']:
+        from huntingaitan.entrada.entrada_motor import EntradaMotor
+        entrada=EntradaMotor(p['client_hwnd'],p['client_pid']);pressionar_sem_pausa=preparar_pressao_sem_pausa(entrada)
+        p['cancel_normal']=False
     u=ctypes.windll.user32;u.GetForegroundWindow.restype=w.HWND
     u.ShowWindow.argtypes=[w.HWND,ctypes.c_int];u.SetForegroundWindow.argtypes=[w.HWND]
     def foco():
-        t=ctypes.create_unicode_buffer(256);u.GetWindowTextW(u.GetForegroundWindow(),t,256);return t.value=='AikaClient'
+        return dados is not None and (entrada.disponivel() if p['background_keys'] else janela_em_foco(u,dados.hwnd))
     def parar():return control.stop.is_set() or keyboard.is_pressed('f12')
     def ativo():return foco() and not parar() and not control.pause.is_set()
     fim=threading.Event();modal_bloqueia=threading.Event()
     ent=TeclasControladas(entrada,pressionar_sem_pausa,ativo,modal_bloqueia)
+    confirmacao_buff=ConfirmacaoBuff()
+    metricas=dict(abates=0,alvos_recuperados=0,buffs_confirmados=0,recusas=0,desvios=0)
+    if p['background_keys']:entrada.permitido=lambda:ativo() and not modal_bloqueia.is_set()
     seg=ent.seg;ultima=ent.ultima;soltar=ent.soltar;liberar=ent.liberar;segurar=ent.segurar;esperar=ent.esperar;pulso=ent.pulso
     def log(msg,**d):event_sink(dict(event='log',message=msg,**d))
-    dados=None
+    dados=None;templa=None;seletor=None
     try:
         dados=DadosInternos();dados=_gravar_se_pedido(dados,log);s=dados.snapshot();s2=dados.snapshot()
+        if p['background_keys']:
+            entrada.conectar(dados)
+            for aviso in entrada.validar_regras(p):log(aviso)
+            log('Ponte interna conectada na thread do cliente; camera, selecao, skills e movimento sem teclas globais.')
+        log('Modo de envio de teclas.',segundo_plano=p['background_keys'])
+        log('Leitura e controles vinculados a mesma janela do Aika.',janela=dados.hwnd,pid=getattr(dados,'pid',None),personagem=s['player'].get('name'))
         if math.dist(s['player']['position'],s2['player']['position'])>5:raise RuntimeError('Posicao interna instavel; tente novamente com o personagem parado.')
         event_sink(dict(event='status',state='waiting',message='Dados internos validados. Volte ao Aika para capturar a base e comecar.'))
         threading.Thread(target=ent.vigiar,args=(fim,),daemon=True).start()
         # Pedido normal de foco apos o usuario clicar em Comecar.
-        if p['minimize_on_start'] and not control.pause.is_set() and not parar():
+        if p['minimize_on_start'] and not p['background_keys'] and not control.pause.is_set() and not parar():
             u.ShowWindow(dados.hwnd,9)
             u.SetForegroundWindow(dados.hwnd)
         while not ativo():
             if parar():return
             time.sleep(.04)
         s=dados.snapshot();base=tuple(s['player']['position']) if p['auto_base'] else tuple(p['base'])
+        if p['patrol_mode']=='buto_trio':
+            if math.dist(s['player']['position'],base)>35:
+                raise RuntimeError('Comece perto de 2711, 1292 na Floresta Cinzenta para cacar o grupo de Butos.')
+            log('Grupo de Butos ativado: somente Buto Mutante a ate 30 unidades de 2711, 1292. Busca outro apos o abate; retorna quando a area estiver sem alvos acessiveis.')
         event_sink(dict(event='base',base=base));log('Base capturada por dados internos.',posicao=base)
-        circuito=None;circuito_log=None;circuito_replanejar_em=0.;regiao=dentro_regiao;verit=p['patrol_mode']=='termes_verit';mina=p['patrol_mode'] in ('mina_lenfer','jardim_aereo');jardim=p['patrol_mode']=='jardim_aereo';mapa_mina=None
+        circuito=None;circuito_log=None;circuito_replanejar_em=0.;regiao=dentro_regiao;verit=p['patrol_mode']=='termes_verit';plantas=p['patrol_mode']=='ungor_plantas';croshu=p['patrol_mode']=='ungor_croshu';cinzas=p['patrol_mode']=='cinzenta_croshu_trio';mina=p['patrol_mode'] in ('mina_lenfer','jardim_aereo');jardim=p['patrol_mode']=='jardim_aereo';mapa_mina=None
         if percurso is not None:
             circuito=percurso;regiao=percurso.contem
-            log('Retorno ao portal da Mina iniciado por coordenadas e colisao.')
+            log('Retorno ao portal de '+getattr(percurso,'nome','Mina')+' iniciado por coordenadas e colisao; buffs aguardam a entrada na DG.')
+        elif p['patrol_mode']=='termes_verit_leste':
+            circuito=CircuitoVeritLeste(s['player']['position']);regiao=dentro_leste;verit=True
+            conferir_leste(dados.caminho.parent)
+            log('Circuito Verit leste ativado: sete pontos afastados dos Verits normais. Movimento por destinos e colisao.')
+            normal=dados.recargas_atalhos().get(p['attack_key'],{}).get('skill',0) if p['background_keys'] else 0
+            if 961<=normal<=976:
+                from huntingaitan.combate.caca_templaria import CacaTemplaria
+                templa=CacaTemplaria();seletor=templa;circuito.inteligente=True
+                log('Templaria: selecao por custo de caminho, retomada local e visitas com leitura fresca ativadas.')
         elif verit:
             circuito=CircuitoVerit(s['player']['position']);regiao=dentro_verit
             conferir_verit(dados.caminho.parent)
             log('Circuito Verit ativado: 1, 5, 20, 18, 4, 19, 2, 3 e volta ao 1. Apenas Verit Mutante.')
+        elif plantas:
+            circuito=CircuitoPlantas(s['player']['position']);regiao=dentro_plantas
+            conferir_plantas(dados.caminho.parent)
+            log('Circuito de Plantas de Ungor ativado: 7, 8, 9, 10 e volta ao 7. Apenas Planta Carnivora Mutante.')
+        elif croshu:
+            circuito=CircuitoCroshu(s['player']['position']);regiao=dentro_croshu
+            conferir_croshu(dados.caminho.parent)
+            log('Circuito de Croshu de Ungor ativado: 6, 3, 7 e volta ao 6. Ponto 5 excluido; afastamento de 10 unidades dos Croshus menores.')
+        elif cinzas:
+            circuito=CircuitoCinzas(s['player']['position']);regiao=dentro_cinzas
+            conferir_cinzas(dados.caminho.parent)
+            log('Busca ativa dos tres Croshus das Cinzas: visita os pontos 7, 8 e 9 e repete. Alcance de selecao 50; sem retornar antes de conferir os pontos.')
+            if p['background_keys']:
+                from huntingaitan.combate.escolha_por_caminho import EscolhaPorCaminho
+                seletor=EscolhaPorCaminho();circuito.inteligente=True
+                log('Croshus: troca direta apos abate, confirmacao pelo cliente e revisitas continuas ativadas.')
         elif p['patrol_mode']=='termes_penza':
             circuito=CircuitoTermes(s['player']['position'])
             conferir_arquivos(dados.caminho.parent)
@@ -123,18 +193,29 @@ def main(profile,event_sink,control,percurso=None):
                 if not conferir_dificil(auto_escala=p['auto_ui_scale'],emitir=event_sink,ativo=ativo,parar=parar):return
             circuito=(JardimAereo if jardim else MinaLenfer)(s['player']['position']);circuito.conferir(dados.caminho.parent);regiao=circuito.contem
             mapa_mina=dados.u32(dados.cena_validada()+0x38)
-            log('Jardim Aereo: percurso ate antes dos Lazapas finais iniciado.' if jardim else 'Mina LEnfer: caminho direto para Malik iniciado.',entrada=s['player']['position'],mapa=mapa_mina)
+            log('Jardim Aereo: percurso ate antes dos Shiraz Infernais iniciado.' if jardim else 'Mina LEnfer: caminho direto para Malik iniciado.',entrada=s['player']['position'],mapa=mapa_mina)
         trilha=[base];volta=[];estado='buscar';progresso=None;ultima_tab=0.;fim_busca=0.;ultima_telemetria=0.;inicio=time.monotonic();heading=None;origem_mov=None;falhas_desde=None;espera_na_base=False
-        tecla_cura=p['heal_key'] if p['heal_enabled'] else ''
+        # Com reacoes de cura configuradas, elas substituem a cura prioritaria de tecla unica.
+        reacoes=Reacoes(p['reacoes']);confirmacao_reacao=ConfirmacaoReacao();mobs_perto=None;mobs_reacao_em=0.;reacoes_log_em=0.
+        tecla_cura=p['heal_key'] if p['heal_enabled'] and not reacoes.tem_cura() else ''
         cadencia=CadenciaCombate({'intervalo_skills':p['action_gap'],'recargas':{v['key']:v['seconds'] for v in p['skills'] if v['enabled'] and v['key']!=tecla_cura}})
         cura=CuraPrioritaria(tecla_cura,p['hp_percent']/100,next((v['seconds'] for v in p['skills'] if v['key']==tecla_cura),15.))
         vigia_ataque=VigiaAtaque()
         ultimo_hp=s['player']['hp'];ultimo_ferimento=-float('inf')
         defesa=DefesaDG(hp_retomada=max(.7,p['hp_percent']/100));defesa_log_em=-100.
         if mina:defesa.observar(inicio,s['player']['hp']/s['player']['hp_max'],{})
-        if percurso is not None and hasattr(percurso,'geometria'):
+        if jardim:
+            from huntingaitan.rotas.navegacao_grade import ler_grade
+            navegador=NavegadorLocal(leitor=lambda leitor,posicao:circuito.aplicar_grade(ler_grade(leitor,posicao),posicao))
+        elif percurso is not None and hasattr(percurso,'geometria'):
             from huntingaitan.rotas.navegacao_grade import ler_grade
             navegador=NavegadorLocal(leitor=lambda leitor,posicao:percurso.geometria.aplicar(ler_grade(leitor,posicao),saida=posicao))
+        elif p['patrol_mode']=='termes_verit_leste':
+            from huntingaitan.rotas.navegacao_grade import ler_grade
+            navegador=NavegadorLocal(leitor=lambda leitor,posicao:circuito.aplicar_grade(ler_grade(leitor,posicao),posicao))
+        elif croshu:
+            from huntingaitan.rotas.navegacao_grade import ler_grade
+            navegador=NavegadorLocal(leitor=lambda leitor,posicao:circuito.aplicar_grade(ler_grade(leitor,posicao),leitor,posicao))
         else:navegador=NavegadorLocal()
         cc={};cc_em=0.;cc_desde=None;cc_log=False;cc_motivo=None;nav_log_em=-100.;aprox_pos=None;reaprox_id=None
         regional=BuscaRegional(prazo_aproximar=2.5,prazo_trocar=2.,intervalo_tab=.2,intervalo_giro=.35) if mina else BuscaRegional()
@@ -145,19 +226,23 @@ def main(profile,event_sink,control,percurso=None):
         ritmo=configurar_ritmo(p);repetindo_id=None
         log('Ritmo do padrao configurado.',ativo=p['cancel_normal'],**ritmo)
         log('Cancelamento de ataque normal experimental.',ativo=p['cancel_normal'])
-        buffs=getattr(control,'buff_agenda',None) if getattr(control,'cycle_context',False) else None
+        # A aproximacao nao cria nem consome a agenda compartilhada da DG.
+        # Ao entrar, os buffs iniciais/vencidos continuam pendentes.
+        buffs=getattr(control,'buff_agenda',None) if getattr(control,'cycle_context',False) and percurso is None else None
         if buffs is None:
-            extras=['ctrl+6','ctrl+8'] if p['extra_buffs_enabled'] else []
-            teclas_buffs=p['buff_keys']+extras+(['f3'] if p['f3_enabled'] else [])
+            extras=p['extra_buff_keys'] if p['extra_buffs_enabled'] else []
+            teclas_buffs=[k for k in p['buff_keys'] if k]+extras+([p['periodic_item_key']] if p['f3_enabled'] else [])
             periodos_buffs={k:p['extra_buff_minutes']*60 for k in extras}
-            if p['f3_enabled']:periodos_buffs['f3']=p['f3_minutes']*60
+            if p['f3_enabled']:periodos_buffs[p['periodic_item_key']]=p['f3_minutes']*60
             buffs=AgendaBuffs(inicio,teclas_buffs,p['buff_minutes']*60,p['buff_gap'],p['buffs_enabled'],periodos_buffs)
-        if getattr(control,'cycle_context',False):control.buff_agenda=buffs
+        if getattr(control,'cycle_context',False) and percurso is None:control.buff_agenda=buffs
         log('Rebuff programado.',ativo=p['buffs_enabled'],minutos=p['buff_minutes'],atalhos=buffs.teclas,periodos_segundos=buffs.periodos)
         log('Habilidades ativas nesta sessao.',atalhos=list(cadencia.recargas))
         log('Motor com recargas reais e cura prioritaria.',versao='mina-lenfer-9',cura=tecla_cura,hp_percent=p['hp_percent'])
         verificador=VerificadorMovimento(p['stationary_seconds']);suprimento_em={};item_em={};janela_pausa=None
-        monitor=ObservadorAvisos(fim,ativo,log,bloqueio=modal_bloqueia)
+        destravar_colisao=DestravarColisao()
+        monitor=ObservadorAvisos(fim,ativo,log,bloqueio=modal_bloqueia,janela=(dados.hwnd,dados.pid) if p['background_keys'] else None)
+        if p['background_keys']:modal_bloqueia.set()
         log('Preparando reconhecimento de janelas antes de iniciar o monitor.')
         monitor.iniciar()
         log('Monitor CTE e Arena Elter: prioridade de fechamento ativa.')
@@ -201,9 +286,31 @@ def main(profile,event_sink,control,percurso=None):
         # Estados da caca. Cada funcao executa um estado do laco principal e devolve
         # 'continuar' ou 'interromper' (ou None, para seguir a iteracao). O laco decide o
         # que fazer; as variaveis compartilhadas sao declaradas com nonlocal.
+        def permitido_na_sessao(t,pl):
+            return alvo_permitido(t,pl,base,p) or bool(templa and templa.permite_limpeza(t,pl['position'],pl))
+
+        def atualizar_transicoes(lista,instante,planejar=True):
+            candidatos=[m for m in lista if indisponiveis.get(m['id'],0)<=instante and alvo_permitido(m,player,base,p)]
+            if templa:
+                transicao=templa.atualizar_limpeza(lista,pos,player,instante)
+                if transicao:log('Limpeza curta '+transicao+'.',raio=5,hostis=len(templa.limpeza_ids),centro=templa.limpeza_centro)
+            for reaparecimento in circuito.observar(candidatos,pos,instante):event_sink(dict(event='spawn_observed',**reaparecimento))
+            if templa and templa.limpeza_centro is not None:
+                candidatos=[m for m in lista if indisponiveis.get(m['id'],0)<=instante and templa.permite_limpeza(m,pos,player)]
+            if planejar:
+                limite_templa=lambda q:regiao(q) or bool(templa and templa.limpeza_centro is not None and math.dist(q,templa.limpeza_centro)<=5 and math.dist(q,pos)<=5)
+                ordenados=seletor.ordenar(dados,navegador,pos,candidatos,instante,limite_templa)
+                for m in candidatos:
+                    if m['id'] not in seletor.cache:indisponiveis[m['id']]=instante+3
+                candidatos=ordenados
+            regional.preferido=candidatos[0]['id'] if candidatos else None
+            return candidatos
+
         def _estado_circuito():
             nonlocal circuito_log,circuito_replanejar_em,defesa_log_em,estado,marca,msg,nav,passo,reentrar,retorno_busca
             if circuito:
+                if templa and estado!='combater' and templa.aguardar_limpeza(agora,bool(mobs_regiao)):
+                    soltar();entrada.parar_movimento();esperar(.03);return 'continuar'
                 if not regiao(pos,margem=50):
                     soltar();raise RuntimeError('Personagem saiu da regiao do percurso; reposicione antes de retomar.')
                 if estado=='retornar':estado='percorrer'
@@ -220,6 +327,10 @@ def main(profile,event_sink,control,percurso=None):
                     if estado!='combater':estado='percorrer'
                     vigia_ataque.suspender(agora);verificador.observar(None,agora,False)
                     if agora<circuito_replanejar_em:soltar();esperar(.03);return 'continuar'
+                    if jardim and circuito.recuperacao.reiniciar:
+                        soltar();control.reason='jardim_reiniciar_bloqueio'
+                        event_sink(dict(event='jardim_reset',position=pos,message='Sem avanco por 25s de navegacao; saindo e repetindo a entrada sem contar o trecho.'))
+                        return 'interromper'
                     passo=circuito.destino(pos,agora)
                     marca=(circuito.trecho,passo['estado'])
                     if passo['estado']=='concluido':
@@ -231,20 +342,20 @@ def main(profile,event_sink,control,percurso=None):
                     if marca!=circuito_log:
                         if mina:
                             msg='Aguardando confirmacao do chefe da sala.' if passo['estado']=='aguardar_chefe' else 'Verificando sala limpa.' if passo['estado'].startswith('aguardar') else 'Percorrendo Jardim Aereo por caminho validado.' if jardim else 'Percorrendo Mina LEnfer por caminho validado.'
-                        elif percurso is not None:msg='Seguindo caminho ate a entrada da Mina.'
-                        else:msg=('Procurando Verits por 5s no ponto.' if verit else 'Procurando Penzas por 5s no ponto.') if passo['estado']=='aguardar' else ('Percorrendo circuito Verit de Termes por caminho validado.' if verit else 'Percorrendo circuito de Termes por caminho validado.')
+                        elif percurso is not None:msg='Seguindo caminho ate a entrada de '+getattr(percurso,'nome','Mina')+'.'
+                        else:msg=('Conferindo Croshu das Cinzas por 5s no ponto.' if cinzas else 'Procurando Croshus Mutantes por 5s no ponto.' if croshu else 'Procurando Plantas por 5s no ponto.' if plantas else 'Procurando Verits por 5s no ponto.' if verit else 'Procurando Penzas por 5s no ponto.') if passo['estado']=='aguardar' else ('Buscando o proximo dos tres Croshus das Cinzas.' if cinzas else 'Percorrendo 6, 3 e 7 com desvio dos Croshus menores.' if croshu else 'Percorrendo as quatro Plantas de Ungor por caminho validado.' if plantas else 'Percorrendo circuito Verit de Termes por caminho validado.' if verit else 'Percorrendo circuito de Termes por caminho validado.')
                         log(msg,ponto=passo['ponto'],voltas=passo['voltas'],chefe=passo.get('chefe'));circuito_log=marca
                     if passo['estado'].startswith('aguardar'):soltar();esperar(.03);return 'continuar'
                     nav=seguir_grade(passo['destino'],passo['chave'],.9)
                     if nav in ['sem_caminho','bloqueado','aguardar_grade']:
                         if mina and nav in ['sem_caminho','bloqueado'] and circuito.replanejar_passagem(pos):
                             navegador.invalidar();log('Passagem da DG recalculada; aproximando o proximo ponto da rota.',posicao=pos)
-                        circuito_replanejar_em=agora+(.25 if mina else 2)
+                        circuito_replanejar_em=agora+(.15 if seletor else .25 if mina else 2)
                         log('Passagem do circuito indisponivel na grade atual; aguardando nova leitura sem avancar o ponto.',ponto=passo['ponto'])
                     esperar(.015);return 'continuar'
                 if estado=='percorrer':
                     soltar();estado='buscar';regional.confirmar_alvo();retorno_busca=False
-                    log('Mob bloqueando a entrada; liberando o acesso ao portal.' if percurso is not None else 'Hostil proximo; percurso pausado para combate.' if mina else ('Verit encontrado no corredor; percurso pausado para combate.' if verit else 'Penza encontrado no corredor; percurso pausado para combate.'))
+                    log('Mob bloqueando a entrada; liberando o acesso ao portal.' if percurso is not None else 'Hostil proximo; percurso pausado para combate.' if mina else ('Croshu das Cinzas encontrado; busca pausada para combate.' if cinzas else 'Croshu Mutante acessivel; percurso pausado para combate.' if croshu else 'Planta encontrada no circuito; percurso pausado para combate.' if plantas else 'Verit encontrado no corredor; percurso pausado para combate.' if verit else 'Penza encontrado no corredor; percurso pausado para combate.'))
         def _estado_buscar():
             nonlocal estado,fim_busca,ultima_tab
             if estado=='buscar':
@@ -254,6 +365,25 @@ def main(profile,event_sink,control,percurso=None):
         def _estado_selecionar():
             nonlocal acao,busca_ate,busca_destino,camera,candidato,espera_na_base,estado,fim_busca,heading,m,mobs_regiao,origem_mov,pool_em,progresso,retorno_busca,target,tecla,tempo,trilha,ultima_tab,valor,volta
             if estado=='selecionar':
+                # A selecao atual e uma leitura direta; a lista regional pode
+                # estar atrasada ou excluir transitoriamente o mesmo ID.
+                if permitido_na_sessao(target,player) and indisponiveis.get(target['id'],0)<=agora and (not templa or verit_mutante(target) or not any(verit_mutante(m) for m in mobs_regiao or [])):
+                    soltar();regional.confirmar_alvo()
+                    if seletor:seletor.selecao_id=None
+                    progresso=ProgressoNativo(target,agora);recuperacao.reiniciar();espera_na_base=False;estado='combater'
+                    log('Alvo selecionado valido; busca encerrada sem novo TAB.',alvo=target['name'],alvo_id=target['id'])
+                    return 'continuar'
+                if seletor and mobs_regiao:
+                    if agora>=seletor.selecionar_em:
+                        candidato=mobs_regiao[0];seletor.selecionar_em=agora+.35
+                        if not seletor.tentar_selecao(candidato['id'],agora):
+                            indisponiveis[candidato['id']]=agora+3;pool_em=0.;mobs_regiao=[]
+                            esperar(.015);return 'continuar'
+                        try:confirmado=entrada.recuperar_alvo(candidato)
+                        except ValueError:confirmado=False
+                        event_sink(dict(event='selection',method='id_caminho',candidate_id=candidato['id'],confirmed=confirmado,custo=seletor.cache.get(candidato['id'])))
+                        if not confirmado:pool_em=0.
+                    esperar(.015);return 'continuar'
                 if mobs_regiao is not None:
                     try:camera=dados.camera_regional() if hasattr(dados,'camera_regional') else None
                     except RuntimeError:camera=None
@@ -288,7 +418,11 @@ def main(profile,event_sink,control,percurso=None):
                         return 'continuar'
                     if acao=='orientar':
                         soltar();tecla,tempo=valor
-                        if pulso(tecla,tempo):log('Orientando para mob identificado na regiao.',alvo_id=regional.preferido)
+                        if p['background_keys']:
+                            candidato=next((m for m in mobs_regiao if m['id']==regional.preferido),None)
+                            orientou=bool(candidato and entrada.orientar_para(candidato['position'],ativo))
+                        else:orientou=pulso(tecla,tempo)
+                        if orientou:log('Orientando para mob identificado na regiao.',alvo_id=regional.preferido)
                         return 'continuar'
                     if acao=='tab':
                         if pulso('tab'):event_sink(dict(event='selection',key='tab',candidate_id=valor))
@@ -298,7 +432,7 @@ def main(profile,event_sink,control,percurso=None):
                         if mobs_regiao or math.dist(pos,base)<=3:
                             soltar();esperar(.03);return 'continuar'
                     target=valor if acao=='aceitar' else None
-                if alvo_permitido(target,player,base,p) and indisponiveis.get(target['id'],0)<=agora:
+                if permitido_na_sessao(target,player) and indisponiveis.get(target['id'],0)<=agora:
                     progresso=ProgressoNativo(target,agora);recuperacao.reiniciar();espera_na_base=False;estado='combater';log('Alvo confirmado por dados internos.',alvo=target['name']);return 'continuar'
                 if agora>=fim_busca:
                     if math.dist(pos,base)<=3:
@@ -308,37 +442,42 @@ def main(profile,event_sink,control,percurso=None):
                         esperar(.1);return 'continuar'
                     estado='retornar';volta=list(reversed(trilha));heading=None;origem_mov=None
                     pulso('s',.06);log('Sem alvo proximo; retornando a base.');return 'continuar'
-                if agora-ultima_tab>=.25:pulso('tab');ultima_tab=agora
+                # Com a leitura de mobs, lista vazia significa que nao ha alvo vivo por perto: o TAB so
+                # serve para selecionar um candidato existente. Sem a leitura (None) ele e a unica busca.
+                if mobs_regiao is None and agora-ultima_tab>=.25:pulso('tab');ultima_tab=agora
                 esperar(.015);return 'continuar'
         def _estado_aproximar_busca():
-            nonlocal candidato,estado,nav,pool_em,progresso
+            nonlocal candidato,estado,nav,pool_em,progresso,fim_busca,ultima_tab
             if estado=='aproximar_busca':
-                if alvo_permitido(target,player,base,p) and indisponiveis.get(target['id'],0)<=agora:
+                if permitido_na_sessao(target,player) and indisponiveis.get(target['id'],0)<=agora:
                     soltar();progresso=ProgressoNativo(target,agora);recuperacao.reiniciar()
                     estado='combater';regional.confirmar_alvo()
                     log('Alvo confirmado apos aproximacao de busca.',alvo=target['name'],alvo_id=target['id']);return 'continuar'
                 candidato=next((m for m in mobs_regiao or [] if m['id']==busca_destino['id']),None)
                 if candidato is None:
-                    soltar();estado='selecionar';regional.reiniciar_busca(agora);return 'continuar'
+                    soltar();estado='selecionar';regional.reiniciar_busca(agora);fim_busca=agora+p['no_damage_seconds'];pool_em=0.;return 'continuar'
                 nav=seguir_grade(candidato['position'],('busca',candidato['id']),2.)
                 if nav=='andando' and agora<busca_ate:esperar(.015);return 'continuar'
-                soltar();estado='selecionar';regional.reiniciar_busca(agora)
+                soltar();estado='selecionar';regional.reiniciar_busca(agora);fim_busca=agora+p['no_damage_seconds'];pool_em=0.
                 if nav in ['bloqueado','sem_caminho']:
                     indisponiveis[candidato['id']]=agora+20;pool_em=0.
                     log('Candidato sem passagem; buscando outro ID.',alvo_id=candidato['id'])
                 else:
-                    if pulso('tab'):event_sink(dict(event='selection',key='tab',candidate_id=candidato['id'],apos_aproximacao=True))
+                    if pulso('tab'):event_sink(dict(event='selection',key='tab',candidate_id=candidato['id'],apos_aproximacao=True));ultima_tab=agora
                     log('Aproximacao de busca concluida; reconfirmando alvo.',alvo_id=candidato['id'])
                 return 'continuar'
         def _estado_combater():
-            nonlocal abrir_normal,acao,anterior,aprox_pos,atalho,cancelamento,chefe,combo,dx,dy,em_alcance,enviada,erro,estado,fim_busca,inicio_envio,item,nav,normal_repetido,perfil_normal,pool_em,progresso,r,real,reaprox_id,repetindo_id,repetir_normal,restante,resultado,skill_id,tecla,timing,ultima_tab,v
+            nonlocal abrir_normal,acao,anterior,aprox_pos,atalho,cancelamento,chefe,combo,dx,dy,em_alcance,enviada,erro,estado,fim_busca,inicio_envio,item,nav,normal_repetido,perfil_normal,pool_em,progresso,r,real,reaprox_id,repetindo_id,repetir_normal,restante,resultado,skill_id,tecla,timing,ultima_tab,v,mobs_regiao
             if estado=='combater':
+                if templa and target and target['hp']>0 and not verit_mutante(target) and not templa.permite_limpeza(target,pos,player):
+                    soltar();estado='buscar';progresso=None;pool_em=0.
+                    log('Hostil saiu do raio curto da limpeza; sem perseguir para fora do grupo.');return 'continuar'
                 if target is None or math.dist(pos,target['position'])<=2.4:soltar()
                 resultado=progresso.observar(target,agora)
                 if resultado in ['ausente','outro']:
                     soltar();navegador.suspender(pos,agora)
                     anterior=None
-                    try:anterior=dados.entidade(progresso.ref)
+                    try:anterior=templa.recuperar(dados,progresso,pos,p['radius'],player) if templa else dados.entidade(progresso.ref)
                     except RuntimeError:pass
                     r=progresso.observar(anterior,agora)
                     if r=='morto':resultado='morto'
@@ -346,12 +485,15 @@ def main(profile,event_sink,control,percurso=None):
                         esperar(.03);return 'continuar'
                     else:
                         acao=recuperacao.decidir(agora)
+                        if acao=='indisponivel' and templa and r=='mesmo' and templa.reter_verit(anterior,player):
+                            recuperacao.reiniciar();acao=recuperacao.decidir(agora)
+                            log('Verit proximo ainda vivo; renovando recuperacao do mesmo ID.',alvo_id=progresso.id)
                         if acao=='indisponivel':
                             log('Alvo nao recuperado; encerrando busca desse ID sem registrar abate.',id_esperado=progresso.id,tentativas=recuperacao.tentativas)
                             indisponiveis[progresso.id]=agora+15
                             recuperacao.reiniciar();pool_em=0.;cancelamento=CancelamentoNormal(p['cancel_normal'])
                             verificador.observar(None,agora,False)
-                            if alvo_permitido(target,player,base,p) and indisponiveis.get(target['id'],0)<=agora:
+                            if permitido_na_sessao(target,player) and indisponiveis.get(target['id'],0)<=agora:
                                 progresso=ProgressoNativo(target,agora)
                                 log('Atacando o alvo proximo ja selecionado.',alvo=target['name'],alvo_id=target['id'])
                             else:
@@ -359,17 +501,45 @@ def main(profile,event_sink,control,percurso=None):
                             return 'continuar'
                         if acao=='tab':
                             log('Recuperando somente o alvo travado.',id_esperado=progresso.id,id_atual=target['id'] if target else None,tentativa=recuperacao.tentativas)
-                            pulso('tab');ultima_tab=agora
+                            if p['background_keys']:
+                                if r=='mesmo' and permitido_na_sessao(anterior,player):
+                                    try:restaurado=entrada.recuperar_alvo(anterior)
+                                    except ValueError:restaurado=False
+                                    log('Recuperacao por ID conferida no cliente.',alvo_id=progresso.id,restaurado=restaurado)
+                                    if restaurado:metricas['alvos_recuperados']+=1
+                            else:pulso('tab')
+                            ultima_tab=agora
                         esperar(.03);return 'continuar'
                 if resultado=='mesmo':
                     recuperacao.reiniciar()
                     if not progresso.precisa_aproximar(agora,math.dist(pos,target['position'])):soltar()
                 if resultado=='confirmando_morte':soltar();esperar(.03);return 'continuar'
                 if resultado=='morto':
+                    metricas['abates']+=1
+                    if templa and (progresso.template_id==1378 or progresso.template_id is None and progresso.nome=='veritmutante'):
+                        circuito.abate(dict(position=progresso.posicao or pos),pos,agora)
+                    elif seletor and not templa:circuito.abate(dict(position=progresso.posicao or pos),pos,agora)
                     if mina:
                         chefe=circuito.registrar_abate(progresso.id,progresso.nome_original,progresso.posicao or pos,agora)
                         if chefe:log('Chefe do Jardim abatido com vida zero confirmada.' if jardim else 'Chefe da Mina abatido com vida zero confirmada.',chefe=chefe,alvo_id=progresso.id)
-                    soltar();reaprox_id=None;estado='buscar';pool_em=0.;log('Mob abatido; procurando o proximo.');return 'continuar'
+                    soltar();reaprox_id=None;estado='buscar';pool_em=0.;log('Mob abatido; procurando o proximo.')
+                    if seletor:
+                        confirmado_em=time.monotonic()
+                        try:
+                            lista_proxima=dados.listar_mobs(pos,p['radius'],player)
+                            mobs_regiao=atualizar_transicoes(lista_proxima,confirmado_em)
+                            regional.atualizar(mobs_regiao);pool_em=confirmado_em+.4
+                            for proximo in mobs_regiao[:2]:
+                                try:adotado=entrada.recuperar_alvo(proximo)
+                                except ValueError:adotado=False
+                                if adotado:
+                                    progresso=ProgressoNativo(proximo,time.monotonic());recuperacao.reiniciar();regional.confirmar_alvo()
+                                    seletor.selecao_id=None;estado='combater'
+                                    event_sink(dict(event='target_handoff',target_id=proximo['id'],latencia_ms=round((time.monotonic()-confirmado_em)*1000,2)))
+                                    break
+                        except RuntimeError as e:
+                            pool_em=0.;log('Reconfirmando candidatos apos abate.',detail=str(e))
+                    return 'continuar'
                 if progresso.precisa_aproximar(agora,math.dist(pos,target['position'])) and player.get('heading') is not None and hasattr(dados,'cena_validada'):
                     if progresso.dano and reaprox_id!=progresso.id:
                         reaprox_id=progresso.id;cancelamento.suspender_alvo(progresso.id);navegador.invalidar()
@@ -379,23 +549,39 @@ def main(profile,event_sink,control,percurso=None):
                         if not progresso.dano:progresso.ultimo_dano=agora
                     nav=seguir_grade(target['position'],('mob',progresso.id),2.)
                     if nav in ['sem_caminho','bloqueado']:
+                        if templa and templa.reter_verit(target,player):
+                            soltar();entrada.parar_movimento();navegador.invalidar()
+                            log('Verit proximo mantido; passagem sera reconferida sem descartar o alvo.',alvo_id=progresso.id)
+                            esperar(.15);return 'continuar'
                         indisponiveis[progresso.id]=agora+15;pool_em=0.;estado='buscar';progresso=None;aprox_pos=None
                         log('Alvo sem passagem; procurando outro na regiao.');return 'continuar'
                     if nav!='chegou':esperar(.015);return 'continuar'
                 else:aprox_pos=None;reaprox_id=None
-                if progresso.aproximacao_falhou(agora,math.dist(pos,target['position']) if circuito else math.dist(pos,base),p):
+                if progresso.aproximacao_falhou(agora,math.dist(pos,target['position']) if circuito else math.dist(pos,base),p) and not (templa and templa.reter_verit(target,player)):
                     indisponiveis[progresso.id]=agora+15;pool_em=0.
                     soltar();estado='buscar';progresso=None;aprox_pos=None
                     log('Alvo sem dano; procurando outro mob antes de retornar.');return 'continuar'
                 if resultado!='mesmo':esperar(.01);return 'continuar'
                 vigia_ataque.observar(target,agora)
+                if templa and templa.reter_verit(target,player) and not vigia_ataque.recuperar_ate and templa.pode_reparar(agora) and agora-progresso.ultimo_dano>=3:
+                    vigia_ataque.forcar(agora)
                 if not vigia_ataque.recuperar_ate and vigia_ataque.esgotado(agora,math.dist(pos,target['position'])):
-                    indisponiveis[progresso.id]=agora+30;pool_em=0.
-                    log('Alvo sem dano apos tres recuperacoes; ignorado por 30s sem registrar abate.',alvo_id=progresso.id,hp_alvo=target['hp'],hp=hp_atual)
-                    soltar();estado='buscar';progresso=None;aprox_pos=None;return 'continuar'
-                if not vigia_ataque.recuperar_ate and vigia_ataque.iniciar(agora,math.dist(pos,target['position'])):
+                    if templa and templa.reter_verit(target,player):
+                        vigia_ataque.recuperacoes=0
+                        log('Verit vivo e proximo; novas tentativas no mesmo ID, sem lista de ignorados.',alvo_id=progresso.id)
+                    else:
+                        indisponiveis[progresso.id]=agora+30;pool_em=0.
+                        log('Alvo sem dano apos tres recuperacoes; ignorado por 30s sem registrar abate.',alvo_id=progresso.id,hp_alvo=target['hp'],hp=hp_atual)
+                        soltar();estado='buscar';progresso=None;aprox_pos=None;return 'continuar'
+                if not vigia_ataque.recuperar_ate and (not templa or templa.pode_reparar(agora)) and vigia_ataque.iniciar(agora,math.dist(pos,target['position'])):
+                    if templa:
+                        templa.ultimo_reparo=agora
+                        try:entrada.recuperar_alvo(target)
+                        except ValueError:pass
                     soltar();navegador.invalidar();cancelamento.suspender_alvo(progresso.id)
-                    log('Ataques sem dano por 3s; corrigindo aproximacao e orientacao sem trocar alvo.',alvo_id=progresso.id,hp_alvo=target['hp'],distancia=math.dist(pos,target['position']),envios=vigia_ataque.envios)
+                    # Parado perto do mob sem causar dano: a skill da tecla de destravar (' no guerreiro, 4 na templaria) desbuga o personagem.
+                    destravou=bool(p['unstuck_key']) and bool(pulso(p['unstuck_key']))
+                    log('Ataques sem dano por 3s; corrigindo aproximacao e orientacao sem trocar alvo.',alvo_id=progresso.id,hp_alvo=target['hp'],distancia=math.dist(pos,target['position']),envios=vigia_ataque.envios,tecla_destravar_enviada=destravou)
                 if vigia_ataque.recuperar_ate:
                     if agora>=vigia_ataque.recuperar_ate:
                         soltar();vigia_ataque.suspender(agora)
@@ -409,8 +595,9 @@ def main(profile,event_sink,control,percurso=None):
                             dx,dy=target['position'][0]-pos[0],target['position'][1]-pos[1]
                             erro=erro_angular(math.degrees(math.atan2(dx,dy)),player['heading'])
                             if math.hypot(dx,dy)>.1 and abs(erro)>15:
-                                pulso('d' if erro>0 else 'a',min(.08,max(.015,abs(erro)/150)))
-                                return 'continuar'
+                                if not p['background_keys']:
+                                    pulso('d' if erro>0 else 'a',min(.08,max(.015,abs(erro)/150)))
+                                    return 'continuar'
                         vigia_ataque.suspender(agora)
                     cadencia.normal_em=min(cadencia.normal_em,agora)
                 if verificador.observar(pos,agora,not progresso.dano and math.dist(pos,target['position'])>3):pulso(p['unstuck_key']);log('Sem deslocamento; tecla de recuperacao enviada.')
@@ -422,8 +609,9 @@ def main(profile,event_sink,control,percurso=None):
                 if repetir_normal and repetindo_id!=progresso.id:
                     cadencia.normal_em=min(cadencia.normal_em,agora);repetindo_id=progresso.id
                 elif not repetir_normal:repetindo_id=None
-                tecla=cadencia.escolher(agora,True,progresso.dano and agora-progresso.ultimo_dano<2.5,target['hp']/target['hp_max'],em_alcance=em_alcance,recargas_reais=cc.get('recargas_atalhos'),iniciar_normal=abrir_normal,normal_disponivel=cc.get('normal_ready') is not False or repetir_normal)
+                tecla=cadencia.escolher(agora,True,progresso.dano and agora-progresso.ultimo_dano<2.5,target['hp']/target['hp_max'],em_alcance=em_alcance,recargas_reais=cc.get('recargas_atalhos'),iniciar_normal=abrir_normal,normal_disponivel=(cc.get('normal_ready') is not False or repetir_normal) and (not templa or templa.normal.permitir(agora)))
                 if tecla=='1' and cc.get('normal_ready') is False and not repetir_normal:tecla=None
+                if templa and tecla and tecla!='1' and (not progresso.dano or not templa.normal.parado(agora)):tecla=None
                 item=False
                 if agora>=cadencia.livre_em:
                     for v in p['items']:
@@ -439,6 +627,7 @@ def main(profile,event_sink,control,percurso=None):
                 inicio_envio=time.monotonic()
                 if tecla and not item:
                     atalho=p['attack_key'] if tecla=='1' else tecla
+                    if templa and tecla=='1':templa.normal.solicitado(agora)
                     if combo:enviada,combo=executar_combo(segurar,liberar,esperar,ativo,atalho,tecla=='1',skill_id=skill_id,intervalo_teclas=ritmo['pausa_teclas'] if tecla=='1' else 0.)
                     else:enviada=pulso(atalho,duracao_tecla(skill_id))
                 if enviada:
@@ -450,6 +639,13 @@ def main(profile,event_sink,control,percurso=None):
                     if tecla=='1':progresso.abertura_enviada=True
                     cancelamento.acao(tecla=='1',time.monotonic(),cadencia.livre_em)
                     if tecla!='1':log('Tecla de habilidade enviada.',tecla=tecla,intervalo=cadencia.recargas[tecla],recarga_real=real)
+                elif tecla and not item and p['background_keys']:
+                    resposta=entrada.ultima_resposta or {}
+                    if resposta.get('motivo')=='recusado_pelo_cliente':
+                        metricas['recusas']+=1;vigia_ataque.enviado()
+                        cadencia.livre_em=max(cadencia.livre_em,agora+.3)
+                        if tecla=='1':cadencia.normal_em=max(cadencia.normal_em,agora+.6)
+                        event_sink(dict(event='action_rejected',**resposta,target_id=target['id']))
                 if repetir_normal:
                     restante=max(cadencia.normal_em,cadencia.livre_em)-time.monotonic()
                     esperar(max(.001,min(.015,restante)))
@@ -485,15 +681,20 @@ def main(profile,event_sink,control,percurso=None):
             esperar(.015)
         while not parar():
             if not ativo():
-                soltar();antes=time.monotonic();event_sink(dict(event='status',state='paused',message='Pausado pelo painel.' if control.pause.is_set() else 'Aika sem foco; volte ao jogo para retomar.'))
+                soltar();antes=time.monotonic();event_sink(dict(event='status',state='paused',message='Pausado pelo painel.' if control.pause.is_set() else ((entrada.motivo_indisponivel() or 'Reconfirmando disponibilidade do Aika.') if p['background_keys'] else 'Aika sem foco; volte ao jogo para retomar.')))
+                if p['background_keys']:entrada.parar_movimento()
                 while not ativo() and not parar():time.sleep(.04)
                 decorrido=time.monotonic()-antes
+                confirmacao_buff.pausar(decorrido)
+                navegador.suspender(s['player']['position'],time.monotonic())
+                if not parar():log('Aika disponivel novamente; retomando apos a pausa.',segundos=round(decorrido,2),segundo_plano=p['background_keys'])
                 if modal_desde is not None:modal_desde+=decorrido
                 if buff_pausa_desde is not None:buff_pausa_desde+=decorrido
                 if circuito:circuito.pausar(decorrido)
                 vigia_ataque.suspender(time.monotonic())
                 if progresso:progresso.ultimo_dano+=decorrido
                 cancelamento=CancelamentoNormal(p['cancel_normal'])
+                confirmacao_reacao.pausar(decorrido)
                 recuperacao.pausar(decorrido);fim_busca+=decorrido;busca_ate+=decorrido;verificador.observar(None,0,False);continue
             # Fecha o aviso antes de teclado, movimento, cura ou ataque. Um
             # clique sozinho nao e prova de fechamento: aguarda duas capturas.
@@ -516,7 +717,7 @@ def main(profile,event_sink,control,percurso=None):
                 conhecido=aviso and aviso['tipo'] in ('cte_elter','arena_elter','conversa_amigo')
                 if conhecido and agora_modal-aviso['capturado']<=1. and agora_modal>=clique_modal_em:
                     from huntingaitan.visao.avisos_hunt import reconfirmar
-                    try:ponto=reconfirmar(aviso)
+                    try:ponto=monitor.reconfirmar(aviso) if p['background_keys'] else reconfirmar(aviso)
                     except Exception as e:
                         log('Nao consegui reconfirmar o aviso.',detail=str(e));ponto=None
                     clique_modal_em=agora_modal+.6
@@ -533,9 +734,11 @@ def main(profile,event_sink,control,percurso=None):
                 esperar(.025);continue
             if modal_desde is not None:
                 duracao=agora_modal-modal_desde
+                confirmacao_buff.pausar(duracao)
                 if buff_pausa_desde is not None:buff_pausa_desde+=duracao
                 if circuito:circuito.pausar(duracao)
                 if progresso:progresso.ultimo_dano+=duracao
+                confirmacao_reacao.pausar(duracao)
                 recuperacao.pausar(duracao);fim_busca+=duracao;busca_ate+=duracao
                 vigia_ataque.suspender(agora_modal)
                 cancelamento=CancelamentoNormal(p['cancel_normal'])
@@ -554,8 +757,8 @@ def main(profile,event_sink,control,percurso=None):
             if mina and dados.u32(dados.cena_validada()+0x38)!=mapa_mina:
                 soltar();raise RuntimeError('A cena da DG mudou; percurso interrompido sem registrar conclusao.')
             if jardim and circuito.atingiu_limite(pos):
-                soltar();control.reason='jardim_limite_lazapas'
-                event_sink(dict(event='jardim_limit',position=pos,message='Limite anterior aos Lazapas alcancado; preparando saida sem ataca-los.'));break
+                soltar();control.reason='jardim_limite_shiraz'
+                event_sink(dict(event='jardim_limit',position=pos,message='Limite anterior aos Shiraz Infernais alcancado; preparando saida sem ataca-los.'));break
             if player['hp']<ultimo_hp:ultimo_ferimento=agora
             ultimo_hp=player['hp']
             if hasattr(dados,'caca_original_ativa') and agora>=nativo_em:
@@ -580,28 +783,38 @@ def main(profile,event_sink,control,percurso=None):
                         except RuntimeError as e:
                             cc['recargas_atalhos']={}
                             if agora-pool_erro_em>=3:log('Recarga da barra indisponivel; usando intervalos configurados.',detail=str(e));pool_erro_em=agora
+                    if reacoes and hasattr(dados,'recargas_grupos'):
+                        # Recarga real de qualquer skill (inclusive fora da linha 1-8), por grupo do cliente.
+                        try:cc['recargas_grupos']=dados.recargas_grupos()
+                        except RuntimeError:cc['recargas_grupos']=None
                 except RuntimeError as e:
                     soltar()
                     if agora-pool_erro_em>=3:log('Aguardando estados do personagem.',detail=str(e));pool_erro_em=agora
                     esperar(.1);continue
+            if templa and target and (progresso is None or target['id']==progresso.id):templa.normal.observar(target,agora,cc)
             defesa_anterior=defesa.ativa
             defendendo=mina and defesa.observar(agora,player['hp']/player['hp_max'],cc)
             if defendendo!=defesa_anterior:
                 pool_em=0.
                 log('Defesa da DG ativada: limpar hostis proximos antes de avancar.' if defendendo else 'Pressao encerrada e vida recuperada; percurso liberado.')
-            if (estado!='combater' or jardim) and hasattr(dados,'listar_mobs') and agora>=pool_em:
+            if (estado!='combater' or jardim or templa) and hasattr(dados,'listar_mobs') and agora>=pool_em:
                 try:
                     lista=dados.listar_mobs(pos if circuito else base,max(35,p['radius']) if jardim else p['radius'],player)
-                    lazapa=circuito.lazapa_proximo(lista,pos) if jardim else None
+                    lazapa=circuito.limite_proximo(lista,pos) if jardim else None
                     if lazapa:
-                        soltar();control.reason='jardim_limite_lazapas'
-                        event_sink(dict(event='jardim_limit',position=pos,target=lazapa['name'],target_id=lazapa['id'],message='Lazapa do trecho final proximo; interrompendo antes de selecionar ou atacar.'));break
+                        soltar();control.reason='jardim_limite_shiraz'
+                        event_sink(dict(event='jardim_limit',position=pos,target=lazapa['name'],target_id=lazapa['id'],message='Shiraz Infernal proximo; interrompendo antes de selecionar ou atacar.'));break
                     indisponiveis={id_:ate for id_,ate in indisponiveis.items() if ate>agora}
                     ignorados_selecao.intersection_update(indisponiveis)
                     mobs_regiao=[m for m in lista if (m['id'] not in indisponiveis or defendendo and m['id'] in ignorados_selecao) and alvo_permitido(m,player,base,p)]
                     if mina:mobs_regiao=circuito.filtrar_mobs(mobs_regiao,pos,p['radius'],defendendo)
+                    if croshu:
+                        circuito.atualizar_menores(lista)
+                        mobs_regiao=[m for m in mobs_regiao if circuito.permite(m['position'])]
                     if defendendo:mobs_regiao=defesa.candidatos(mobs_regiao,pos)
                     if percurso is not None:mobs_regiao=percurso.filtrar_mobs(mobs_regiao,pos,agora)
+                    if seletor:
+                        mobs_regiao=atualizar_transicoes(lista,agora,planejar=estado!='combater')
                     regional.atualizar(mobs_regiao);pool_em=agora+(.2 if mina else .4)
                 except RuntimeError as e:
                     soltar();mobs_regiao=None
@@ -615,14 +828,70 @@ def main(profile,event_sink,control,percurso=None):
                 soltar();heading=None;origem_mov=None;estado='selecionar';fim_busca=agora+p['no_damage_seconds']
                 log('Mobs validos na regiao; priorizando combate antes de retornar.',quantidade=len(mobs_regiao))
             if agora-ultima_telemetria>.15:
-                event_sink(dict(event='telemetry',controle=cc,heading=player.get('heading'),mobs_regiao=len(mobs_regiao) if mobs_regiao is not None else None,source='native',dungeon=mina,patrol_point=circuito.trechos[circuito.trecho]['ate'] if circuito else None,patrol_laps=circuito.voltas if circuito else None,state='rebufar' if buffs.em_andamento or buff_pausa_desde is not None else estado,position=pos,base=base,hp=player['hp']/player['hp_max'],mp=player['mp']/player['mp_max'] if player['mp_max'] else None,elapsed=agora-inicio,next_buff_seconds=max(0,buffs.vencimento-agora) if p['buffs_enabled'] else None,next_buffs_seconds={k:round(max(0,v-agora),2) for k,v in buffs.vencimentos.items()} if p['buffs_enabled'] else {},target=target['name'] if target else None,target_id=target['id'] if target else None,target_hostile=target['hostile'] if target else None,target_distance=round(math.dist(target['position'],player['position']),2) if target else None,target_hp=target['hp'] if target else None,target_hp_max=target['hp_max'] if target else None));ultima_telemetria=agora
+                event_sink(dict(event='telemetry',controle=cc,heading=player.get('heading'),mobs_regiao=len(mobs_regiao) if mobs_regiao is not None else None,source='native',dungeon=mina,patrol_point=circuito.trechos[circuito.trecho]['ate'] if circuito else None,patrol_laps=circuito.voltas if circuito else None,input_guard=confirmacao_reacao.telemetria(),state=confirmacao_reacao.telemetria()['state'] or ('rebufar' if buffs.em_andamento or buff_pausa_desde is not None else estado),position=pos,base=base,hp=player['hp']/player['hp_max'],mp=player['mp']/player['mp_max'] if player['mp_max'] else None,elapsed=agora-inicio,next_buff_seconds=max(0,buffs.vencimento-agora) if p['buffs_enabled'] else None,next_buffs_seconds={k:round(max(0,v-agora),2) for k,v in buffs.vencimentos.items()} if p['buffs_enabled'] else {},target=target['name'] if target else None,target_id=target['id'] if target else None,target_hostile=target['hostile'] if target else None,target_distance=round(math.dist(target['position'],player['position']),2) if target else None,target_position=target['position'] if target else None,target_height=target.get('height') if target else None,player_height=player.get('height'),target_base_distance=round(math.dist(target['position'],base),2) if target else None,target_hp=target['hp'] if target else None,target_hp_max=target['hp_max'] if target else None));ultima_telemetria=agora
             if p['duration_minutes'] and agora-inicio>=p['duration_minutes']*60:
                 soltar();pulso(p['return_key']);control.reason='tempo_encerrado';log('Tempo de caca encerrado.');break
             if player['hp']<=0:soltar();control.reason='personagem_sem_vida';log('Personagem sem vida; caca encerrada.');break
+            # Um consumivel de emergencia configurado pode salvar durante uma
+            # conjuracao. Nao substitui a confirmacao da habilidade em andamento.
+            if reacoes and (confirmacao_buff.pendente or confirmacao_reacao.pendente or cc.get('casting')):
+                emergencia=next((r for r in reacoes.regras if r['skill_id']==0 and r['tipo'] in ('item_hp','emergencia') and reacoes.avaliar(r,agora,player['hp']/player['hp_max'],player['mp']/player['mp_max'] if player['mp_max'] else 1.,player['mp'],estado=='combater',mobs_perto,cc.get('recargas_grupos'),None,False,False)['pronta']),None)
+                if emergencia and pulso(emergencia['tecla']):
+                    reacoes.enviada(emergencia,time.monotonic());cadencia.livre_em=max(cadencia.livre_em,time.monotonic()+p['action_gap'])
+                    log('Consumivel de emergencia priorizado durante confirmacao.',tecla=emergencia['tecla'],hp=player['hp']/player['hp_max'])
+                    esperar(.03);continue
+            if confirmacao_buff.pendente:
+                if player['hp']/player['hp_max']<=.35 and not cc.get('casting'):veredito_buff=confirmacao_buff.interromper_por_cura()
+                else:veredito_buff=confirmacao_buff.observar(agora,player,cc)
+                if veredito_buff:
+                    if veredito_buff['ok']:buffs.confirmar(agora);metricas['buffs_confirmados']+=1
+                    else:buffs.adiar(agora,veredito_buff['repetir_em'])
+                    event_sink(dict(event='buff_result',**veredito_buff))
+                    log('Resposta do buff da agenda conferida.',**veredito_buff)
+                if confirmacao_buff.pendente:
+                    if progresso:progresso.pausar_confirmacao(agora)
+                    soltar();navegador.suspender(pos,agora);esperar(.015);continue
+            if reacoes:
+                reacoes.atualizar_efeitos(cc.get('active_skill_ids'))
+                veredito=confirmacao_reacao.interromper_por_emergencia(player,cc) or confirmacao_reacao.observar(agora,player,cc,**({'resposta_cliente':True} if seletor else {}))
+                if veredito:
+                    regra_v=veredito['regra']
+                    if regra_v is not None and veredito['ok'] is not None:reacoes.resultado(regra_v,veredito['ok'],agora)
+                    event_sink(dict(event='reaction_result',key=regra_v['tecla'] if regra_v else None,ok=veredito['ok'],reason=veredito['motivo'],hp=player['hp']/player['hp_max']))
+                    log('Resposta da reacao conferida.',tecla=regra_v['tecla'] if regra_v else None,resultado=veredito['motivo'],confirmada=veredito['ok'])
+                    if veredito['ok'] and not confirmacao_reacao.recuperando:
+                        navegador.suspender(pos,agora)
+                recuperacao_controle=confirmacao_reacao.recuperacao()
+                if recuperacao_controle:
+                    soltar();navegador.invalidar();navegador.suspender(pos,agora)
+                    if recuperacao_controle=='revalidar':
+                        destravar_enviado=False
+                        if foco() and not any(cc.get(k,False) for k in ('casting','stunned','paralyzed','frozen')):
+                            if not p['background_keys']:u.SetForegroundWindow(dados.hwnd)
+                            if p['unstuck_key']:destravar_enviado=pulso(p['unstuck_key'])
+                        log('Tentativa de recuperar comandos; aguardando resposta da cura.',tentativa=confirmacao_reacao.recuperacoes,foco_confirmado=foco(),tecla_enviada=destravar_enviado)
+                    else:
+                        log('Comandos continuam sem resposta; movimento e ataques suspensos. Assuma o personagem e confirme uma cura para retomar.')
+                    event_sink(dict(event='input_recovery',state='waiting' if recuperacao_controle=='manual' else 'attempt',attempt=confirmacao_reacao.recuperacoes))
+                    if hasattr(monitor,'salvar_diagnostico'):
+                        from pathlib import Path
+                        pasta=Path(os.environ.get('AIKA_DATA_DIR',str(Path(__file__).resolve().parents[2])))/'app_sessions'
+                        try:
+                            arquivo=pasta/('bloqueio_controle_'+time.strftime('%Y%m%d_%H%M%S')+'.png')
+                            if monitor.salvar_diagnostico(arquivo):log('Captura do bloqueio salva para diagnostico.',arquivo=str(arquivo))
+                        except Exception as e:log('Captura do bloqueio indisponivel.',detail=str(e))
+                if confirmacao_reacao.manual:
+                    soltar();navegador.suspender(pos,agora);esperar(.03);continue
+                if confirmacao_reacao.pendente:
+                    if progresso:progresso.pausar_confirmacao(agora)
+                    soltar();navegador.suspender(pos,agora);esperar(.015);continue
+            if progresso and progresso.confirmacao_desde is not None:
+                progresso.retomar_confirmacao(agora);vigia_ataque.suspender(agora)
+                if templa:templa.normal.apos_conjuracao(agora)
             usou=False
             for tipo in ['hp','mp']:
                 maxi=player[tipo+'_max'];fracao=player[tipo]/maxi if maxi else 1
-                keys=[k for k in p[tipo+'_keys'] if k]
+                keys=[] if reacoes.tem_item('item_'+tipo) else [k for k in p[tipo+'_keys'] if k]
                 if fracao<p[tipo+'_percent']/100 and keys and agora>=suprimento_em.get(tipo,0):
                     if pulso(keys[0]):suprimento_em[tipo]=agora+3;cadencia.registrar('8',agora);usou=True;break
             if usou:
@@ -630,7 +899,10 @@ def main(profile,event_sink,control,percurso=None):
             bloqueado_cc=any(cc.get(k,False) for k in ('stunned','paralyzed','frozen'))
             motivo_cc='controle' if bloqueado_cc else ('execucao' if cc.get('casting',False) else None)
             if motivo_cc:
-                vigia_ataque.suspender(agora)
+                # A animacao do proprio ataque nao confirma dano. Reiniciar
+                # aqui fazia cada cast esconder indefinidamente ataques sem
+                # efeito, como no terceiro Croshu do circuito das Cinzas.
+                if bloqueado_cc:vigia_ataque.suspender(agora)
                 soltar();navegador.suspender(pos,agora);verificador.observar(None,agora,False)
                 if cc_desde is None:cc_desde=agora
                 if cc_motivo!=motivo_cc:
@@ -642,9 +914,61 @@ def main(profile,event_sink,control,percurso=None):
                 if circuito:circuito.pausar(agora-cc_desde)
                 if progresso:progresso.ultimo_dano+=agora-cc_desde
                 recuperacao.pausar(agora-cc_desde);cc_desde=None;cc_log=False
-                cancelamento=CancelamentoNormal(p['cancel_normal']);navegador.suspender(pos,agora)
+                # Preserva a suspensao de cancelamento aplicada a este alvo
+                # durante a recuperacao; uma animacao nao libera o combo.
+                cancelamento.acao(False,agora,agora);navegador.suspender(pos,agora)
                 log('Controle temporario terminou; retomando o mesmo alvo.' if cc_motivo=='controle' else 'Execucao do cliente finalizada; retomando o mesmo alvo.');cc_motivo=None
             hp_atual=player['hp']/player['hp_max']
+            if reacoes:
+                mp_max=player.get('mp_max') or 0
+                if reacoes.raio_mobs() and hasattr(dados,'listar_mobs') and agora>=mobs_reacao_em:
+                    # Contagem propria e fresca: a lista da selecao nao atualiza durante o combate.
+                    mobs_reacao_em=agora+.4
+                    try:mobs_perto=[math.dist(pos,m['position']) for m in dados.listar_mobs(pos,reacoes.raio_mobs(),player) if m.get('hostile') and m.get('hp',0)>0]
+                    except RuntimeError:mobs_perto=None
+                alvo_reacao=(dict(hp_pct=100.*target['hp']/target['hp_max'],dist=math.dist(target['position'],player['position']))
+                             if estado=='combater' and progresso and target and target['id']==progresso.id and target.get('hostile') and target.get('hp',0)>0 and target.get('hp_max') else None)
+                # Reacoes ofensivas compartilham a agenda do ataque normal.
+                # Cura/defesa continuam prioritarias; nao furam o intervalo
+                # para despejar todas as skills ou interromper os buffs.
+                proteger_cura=confirmacao_reacao.proteger(hp_atual)
+                normal_devido=(cadencia.skills_desde_normal>=2 and cc.get('normal_ready') is not False and agora>=cadencia.normal_em and (not templa or templa.normal.permitir(agora)))
+                liberar_ofensivas=(not proteger_cura and alvo_reacao is not None and agora>=cadencia.livre_em and not normal_devido
+                                   and (not templa or alvo_reacao['dist']<=2.4)
+                                   and (not templa or templa.normal.parado(agora))
+                                   and (not templa or not progresso or progresso.dano)
+                                   and not buffs.em_andamento and buff_pausa_desde is None and agora>=reconhecer_buff_ate)
+                liberar_buffs=(percurso is None and not proteger_cura and agora>=cadencia.livre_em and not buffs.em_andamento and buff_pausa_desde is None and agora>=reconhecer_buff_ate
+                               and (not templa or estado!='combater' or not progresso or progresso.dano))
+                escolhida=reacoes.escolher(agora,hp_atual,player['mp']/mp_max if mp_max else 1.,player['mp'],
+                                           estado=='combater' or agora-ultimo_ferimento<5,
+                                           mobs_perto,cc.get('recargas_grupos'),alvo=alvo_reacao,ofensivas_liberadas=liberar_ofensivas,buffs_liberados=liberar_buffs)
+                if proteger_cura:
+                    escolhida=next((r for r in reacoes.regras if confirmacao_reacao.cura(r) and reacoes.avaliar(r,agora,hp_atual,player['mp']/mp_max if mp_max else 1.,player['mp'],estado=='combater' or agora-ultimo_ferimento<5,mobs_perto,cc.get('recargas_grupos'),alvo_reacao,liberar_ofensivas,liberar_buffs)['pronta']),None)
+                if agora>=reacoes_log_em:
+                    event_sink(dict(event='reaction_state',regras=reacoes.diagnostico(agora,hp_atual,player['mp']/mp_max if mp_max else 1.,player['mp'],
+                        estado=='combater' or agora-ultimo_ferimento<5,mobs_perto,cc.get('recargas_grupos'),alvo=alvo_reacao,ofensivas_liberadas=liberar_ofensivas,buffs_liberados=liberar_buffs,escolhida=escolhida)))
+                    reacoes_log_em=agora+.4
+                if escolhida:
+                    # Sobrevivencia tem prioridade sobre ataque, selecao, movimento e buffs.
+                    soltar();navegador.suspender(pos,agora);tecla_r=escolhida['tecla']
+                    if executar_buff(tecla_r,segurar,liberar,esperar,ativo) if '+' in tecla_r else pulso(tecla_r,duracao_tecla(escolhida['skill_id'] or None)):
+                        reacoes.enviada(escolhida,time.monotonic());confirmacao_reacao.enviada(escolhida,time.monotonic(),player,cc)
+                        cadencia.livre_em=max(cadencia.livre_em,time.monotonic()+p['action_gap'])
+                        if escolhida['tipo'] in ('ataque','buff_combate'):cadencia.skills_desde_normal+=1
+                        if escolhida['tipo']=='ataque' and target:
+                            vigia_ataque.observar(target,agora);vigia_ataque.enviado()
+                        cancelamento.acao(False,agora,cadencia.livre_em)
+                        event_sink(dict(event='action',key=tecla_r,kind='reacao',rule_index=reacoes.indices[id(escolhida)],nome=escolhida['nome'],tipo=escolhida['tipo'],hp=hp_atual,mp=player['mp'],target_id=target['id'] if target else None))
+                        log('Reacao de sobrevivencia enviada.',nome=escolhida['nome'],tecla=tecla_r,tipo=escolhida['tipo'],hp=round(hp_atual,3))
+                    else:
+                        reacoes.recusada(escolhida,time.monotonic())
+                        resposta=getattr(entrada,'ultima_resposta',None) or {}
+                        if resposta.get('motivo')=='recusado_pelo_cliente':
+                            metricas['recusas']+=1;event_sink(dict(event='action_rejected',**resposta,target_id=target['id'] if target else None))
+                    esperar(.015);continue
+                if proteger_cura:
+                    soltar();navegador.suspender(pos,agora);esperar(.015);continue
             recarga_cura=cc.get('recargas_atalhos',{}).get(tecla_cura)
             confirmacao=cura.observar(agora,hp_atual,recarga_cura)
             if confirmacao:
@@ -688,10 +1012,18 @@ def main(profile,event_sink,control,percurso=None):
                 soltar()
                 if executar_buff(buff,segurar,liberar,esperar,ativo):
                     log('Atalho de buff enviado.',atalho=buff)
-                    buffs.confirmar(time.monotonic());reconhecer_buff_ate=time.monotonic()+.4
+                    skill_buff=cc.get('recargas_atalhos',{}).get(buff,{}).get('skill')
+                    if p['background_keys'] and skill_buff:confirmacao_buff.iniciar(buff,skill_buff,time.monotonic(),player,cc)
+                    else:buffs.confirmar(time.monotonic())
+                    reconhecer_buff_ate=time.monotonic()+.4
                     cadencia.livre_em=max(cadencia.livre_em,reconhecer_buff_ate)
                     log('Agenda individual de buffs atualizada.',vencimentos=buffs.vencimentos)
                     if not buffs.em_andamento:log('Buffs vencidos enviados; renovacao individual por atalho.',periodos_segundos=buffs.periodos)
+                else:
+                    resposta=getattr(entrada,'ultima_resposta',None) or {}
+                    if resposta.get('motivo')=='slot_vazio':
+                        buffs.adiar(agora,30);log('Buff nao enviado: slot vazio; agenda liberada para as outras acoes.',tecla=buff)
+                    esperar(.05)
                 continue
             if buffs.em_andamento:
                 soltar();esperar(.02);continue
@@ -699,6 +1031,7 @@ def main(profile,event_sink,control,percurso=None):
                 decorrido=agora-buff_pausa_desde
                 if circuito:circuito.pausar(decorrido)
                 if progresso:progresso.ultimo_dano+=decorrido
+                confirmacao_reacao.pausar(decorrido)
                 recuperacao.pausar(decorrido);fim_busca+=decorrido;busca_ate+=decorrido
                 cancelamento=CancelamentoNormal(p['cancel_normal']);buff_pausa_desde=None
                 log('Ciclo de buffs concluido; combate liberado com a selecao preservada.')
@@ -714,28 +1047,58 @@ def main(profile,event_sink,control,percurso=None):
                     # uma passagem estreita de reentrada, com colisao validada.
                     reentrada=chave[0]=='circuito' and not regiao(pos)
                     limite=lambda q:regiao(q) or (reentrada and distancia_segmento(q,pos,destino)<=2)
+                    if templa and templa.limpeza_centro is not None and chave[0] in ('mob','busca','recuperar_ataque'):
+                        faixa=limite
+                        limite=lambda q:faixa(q) or (math.dist(q,templa.limpeza_centro)<=5 and math.dist(q,pos)<=5)
+                    if croshu:
+                        faixa=limite
+                        limite=lambda q:circuito.permite(q,pos) and faixa(q)
                     if percurso is not None and hasattr(percurso,'geometria'):
                         faixa=limite
                         limite=lambda q:percurso.geometria.permite_saida(q,pos) and faixa(q)
                         if not percurso.geometria.livre(pos) and agora-nav_log_em>=2:
                             log('Saindo da borda da mascara de objetos pela celula ja ocupada.',posicao=pos)
                             nav_log_em=agora
-                try:plano=navegador.planejar(dados,pos,player.get('heading'),destino,chave,agora,alcance=alcance,limite=limite,parcial=retorno or bool(circuito))
+                try:
+                    opcoes=dict(alcance=alcance,limite=limite,parcial=retorno or bool(circuito))
+                    if p['background_keys']:opcoes['controle_interno']=True
+                    plano=navegador.planejar(dados,pos,player.get('heading'),destino,chave,agora,**opcoes)
+                    if destravar_colisao.observar(pos):
+                        log('Deslocamento confirmado apos tentativa de destravar colisao.',posicao=pos)
+                    if seletor and plano.get('passagem_bloqueada'):
+                        tentativa=destravar_colisao.tentar(agora,pos,p['unstuck_key'],cc,pulso)
+                        if tentativa is not None:
+                            log('Colisao sem deslocamento; skill de recuperacao solicitada sem trocar alvo.',**tentativa)
+                            event_sink(dict(event='collision_recovery',position=pos,**tentativa))
+                    if seletor and plano.get('passagem_bloqueada'):
+                        plano=navegador.replanejar_agora(dados,pos,player.get('heading'),destino,chave,agora,plano,**opcoes)
+                        metricas['desvios']+=1
+                        log('Passagem excluida e alternativa recalculada no mesmo ciclo.',passagem=plano['passagem_recalculada'],resultado=plano['estado'])
                 except RuntimeError as e:
                     soltar()
                     if agora-nav_log_em>=3:log('Aguardando grade valida antes de mover.',detail=str(e));nav_log_em=agora
+                    if jardim:circuito.observar_navegacao(pos,agora,dict(estado='aguardar_grade'))
                     return 'aguardar_grade'
-                if percurso is not None and percurso.observar_navegacao(pos,agora,plano):
+                observador=percurso if percurso is not None else circuito if jardim else None
+                if observador is not None and observador.observar_navegacao(pos,agora,plano):
                     soltar();navegador.invalidar()
-                    log('Bloqueio fisico no retorno; recuando por passagem validada e seguindo novo caminho.',posicao=pos)
+                    if jardim:navegador.grade=None
+                    log('Passagem do Jardim abandonada apos bloqueio; seguindo rota diferente.' if jardim else 'Bloqueio fisico no retorno; recuando por passagem validada e seguindo novo caminho.',posicao=pos,revisao=getattr(observador,'revisao',None),bloqueios=len(circuito.recuperacao.bloqueios) if jardim else None)
                     return 'replanejar'
                 if plano['estado']!='andando':
                     soltar()
+                    if p['background_keys']:entrada.parar_movimento()
                     if plano['estado'] in ['sem_caminho','bloqueado','replanejar'] and agora-nav_log_em>=1:
                         log('Navegacao: '+plano['estado']+'.',destino=destino);nav_log_em=agora
+                    if plano.get('passagem_bloqueada'):
+                        metricas['desvios']+=1;log('Passagem sem avanco excluida temporariamente do planejamento.',passagem=plano['passagem_bloqueada'])
                     return plano['estado']
                 if agora-nav_log_em>=2:
                     log('Seguindo rota com colisao validada.',pontos=plano['pontos'],destino=destino,erro=round(plano['erro'],1),andando=plano['w'],giro=plano.get('giro'),pulso_giro=plano.get('tempo'));nav_log_em=agora
+                if p['background_keys']:
+                    if plano.get('replanejado_imediato'):entrada.mover_para(plano['ponto'],agora,forcar=True)
+                    else:entrada.mover_para(plano['ponto'],agora)
+                    return 'andando'
                 if plano['w']:segurar('w')
                 else:liberar('w')
                 if plano.get('giro'):pulso(plano['giro'],plano['tempo'])
@@ -760,5 +1123,9 @@ def main(profile,event_sink,control,percurso=None):
             if _saida=='continuar':continue
     finally:
         fim.set();soltar()
+        if p['background_keys']:
+            try:entrada.finalizar()
+            except Exception as e:log('Ponte interna: falha na remocao; nao iniciar outra sessao neste cliente.',detail=str(e))
         if dados:dados.close()
+        event_sink(dict(event='session_summary',**metricas))
         event_sink(dict(event='finished',message='Caca encerrada; teclas liberadas.',reason='F12' if keyboard.is_pressed('f12') else getattr(control,'reason','controle_de_parada')))

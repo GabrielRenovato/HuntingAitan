@@ -30,6 +30,8 @@ O Python no PATH é usado no desenvolvimento. Para outro interpretador, defina `
 
 ## Publicar uma correção
 
+A beta.33 acrescenta seletor de cliente, editor visual de regras, circuitos e motor experimental em segundo plano. O jogo precisa permanecer aberto e sem minimizar; Mina, Jardim e renovação da bênção não estão validados em segundo plano. A renovação de Giovanni continua desativada. Consulte [as notas da versão](RELEASE_NOTES.md) e [a documentação do motor](docs/MOTOR_SEGUNDO_PLANO.md) antes de ativar esse modo.
+
 1. Faça a alteração, atualize `CHANGELOG.md` e rode `npm test`.
 2. Ajuste a mesma versão nos dois `package.json` e nos respectivos lockfiles. Exemplo: `0.1.0-beta.29` para a próxima beta.
 3. Atualize `RELEASE_NOTES.md`, faça commit e push.
@@ -38,6 +40,8 @@ O Python no PATH é usado no desenvolvimento. Para outro interpretador, defina `
 O workflow verifica a versão, executa os testes, empacota o backend, gera o instalador NSIS e publica instalador, blockmap e metadados YAML na release. O token vem do GitHub Actions; não deve ser colocado no aplicativo. O workflow falha sem publicar se um desses passos falhar. Tags com sufixo beta são publicadas como pré-release.
 
 Para gerar o instalador localmente: `npm run build`. Saída em `release/`. O teste `python tools/smoke_backend.py` valida o motor empacotado sem iniciar a caça. O executável não recebe assinatura Authenticode sem um certificado configurado no ambiente de build.
+
+As ferramentas opcionais de análise dos arquivos locais e o emulador da ponte usam `python -m pip install -r requirements-dev.txt`. Elas não são necessárias para executar o instalador. Dumps e resultados dessas ferramentas ficam locais e ignorados pelo Git.
 
 ## Conteúdo versionado
 

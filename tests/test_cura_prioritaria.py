@@ -59,7 +59,7 @@ class CuraTeste(unittest.TestCase):
         def emitir(e):
             eventos.append(e)
             if e.get('kind')=='heal':c.stop.set()
-        u=MagicMock();u.GetWindowTextW.side_effect=lambda hwnd,buf,n:setattr(buf,'value','AikaClient')
+        u=MagicMock();u.GetForegroundWindow.return_value=1;u.GetWindowTextW.side_effect=lambda hwnd,buf,n:setattr(buf,'value','AikaClient')
         entrada=SimpleNamespace(PAUSE=0,keyDown=lambda k:entradas.append((tempo[0],k)),keyUp=lambda k:None)
         with patch.dict(sys.modules,keyboard=SimpleNamespace(is_pressed=lambda k:False),pydirectinput=entrada),patch.object(h,'DadosInternos',Dados),patch.object(h.ctypes.windll,'user32',u),patch.object(h.threading,'Thread'),patch.object(h.time,'monotonic',lambda:tempo[0]),patch.object(h.time,'sleep',dormir):h.main(p,emitir,c)
         self.assertEqual([k for t,k in entradas],['7'])

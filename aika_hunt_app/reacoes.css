@@ -1,0 +1,25 @@
+/* Aba Reações. As regras do painel global (input{width:...}) são sobrescritas com seletores mais específicos. */
+#reactions .muted{margin:4px 0 0}
+#reactions .wide{width:100%}
+.bar-slots{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:6px}
+.chip{display:flex;flex-direction:column;align-items:flex-start;text-align:left;gap:1px;min-width:0;padding:3px 6px}
+.chip b{max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:11px}
+.chip span{max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:9.5px;color:#b7b09a}
+.chip.sem-reacao,.chip.ja-usada{opacity:.5}
+.reacao{border:1px solid #5a5440;border-radius:3px;padding:4px 5px;margin-bottom:5px;background:#0b110e55}
+.reacao.inativa{opacity:.55}
+.reacao.sem-tecla{border-color:#c46a5c}
+.reacao .linha{display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+.reacao .linha:first-child{flex-wrap:nowrap}
+.reacao .linha.campos{margin-top:4px;gap:3px 9px}
+.reacao input[type=text],.reacao input[type=number]{text-transform:none;background:#12171466;border:1px solid #4a4a3c;border-radius:2px;color:#9fd8de}
+.reacao .nome{flex:1;min-width:0;width:auto;text-align:left;padding:2px 4px}
+.reacao .tecla{width:58px;padding:2px 3px;text-transform:lowercase}
+.reacao input[type=number]{width:48px;padding:1px 2px}
+.reacao input[type=checkbox]{width:auto}
+.reacao select{max-width:100px;flex:none}
+.reacao .remover{padding:0 6px;line-height:17px}
+.campo{display:inline-flex;align-items:center;gap:3px;color:#d4cbb2}
+.campo.marcar{gap:2px}
+.campo .sufixo{color:#a69f8b}
+.reacao .dica{margin-left:auto;font-size:9.5px;color:#8f8a78}

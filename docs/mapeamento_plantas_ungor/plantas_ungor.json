@@ -1,0 +1,115 @@
+{
+  "schema": 1,
+  "mapa": "Floresta Ungor",
+  "nome_setor_cliente": "Bosque de Ungor",
+  "setor": 14,
+  "limites": [
+    1792,
+    1024,
+    2556,
+    1534
+  ],
+  "mob": "Planta Carnívora Mutante",
+  "registro": 1373,
+  "pontos": [
+    {
+      "ponto": 1,
+      "slot": 1,
+      "x": 1957,
+      "y": 1435,
+      "flags": 0,
+      "celula_livre": true
+    },
+    {
+      "ponto": 2,
+      "slot": 2,
+      "x": 1972,
+      "y": 1423,
+      "flags": 0,
+      "celula_livre": true
+    },
+    {
+      "ponto": 3,
+      "slot": 3,
+      "x": 2108,
+      "y": 1396,
+      "flags": 0,
+      "celula_livre": true
+    },
+    {
+      "ponto": 4,
+      "slot": 4,
+      "x": 2146,
+      "y": 1346,
+      "flags": 0,
+      "celula_livre": true
+    },
+    {
+      "ponto": 5,
+      "slot": 5,
+      "x": 2179,
+      "y": 1261,
+      "flags": 0,
+      "celula_livre": true
+    },
+    {
+      "ponto": 6,
+      "slot": 6,
+      "x": 2274,
+      "y": 1235,
+      "flags": 0,
+      "celula_livre": true
+    },
+    {
+      "ponto": 7,
+      "slot": 7,
+      "x": 2430,
+      "y": 1367,
+      "flags": 0,
+      "celula_livre": true
+    },
+    {
+      "ponto": 8,
+      "slot": 8,
+      "x": 2450,
+      "y": 1378,
+      "flags": 0,
+      "celula_livre": true
+    },
+    {
+      "ponto": 9,
+      "slot": 9,
+      "x": 2457,
+      "y": 1350,
+      "flags": 0,
+      "celula_livre": true
+    },
+    {
+      "ponto": 10,
+      "slot": 10,
+      "x": 2426,
+      "y": 1346,
+      "flags": 0,
+      "celula_livre": true
+    }
+  ],
+  "fontes": {
+    "UI/MN.bin": "281aab5845b3f8b682a5a825cb9d7ded1068d6288d6e5a3730cebe15ad9c7104",
+    "UI/MobPos.bin": "cc0ac17247e143fcc984952b12dd43c18fbc98195d1d05cd0c0ccb657b5bd1e8",
+    "UI/Map.bin": "273c8a849c3dd8821dc93976349f6d01631cf7b8e7fdb76c4e3e93271a4520c4",
+    "Env/AttributeS01.dat": "f50de453e46f8e89366d6651d2bbb505703978ab898bc20e60590e30a1a04cdc",
+    "Env/z010704.att": "7d50b361c4801bf710d6818452421e9c7f5567cbcc5d74d7fa3a45fc0cc55818",
+    "Env/MMZ010704.jit": "54f0b225cef070c4f8b5f9c3f417f9fa94a6752c39f4bb0b1e173ef27a40e40c",
+    "Env/z010705.att": "bb2fc81bcffaba317b3bd10d76a4fb26c505c15f0ffc9d09b7c78a4dfa6a3f93",
+    "Env/MMZ010705.jit": "e9f02e10af0ed32411538cfda782471e2f8d4670aa3d3b226865bef175487214",
+    "Env/z010804.att": "4cd15eb4b08a5315f43c03a67398d5da5baf6955b6c61065c934fef7a0e20f60",
+    "Env/MMZ010804.jit": "94b8f2e80580db43250b37e55baac6bb470478429d080b5077cecf09de03420d",
+    "Env/z010805.att": "41390673dc2f66579c1134a451756502c242f521a1904e76c89a072f2f1d4331",
+    "Env/MMZ010805.jit": "54e2e6f03a898d59264cbf5dd7c4d5e562d6d61eadb6061d56e43373d60697cf",
+    "Env/z010904.att": "d593e75ce9ce93458a942612aafa04b109761ee50543f22a93d69bca6b860ada",
+    "Env/MMZ010904.jit": "906d2d1bea1d171ab6f081a774e83683bc61f511d66c5cc1e05b699edfb7ee97",
+    "Env/z010905.att": "35d556ab3d7ad7fd967a37e5a16930ac9d750d425149a9c38ef2736d03556246",
+    "Env/MMZ010905.jit": "8a0801059be29148204bc4534fd75297f4f78a10372affdd20c94f92c4ae9bcb"
+  },
+  "nota": "Todas as posicoes nao vazias da especie no cadastro do cliente. Nao representam monstros vivos, quantidade simultanea, tempo de respawn nem eventuais spawns exclusivos do servidor. Numeracao segue os slots, nao uma rota. Celula livre nao garante ausencia de objetos ou passagem entre pontos."
+}

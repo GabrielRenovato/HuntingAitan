@@ -2,6 +2,7 @@
 import ctypes,threading,time,json
 from ctypes import wintypes as w
 from huntingaitan.visao.controle_avisos import ObservadorAvisos
+from huntingaitan.leitura.janela_cliente import localizar_cliente,janela_em_foco
 
 
 def main(emitir,entrada_controle):
@@ -11,8 +12,8 @@ def main(emitir,entrada_controle):
     fim=threading.Event();entrada.PAUSE=0
     u=ctypes.windll.user32;u.GetForegroundWindow.restype=w.HWND
     def foco():
-        t=ctypes.create_unicode_buffer(256);u.GetWindowTextW(u.GetForegroundWindow(),t,256)
-        return t.value=='AikaClient'
+        try:return janela_em_foco(u,localizar_cliente(u=u)['hwnd'])
+        except RuntimeError:return False
     def log(msg,**extra):emitir(dict(event='watcher',message=msg,**extra))
     def comandos():
         try:

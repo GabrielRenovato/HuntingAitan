@@ -1,5 +1,6 @@
 """Leitor somente leitura, limitado ao layout de AIKACL.exe verificado por hash."""
 from huntingaitan.recursos import DADOS
+from huntingaitan.leitura.janela_cliente import localizar_cliente
 import ctypes,struct,math,hashlib,json
 from ctypes import wintypes as w
 from pathlib import Path
@@ -10,7 +11,7 @@ P=DADOS
 PADROES={
     'context_rva':0x2f9b1e0-0x400000,'bar_manager_rva':0x322669c-0x400000,
     'effect_table_rva':0xf9c1f4-0x400000,'mob_flag_rva':0x2f9e08c-0x400000,
-    'ent_id':4,'ent_rot':0x28,'ent_pos':0x1c,'ent_status':0x134,'ent_hpmp':0x498,'ent_nome':0x19ac,
+    'ent_id':4,'ent_rot':0x28,'ent_pos':0x1c,'ent_status':0x134,'ent_hpmp':0x498,'ent_nome':0x19ac,'ent_template':0x474,
 }
 
 def escolher_layout(conteudo,sha):
@@ -26,7 +27,7 @@ class MODULEENTRY32W(ctypes.Structure):
     _fields_=[('dwSize',w.DWORD),('th32ModuleID',w.DWORD),('th32ProcessID',w.DWORD),('GlblcntUsage',w.DWORD),('ProccntUsage',w.DWORD),('modBaseAddr',ctypes.POINTER(ctypes.c_ubyte)),('modBaseSize',w.DWORD),('hModule',w.HMODULE),('szModule',w.WCHAR*256),('szExePath',w.WCHAR*260)]
 
 class DadosInternos:
-    def __init__(self):
+    def __init__(self,janela=None):
         self.k=ctypes.WinDLL('kernel32',use_last_error=True);self.u=ctypes.WinDLL('user32',use_last_error=True);self.handle=None
         self.u.FindWindowW.argtypes=[w.LPCWSTR,w.LPCWSTR];self.u.FindWindowW.restype=w.HWND
         self.u.GetWindowThreadProcessId.argtypes=[w.HWND,ctypes.POINTER(w.DWORD)]
@@ -35,11 +36,9 @@ class DadosInternos:
         self.k.CloseHandle.argtypes=[w.HANDLE];self.k.CloseHandle.restype=w.BOOL
         self.k.CreateToolhelp32Snapshot.argtypes=[w.DWORD,w.DWORD];self.k.CreateToolhelp32Snapshot.restype=w.HANDLE
         self.k.Module32FirstW.argtypes=[w.HANDLE,ctypes.POINTER(MODULEENTRY32W)];self.k.Module32NextW.argtypes=self.k.Module32FirstW.argtypes
-        h=self.u.FindWindowW(None,'AikaClient');pid=w.DWORD()
-        if not h:raise RuntimeError('Abra o Aika antes de ler os dados internos.')
-        self.hwnd=h
-        self.u.GetWindowThreadProcessId(h,ctypes.byref(pid))
-        self.handle=self.k.OpenProcess(0x410,False,pid.value)
+        janela=janela or localizar_cliente(self.u,self.k)
+        self.hwnd=janela['hwnd'];self.pid=janela['pid'];pid=w.DWORD(self.pid)
+        self.handle=self.k.OpenProcess(0x410,False,self.pid)
         if not self.handle:raise RuntimeError('Leitura interna: acesso negado. Abra este aplicativo como administrador.')
         try:
             snap=self.k.CreateToolhelp32Snapshot(0x18,pid.value)
@@ -47,11 +46,11 @@ class DadosInternos:
             try:
                 e=MODULEENTRY32W();e.dwSize=ctypes.sizeof(e);ok=self.k.Module32FirstW(snap,ctypes.byref(e));self.base=None
                 while ok:
-                    if e.szModule.lower()=='aikacl.exe':
+                    if e.szModule.lower()==Path(janela['caminho']).name.lower():
                         self.base=ctypes.cast(e.modBaseAddr,ctypes.c_void_p).value;self.caminho=Path(e.szExePath);break
                     ok=self.k.Module32NextW(snap,ctypes.byref(e))
             finally:self.k.CloseHandle(snap)
-            if self.base is None:raise RuntimeError('Modulo AIKACL.exe nao encontrado.')
+            if self.base is None:raise RuntimeError('Modulo do cliente selecionado nao encontrado.')
             self.sha256=hashlib.sha256(self.caminho.read_bytes()).hexdigest()
             self.layout=escolher_layout((P/'native_layout.json').read_text(),self.sha256)
         except Exception:self.close();raise
@@ -76,7 +75,10 @@ class DadosInternos:
         hostil=0x800<=id_<0x2800 and status==0
         rotacao=struct.unpack('<f',self.read(ptr+self.cfg('ent_rot'),4))[0]
         heading=math.degrees(rotacao)%360 if math.isfinite(rotacao) and abs(rotacao)<100000 else None
-        return dict(ref=ptr,id=id_,name=nome,position=pos[:2],height=pos[2],heading=heading,hp=hp,hp_max=hpmax,mp=mp,mp_max=mpmax,hostile=hostil)
+        # 0x47d433 le int16 +0x474 para identificar a especie do alvo.
+        template=struct.unpack('<h',self.read(ptr+self.cfg('ent_template'),2))[0] if hostil else None
+        if template is not None and not 0<template<4096:template=None
+        return dict(ref=ptr,id=id_,name=nome,template_id=template,position=pos[:2],height=pos[2],heading=heading,hp=hp,hp_max=hpmax,mp=mp,mp_max=mpmax,hostile=hostil)
     def cena_validada(self):
         cena=self.u32(self.base+self.layout['active_scene_rva'])
         if not cena or self.u32(cena)!=self.base+self.layout['scene_vtable_rva']:
@@ -110,13 +112,14 @@ class DadosInternos:
             if grupo<=42:
                 valor=struct.unpack('<f',self.read(contexto+0x8bda0+grupo*4,4))[0]
                 if math.isfinite(valor):cd=valor
-        return dict(stunned=bool(ativos[73]),paralyzed=bool(ativos[219]),frozen=bool(ativos[235]),effects=ativos,skill_ids=sorted(causas),animation=self.read(player+0x1e0,1)[0],casting=bool(tick and 0<skill<12000),casting_skill=skill if 0<skill<12000 else None,casting_token=tick,normal_skill=normal,normal_cooldown=cd,normal_ready=(cd==0) if cd is not None else None)
+        return dict(stunned=bool(ativos[73]),paralyzed=bool(ativos[219]),frozen=bool(ativos[235]),effects=ativos,skill_ids=sorted(causas),active_skill_ids=sorted(ids),animation=self.read(player+0x1e0,1)[0],casting=bool(tick and 0<skill<12000),casting_skill=skill if 0<skill<12000 else None,casting_token=tick,normal_skill=normal,normal_cooldown=cd,normal_ready=(cd==0) if cd is not None else None)
 
     def caca_original_ativa(self):
         cena=self.cena_validada();assistente=self.u32(cena+0xeadf4)
         return bool(assistente and self.u32(assistente+0x1f4))
     def recargas_atalhos(self):
-        from huntingaitan.leitura.recargas_barra import decodificar
+        from huntingaitan.leitura.recargas_barra import decodificar,atalhos_slots
+        from huntingaitan.entrada.layout_teclado import caractere_do_vk
         contexto=self.u32(self.base+self.cfg('context_rva'))
         gestor=self.u32(self.base+self.cfg('bar_manager_rva'))
         modo=self.u32(gestor+0x614)
@@ -133,9 +136,15 @@ class DadosInternos:
                     endereco=registro+128;break
             if endereco is None:raise RuntimeError('Barra do personagem nao encontrada')
         slots=struct.unpack('<40I',self.read(endereco,160))
-        self.tipos_atalhos={str(i+1):raw&15 for i,raw in enumerate(slots[:8])}
+        try:mapa=atalhos_slots(self.read(gestor+0x430,468),lambda vk:caractere_do_vk(self.u,self.hwnd,vk))
+        except (RuntimeError,KeyError):mapa={i:str(i+1) for i in range(8)}
+        self.tipos_atalhos={mapa[i]:raw&15 for i,raw in enumerate(slots) if i in mapa}
         recargas=struct.unpack('<43f',self.read(contexto+0x8bda0,172))
-        return decodificar(slots,recargas)
+        return decodificar(slots,recargas,mapa)
+    def recargas_grupos(self):
+        # Progresso de recarga por grupo (43 floats; 0 = pronta), valido para qualquer skill da barra.
+        contexto=self.u32(self.base+self.cfg('context_rva'))
+        return list(struct.unpack('<43f',self.read(contexto+0x8bda0,172)))
     def camera_regional(self):
         # Camera usada no setor de selecao em 0x50a021 e 0x50a0ef.
         contexto=self.u32(self.base+self.cfg('context_rva'))

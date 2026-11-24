@@ -4,6 +4,11 @@ from unittest.mock import patch,MagicMock
 from huntingaitan.combate.hunt_native import ProgressoNativo
 
 class ReaproximacaoTeste(unittest.TestCase):
+ def test_regeneracao_nao_esconde_dano_posterior(self):
+  a=dict(ref=1,id=7980,name='Verit Mutante',hp=100);p=ProgressoNativo(a,0)
+  p.observar(dict(a,hp=50),1);p.observar(dict(a,hp=90),2)
+  self.assertEqual(p.ultimo_dano,1)
+  p.observar(dict(a,hp=80),3);self.assertEqual(p.ultimo_dano,3)
  def test_reproduz_log_do_verit_ferido_a_3_22(self):
   alvo=dict(ref=1,id=7980,name='Verit Mutante',hp=121527)
   p=ProgressoNativo(alvo,0);p.observar(dict(alvo,hp=22726),10)
@@ -44,7 +49,7 @@ class ReaproximacaoTeste(unittest.TestCase):
   def emitir(e):
    eventos.append(e)
    if e.get('message')=='Mob abatido; procurando o proximo.':c.stop.set()
-  u=MagicMock();u.GetWindowTextW.side_effect=lambda hwnd,buf,n:setattr(buf,'value','AikaClient')
+  u=MagicMock();u.GetForegroundWindow.return_value=1;u.GetWindowTextW.side_effect=lambda hwnd,buf,n:setattr(buf,'value','AikaClient')
   entrada=SimpleNamespace(PAUSE=0,keyDown=down,keyUp=lambda k:None)
   with patch.dict(sys.modules,keyboard=SimpleNamespace(is_pressed=lambda k:False),pydirectinput=entrada),patch.object(h,'DadosInternos',Dados),patch.object(h,'NavegadorLocal',Navegador),patch.object(h.ctypes.windll,'user32',u),patch.object(h.threading,'Thread'),patch.object(h.time,'monotonic',lambda:t[0]),patch.object(h.time,'sleep',dormir):h.main(perfil,emitir,c)
   self.assertTrue(navegacoes);self.assertEqual(teclas.count('tab'),1);self.assertEqual(teclas.count('1'),2)

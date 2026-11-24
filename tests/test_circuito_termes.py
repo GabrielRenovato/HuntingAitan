@@ -116,7 +116,7 @@ class CircuitoTermesTeste(unittest.TestCase):
         def dormir(t):
             tempo[0]+=max(t,.001)
             if tempo[0]>30:ctrl.stop.set()
-        u=MagicMock();u.GetWindowTextW.side_effect=lambda hwnd,buf,n:setattr(buf,'value','AikaClient')
+        u=MagicMock();u.GetForegroundWindow.return_value=1;u.GetWindowTextW.side_effect=lambda hwnd,buf,n:setattr(buf,'value','AikaClient')
         entrada=SimpleNamespace(PAUSE=0,keyDown=down,keyUp=lambda k:None)
         with patch.dict(sys.modules,keyboard=SimpleNamespace(is_pressed=lambda k:False),pydirectinput=entrada),patch.object(h,'DadosInternos',Dados),patch.object(h,'NavegadorLocal',Nav),patch.object(h,'conferir_arquivos'),patch.object(h.ctypes.windll,'user32',u),patch.object(h.threading,'Thread'),patch.object(h.time,'monotonic',lambda:tempo[0]),patch.object(h.time,'sleep',dormir):
             h.main(p,eventos.append,ctrl)

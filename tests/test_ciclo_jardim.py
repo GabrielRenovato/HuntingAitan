@@ -52,7 +52,7 @@ class TrechoTeste(unittest.TestCase):
         from huntingaitan.rotas.jardim_aereo import JardimAereo
         from tests.test_navegacao_grade import grade
         pos=(3750.5,3140.5);teclas=[];t=[0.];eventos=[]
-        mob=dict(ref=1,id=2408,name='Lazapa Tempestuosa',position=(3757.5,3142.5),height=0,hp=100,hp_max=100,hostile=True)
+        mob=dict(ref=1,id=2408,name='Shiraz Infernal',position=(3757.5,3142.5),height=0,hp=100,hp_max=100,hostile=True)
         class Dados:
             hwnd=1;caminho=Path('AIKACL.exe')
             def snapshot(self):return dict(player=dict(position=pos,heading=90,height=0,hp=100,hp_max=100,mp=100,mp_max=100),target=mob)
@@ -64,12 +64,12 @@ class TrechoTeste(unittest.TestCase):
         def sleep(v):
             t[0]+=max(.001,v)
             if t[0]>10:self.control.stop.set()
-        u=MagicMock();u.GetWindowTextW.side_effect=lambda hwnd,buf,n:setattr(buf,'value','AikaClient')
+        u=MagicMock();u.GetForegroundWindow.return_value=1;u.GetWindowTextW.side_effect=lambda hwnd,buf,n:setattr(buf,'value','AikaClient')
         entrada=SimpleNamespace(PAUSE=0,keyDown=teclas.append,keyUp=lambda k:None)
         p=dict(DEFAULT,patrol_mode='jardim_aereo',buffs_enabled=False,minimize_on_start=False)
         with patch.dict(sys.modules,keyboard=SimpleNamespace(is_pressed=lambda k:False),pydirectinput=entrada),patch('huntingaitan.rotas.jardim_aereo.conferir_dificil',return_value=True),patch.object(JardimAereo,'conferir',conferir),patch.object(h,'DadosInternos',Dados),patch.object(h.ctypes.windll,'user32',u),patch.object(h.threading,'Thread'),patch.object(h.time,'monotonic',lambda:t[0]),patch.object(h.time,'sleep',sleep):
             h.main(p,eventos.append,self.control)
-        self.assertEqual(self.control.reason,'jardim_limite_lazapas')
+        self.assertEqual(self.control.reason,'jardim_limite_shiraz')
         self.assertEqual(teclas,[])
         self.assertTrue(any(e['event']=='jardim_limit' for e in eventos))
         self.assertFalse(any(e['event']=='action' for e in eventos))

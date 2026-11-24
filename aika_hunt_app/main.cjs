@@ -1,8 +1,10 @@
-const {app,BrowserWindow,ipcMain,dialog,shell}=require('electron');
+const {app,BrowserWindow,ipcMain,dialog,shell,screen}=require('electron');
 const {spawn}=require('node:child_process');
 const fs=require('node:fs');const path=require('node:path');
 const runtime=require('./runtime.cjs')({app,dirname:__dirname});
 let win,worker=null,quitting=false,stopTimer=null,watcher=null,updates=null;
+let clientSelection={client_pid:0,client_hwnd:0};
+const clientEnv=()=>({...process.env,PYTHONUTF8:'1',AIKA_DATA_DIR:runtime.dataRoot,AIKA_CLIENT_PID:String(clientSelection.client_pid||0),AIKA_CLIENT_HWND:String(clientSelection.client_hwnd||0)});
 function registrarPainel(evento,dados={}){
  try{const dir=path.join(runtime.dataRoot,'app_sessions');fs.mkdirSync(dir,{recursive:true});fs.appendFileSync(path.join(dir,'painel.jsonl'),JSON.stringify({t:new Date().toISOString(),evento,...dados})+'\n','utf8');}catch{}
 }
@@ -10,17 +12,17 @@ process.on('uncaughtException',e=>{registrarPainel('uncaughtException',{erro:e.s
 process.on('unhandledRejection',e=>{registrarPainel('unhandledRejection',{erro:e?.stack||String(e)});send({event:'error',message:'Falha no painel: '+String(e?.message||e)});});
 if(process.env.AIKA_UI_TEST==='1')app.setPath('userData',path.join(runtime.root,'aika_hunt_app','ui-test-profile'));
 const profilePath=()=>path.join(app.getPath('userData'),'profile.json');
-const send=(event)=>{if(event.event==='error')registrarPainel('erro-motor',{mensagem:event.message});if(win&&!win.isDestroyed())win.webContents.send('hunt:event',event);};
+const send=(event)=>{if(event.event==='input_recovery'&&event.state==='waiting'){win?.flashFrame?.(true);win?.showInactive?.();}if(event.event==='error'){registrarPainel('erro-motor',{mensagem:event.message});if(/fail-safe triggered from mouse moving to a corner/i.test(event.message||''))event={...event,message:'Caça parada: cursor no canto da tela. Retire o cursor e clique em Começar para retomar.'};win?.flashFrame?.(true);}if(win&&!win.isDestroyed())win.webContents.send('hunt:event',event);};
 function utility(mode,data={}){
  return new Promise((resolve,reject)=>{
-  const child=spawn(runtime.command,[...runtime.args,mode],{cwd:runtime.root,windowsHide:true,env:{...process.env,PYTHONUTF8:'1',AIKA_DATA_DIR:runtime.dataRoot},stdio:['pipe','pipe','pipe']});
+  const child=spawn(runtime.command,[...runtime.args,mode],{cwd:runtime.root,windowsHide:true,env:clientEnv(),stdio:['pipe','pipe','pipe']});
   let output='',error='';child.stdout.on('data',d=>output+=d);child.stderr.on('data',d=>error+=d);
   child.once('error',reject);const timer=setTimeout(()=>{child.kill();reject(new Error('A leitura demorou demais. Confira se o Aika esta aberto.'));},25000);
   child.on('close',code=>{clearTimeout(timer);try{const lines=output.trim().split(/\r?\n/);const r=JSON.parse(lines.at(-1));if(!r.ok)throw new Error(r.message||'Falha na leitura');resolve(r.data);}catch(e){reject(new Error(e.message||error||`Processo terminou (${code})`));}});
   child.stdin.end(JSON.stringify(data));
  });
 }
-async function saveProfile(p){const validated=await utility('validate',p);fs.mkdirSync(path.dirname(profilePath()),{recursive:true});const temp=profilePath()+'.tmp';fs.writeFileSync(temp,JSON.stringify(validated,null,2),'utf8');fs.renameSync(temp,profilePath());return validated;}
+async function saveProfile(p){const validated=await utility('validate',p);if(worker&&((validated.client_pid||0)!==(clientSelection.client_pid||0)||(validated.client_hwnd||0)!==(clientSelection.client_hwnd||0)))throw new Error('Pare a caça antes de trocar de cliente.');clientSelection={client_pid:validated.client_pid||0,client_hwnd:validated.client_hwnd||0};fs.mkdirSync(path.dirname(profilePath()),{recursive:true});const temp=profilePath()+'.tmp';fs.writeFileSync(temp,JSON.stringify(validated,null,2),'utf8');fs.renameSync(temp,profilePath());return validated;}
 function stopWorker(){
  if(!worker)return;
  try{worker.stdin.write(JSON.stringify({command:'stop'})+'\n');}catch{}
@@ -29,7 +31,7 @@ function stopWorker(){
 }
 function startWatcher(){
  if(quitting||worker||watcher||!win||win.isDestroyed()||process.env.AIKA_UI_TEST==='1')return;
- const child=spawn(runtime.command,[...runtime.args,'watch'],{cwd:runtime.root,windowsHide:true,env:{...process.env,PYTHONUTF8:'1',AIKA_DATA_DIR:runtime.dataRoot},stdio:['pipe','pipe','pipe']});watcher=child;
+ const child=spawn(runtime.command,[...runtime.args,'watch'],{cwd:runtime.root,windowsHide:true,env:clientEnv(),stdio:['pipe','pipe','pipe']});watcher=child;
  let buffer='';
  child.stdout.on('data',d=>{buffer+=d.toString('utf8');let at;while((at=buffer.indexOf('\n'))>=0){const line=buffer.slice(0,at);buffer=buffer.slice(at+1);try{const e=JSON.parse(line);registrarPainel('monitor-janelas',e);if(e.event==='watcher')send({event:'log',message:e.message});}catch{}}});
  child.stderr.on('data',d=>registrarPainel('monitor-stderr',{erro:d.toString('utf8').slice(-1500)}));
@@ -42,7 +44,7 @@ function stopWatcher(){
 }
 function createWindow(){
  win=new BrowserWindow({width:390,height:600,minWidth:390,maxWidth:390,minHeight:600,maxHeight:600,frame:false,resizable:false,transparent:true,backgroundColor:'#00000000',title:'Caça automática',icon:path.join(__dirname,'assets/app.ico'),webPreferences:{preload:path.join(__dirname,'preload.cjs'),contextIsolation:true,nodeIntegration:false,sandbox:true}});
- win.setMenu(null);win.loadFile('index.html');
+ win.setMenu(null);win.loadFile('index.html',{query:process.argv?.includes('--flow-editor')?{editor:'flow'}:{}});
  registrarPainel('aberto');
  updates=require('./updates.cjs')({app,send,isHunting:()=>!!worker,getWindow:()=>win,log:registrarPainel,dialog});
  win.webContents.once('did-finish-load',()=>{startWatcher();updates.check();});
@@ -81,9 +83,11 @@ function createWindow(){
   });
  }
 }
-ipcMain.handle('profile:load',async()=>{try{return await utility('validate',JSON.parse(fs.readFileSync(profilePath(),'utf8')));}catch{return utility('defaults');}});
-ipcMain.handle('profile:save',(_,p)=>saveProfile(p));
-ipcMain.handle('data:position',()=>utility('position'));
+ipcMain.handle('profile:load',async()=>{let p;try{p=await utility('validate',JSON.parse(fs.readFileSync(profilePath(),'utf8')));}catch{p=await utility('defaults');}clientSelection={client_pid:p.client_pid||0,client_hwnd:p.client_hwnd||0};await stopWatcher();startWatcher();return p;});
+ipcMain.handle('profile:save',async(_,p)=>{const v=await saveProfile(p);if(!worker){await stopWatcher();startWatcher();}return v;});
+ipcMain.handle('clients:list',()=>utility('clients'));
+ipcMain.handle('data:position',(_,p)=>utility('position',p||clientSelection));
+ipcMain.handle('data:barra',(_,p)=>utility('barra',p||clientSelection));
 ipcMain.handle('profile:native',async(_,p)=>{
  const r=await dialog.showOpenDialog(win,{title:'Importar configuração do assistente do Aika',defaultPath:'C:\\GoLevel\\AikaOnline\\UI',properties:['openFile'],filters:[{name:'Configuração do assistente (AHI)',extensions:['bin']}]});
  if(r.canceled)return null;
@@ -95,7 +99,7 @@ ipcMain.handle('hunt:start',async(_,p)=>{
  const validated=await saveProfile(p);
  await stopWatcher();
  registrarPainel('inicio-caca',{alvo:validated.target});
- const child=spawn(runtime.command,[...runtime.args,'run',profilePath()],{cwd:runtime.root,windowsHide:true,env:{...process.env,PYTHONUTF8:'1',AIKA_DATA_DIR:runtime.dataRoot},stdio:['pipe','pipe','pipe']});worker=child;
+ const child=spawn(runtime.command,[...runtime.args,'run',profilePath()],{cwd:runtime.root,windowsHide:true,env:clientEnv(),stdio:['pipe','pipe','pipe']});worker=child;
  let buffer='',error='';
  child.stdout.on('data',d=>{buffer+=d.toString('utf8');let at;while((at=buffer.indexOf('\n'))>=0){const line=buffer.slice(0,at);buffer=buffer.slice(at+1);try{const event=JSON.parse(line);send(event);if(event.event==='error'&&!quitting){win.restore();win.show();}}catch{if(line.trim())send({event:'log',message:line});}}});
  child.stderr.on('data',d=>{error+=d.toString('utf8');if(error.length>6000)error=error.slice(-6000);});
@@ -107,6 +111,19 @@ ipcMain.handle('hunt:start',async(_,p)=>{
 ipcMain.handle('hunt:stop',()=>{stopWorker();return true;});
 ipcMain.handle('hunt:pause',(_,paused)=>{if(worker)worker.stdin.write(JSON.stringify({command:paused?'pause':'resume'})+'\n');return !!worker;});
 ipcMain.handle('window:minimize',()=>win.minimize());
+let boundsAntesFluxo=null;
+ipcMain.handle('window:flow-editor',(_,aberto)=>{
+ if(typeof aberto!=='boolean')throw new Error('Estado do editor invalido.');
+ if(aberto){
+  if(boundsAntesFluxo)return;
+  boundsAntesFluxo=win.getBounds();const area=screen.getDisplayMatching(boundsAntesFluxo).workArea;
+  const width=Math.min(1360,area.width),height=Math.min(860,area.height);
+  win.setMaximumSize(10000,10000);win.setMinimumSize(Math.min(850,area.width),Math.min(600,area.height));win.setResizable(true);
+  win.setBounds({x:area.x+Math.floor((area.width-width)/2),y:area.y+Math.floor((area.height-height)/2),width,height});
+ }else if(boundsAntesFluxo){
+  const bounds=boundsAntesFluxo;boundsAntesFluxo=null;win.setMinimumSize(390,600);win.setBounds(bounds);win.setMaximumSize(390,600);win.setResizable(false);
+ }
+});
 ipcMain.handle('window:close',()=>{registrarPainel('botao-fechar');win.close();});
 ipcMain.handle('app:info',()=>({version:app.getVersion(),packaged:app.isPackaged}));
 ipcMain.handle('updates:check',()=>updates.check());

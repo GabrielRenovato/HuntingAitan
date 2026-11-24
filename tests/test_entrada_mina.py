@@ -92,23 +92,32 @@ class EntradaTeste(unittest.TestCase):
         class Dados:
             hwnd=1;caminho=Path('AIKACL.exe')
             def snapshot(self):return dict(player=dict(position=pos[0],heading=90,height=0,hp=100,hp_max=100,mp=100,mp_max=100),target=alvo)
+            def recargas_grupos(self):return [0.]*43
             def listar_mobs(self,*a):return [alvo]
             def close(self):pass
         class Nav:
             def invalidar(self):pass
             def suspender(self,*a):pass
             def planejar(self,*a,**kw):pos[0]=PORTAL;return dict(estado='andando',w=True,erro=0,pontos=2)
-        control=SimpleNamespace(stop=threading.Event(),pause=threading.Event())
+        control=SimpleNamespace(stop=threading.Event(),pause=threading.Event(),cycle_context=True)
+        from huntingaitan.combate.hunt_core import AgendaBuffs
+        agenda=AgendaBuffs(0,['ctrl+1','f3'],ativo=True)
+        control.buff_agenda=agenda
         def sleep(v):
             tempo[0]+=max(.001,v)
             if tempo[0]>5:control.stop.set()
-        u=MagicMock();u.GetWindowTextW.side_effect=lambda hwnd,buf,n:setattr(buf,'value','AikaClient')
+        u=MagicMock();u.GetForegroundWindow.return_value=1;u.GetWindowTextW.side_effect=lambda hwnd,buf,n:setattr(buf,'value','AikaClient')
         entrada=SimpleNamespace(PAUSE=0,keyDown=lambda k:teclas.append(k),keyUp=lambda k:None)
-        p=copy.deepcopy(DEFAULT);p.update(buffs_enabled=False,heal_enabled=False,minimize_on_start=False,hp_keys=['','',''])
+        p=copy.deepcopy(DEFAULT);p.update(buffs_enabled=True,heal_enabled=False,minimize_on_start=False,hp_keys=['','',''],reacoes=[dict(nome='Sangue Sagrado',tecla='3',tipo='buff',skill_id=1146,mp_min=0,intervalo_s=3)])
+        for skill in p['skills']:skill['enabled']=False
         with patch.dict(sys.modules,keyboard=SimpleNamespace(is_pressed=lambda k:False),pydirectinput=entrada),patch.object(h,'DadosInternos',Dados),patch.object(h,'NavegadorLocal',Nav),patch.object(h.ctypes.windll,'user32',u),patch.object(h.threading,'Thread'),patch.object(h.time,'monotonic',lambda:tempo[0]),patch.object(h.time,'sleep',sleep):
             h.main(p,eventos.append,control,percurso=m)
         self.assertEqual(control.reason,'entrada_alcancada')
         self.assertNotIn('tab',teclas);self.assertNotIn('1',teclas)
+        self.assertNotIn('ctrl',teclas);self.assertNotIn('f3',teclas);self.assertNotIn('3',teclas)
+        self.assertIs(control.buff_agenda,agenda)
+        self.assertEqual(agenda.vencimentos,{'ctrl+1':0,'f3':0})
+        self.assertEqual(agenda.proximo(tempo[0],True),'ctrl+1')
 
 
 if __name__=='__main__':unittest.main()

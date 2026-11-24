@@ -8,7 +8,7 @@ from pathlib import Path
 from types import SimpleNamespace
 from huntingaitan.recursos import RAIZ
 
-METODOS_GRAVADOS=('snapshot','listar_mobs','estados_controle','recargas_atalhos','camera_regional','cena_validada','caca_original_ativa','entidade','u32')
+METODOS_GRAVADOS=('snapshot','listar_mobs','estados_controle','recargas_atalhos','recargas_grupos','camera_regional','cena_validada','caca_original_ativa','entidade','u32')
 
 def para_json(v):
     """Converte para JSON preservando tuplas, chaves nao textuais e valores nao finitos."""
@@ -67,6 +67,7 @@ class DadosReplay:
         self._filas={};self._pos={};self._ultimo={};self._ao_acabar=ao_acabar
         for r in registros:self._filas.setdefault(r['m'],[]).append(r)
         self.hwnd=1;self.sha256='replay';self.caminho=Path('replay')/'AIKACL.exe'
+        self.base=0;self.pid=0
         self.u=SimpleNamespace(GetForegroundWindow=lambda:1)
     def __getattr__(self,nome):
         if nome in METODOS_GRAVADOS:return lambda *args,**kwargs:self._responder(nome)
@@ -81,6 +82,9 @@ class DadosReplay:
         self._pos[nome]=i+1;registro=fila[i]
         if 'erro' in registro:raise RuntimeError(registro['erro'])
         valor=de_json(registro['r']);self._ultimo[nome]=valor;return valor
+    def read(self,endereco,tamanho):
+        # O replay so devolve leituras ja decodificadas; a memoria bruta (terreno, grade) nao e reproduzida.
+        raise RuntimeError('Replay nao reproduz leituras brutas da memoria.')
     def restantes(self):
         return {m:len(f)-self._pos.get(m,0) for m,f in self._filas.items()}
     def close(self):pass

@@ -24,7 +24,7 @@ class JardimTeste(unittest.TestCase):
         self.assertTrue(all(dentro_jardim(p) for p in r))
         self.assertTrue(all(math.dist(a,b)<=math.sqrt(2)+1e-5 for a,b in zip(r,r[1:])))
         self.assertLess(r[0][0],3584);self.assertGreater(r[-1][0],3584)
-        self.assertEqual(d['objetivo'],'antes_lazapas')
+        self.assertEqual(d['objetivo'],'antes_shiraz')
         self.assertGreater(r[-1][0],3700)
         self.assertGreaterEqual(math.dist(r[-1],d['referencia_lazapas']),20)
 
@@ -38,7 +38,7 @@ class JardimTeste(unittest.TestCase):
 
     def test_chegar_no_limite_inicia_saida_sem_fingir_abate(self):
         j=JardimAereo((3351,3295));pos=j.pontos[-1]['pos']
-        self.assertEqual(j.destino(pos,1000)['estado'],'limite_lazapas')
+        self.assertEqual(j.destino(pos,1000)['estado'],'limite_shiraz')
         self.assertFalse(j.abates)
 
     def test_mina_continua_exigindo_malik(self):

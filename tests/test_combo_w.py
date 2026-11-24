@@ -96,7 +96,7 @@ class ComboWTeste(unittest.TestCase):
         def emitir(e):
             eventos.append(dict(e,teste_t=t[0]))
             if sum(v.get('combo_w')==('w+skill' if skill else '1rr1ww') for v in eventos)>=repeticoes:c.stop.set()
-        u=MagicMock();u.GetWindowTextW.side_effect=lambda hwnd,buf,n:setattr(buf,'value','AikaClient')
+        u=MagicMock();u.GetForegroundWindow.return_value=1;u.GetWindowTextW.side_effect=lambda hwnd,buf,n:setattr(buf,'value','AikaClient')
         entrada=SimpleNamespace(PAUSE=0,keyDown=down,keyUp=lambda k:None)
         with patch.dict(sys.modules,keyboard=SimpleNamespace(is_pressed=lambda k:False),pydirectinput=entrada),patch.object(h,'DadosInternos',Dados),patch.object(h.ctypes.windll,'user32',u),patch.object(h.threading,'Thread'),patch.object(h.time,'monotonic',lambda:t[0]),patch.object(h.time,'sleep',dormir):h.main(p,emitir,c)
         acoes=[e for e in eventos if e.get('event')=='action']

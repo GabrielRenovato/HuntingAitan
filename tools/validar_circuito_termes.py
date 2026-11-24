@@ -6,7 +6,7 @@ from huntingaitan.rotas.navegacao_grade import Grade
 
 PONTOS=[(6,(2584,587)),(5,(2585,654)),(4,(2577,674)),(7,(2592,697)),(8,(2584,712)),(9,(2612,748))]
 
-def validar(pasta,pontos=None,mob="Penza Poderosa Mutante",fechado=False):
+def validar(pasta,pontos=None,mob="Penza Poderosa Mutante",fechado=False,exclusoes=None,raio_exclusao=0):
     pontos=PONTOS if pontos is None else pontos
     nomes=['Env/AttributeS01.dat','Env/z01.hgt']
     buffers=[(Path(pasta)/n).read_bytes() for n in nomes];atributos,alturas=buffers
@@ -26,6 +26,9 @@ def validar(pasta,pontos=None,mob="Penza Poderosa Mutante",fechado=False):
     for y in range(y0,y1+1):
         off=(y*4096+x0)*2;flags.extend(atributos[off:off+w*2:2]);hs.extend(struct.unpack_from('<'+'h'*w,alturas,off+4))
     grade=Grade((0,0),(x0,y0),w,y1-y0+1,bytes(flags),tuple(hs),1)
+    if exclusoes:
+        from huntingaitan.rotas.evitar_mobs import aplicar_zonas
+        grade=aplicar_zonas(grade,exclusoes,raio_exclusao)
     def dentro(pos):
         from huntingaitan.rotas.circuito_termes import distancia_segmento
         return min(distancia_segmento(pos,a[1],b[1]) for a,b in zip(pontos,pontos[1:]+([pontos[0]] if fechado else [])))<=20

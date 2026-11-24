@@ -29,12 +29,12 @@ def validar(pasta):
     # Primeiro grupo de Lazapas Tempestuosos observado no trecho final de
     # 19/11. Para 25 unidades antes
     # desse trecho; a deteccao ao vivo pode antecipar ainda mais a saida.
-    referencia=(3756.95,3146.52)
+    referencia=(3790.4,3190.4)
     i=min(range(len(rota)),key=lambda i:math.dist(rota[i],referencia));distancia=0.
-    while i>0 and distancia<25:distancia+=math.dist(rota[i],rota[i-1]);i-=1
+    while i>0 and distancia<35:distancia+=math.dist(rota[i],rota[i-1]);i-=1
     rota=rota[:i+1];meta=rota[-1]
     fontes=['UI/Dun.bin','UI/Dungeon.bin','Objects/mirzaF0099.MS3']+[f'Env/z01{t}12.{ext}' for t in [13,14] for ext in ['att','hgt','dat']]
-    return dict(schema=1,nome='Jardim Aereo de Mirza',chefe='seridunn',objetivo='antes_lazapas',referencia_lazapas=referencia,dificuldade='dificil',registros_dun=[20,21,22,23],registro_dificil=21,origem=[3328,3072],entrada=[3351,3295],limites=[3328,3072,3840,3328],fontes={n:hashlib.sha256((p/n).read_bytes()).hexdigest() for n in fontes},pontos=[dict(id='antes_lazapas',pos=meta,chefe=None,espera=0)],trechos=[dict(ate='antes_lazapas',caminho=rota,distancia=round(sum(math.dist(a,b) for a,b in zip(rota,rota[1:])),2))],criterio='Encerrar o trecho antes dos primeiros Lazapas do trecho final, sem ataca-los; sair do grupo e confirmar posicao fora do Jardim. Nao registra conclusao da DG nem abate de Seridunn.')
+    return dict(schema=1,nome='Jardim Aereo de Mirza',chefe='seridunn',objetivo='antes_shiraz',referencia_shiraz=referencia,referencia_lazapas=(3756.95,3146.52),dificuldade='dificil',registros_dun=[20,21,22,23],registro_dificil=21,origem=[3328,3072],entrada=[3351,3295],limites=[3328,3072,3840,3328],fontes={n:hashlib.sha256((p/n).read_bytes()).hexdigest() for n in fontes},pontos=[dict(id='antes_shiraz',pos=meta,chefe=None,espera=0)],trechos=[dict(ate='antes_shiraz',caminho=rota,distancia=round(sum(math.dist(a,b) for a,b in zip(rota,rota[1:])),2))],criterio='Encerrar o trecho antes do primeiro grupo de Shiraz Infernais, sem ataca-los; sair do grupo e confirmar posicao fora do Jardim. Nao registra conclusao da DG nem abate de Seridunn.')
 
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--game-dir',required=True);p.add_argument('--out',required=True);a=p.parse_args();d=validar(a.game_dir)

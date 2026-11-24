@@ -3,6 +3,7 @@ import ctypes,math,time
 from ctypes import wintypes as w
 from huntingaitan.rotas.interface_mina import InterfaceMina
 from huntingaitan.rotas.mina_lenfer import dentro_mina
+from huntingaitan.entrada.entrada_segura import mover_cursor_fisico
 
 def sair_grupo(dados,control,emitir,limite=120,dentro=dentro_mina,nome='Mina'):
     import keyboard,pydirectinput as entrada,mss
@@ -13,7 +14,8 @@ def sair_grupo(dados,control,emitir,limite=120,dentro=dentro_mina,nome='Mina'):
     def ativo():return not control.stop.is_set() and not keyboard.is_pressed('f12') and dados.u.GetForegroundWindow()==dados.hwnd and not control.pause.is_set()
     def clicar(p,botao='left'):
         if not ativo():return False
-        entrada.moveTo(round(p[0]),round(p[1]));time.sleep(.045)
+        if not mover_cursor_fisico(entrada,*p):return False
+        time.sleep(.045)
         if not ativo():return False
         entrada.mouseDown(button=botao)
         try:time.sleep(.065)
@@ -27,6 +29,8 @@ def sair_grupo(dados,control,emitir,limite=120,dentro=dentro_mina,nome='Mina'):
             if not ativo():time.sleep(.1);continue
             try:s=dados.snapshot()
             except RuntimeError:time.sleep(.2);continue
+            if s['player']['hp']<=0:
+                control.reason='personagem_sem_vida';control.stop.set();return False
             if not dentro(s['player']['position']):
                 fora+=1
                 if fora>=3:
@@ -58,18 +62,36 @@ def sair_grupo(dados,control,emitir,limite=120,dentro=dentro_mina,nome='Mina'):
     return False
 
 def entrar_elite(dados,control,emitir,limite=120):
+    return entrar_dungeon(dados,control,emitir,limite)
+
+
+def entrar_jardim(dados,control,emitir,limite=120):
+    from huntingaitan.rotas.entrada_jardim import PORTAL
+    from huntingaitan.rotas.interface_jardim import InterfaceJardim
+    from huntingaitan.rotas.jardim_aereo import dentro_jardim
+    return entrar_dungeon(dados,control,emitir,limite,portal=PORTAL,dentro=dentro_jardim,
+                          spawn=(3351,3295),dificuldade='dificil',nome='Jardim',interface=InterfaceJardim)
+
+
+def entrar_dungeon(dados,control,emitir,limite=120,*,portal=None,dentro=dentro_mina,
+                   spawn=(2850,3344),dificuldade='elite',nome='Mina',interface=None):
     import keyboard,pydirectinput as entrada,mss
     from huntingaitan.visao.captura_aika import CapturaAika
     from huntingaitan.visao.avisos_hunt import DetectorAvisos,reconfirmar
     from huntingaitan.rotas.interface_mina import VerificadorElite
-    from huntingaitan.rotas.entrada_mina import PORTAL,bloqueadores_da_porta
+    from huntingaitan.rotas.entrada_mina import PORTAL as portal_mina
+    PORTAL=portal or portal_mina
+    def bloqueadores_da_porta(mobs,pos):
+        if math.dist(pos,PORTAL)>8:return set()
+        return {m['id'] for m in mobs if m.get('hostile') and m.get('hp',0)>0 and math.dist(m['position'],PORTAL)<=6 and math.dist(m['position'],pos)<=3}
     entrada.PAUSE=0;dados.u.GetForegroundWindow.restype=w.HWND
-    detector=InterfaceMina();verificador=VerificadorElite(auto_escala=getattr(control,'auto_ui_scale',True));avisos=DetectorAvisos();inicio=time.monotonic();acao_em=0.;ultimo=None;elite=False;confirmacoes=0;erro_em=-100.
+    detector=(interface or InterfaceMina)();verificador=VerificadorElite(dificuldade=dificuldade,auto_escala=getattr(control,'auto_ui_scale',True));avisos=DetectorAvisos();inicio=time.monotonic();acao_em=0.;ultimo=None;elite=False;confirmacoes=0;erro_em=-100.
     progresso_em=inicio;ferido_em=-float('inf');hp_anterior=None;control.bloqueadores_portal=set();verificar_mob_em=0.
     def ativo():return not control.stop.is_set() and not keyboard.is_pressed('f12') and dados.u.GetForegroundWindow()==dados.hwnd and not control.pause.is_set()
     def clicar(p,duplo=False):
         if not ativo():return False
-        entrada.moveTo(round(p[0]),round(p[1]));time.sleep(.045)
+        if not mover_cursor_fisico(entrada,*p):return False
+        time.sleep(.045)
         for i in range(2 if duplo else 1):
             if not ativo():return False
             entrada.mouseDown()
@@ -81,20 +103,22 @@ def entrar_elite(dados,control,emitir,limite=120):
         cap=CapturaAika(sct)
         while not control.stop.is_set() and not keyboard.is_pressed('f12'):
             if time.monotonic()-inicio>limite:
-                emitir(dict(event='log',message='Entrada Elite ainda nao confirmada; esta tentativa nao conta como DG concluida.'));return False
+                emitir(dict(event='log',message='Entrada '+nome+' '+dificuldade+' ainda nao confirmada; tentando novamente sem registrar conclusao.'));return False
             if not ativo():time.sleep(.1);continue
             try:s=dados.snapshot()
             except RuntimeError:time.sleep(.2);continue
+            if s['player']['hp']<=0:
+                control.reason='personagem_sem_vida';control.stop.set();return False
             try:
                 tela=cap.capturar()
-                if dentro_mina(s['player']['position']):
-                    correto=math.dist(s['player']['position'],(2850,3344))<=15 and verificador.confirmar(tela)
+                if dentro(s['player']['position']):
+                    correto=math.dist(s['player']['position'],spawn)<=15 and verificador.confirmar(tela)
                     confirmacoes=confirmacoes+1 if correto else 0
                     if confirmacoes>=2:
-                        emitir(dict(event='log',message='Indicador Elite reconhecido; leitura da escala ajustada.',leitura_interface=verificador.diagnostico))
-                        emitir(dict(event='cycle',state='elite_confirmado',position=s['player']['position'],message='Nova entrada Elite confirmada por posicao e indicador do jogo.'));return True
+                        emitir(dict(event='log',message='Indicador '+dificuldade+' reconhecido; leitura da escala ajustada.',leitura_interface=verificador.diagnostico))
+                        emitir(dict(event='cycle',state='elite_confirmado' if dificuldade=='elite' else 'dificil_confirmado',position=s['player']['position'],message='Nova entrada '+nome+' '+dificuldade+' confirmada por posicao e indicador do jogo.'));return True
                     time.sleep(.4);continue
-                if math.dist(s['player']['position'],PORTAL)>8:
+                if math.dist(s['player']['position'],PORTAL)>(3.5 if nome=='Jardim' else 8):
                     emitir(dict(event='log',message='Personagem fora do alcance do portal; retomando aproximacao por coordenadas.'));return False
                 hp=s['player']['hp'];agora=time.monotonic()
                 if agora>=verificar_mob_em:
@@ -119,16 +143,18 @@ def entrar_elite(dados,control,emitir,limite=120):
                     time.sleep(.2);continue
                 acao=detector.entrada(tela,elite)
                 if acao['acao']!=ultimo:
-                    emitir(dict(event='cycle',state=acao['acao'],message='Entrada da Mina: '+acao['acao']));ultimo=acao['acao'];progresso_em=time.monotonic()
-                if 'ponto' not in acao:time.sleep(.2);continue
-                atual=detector.entrada(cap.capturar(),elite)
+                    emitir(dict(event='cycle',state=acao['acao'],message='Entrada '+nome+': '+acao['acao']));ultimo=acao['acao'];progresso_em=time.monotonic()
+                if 'ponto' not in acao:
+                    time.sleep(.2);continue
+                nova_tela=cap.capturar()
+                atual=detector.reconfirmar(nova_tela,acao,elite) if hasattr(detector,'reconfirmar') else detector.entrada(nova_tela,elite)
                 if atual['acao']!=acao['acao'] or 'ponto' not in atual or math.dist(atual['ponto'],acao['ponto'])>6:continue
                 p=atual['ponto'];absoluto=(cap.area['left']+p[0],cap.area['top']+p[1])
                 if clicar(absoluto,acao.get('duplo',False)):
-                    if acao['acao']=='selecionar_elite':elite=True
-                    elif acao['acao'] in ['abrir_portal','entrar_mina_1']:elite=False
+                    if acao['acao'] in ['selecionar_elite','selecionar_dificil']:elite=True
+                    elif acao['acao'] in ['abrir_portal','entrar_mina_1','entrar_jardim']:elite=False
                     emitir(dict(event='cycle',state='clique_enviado',control=acao['acao'],point=absoluto))
-                    acao_em=time.monotonic()+1.
+                    acao_em=time.monotonic()+(.2 if interface is not None else 1.)
             except (RuntimeError,OSError,ValueError) as e:
                 if time.monotonic()-erro_em>=3:emitir(dict(event='log',message='Reconhecimento da entrada indisponivel; aguardando sem clicar.',detail=str(e)));erro_em=time.monotonic()
                 time.sleep(.2)

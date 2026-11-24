@@ -64,7 +64,7 @@ class BuscaRegional:
             erro=erro_camera(camera,destino['position'])
             # O TAB original usa um setor da camera, nao a regiao inteira.
             # Orienta uma vez para o candidato fora do setor; reconfirma pela leitura.
-            if self.giros<2 and agora>=self.orientar_em and (abs(erro)>70 or (self.n_tabs>=8 and abs(erro)>15)):
+            if self.giros<2 and agora>=self.orientar_em and (abs(erro)>70 or (self.n_tabs>=2 and abs(erro)>15)):
                 self.giros+=1
                 self.orientar_em=agora+self.intervalo_giro;self.n_tabs=0
                 sinal=1 if erro>0 else -1

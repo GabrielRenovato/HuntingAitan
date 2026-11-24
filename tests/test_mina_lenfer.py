@@ -109,7 +109,7 @@ class MinaTeste(unittest.TestCase):
         def sleep(v):
             t[0]+=max(.001,v)
             if t[0]>60:control.stop.set()
-        u=MagicMock();u.GetWindowTextW.side_effect=lambda hwnd,buf,n:setattr(buf,'value','AikaClient')
+        u=MagicMock();u.GetForegroundWindow.return_value=1;u.GetWindowTextW.side_effect=lambda hwnd,buf,n:setattr(buf,'value','AikaClient')
         entrada=SimpleNamespace(PAUSE=0,keyDown=down,keyUp=lambda k:None)
         with patch.dict(sys.modules,keyboard=SimpleNamespace(is_pressed=lambda k:False),pydirectinput=entrada),patch('huntingaitan.rotas.mina_lenfer.plano_mina',return_value=d),patch.object(MinaLenfer,'conferir'),patch.object(MinaLenfer,'filtrar_mobs',side_effect=lambda mobs,*a:mobs),patch.object(h,'DadosInternos',Dados),patch.object(h,'NavegadorLocal',Nav),patch.object(h.ctypes.windll,'user32',u),patch.object(h.threading,'Thread'),patch.object(h.time,'monotonic',lambda:t[0]),patch.object(h.time,'sleep',sleep):
             h.main(p,events.append,control)

@@ -33,7 +33,7 @@ class PrioridadeJanelaTeste(unittest.TestCase):
             if e.get('message')=='Mob abatido; procurando o proximo.':c.stop.set()
         def reconfirmar(a):return None if clicou[0] else (100,100)
         def clicar():clicou[0]=True;mouse.append(t[0])
-        u=MagicMock();u.GetWindowTextW.side_effect=lambda hwnd,buf,n:setattr(buf,'value','AikaClient')
+        u=MagicMock();u.GetForegroundWindow.return_value=1;u.GetWindowTextW.side_effect=lambda hwnd,buf,n:setattr(buf,'value','AikaClient')
         entrada=SimpleNamespace(PAUSE=0,keyDown=down,keyUp=lambda k:None,moveTo=lambda *p:None,mouseDown=clicar,mouseUp=lambda:None)
         with patch.dict(sys.modules,keyboard=SimpleNamespace(is_pressed=lambda k:False),pydirectinput=entrada),patch.object(h,'DadosInternos',Dados),patch.object(h,'ObservadorAvisos',Monitor),patch.object(h.ctypes.windll,'user32',u),patch.object(h.threading,'Thread'),patch.object(h.time,'monotonic',lambda:t[0]),patch.object(h.time,'sleep',dormir),patch('huntingaitan.visao.avisos_hunt.reconfirmar',reconfirmar):h.main(p,emitir,c)
         return eventos,teclas,mouse,hp[0]

@@ -11,17 +11,21 @@ class Window extends EventEmitter{
  setMenu(){} loadFile(){setImmediate(()=>this.webContents.emit('did-finish-load'));} isDestroyed(){return this.destroyed;} destroy(){this.destroyed=true;this.emit('closed');} restore(){} show(){} minimize(){}
 }
 const fakefs={mkdirSync(){},appendFileSync(){},writeFileSync(){},renameSync(){}};
-const sandbox={__dirname:path.join(__dirname,'aika_hunt_app'),require:name=>name==='electron'?{app,BrowserWindow:Window,ipcMain:{handle:(k,h)=>handlers.set(k,h)},dialog:{},shell:{}}:name==='node:child_process'?{spawn:(_exe,args)=>{const mode=args[2];trace.push(mode+'-spawn');const c=new Child(mode);children.push(c);return c;}}:name==='node:fs'?fakefs:name==='./updates.cjs'?()=>({check:async()=>({})}):name==='./runtime.cjs'?()=>({root:'/test',dataRoot:'/test',command:'python',args:['-u','/test/hunt_bridge.py']}):require(name),process:{env:{},on(){}},Buffer,console,clearTimeout,setInterval:()=>({unref(){}}),clearInterval(){},setTimeout:(f,t)=>{const x=setTimeout(f,t);x.unref();return x;}};
+const sandbox={__dirname:path.join(__dirname,'aika_hunt_app'),require:name=>name==='electron'?{app,BrowserWindow:Window,ipcMain:{handle:(k,h)=>handlers.set(k,h)},dialog:{},shell:{}}:name==='node:child_process'?{spawn:(_exe,args,options)=>{const mode=args[2];trace.push(mode+'-spawn');const c=new Child(mode);c.env=options.env;children.push(c);return c;}}:name==='node:fs'?fakefs:name==='./updates.cjs'?()=>({check:async()=>({})}):name==='./runtime.cjs'?()=>({root:'/test',dataRoot:'/test',command:'python',args:['-u','/test/hunt_bridge.py']}):require(name),process:{env:{},on(){}},Buffer,console,clearTimeout,setInterval:()=>({unref(){}}),clearInterval(){},setTimeout:(f,t)=>{const x=setTimeout(f,t);x.unref();return x;}};
 const tick=()=>new Promise(r=>setImmediate(r));
 (async()=>{
  vm.runInNewContext(fs.readFileSync(path.join(__dirname,'aika_hunt_app/main.cjs'),'utf8'),sandbox);
  await tick();await tick();assert.equal(children.filter(c=>c.mode==='watch').length,1);
  await assert.rejects(()=>handlers.get('hunt:start')(null,{invalid:true}),/invalid/);
  assert.equal(trace.filter(v=>v==='watch-stop').length,0,'Configuracao invalida nao deve desligar o monitor');
- await handlers.get('hunt:start')(null,{minimize_on_start:false,target:'qualquer'});
+ await handlers.get('hunt:start')(null,{minimize_on_start:false,target:'qualquer',client_pid:200,client_hwnd:20});
+ assert.equal(children.find(c=>c.mode==='run').env.AIKA_CLIENT_PID,'200');assert.equal(children.find(c=>c.mode==='run').env.AIKA_CLIENT_HWND,'20');
+ await assert.rejects(()=>handlers.get('profile:save')(null,{client_pid:100,client_hwnd:10}),/Pare a caça/);
  assert.ok(trace.indexOf('watch-close')<trace.indexOf('run-spawn'),'Monitor deve encerrar antes de iniciar teclas da caca');
  await handlers.get('hunt:stop')();await tick();await tick();
  assert.equal(children.filter(c=>c.mode==='watch').length,2,'Monitor deve voltar depois de parar a caca');
+ assert.equal(children.filter(c=>c.mode==='watch').at(-1).env.AIKA_CLIENT_PID,'200');
+ const position=await handlers.get('data:position')(null,{client_pid:200,client_hwnd:20});assert.equal(position.client_pid,200);
  window.emit('close',{preventDefault(){}});await tick();await tick();
  assert.ok(window.destroyed,'Fechar o painel deve encerrar o monitor');
  console.log('OK: monitor ocioso, validacao, troca para caca, retomada e encerramento.');

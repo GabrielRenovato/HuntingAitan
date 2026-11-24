@@ -9,7 +9,7 @@ class VigiaAtaque:
         self.desde=agora;self.envios=0;self.recuperar_ate=0.
 
     def observar(self,alvo,agora):
-        if alvo['id']!=self.id or alvo['hp']!=self.hp:
+        if alvo['id']!=self.id or self.hp is None or alvo['hp']<self.hp:
             self.suspender(agora);self.recuperacoes=0
         self.id=alvo['id'];self.hp=alvo['hp']
 

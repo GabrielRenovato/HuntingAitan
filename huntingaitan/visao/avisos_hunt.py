@@ -56,12 +56,17 @@ def reconfirmar(aviso):
     import mss
     from huntingaitan.visao.captura_aika import CapturaAika
     with (getattr(mss,'MSS',None) or mss.mss)() as sct:
-        cap=CapturaAika(sct);tela=cap.capturar();ponto=None
-        if aviso['tipo']=='cte_elter' and 'referencia' not in aviso:ponto=DetectorElter().localizar(tela)
-        elif aviso['tipo']=='conversa_amigo':ponto=DetectorConversa().localizar(tela)
-        elif aviso['tipo'] in ('cte_elter','arena_elter') and 'referencia' in aviso:
-            from huntingaitan.visao.dialogos_evento import DetectorEventos
-            ponto=DetectorEventos().reconfirmar(tela,aviso)
-        if ponto:
-            x,y=ponto;return (cap.area['left']+x,cap.area['top']+y)
+        cap=CapturaAika(sct);tela=cap.capturar()
+        return reconfirmar_imagem(aviso,tela,cap.area)
+
+
+def reconfirmar_imagem(aviso,tela,area):
+    ponto=None
+    if aviso['tipo']=='cte_elter' and 'referencia' not in aviso:ponto=DetectorElter().localizar(tela)
+    elif aviso['tipo']=='conversa_amigo':ponto=DetectorConversa().localizar(tela)
+    elif aviso['tipo'] in ('cte_elter','arena_elter') and 'referencia' in aviso:
+        from huntingaitan.visao.dialogos_evento import DetectorEventos
+        ponto=DetectorEventos().reconfirmar(tela,aviso)
+    if ponto:
+        x,y=ponto;return (area['left']+x,area['top']+y)
     return None

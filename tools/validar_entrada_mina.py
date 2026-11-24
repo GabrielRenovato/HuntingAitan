@@ -55,10 +55,10 @@ def ocupa(poly,p,raio=.6):
     area=abs(sum(a[0]*b[2]-a[2]*b[0] for a,b in zip(poly,poly[1:]+poly[:1])))
     return (area>1e-8 and not(positivo and negativo)) or menor<=raio
 
-def gerar(pasta):
+def gerar(pasta,limites=None,alturas=None):
     import numpy as np
-    pasta=Path(pasta);x0,y0,x1,y1=LIMITES;largura=x1-x0;altura=y1-y0
-    hgt=np.frombuffer((pasta/'Env/z01.hgt').read_bytes(),dtype='<i2',offset=4).reshape(4096,4096)
+    pasta=Path(pasta);x0,y0,x1,y1=limites or LIMITES;largura=x1-x0;altura=y1-y0
+    hgt=alturas if alturas is not None else np.frombuffer((pasta/'Env/z01.hgt').read_bytes(),dtype='<i2',offset=4).reshape(4096,4096)
     fontes={};cache={};mascara=np.zeros((altura,largura),np.uint8);inventario=[];ignorados=[]
     def ler(nome):
         raw=(pasta/nome).read_bytes();fontes[nome]=hashlib.sha256(raw).hexdigest();return raw
@@ -105,7 +105,7 @@ def gerar(pasta):
                 adicionados=int(mascara.sum())-antes
                 if adicionados:inventario.append(dict(id=mid,modelo=modelo,pos=pos,rot=rot,escala=escala,celulas=adicionados))
     ler('Env/AttributeS01.dat');ler('Env/z01.hgt')
-    return dict(schema=1,limites=LIMITES,largura=largura,altura=altura,mascara=base64.b64encode(zlib.compress(mascara.tobytes(),9)).decode(),fontes=fontes,objetos=inventario,ignorados=ignorados,criterio='Triangulos estaticos na faixa de .35 a 1.8 acima do terreno, margem horizontal .6; geometrias animadas excluidas.')
+    return dict(schema=1,limites=(x0,y0,x1,y1),largura=largura,altura=altura,mascara=base64.b64encode(zlib.compress(mascara.tobytes(),9)).decode(),fontes=fontes,objetos=inventario,ignorados=ignorados,criterio='Triangulos estaticos na faixa de .35 a 1.8 acima do terreno, margem horizontal .6; geometrias animadas excluidas.')
 
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--game-dir',required=True);p.add_argument('--out',required=True);a=p.parse_args();inicio=time.time();d=gerar(a.game_dir);Path(a.out).write_text(json.dumps(d,ensure_ascii=False,indent=2),encoding='utf-8');print('Objetos',len(d['objetos']),'modelos nao lidos',len(d['ignorados']),'tempo',round(time.time()-inicio,1),'s')

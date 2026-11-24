@@ -19,8 +19,8 @@ from huntingaitan.leitura import captura as cap
 PASTA_PADRAO='capturas_leitor'
 
 def comando_capturar(a):
-    from huntingaitan.leitura.dados_internos import DadosInternos
-    try:dados=DadosInternos()
+    from huntingaitan.leitura.escolha_cliente import abrir_leitor
+    try:dados=abrir_leitor(a.pid)
     except RuntimeError as erro:
         print('Nao foi possivel abrir o leitor:',erro);return 1
     try:
@@ -64,7 +64,7 @@ def main():
     sub=ap.add_subparsers(dest='comando',required=True)
     c=sub.add_parser('capturar');c.add_argument('rotulo');c.add_argument('--n',type=int,default=5)
     c.add_argument('--intervalo',type=float,default=1.0);c.add_argument('--mob',action='store_true',help='inclui o mob mais proximo')
-    c.add_argument('--extra',action='append',default=[],metavar='REGIAO+OFFSET->TAMANHO');c.add_argument('--pasta',default=PASTA_PADRAO)
+    c.add_argument('--extra',action='append',default=[],metavar='REGIAO+OFFSET->TAMANHO');c.add_argument('--pasta',default=PASTA_PADRAO);c.add_argument('--pid',type=int,default=0,help='PID do cliente, se houver mais de um aberto')
     d=sub.add_parser('comparar');d.add_argument('a');d.add_argument('b');d.add_argument('--pasta',default=PASTA_PADRAO)
     d.add_argument('--regiao',action='append');d.add_argument('--limite',type=int,default=40)
     a=ap.parse_args()

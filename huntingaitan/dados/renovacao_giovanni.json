@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "habilitado": false,
+  "npc": {"nome": "Lilola Hawn", "posicao": [3442, 688], "cidade": "Regenshein"},
+  "opcao": "Favor de Giovanni [50000 Oro]",
+  "custo": 50000,
+  "teste_atual": {"opcao": "Bendicion de Giovanni", "custo_permitido": 0, "permitir_favor_pago": false},
+  "pergaminhos_inventario": {
+    "bolsa": 2,
+    "slots_visuais": [1, 2],
+    "indices_internos": [20, 21],
+    "uso": "cidade por F5; ponto salvo pelo inventario",
+    "identificar_por_nome": true,
+    "ordem_dos_dois_itens_confirmada": true
+  },
+  "retorno_cidade": {
+    "item": "Return Scroll: town",
+    "id_item_confirmado": 15521,
+    "slot_interno_confirmado": 21,
+    "tecla": "f5",
+    "uso": "atalho",
+    "exige_area_sem_mobs": true,
+    "retirada_obrigatoria": true,
+    "reconfirmar_ausencia_de_mobs_antes_do_uso": true,
+    "bloquear_uso_com_leitura_indisponivel": true,
+    "chegada_observada": {"cidade": "Regenshein", "posicao": [3399, 564]},
+    "caminho_ate_npc_validado": false
+  },
+  "efeito_confirmado": null,
+  "efeitos_candidatos": [8500, 8501, 9607],
+  "volta_ao_farm": {
+    "item": "Return Scroll",
+    "id_item_confirmado": 4521,
+    "slot_interno_confirmado": 20,
+    "nome_exibido": "Pergamino de retorno",
+    "tipo_destino": "ponto de referencia guardado",
+    "tecla": null,
+    "chegada_observada": {"mapa": "Termes", "posicao": [2681, 683]},
+    "confirmar_bencao_antes_de_usar": true,
+    "destino_final": "ponto do circuito guardado antes da viagem",
+    "caminho_ate_farm_validado": false
+  },
+  "origem": "NPC, coordenadas, preco e opcao informados nas capturas do usuario; candidatos de efeito encontrados na exportacao local de skills.",
+  "pendencias": [
+    "Confirmar qual efeito aparece apos comprar o Favor de Giovanni; nao confundir com a opcao Bendicion de Giovanni.",
+    "Reconfirmar os IDs 4521 e 15521 nos slots 20 e 21 antes de usar; identificacao feita por leitura interna nesta instalacao.",
+    "Conferir chegada em Regenshein 3399, 564 ou Termes 2681, 683 pelo motor apos cada uso.",
+    "Registrar retirada para local seguro e validar os caminhos de Regenshein ao NPC e da chegada em Termes ao circuito."
+  ]
+}

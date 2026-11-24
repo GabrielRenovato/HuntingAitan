@@ -17,7 +17,12 @@ def eh_lazapa(nome):
     n=normalizar(nome)
     return 'lazapa' in n or 'lapaza' in n
 
+def eh_shiraz_infernal(nome):
+    n=normalizar(nome)
+    return 'shiraz' in n and ('infernal' in n or 'hell' in n)
+
 def na_area_lazapas_finais(pos):
+    if math.dist(pos,plano_jardim()['referencia_lazapas'])<=40:return True
     rota=plano_jardim()['trechos'][0]['caminho']
     i=min(range(len(rota)),key=lambda i:math.dist(pos,rota[i]))
     return i>=max(0,len(rota)-120)
@@ -80,15 +85,44 @@ class JardimAereo(MinaLenfer):
     obter_plano=staticmethod(plano_jardim)
     contem=staticmethod(dentro_jardim)
 
+    def __init__(self,pos):
+        super().__init__(pos)
+        from huntingaitan.rotas.recuperacao_jardim import RecuperacaoJardim
+        self.recuperacao=RecuperacaoJardim(pos)
+
+    def aplicar_grade(self,grade,pos):
+        if hasattr(self,'geometria'):grade=self.geometria.aplicar(grade,saida=pos)
+        return self.recuperacao.aplicar(grade,pos)
+
+    def adotar_rota(self,grade,rota,pos):
+        self.grade=grade;self.rota_planejada=rota;self.trechos[0]['caminho']=rota
+        self.indice=0;self.antecipacao=2.5;self.replanejado_em=tuple(pos);self.revisao+=1
+        self.custo_origem=None
+
+    def observar_navegacao(self,pos,agora,plano):
+        return self.recuperacao.observar(self,pos,agora,plano)
+
+    def replanejar_passagem(self,pos):
+        # A recuperacao possui os bloqueios e ja replaneja usando-os. O
+        # recalculo herdado nao pode substituir isso pela mesma rota antiga.
+        return False
+
     def eh_chefe(self,nome):return False
 
     def registrar_abate(self,*args):return None
 
     def filtrar_mobs(self,mobs,pos,raio,defendendo=False):
-        permitidos=[m for m in mobs if normalizar(m['name'])!='seridunn' and not lazapa_protegido(m['name'],pos)]
+        permitidos=[m for m in mobs if normalizar(m['name'])!='seridunn' and not eh_shiraz_infernal(m['name']) and not lazapa_protegido(m['name'],pos)]
         return super().filtrar_mobs(permitidos,pos,raio,defendendo)
 
     def atingiu_limite(self,pos):return math.dist(pos,self.pontos[-1]['pos'])<=3
+
+    def limite_proximo(self,mobs,pos):
+        for m in mobs:
+            if not eh_shiraz_infernal(m['name']) or math.dist(pos,m['position'])>32:continue
+            rota=self.grade.caminho(pos,m['position'],alcance=2,max_nos=4096)
+            if rota and sum(math.dist(a,b) for a,b in zip(rota,rota[1:]))<=35:return m
+        return None
 
     def lazapa_proximo(self,mobs,pos):
         if not na_area_lazapas_finais(pos):return None
@@ -99,7 +133,15 @@ class JardimAereo(MinaLenfer):
         return None
 
     def destino(self,pos,agora):
-        if self.atingiu_limite(pos):return dict(estado='limite_lazapas',ponto='antes_lazapas',voltas=0)
+        if self.recuperacao.recuo is not None:
+            if math.dist(pos,self.recuperacao.recuo)>1:
+                return dict(estado='andar',destino=self.recuperacao.recuo,chave=('circuito','recuo_jardim',self.revisao),ponto='recuo_jardim',voltas=0)
+            self.recuperacao.recuo=None
+            g=self.aplicar_grade(self.grade_terreno,pos)
+            rota=g.caminho(pos,self.pontos[-1]['pos'],max_nos=g.largura*g.altura)
+            if rota:self.adotar_rota(g,rota,pos)
+            else:return dict(estado='andar',destino=tuple(pos),chave=('circuito','reavaliar_jardim',self.revisao),ponto='recuo_jardim',voltas=0)
+        if self.atingiu_limite(pos):return dict(estado='limite_shiraz',ponto='antes_shiraz',voltas=0)
         return super().destino(pos,agora)
 
     def conferir(self,pasta):
@@ -111,7 +153,10 @@ class JardimAereo(MinaLenfer):
         flags=bytearray();alturas=[]
         for y in range(256):
             for j in range(2):flags.extend(a[j][y*512:(y+1)*512:2]);alturas.extend(h[j][y*256:(y+1)*256])
-        self.grade=Grade((3328,3072),(0,0),512,256,bytes(flags),tuple(alturas),1)
+        self.grade_terreno=Grade((3328,3072),(0,0),512,256,bytes(flags),tuple(alturas),1)
+        from huntingaitan.rotas.geometria_dg_jardim import GeometriaDGJardim
+        self.geometria=GeometriaDGJardim(pasta)
+        self.grade=self.aplicar_grade(self.grade_terreno,self.inicio)
         rota=self.grade.caminho(self.inicio,self.pontos[-1]['pos'],max_nos=131072)
         if not rota:raise RuntimeError('Sem passagem estatica ate o limite anterior aos Lazapas.')
         self.trechos=[dict(ate=self.pontos[-1]['id'],caminho=rota)];self.rota_planejada=rota;self.indice=0

@@ -1,0 +1,111 @@
+{
+  "schema": 1,
+  "mapa": "Floresta Cinzenta",
+  "nome_setor_cliente": "Trozo de madera de fresno",
+  "setor": 13,
+  "limites": [
+    2560,
+    1024,
+    3070,
+    1534
+  ],
+  "mob": "Buto Mutante",
+  "registro": 1375,
+  "pontos": [
+    {
+      "ponto": 1,
+      "slot": 1,
+      "x": 2715,
+      "y": 1287,
+      "flags": 0,
+      "celula_livre": true
+    },
+    {
+      "ponto": 2,
+      "slot": 2,
+      "x": 2731,
+      "y": 1338,
+      "flags": 0,
+      "celula_livre": true
+    },
+    {
+      "ponto": 3,
+      "slot": 3,
+      "x": 2718,
+      "y": 1425,
+      "flags": 0,
+      "celula_livre": true
+    },
+    {
+      "ponto": 4,
+      "slot": 4,
+      "x": 2742,
+      "y": 1427,
+      "flags": 0,
+      "celula_livre": true
+    },
+    {
+      "ponto": 5,
+      "slot": 5,
+      "x": 2767,
+      "y": 1432,
+      "flags": 0,
+      "celula_livre": true
+    },
+    {
+      "ponto": 6,
+      "slot": 6,
+      "x": 2731,
+      "y": 1297,
+      "flags": 0,
+      "celula_livre": true
+    },
+    {
+      "ponto": 7,
+      "slot": 7,
+      "x": 2709,
+      "y": 1300,
+      "flags": 0,
+      "celula_livre": true
+    },
+    {
+      "ponto": 8,
+      "slot": 8,
+      "x": 2612,
+      "y": 1248,
+      "flags": 0,
+      "celula_livre": true
+    },
+    {
+      "ponto": 9,
+      "slot": 9,
+      "x": 2684,
+      "y": 1172,
+      "flags": 0,
+      "celula_livre": true
+    },
+    {
+      "ponto": 10,
+      "slot": 10,
+      "x": 2611,
+      "y": 1220,
+      "flags": 0,
+      "celula_livre": true
+    }
+  ],
+  "fontes": {
+    "UI/MN.bin": "281aab5845b3f8b682a5a825cb9d7ded1068d6288d6e5a3730cebe15ad9c7104",
+    "UI/MobPos.bin": "cc0ac17247e143fcc984952b12dd43c18fbc98195d1d05cd0c0ccb657b5bd1e8",
+    "UI/Map.bin": "273c8a849c3dd8821dc93976349f6d01631cf7b8e7fdb76c4e3e93271a4520c4",
+    "Env/AttributeS01.dat": "f50de453e46f8e89366d6651d2bbb505703978ab898bc20e60590e30a1a04cdc",
+    "Env/z011004.att": "2de54e7aca61a015d9f2e1436b8891a455d04a24d52431d35c93d1dfcd42d744",
+    "Env/MMZ011004.jit": "478363c21bce9d3e1664f0af22bead81efd04d3e7d177fea1a52a1baa772a1c5",
+    "Env/z011104.att": "4d214958ceead61761ef24f9b193378fc1e4225627d3bbbe2139d246e32306c6",
+    "Env/MMZ011104.jit": "f98ee9d2e27268cfda086500d9b3a822e15742f366b44dd237795d6f86d05f01",
+    "Env/z011005.att": "c3f4f330f00800793e5fa966b21700410f63b2b8d75f478cab2f33ec14e211b3",
+    "Env/MMZ011005.jit": "9be72c3b0efff7611a1d8ac42280d4b75f561c9ef0b693bb01e76a10e0223684",
+    "Env/z011105.att": "24859607c67c9cf15abbd315bb1fe05aabdccbd5cdfdd47cc86f159ff2d78ee9",
+    "Env/MMZ011105.jit": "5776b267be6cdd741797e815fe850969d8947306845ca733c81e09cca80e6e33"
+  },
+  "nota": "Todas as posicoes nao vazias do registro do cliente; nao representam monstros vivos, quantidade simultanea ou garantia de respawn. Numeros seguem os slots, nao uma rota. Celula livre valida apenas a flag estatica do terreno, sem objetos ou passagens entre pontos."
+}

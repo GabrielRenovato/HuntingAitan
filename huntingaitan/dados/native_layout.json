@@ -23,6 +23,31 @@
       "ent_status": 308,
       "ent_hpmp": 1176,
       "ent_nome": 6572
+    },
+    {
+      "sha256": "e286c435100b7e03ec326fba6ae4ec94ea4f9ed17c3e473a2c37a2f3651834b3",
+      "preferred_base": 4194304,
+      "context_rva": 45724128,
+      "scene_offset": 578224,
+      "scene_vtable_rva": 3325916,
+      "player_offset": 260,
+      "target_offset": 144,
+      "active_scene_rva": 45723976,
+      "scene_reference": "active_global_confirmed_at_0x44c774",
+      "entity_manager_offset": 148,
+      "entity_array_offset": 24,
+      "entity_stride": 14780,
+      "entity_count_rva": 3487284,
+      "bar_manager_rva": 48391836,
+      "effect_table_rva": 12173812,
+      "mob_flag_rva": 45736076,
+      "ent_id": 4,
+      "ent_rot": 40,
+      "ent_pos": 28,
+      "ent_status": 308,
+      "ent_hpmp": 1176,
+      "ent_nome": 6572,
+      "description": "Copia local de teste: unico byte diferente em 0x5627; estruturas de dados preservadas."
     }
   ]
 }

@@ -11,6 +11,8 @@ class Grade:
     flags:bytes
     alturas:tuple
     mapa:int
+    custos:tuple=()
+    arestas_bloqueadas:frozenset=frozenset()
     def indice(self,p):
         x,y=p;x-=self.canto[0];y-=self.canto[1]
         return y*self.largura+x if 0<=x<self.largura and 0<=y<self.altura else None
@@ -19,6 +21,7 @@ class Grade:
     def livre(self,c):
         i=self.indice(c);return i is not None and not(self.flags[i]&1)
     def passagem(self,a,b):
+        if (a,b) in self.arestas_bloqueadas:return False
         ia=self.indice(a);ib=self.indice(b)
         if ia is None or ib is None or not self.livre(b):return False
         dx=b[0]-a[0];dy=b[1]-a[1]
@@ -34,7 +37,8 @@ class Grade:
             anterior=atual
         return self.livre(a)
     def penalidade_parede(self,c):
-        return sum(not self.livre((c[0]+dx,c[1]+dy)) for dx,dy in ((1,0),(-1,0),(0,1),(0,-1)))*.6
+        i=self.indice(c)
+        return sum(not self.livre((c[0]+dx,c[1]+dy)) for dx,dy in ((1,0),(-1,0),(0,1),(0,-1)))*.6+(self.custos[i] if self.custos and i is not None else 0.)
     def caminho(self,inicio,destino,alcance=0,max_nos=16000,limite=None,parcial=False):
         inicio=self.celula(inicio);fim=self.celula(destino)
         if not self.livre(inicio):return None

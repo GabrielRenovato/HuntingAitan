@@ -2,6 +2,7 @@
 import ctypes
 from contextlib import contextmanager
 from ctypes import wintypes as w
+from huntingaitan.leitura.janela_cliente import localizar_cliente
 import numpy as np
 
 def validar_area(esquerda,topo,direita,baixo):
@@ -33,8 +34,7 @@ class CapturaAika:
         with self.pixels_fisicos():return self._regiao()
 
     def _regiao(self):
-        h=self.u.FindWindowW(None,'AikaClient')
-        if not h:raise ValueError('Janela AikaClient nao encontrada')
+        h=localizar_cliente(u=self.u)['hwnd']
         if self.u.IsIconic(h):raise ValueError('Aika minimizado')
         r=w.RECT();origem=w.POINT(0,0)
         if not self.u.GetClientRect(h,ctypes.byref(r)) or not self.u.ClientToScreen(h,ctypes.byref(origem)):
