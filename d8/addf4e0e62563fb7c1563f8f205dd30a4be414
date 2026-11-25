@@ -1,0 +1,118 @@
+package.json
+  s_edfc50aef2ee58::t_aa373edc158773 6
+  s_edfc50aef2ee58::t_b0126bb104303e 3
+tests/test_repeticao_jardim.py
+  s_edfc50aef2ee58::t_ba4549e3f8d326 22
+  s_edfc50aef2ee58::t_edd7b28df8943d 94-102,137-143
+docs/MOTOR_SEGUNDO_PLANO.md
+  s_edfc50aef2ee58::t_aab3a474b0aca1 27-50
+  s_edfc50aef2ee58::t_1ab53b09c13c28 17-26
+  s_edfc50aef2ee58::t_42a62516583bd3 51
+huntingaitan/dados/jardim_seridunn_rota.json
+  s_edfc50aef2ee58::t_b2980dec08103b 1-9912
+aika_hunt_app/renderer.js
+  s_edfc50aef2ee58::t_734958405bc255 66,80,102
+tests/test_ciclo_jardim.py
+  s_edfc50aef2ee58::t_4111def22928b8 42,69
+tests/test_jardim_segundo_plano.py
+  s_edfc50aef2ee58::t_8131938120b610 1-81,84-89,91,95-100,103
+  s_edfc50aef2ee58::t_e5c52f55d455f2 82-83
+  s_edfc50aef2ee58::t_152010384b5877 90
+  s_edfc50aef2ee58::t_9384f1be9fef01 92-94
+  s_edfc50aef2ee58::t_c2f41cc4482188 101-102
+  s_edfc50aef2ee58::t_5faaebf5637229 104
+huntingaitan/rotas/interface_jardim.py
+  s_edfc50aef2ee58::t_7fd6634f599077 56-64,77-78,91-92,108-110
+huntingaitan/entrada/entrada_janela.py
+  s_edfc50aef2ee58::t_8131938120b610 96,101-102
+tests/test_operacoes_npc.py
+  s_edfc50aef2ee58::t_0a573f612331dd 9,28-31,49-53,58,62,67-72
+huntingaitan/rotas/entrada_jardim.py
+  s_edfc50aef2ee58::t_af89c90264bbc1 76-90
+  s_edfc50aef2ee58::t_a2ef0bff2e9073 29-30,39,72-75
+huntingaitan/rotas/operacoes_mina.py
+  s_edfc50aef2ee58::t_8131938120b610 108-110
+  s_edfc50aef2ee58::t_87d24c9230cfe9 11-16,19,22,29,34-36,50,86,93-97,101-102,104,107,115,153,165-179
+docs/INTERACAO_JARDIM.md
+  s_edfc50aef2ee58::t_aab3a474b0aca1 1-100
+  s_edfc50aef2ee58::t_0090603ecb90ad 101
+docs/JARDIM_AEREO.md
+  s_edfc50aef2ee58::t_6904810669d9ac 59,61
+  s_edfc50aef2ee58::t_2610181c531dda 3-6,8,10-14,16-21,23-24,26,28-31,33-58,62-65,70,72-74
+  s_edfc50aef2ee58::t_3a6de28352cc91 60
+aika_hunt_app/index.html
+  s_edfc50aef2ee58::t_ba4549e3f8d326 31
+  s_edfc50aef2ee58::t_734958405bc255 30
+  s_edfc50aef2ee58::t_2b0abab3b9bdec 28
+tests/test_segundo_plano.py
+  s_edfc50aef2ee58::t_8131938120b610 51-56
+  s_edfc50aef2ee58::t_1a03a8bd3fea7b 79,82-85
+CHANGELOG.md
+  s_edfc50aef2ee58::t_6bf9d198664c82 3-11
+RELEASE_NOTES.md
+  s_edfc50aef2ee58::t_f4526588d2e4a1 1,3,5-10,12,14,16
+aika_hunt_app/main.cjs
+  s_edfc50aef2ee58::t_d75f69b23ad41d 7,26,87-98,115
+aika_hunt_app/package-lock.json
+  s_edfc50aef2ee58::t_2cf43ffa460a99 3,9
+aika_hunt_app/package.json
+  s_edfc50aef2ee58::t_93ab18551b4efc 3,33
+huntingaitan/rotas/operacoes_npc.py
+  s_edfc50aef2ee58::t_911669ee7e561a 12-17,20,22,38-39,48
+package-lock.json
+  s_edfc50aef2ee58::t_48347039e07d7d 3,9
+test_monitor_lifecycle.cjs
+  s_edfc50aef2ee58::t_9e05840a494726 3,13-14,29-32
+aika_hunt_app/profile-store.cjs
+  s_edfc50aef2ee58::t_3cf7db8c8e8cd6 1-12
+huntingaitan/combate/hunt_native.py
+  s_edfc50aef2ee58::t_c4bddaea847e06 31,61-62,203-206,208,302-303,354-355,486-488
+huntingaitan/configuracao/perfil_hunt.py
+  s_edfc50aef2ee58::t_78d550ec249666 8,29,107
+huntingaitan/rotas/ciclo_jardim.py
+  s_edfc50aef2ee58::t_46305bccd3d0e1 1,5-31,61,64-67,80,95,109,131,137,147-151,155
+huntingaitan/rotas/interacao_altar.py
+  s_edfc50aef2ee58::t_fa961ff4e38ec2 1-51
+huntingaitan/rotas/interface_mina.py
+  s_edfc50aef2ee58::t_cc71012e45ccdd 15,78-89
+huntingaitan/rotas/jardim_aereo.py
+  s_edfc50aef2ee58::t_bb28ca59ac4d44 22,24,63,68-72,171,181
+huntingaitan/rotas/jardim_seridunn.py
+  s_edfc50aef2ee58::t_54117dddc1a860 1-54
+huntingaitan/visao/captura_interface.py
+  s_edfc50aef2ee58::t_e0edae5a5d8d34 1-10
+test_profile_store.cjs
+  s_edfc50aef2ee58::t_8b86787ec01dbb 1-21
+tests/test_grupo_contexto.py
+  s_edfc50aef2ee58::t_a52b30e1b85ecc 1-26
+tests/test_interacao_altar.py
+  s_edfc50aef2ee58::t_c00dd85b91bc3a 1-45
+tests/test_jardim_seridunn.py
+  s_edfc50aef2ee58::t_79997e0c994f8d 1-142
+tools/analisar_interacao_jardim.py
+  s_edfc50aef2ee58::t_dd8c7012c85474 1-77
+tools/comparar_interacao_jardim.py
+  s_edfc50aef2ee58::t_5075d96b39b1dc 1-84
+tools/ler_contexto_interacao_jardim.py
+  s_edfc50aef2ee58::t_9b5b4fd2466b97 1-32
+tools/mapear_rota_seridunn.py
+  s_edfc50aef2ee58::t_ea51e2391eb6ff 1-54
+tools/verificar_compatibilidade_cliente.py
+  s_edfc50aef2ee58::t_a0512882f257fa 1-54
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.6",
+  "base_commit_sha": "d8addf4e0e62563fb7c1563f8f205dd30a4be414",
+  "prompts": {},
+  "sessions": {
+    "s_edfc50aef2ee58": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "01a1e01c-4c9b-7e00-b2fb-9c7ef8050eed",
+        "model": "unknown"
+      },
+      "human_author": "Gabriel Renovato <86806861+GabrielRenovato@users.noreply.github.com>"
+    }
+  }
+}
