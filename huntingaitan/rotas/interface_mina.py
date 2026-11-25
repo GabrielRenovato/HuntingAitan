@@ -12,6 +12,7 @@ DIFICULDADES={'normal':'normal','facil':'facil','easy':'facil',
 class InterfaceMina:
     def __init__(self,ocr=None):
         self.ocr=ocr
+        self.nome_personagem=''
         nomes=['grupo','sair_grupo','pergunta','confirmar','elite','titulo_calabouco','titulo_mazmorra','entrar','entrar_mazmorra','portal_bin','entrar_mina_bin']
         self.tpl={n:cv2.imread(str(P/f'tpl_mina_{n}.png'),0) for n in nomes}
         if any(t is None for t in self.tpl.values()):raise RuntimeError('Modelos de interface da Mina ausentes.')
@@ -74,6 +75,18 @@ class InterfaceMina:
                 b=min(confirmar,key=lambda t:abs(t['x']-q['x']))
                 return dict(acao='confirmar_saida',ponto=(round(b['x']),round(b['y'])))
             if q['x']<w*.35 and q['y']>h*.4:return dict(acao='sair_grupo',ponto=(round(q['x']),round(q['y'])))
+        # O cabecalho pequeno pode ser lido como "Grupolnfomacadivado".
+        # Usa o nome exato do personagem selecionado, junto das barras de
+        # HP/MP, em vez de adivinhar o texto ou clicar numa posicao fixa.
+        jogador=normalizar(getattr(self,'nome_personagem',''))
+        for t in textos:
+            if jogador and t['nome']==jogador and t['x']<w*.3 and h*.4<t['y']<h*.8:
+                x,y=round(t['x']),round(t['y'])
+                recorte=tela[max(0,y-10):min(h,y+35),max(0,x-70):min(w,x+140)]
+                if recorte.ndim!=3 or recorte.shape[2]<3:continue
+                b,g,r=[recorte[...,i].astype(int) for i in range(3)]
+                if np.count_nonzero((r>130)&(g<110)&(b<110))>=20 and np.count_nonzero((b>130)&(g<130)&(r<110))>=20:
+                    return dict(acao='abrir_menu_grupo',ponto=(x,y),botao='right')
         for t in textos:
             if t['x']<w*.3 and t['y']>h*.4 and any(n in t['nome'] for n in ('partyinformation','groupinformation','informacaodogrupo','grupoinformacao')):
                 escala=max(.6,min(2.5,t['altura']/12))

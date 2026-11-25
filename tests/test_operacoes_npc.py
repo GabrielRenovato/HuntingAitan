@@ -6,7 +6,7 @@ from huntingaitan.rotas.operacoes_npc import reparar_e_vender
 from tests.test_servico_npc import DESC
 
 class OperacaoTeste(unittest.TestCase):
-    def executar(self,reparo_funciona=True,janela_alterada=False,descricao_indisponivel=False,leitura_lenta=False,venda_pendente=False):
+    def executar(self,reparo_funciona=True,janela_alterada=False,descricao_indisponivel=False,leitura_lenta=False,venda_pendente=False,segundo_plano=False):
         fase=['venda' if venda_pendente else 'loja'];ouro=[1000];pos=[(0,0)];vendido=[False];tempo=[0.];cliques=[];eventos=[]
         self.teclas=[];leituras_venda=[0];ordem=[];self.ordem=ordem
         cfg=dict(ouro=1000,escala=1.,origem=(0,0),fechar=(10,10),paginas=[(50,50)],slots=[(70,70)])
@@ -25,7 +25,10 @@ class OperacaoTeste(unittest.TestCase):
                 ordem.append(('ler',tempo[0],fase[0]))
                 if leitura_lenta:tempo[0]+=5
                 return None if descricao_indisponivel else ('Espada de Termes',DESC)
-        def mover(ent,x,y):pos[0]=(x,y);return True
+        def mover(ent,x,y):
+            if segundo_plano:raise AssertionError('Cursor global usado ao fundo')
+            pos[0]=(x,y);return True
+        def mover_fundo(x,y):pos[0]=(x,y);return True
         def down(button='left'):
             p=pos[0];cliques.append((fase[0],button,p,ouro[0]))
             if button=='right':ordem.append(('right',tempo[0],fase[0]));fase[0]='venda';return
@@ -43,20 +46,29 @@ class OperacaoTeste(unittest.TestCase):
             if vendido[0]:im[54:86,54:86]=255
             return im
         cap=SimpleNamespace(area=dict(left=0,top=0),capturar=capturar)
-        d=SimpleNamespace(hwnd=1,u=SimpleNamespace(GetForegroundWindow=lambda:1),snapshot=lambda:dict(player=dict(hp=100,position=(1892,1067))))
-        c=SimpleNamespace(stop=threading.Event(),pause=threading.Event(),reason='')
+        d=SimpleNamespace(hwnd=1,pid=20,u=SimpleNamespace(GetForegroundWindow=lambda:999 if segundo_plano else 1),snapshot=lambda:dict(player=dict(hp=100,position=(1892,1067))))
+        c=SimpleNamespace(stop=threading.Event(),pause=threading.Event(),reason='',background_keys=segundo_plano)
+        class WGC:
+            def __enter__(self):return cap
+            def __exit__(self,*a):pass
         def key_down(k):
             ordem.append(('enter',tempo[0],fase[0]))
             self.assertEqual(k,'enter');self.assertEqual(fase[0],'venda');self.teclas.append(k)
             fase[0]='loja';ouro[0]+=50;vendido[0]=True
-        entrada=SimpleNamespace(PAUSE=0,mouseDown=down,mouseUp=lambda **k:None,keyDown=key_down,keyUp=lambda k:None)
+        entrada=SimpleNamespace(disponivel=lambda:True,mover_sem_cursor=mover_fundo,PAUSE=0,mouseDown=down,mouseUp=lambda **k:None,keyDown=key_down,keyUp=lambda k:None)
         def inventario(d):
             return dict(ouro=ouro[0],bolsas=[0],itens=[dict(slot=0,id=0 if vendido[0] else 1042,serial=123,atual=8,maxima=151,refino=0)])
         def sleep(v):tempo[0]+=max(.01,v)
-        with patch('cv2.imwrite',return_value=True),patch('huntingaitan.rotas.operacoes_npc.precisa_reparar',return_value=True),patch('huntingaitan.rotas.operacoes_npc.ler_inventario',inventario),patch('huntingaitan.rotas.operacoes_npc.equipamento_candidato',lambda d,i:bool(i['id'])),patch('huntingaitan.rotas.operacoes_npc.nome_item',return_value='Espada de Termes'),patch.dict(sys.modules,keyboard=SimpleNamespace(is_pressed=lambda k:False),mss=SimpleNamespace(MSS=MSS),pydirectinput=entrada),patch('huntingaitan.rotas.interface_npc.InterfaceNPC',UI),patch('huntingaitan.visao.captura_aika.CapturaAika',return_value=cap),patch('huntingaitan.entrada.entrada_segura.mover_cursor_fisico',mover),patch('huntingaitan.visao.avisos_hunt.DetectorAvisos') as av,patch('huntingaitan.rotas.operacoes_npc.time.monotonic',lambda:tempo[0]),patch('huntingaitan.rotas.operacoes_npc.time.sleep',sleep):
+        with patch('huntingaitan.visao.captura_janela.CapturaJanela',return_value=WGC()),patch('huntingaitan.entrada.entrada_janela.EntradaJanela',return_value=entrada),patch('cv2.imwrite',return_value=True),patch('huntingaitan.rotas.operacoes_npc.precisa_reparar',return_value=True),patch('huntingaitan.rotas.operacoes_npc.ler_inventario',inventario),patch('huntingaitan.rotas.operacoes_npc.equipamento_candidato',lambda d,i:bool(i['id'])),patch('huntingaitan.rotas.operacoes_npc.nome_item',return_value='Espada de Termes'),patch.dict(sys.modules,keyboard=SimpleNamespace(is_pressed=lambda k:False),mss=SimpleNamespace(MSS=MSS),pydirectinput=entrada),patch('huntingaitan.rotas.interface_npc.InterfaceNPC',UI),patch('huntingaitan.visao.captura_aika.CapturaAika',return_value=cap),patch('huntingaitan.entrada.entrada_segura.mover_cursor_fisico',mover),patch('huntingaitan.visao.avisos_hunt.DetectorAvisos') as av,patch('huntingaitan.rotas.operacoes_npc.time.monotonic',lambda:tempo[0]),patch('huntingaitan.rotas.operacoes_npc.time.sleep',sleep):
             av.return_value.localizar.return_value=None
             ok=reparar_e_vender(d,c,eventos.append)
         return ok,cliques,eventos,c
+
+    def test_repara_e_vende_ao_fundo_sem_cursor_global(self):
+        ok,cliques,eventos,c=self.executar(segundo_plano=True)
+        self.assertTrue(ok)
+        self.assertTrue(any(e.get('state')=='jardim_npc_concluido' and e.get('vendidos')==1 for e in eventos))
+        self.assertEqual(self.teclas,['enter'])
 
     def test_repara_antes_de_vender_e_verifica_remocao_e_saldo(self):
         ok,cliques,eventos,c=self.executar()

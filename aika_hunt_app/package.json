@@ -1,6 +1,6 @@
 {
   "name": "aika-caca-automatica",
-  "version": "0.1.0-beta.36",
+  "version": "0.1.0-beta.37",
   "description": "HuntingAitan — caca automatica experimental para Aika",
   "main": "main.cjs",
   "author": "Gabriel Renovato",
@@ -30,6 +30,7 @@
       "assets/**/*",
       "package.json",
       "runtime.cjs",
+      "profile-store.cjs",
       "updates.cjs"
     ],
     "win": {

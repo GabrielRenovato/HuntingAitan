@@ -39,7 +39,7 @@ class TrechoTeste(unittest.TestCase):
         self.assertFalse(any(e.get('state')=='jardim_saida_confirmada' for e in self.eventos))
 
     def test_filtro_bloqueia_lazapa_final_e_seridunn_mas_preserva_primeiros(self):
-        p=dict(DEFAULT,patrol_mode='jardim_aereo',radius=50,target='qualquer')
+        p=dict(DEFAULT,patrol_mode='jardim_aereo',jardim_goal='antes_shiraz',radius=50,target='qualquer')
         player=dict(position=(3757,3146),height=0)
         alvo=dict(name='Lazapa Tempestuosa',position=(3758,3146),height=0,hp=100,hostile=True)
         self.assertFalse(alvo_permitido(alvo,player,player['position'],p))
@@ -66,7 +66,7 @@ class TrechoTeste(unittest.TestCase):
             if t[0]>10:self.control.stop.set()
         u=MagicMock();u.GetForegroundWindow.return_value=1;u.GetWindowTextW.side_effect=lambda hwnd,buf,n:setattr(buf,'value','AikaClient')
         entrada=SimpleNamespace(PAUSE=0,keyDown=teclas.append,keyUp=lambda k:None)
-        p=dict(DEFAULT,patrol_mode='jardim_aereo',buffs_enabled=False,minimize_on_start=False)
+        p=dict(DEFAULT,patrol_mode='jardim_aereo',jardim_goal='antes_shiraz',buffs_enabled=False,minimize_on_start=False)
         with patch.dict(sys.modules,keyboard=SimpleNamespace(is_pressed=lambda k:False),pydirectinput=entrada),patch('huntingaitan.rotas.jardim_aereo.conferir_dificil',return_value=True),patch.object(JardimAereo,'conferir',conferir),patch.object(h,'DadosInternos',Dados),patch.object(h.ctypes.windll,'user32',u),patch.object(h.threading,'Thread'),patch.object(h.time,'monotonic',lambda:t[0]),patch.object(h.time,'sleep',sleep):
             h.main(p,eventos.append,self.control)
         self.assertEqual(self.control.reason,'jardim_limite_shiraz')

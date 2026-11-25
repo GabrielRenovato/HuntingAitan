@@ -48,6 +48,12 @@ class EntradaTeste(unittest.TestCase):
         self.assertFalse(e.moveTo(-500,0))
         with self.assertRaises(RuntimeError):e.mouseDown()
 
+    def test_duplo_clique_envia_mensagem_propria_e_libera_botao(self):
+        u=User32();e=EntradaJanela(10,20,u)
+        e.moveTo(120,230);e.mouseDown();e.mouseUp();e.mouseDown(duplo=True);e.mouseUp()
+        self.assertEqual([m[1] for m in u.envios],[0x200,0x201,0x202,0x203,0x202])
+        self.assertFalse(e.botoes)
+
     def test_ctrl_nao_e_substituido_por_entrada_global(self):
         with self.assertRaises(ValueError):codigo_tecla('ctrl+1')
         self.assertEqual(codigo_tecla('f8'),119)
@@ -70,11 +76,13 @@ class ConfigTeste(unittest.TestCase):
         p['reacoes']=[dict(nome='duplicado',tipo='buff',tecla='f8')]
         with self.assertRaisesRegex(ValueError,'repetido'):validar(p)
 
-    def test_combo_e_dg_sao_rejeitados(self):
+    def test_combo_e_mina_sao_rejeitados_e_jardim_e_aceito(self):
         p=self.perfil();p['buff_keys'][0]='ctrl+1'
         with self.assertRaisesRegex(ValueError,'teclas simples'):validar(p)
-        p=self.perfil();p['patrol_mode']='jardim_aereo'
-        with self.assertRaisesRegex(ValueError,'caca externa'):validar(p)
+        p=self.perfil();p['patrol_mode']='mina_lenfer'
+        with self.assertRaisesRegex(ValueError,'Mina'):validar(p)
+        p['patrol_mode']='jardim_aereo'
+        self.assertTrue(validar(p)['background_keys'])
 
 
 class RecargasTeste(unittest.TestCase):

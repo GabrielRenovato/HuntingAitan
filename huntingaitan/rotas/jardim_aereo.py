@@ -19,9 +19,9 @@ def conferir_nome_jardim(descricao):
         raise RuntimeError('UI/Dungeon.bin: nome do Jardim nao reconhecido no registro 5: '+nome)
     return nome
 
-def conferir_fontes_jardim(pasta):
+def conferir_fontes_jardim(pasta,plano=None):
     p=Path(pasta)
-    for nome,sha in plano_jardim()['fontes'].items():
+    for nome,sha in (plano or plano_jardim())['fontes'].items():
         if nome=='UI/Dungeon.bin':
             conferir_nome_jardim((p/nome).read_bytes())
             continue
@@ -60,13 +60,16 @@ def salvar_diagnostico_dificuldade(tela,leituras,arquivo=None,etapa='leitura_con
     arquivo.with_suffix('.json').write_text(json.dumps(dict(etapa=etapa,leituras=leituras,recorte=[w-largura,0,w,altura]),ensure_ascii=False,indent=2),encoding='utf-8')
     return str(arquivo.with_suffix('.png'))
 
-def conferir_dificil(auto_escala=True,emitir=None,ativo=None,parar=None):
+def conferir_dificil(auto_escala=True,emitir=None,ativo=None,parar=None,janela=None):
     import mss
     from huntingaitan.visao.captura_aika import CapturaAika
     from huntingaitan.rotas.interface_mina import VerificadorElite
     verificador=VerificadorElite(dificuldade='dificil',auto_escala=auto_escala)
-    with (getattr(mss,'MSS',None) or mss.mss)() as sct:
-        cap=CapturaAika(sct);confirmacoes=0;leituras=[];tela=None;pausado=False;arquivo=None
+    from types import SimpleNamespace
+    from huntingaitan.visao.captura_interface import captura_interface
+    dados=SimpleNamespace(hwnd=janela[0],pid=janela[1]) if janela else None
+    with captura_interface(dados,bool(janela),mss,CapturaAika) as cap:
+        confirmacoes=0;leituras=[];tela=None;pausado=False;arquivo=None
         def registrar(etapa):
             nonlocal arquivo
             try:
@@ -165,7 +168,7 @@ class JardimAereo(MinaLenfer):
 
     def conferir(self,pasta):
         p=Path(pasta)
-        conferir_fontes_jardim(pasta)
+        conferir_fontes_jardim(pasta,self.obter_plano())
         a=[(p/f'Env/z01{t}12.att').read_bytes() for t in [13,14]];h=[struct.unpack('<65536h',(p/f'Env/z01{t}12.hgt').read_bytes()) for t in [13,14]]
         flags=bytearray();alturas=[]
         for y in range(256):
@@ -175,5 +178,5 @@ class JardimAereo(MinaLenfer):
         self.geometria=GeometriaDGJardim(pasta)
         self.grade=self.aplicar_grade(self.grade_terreno,self.inicio)
         rota=self.grade.caminho(self.inicio,self.pontos[-1]['pos'],max_nos=131072)
-        if not rota:raise RuntimeError('Sem passagem estatica ate o limite anterior aos Lazapas.')
+        if not rota:raise RuntimeError('Sem passagem estatica ate o objetivo selecionado do Jardim.')
         self.trechos=[dict(ate=self.pontos[-1]['id'],caminho=rota)];self.rota_planejada=rota;self.indice=0

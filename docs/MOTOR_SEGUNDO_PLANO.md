@@ -14,7 +14,41 @@ O modo `background_keys` vincula leitura e comandos ao mesmo PID e HWND. A ponte
 
 ## Limites
 
-Manter o cliente aberto, sem minimizar. Mina e Jardim ainda não permitem o modo em segundo plano. O cancelamento de animações por teclas fica desativado nesse modo. O prazo dos buffs continua configurado pelo perfil: ler o ID ativo não fornece a duração restante. Consumíveis enviados por mensagens ainda não têm a mesma confirmação de aplicação das habilidades.
+Manter o cliente aberto, sem minimizar. A Mina ainda não permite o modo em segundo plano. O Jardim tem suporte experimental na compilação local descrita abaixo. O cancelamento de animações por teclas fica desativado nesse modo. O prazo dos buffs continua configurado pelo perfil: ler o ID ativo não fornece a duração restante. Consumíveis enviados por mensagens ainda não têm a mesma confirmação de aplicação das habilidades.
+
+## Jardim experimental — 25/11/2026
+
+O ciclo transmite a opção de segundo plano às operações de entrada, saída de
+grupo e serviço no NPC. Percurso, seleção e habilidades usam a ponte interna;
+as etapas de interface usam Windows Graphics Capture e mensagens destinadas ao
+HWND selecionado. A leitura inicial de Difícil também usa a captura dessa janela,
+sem depender da imagem do desktop. O modo normal conserva a implementação anterior.
+
+Validação automatizada: 696 testes Python, verificações Node e smoke do motor
+empacotado aprovados. Os testes cobrem entrada no Difícil, saída, reparo/venda
+pela janela, espera pelo carregamento, barra de grupo e quina do retorno.
+
+No primeiro teste real de 120 segundos, a templária confirmou 25 abates, HP
+mínimo de 99,90% e 136 de 239 amostras sem foco. A interação 3D do altar falhou
+nas tentativas iniciais. A investigação dos binários e a comparação manual
+mostraram que o ponto sobre o nome não identificava o altar sob o cursor,
+embora o cursor interno e o raio de seleção atualizassem ao fundo.
+
+A correção movimenta apenas o cursor virtual da janela e confere nome, posição
+cadastrada e duas leituras da mesma entidade antes do duplo clique. A identidade
+é reconfirmada antes de cada mouseDown. Nenhum candidato da busca é clicado
+sem essa confirmação; não foram adicionadas chamadas nativas novas à ponte.
+
+Em `build/jardim_interface_fundo_20261125_144846`, o teste confirmou saída do grupo,
+retorno ao altar e reentrada automática no Difícil por posição e indicador.
+Foram 280 amostras sem foco no Aika, com HP mínimo 100%, sem clique manual nessa
+rodada. A thread respondeu após o carregamento e o motor reconectou; o teste
+curto seguinte terminou normalmente em nove segundos, durante o ciclo de buffs,
+sem abates. Isso não valida uma DG inteira nem estabilidade por várias repetições.
+Serviço no NPC ao fundo continua validado somente por simulação.
+
+Detalhes e evidências em `docs/INTERACAO_JARDIM.md`. Compilação local:
+`build/jardim-segundo-plano-corrigido/win-unpacked`. Alterações incluídas na beta.37. A beta.36 mantém a restrição anterior.
 
 ## Validação local de 23/11/2026
 

@@ -19,7 +19,7 @@ class CicloTeste(unittest.TestCase):
         def entrar():self.pos[:]=[3351,3295];return True
         self.motor=Mock(side_effect=motor);self.sair=Mock(side_effect=sair);self.entrar=Mock(side_effect=entrar)
         self.rota=Mock(return_value=object())
-        return CicloJardim(dict(DEFAULT,**perfil),self.control,self.eventos.append,
+        return CicloJardim(dict(DEFAULT,**({'jardim_goal':'antes_shiraz'}|perfil)),self.control,self.eventos.append,
             lambda:dict(position=self.pos[:],hp=1,pasta='jogo'),self.motor,self.sair,self.entrar,self.rota)
 
     def test_duas_passagens_com_saida_reentrada_e_sem_falso_abate(self):
@@ -91,6 +91,15 @@ class InterfaceTeste(unittest.TestCase):
         self.ui.textos_regiao=lambda t,roi:[dict(nome='altardaascensao',ponto=(700,200))]
         self.assertTrue(self.ui.entrada(self.tela)['duplo'])
 
+    def test_grupo_por_texto_tem_prioridade_sobre_altar_ao_fundo(self):
+        self.ui.achar.side_effect=lambda t,n,*a,**k:dict(ponto=(1000,300)) if n=='jardim_altar_bin' else None
+        self.ui.textos_regiao=lambda t,roi:[dict(nome='grupodemazmorra',ponto=(900,200)),dict(nome='entrar',ponto=(820,700)),dict(nome='altardaascensao',ponto=(1000,300))]
+        self.assertEqual(self.ui.entrada(self.tela,True),dict(acao='entrar_grupo_mazmorra',ponto=(820,700)))
+
+    def test_grupo_sem_botao_nao_clica_no_altar_atras_da_janela(self):
+        self.ui.textos_regiao=lambda t,roi:[dict(nome='grupodemazmorra',ponto=(900,200)),dict(nome='altardaascensao',ponto=(1000,300))]
+        self.assertEqual(self.ui.entrada(self.tela,True)['acao'],'aguardar_mazmorra')
+
     def test_entrada_confirma_dificil_duas_vezes_e_nao_usa_spawn_da_mina(self):
         from huntingaitan.rotas.operacoes_mina import entrar_jardim
         control=SimpleNamespace(stop=threading.Event(),pause=threading.Event())
@@ -125,6 +134,13 @@ class ArquivosTeste(unittest.TestCase):
         # Posicao real em que a versao anterior encerrava a aproximacao cedo.
         self.assertEqual(rota.destino((1841.4917,1091.1141),0)['estado'],'andar')
         self.assertEqual(rota.destino(rota.rota[-1],0)['estado'],'concluido')
+        # Quina real: o alvo antigo ficava dentro da tolerancia do motor.
+        pos=(1853.961181640625,1085.73193359375)
+        plano=rota.destino(pos,1)
+        self.assertEqual(plano['estado'],'andar')
+        self.assertGreaterEqual(math.dist(pos,plano['destino']),1.5)
+        self.assertTrue(rota.grade.linha_livre(rota.grade.celula(pos),rota.grade.celula(plano['destino'])))
+
 
 class CursorTeste(unittest.TestCase):
     def test_clique_confere_pixels_fisicos_em_monitor_a_esquerda(self):

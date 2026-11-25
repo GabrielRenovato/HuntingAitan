@@ -1,6 +1,33 @@
-"""Percorre ate os Shiraz Infernais e repete a entrada no Jardim Dificil."""
+"""Executa o objetivo selecionado e repete a entrada no Jardim Dificil."""
 import time,threading,math
 from huntingaitan.rotas.jardim_aereo import dentro_jardim
+
+def aguardar_cliente_jardim(dados,control,emitir,limite=45,relogio=time.monotonic,dormir=time.sleep):
+    """A posicao muda antes de a thread da janela terminar o carregamento."""
+    if not getattr(control,'background_keys',False):return True
+    import ctypes
+    from ctypes import wintypes as w
+    u=dados.u;u.SendMessageTimeoutW.argtypes=[w.HWND,w.UINT,w.WPARAM,w.LPARAM,w.UINT,w.UINT,ctypes.POINTER(ctypes.c_size_t)]
+    u.SendMessageTimeoutW.restype=w.LPARAM
+    inicio=relogio();confirmacoes=0;mapa_anterior=None;avisou=False
+    while not control.stop.is_set() and relogio()-inicio<limite:
+        if control.pause.is_set():dormir(.1);continue
+        try:
+            s=dados.snapshot()['player'];mapa=dados.u32(dados.cena_validada()+0x38)
+            if s['hp']<=0:control.reason='personagem_sem_vida';control.stop.set();return False
+            resultado=ctypes.c_size_t()
+            respondeu=bool(u.SendMessageTimeoutW(dados.hwnd,0,0,0,3,400,ctypes.byref(resultado)))
+            confirmacoes=confirmacoes+1 if respondeu and mapa==mapa_anterior else (1 if respondeu else 0)
+            mapa_anterior=mapa
+            if confirmacoes>=2:return True
+        except RuntimeError:confirmacoes=0;mapa_anterior=None
+        if not avisou:
+            emitir(dict(event='status',state='waiting',message='Aguardando o mapa e a thread do Jardim responderem antes de conectar o motor.'));avisou=True
+        dormir(.2)
+    if not control.stop.is_set():
+        control.reason='jardim_carregamento_nao_confirmado';control.stop.set()
+        emitir(dict(event='error',message='O cliente ainda nao respondeu apos a troca de mapa; motor nao foi conectado.'))
+    return False
 
 
 def executar_trecho(perfil,emitir,control,motor,sair,parar=None):
@@ -31,10 +58,13 @@ class CicloJardim:
         self.perfil=perfil;self.control=control;self.emitir=emitir;self.ler=ler
         self.motor=motor;self.sair=sair;self.entrar=entrar;self.criar_rota=criar_rota or EntradaJardim
         self.servico=servico;self.criar_rota_npc=criar_rota_npc;self.encerrar_apos_servico=False
-        self.etapa='iniciar';self.trechos=0;self.limite=False;self.reiniciar=False
+        self.etapa='iniciar';self.trechos=0;self.limite=False;self.reiniciar=False;self.chefe_confirmado=False
 
     def evento(self,e):
-        if e.get('event')=='jardim_limit':self.limite=True
+        if e.get('event')=='jardim_limit' and self.perfil.get('jardim_goal','seridunn')=='antes_shiraz':self.limite=True
+        if e.get('event')=='dungeon_complete' and self.perfil.get('jardim_goal','seridunn')=='seridunn':
+            abate=e.get('abates',{}).get('seridunn')
+            if abate:self.limite=True;self.chefe_confirmado=True;self.emitir(e)
         if e.get('event')=='jardim_reset':self.reiniciar=True
         if e.get('event') not in ('finished','dungeon_complete'):self.emitir(e)
 
@@ -47,7 +77,7 @@ class CicloJardim:
         self.emitir(dict(event='cycle',state=self.etapa,segments_completed=self.trechos))
         if self.etapa=='jardim_percurso':
             if not dentro_jardim(pos):self.etapa='jardim_retornar';return
-            self.limite=False;self.reiniciar=False;self.control.reason='etapa_em_andamento'
+            self.limite=False;self.reiniciar=False;self.chefe_confirmado=False;self.control.reason='etapa_em_andamento'
             self.motor(dict(self.perfil,duration_minutes=0),self.evento,self.control)
             if self.control.stop.is_set():return
             if self.limite:self.trechos+=1;self.etapa='jardim_sair'
@@ -62,7 +92,7 @@ class CicloJardim:
                 if self.servico and self.perfil.get('jardim_servico_npc',True):
                     self.encerrar_apos_servico=bool(encerrar);self.etapa='jardim_npc_retornar'
                 elif encerrar:
-                    self.control.reason='jardim_trecho_encerrado';self.control.stop.set()
+                    self.control.reason='jardim_concluido' if self.chefe_confirmado else 'jardim_trecho_encerrado';self.control.stop.set()
                 else:self.etapa='jardim_retornar'
         elif self.etapa=='jardim_npc_retornar':
             from huntingaitan.rotas.servico_npc import NPC,RotaLuis,ALCANCE_NPC
@@ -76,7 +106,7 @@ class CicloJardim:
         elif self.etapa=='jardim_npc_servico':
             if self.servico():
                 if self.encerrar_apos_servico:
-                    self.control.reason='jardim_trecho_encerrado';self.control.stop.set()
+                    self.control.reason='jardim_concluido' if self.chefe_confirmado else 'jardim_trecho_encerrado';self.control.stop.set()
                 else:self.etapa='jardim_retornar'
             elif not self.control.stop.is_set():
                 self.control.reason='servico_npc_nao_confirmado';self.control.stop.set()
@@ -98,12 +128,13 @@ class CicloJardim:
 
 def main(perfil,emitir,control):
     import keyboard
-    from huntingaitan.combate.hunt_native import main as motor
+    from huntingaitan.combate.hunt_native import main as executar_motor
     from huntingaitan.leitura.dados_internos import DadosInternos
     from huntingaitan.rotas.operacoes_mina import sair_grupo,entrar_jardim
     from huntingaitan.visao.controle_avisos import preparar_runtime_visual
     inicio=time.monotonic();fim=threading.Event();control.cycle_context=True
     control.auto_ui_scale=perfil.get('auto_ui_scale',True)
+    control.background_keys=perfil.get('background_keys',False)
     def evento(e):
         if e.get('event')=='telemetry':e=dict(e,elapsed=time.monotonic()-inicio)
         emitir(e)
@@ -113,9 +144,15 @@ def main(perfil,emitir,control):
             p=dados.snapshot()['player']
             return dict(position=p['position'],hp=p['hp']/p['hp_max'],pasta=dados.caminho.parent)
         finally:dados.close()
+    def motor(p,emitir_motor,c,percurso=None):
+        dados=DadosInternos()
+        try:pronto=aguardar_cliente_jardim(dados,c,evento)
+        finally:dados.close()
+        if pronto:return executar_motor(p,emitir_motor,c,percurso=percurso)
     def operacao(entrada=False):
         dados=DadosInternos()
         try:
+            if not aguardar_cliente_jardim(dados,control,evento):return False
             if dados.snapshot()['player']['hp']<=0:
                 control.reason='personagem_sem_vida';control.stop.set();return False
             if entrada:return entrar_jardim(dados,control,evento)

@@ -93,12 +93,13 @@ class EntradaJanela:
 
     moveTo=mover_sem_cursor
 
-    def mouseDown(self,button='left'):
+    def mouseDown(self,button='left',duplo=False):
         self.validar()
         if self.posicao is None:raise RuntimeError('Posicao do clique na janela indisponivel')
         if button not in ('left','right'):raise ValueError('Botao nao suportado')
         self.botoes.add(button);flags=(1 if 'left' in self.botoes else 0)|(2 if 'right' in self.botoes else 0)
-        if not self.u.PostMessageW(self.hwnd,0x201 if button=='left' else 0x204,flags,self.posicao):raise RuntimeError('Clique na janela recusado')
+        mensagem=(0x203 if button=='left' else 0x206) if duplo else (0x201 if button=='left' else 0x204)
+        if not self.u.PostMessageW(self.hwnd,mensagem,flags,self.posicao):raise RuntimeError('Clique na janela recusado')
         return True
 
     def mouseUp(self,button='left'):

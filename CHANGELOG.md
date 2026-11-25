@@ -1,5 +1,14 @@
 # Alterações
 
+## 0.1.0-beta.37 — 2026-11-25
+
+- Adiciona Jardim em segundo plano, com captura por HWND, saída/reentrada e espera pelo carregamento da thread.
+- Confirma o objeto do altar antes de clicar, corrige a barra de grupo, o painel final e a quina do retorno.
+- Acrescenta o objetivo Seridunn com caminho derivado do terreno, combate restrito a bloqueio/defesa e conclusão por abate confirmado; preserva o trecho curto selecionável.
+- Preserva perfis diante de erro de leitura/validação e cria backup antes de salvar; impede substituir configurações por padrões silenciosamente.
+- Inclui ferramentas de análise da interação e auditoria de compatibilidade, sem habilitar Aika Brasil.
+- Validação: 707 testes Python, verificações Node, painel Electron e smoke do motor. Saída/retorno/reentrada reais confirmados em 280 amostras sem foco, HP mínimo 100%. Percurso inteiro até Seridunn e serviço no NPC ao fundo permanecem sem validação real completa.
+
 ## 0.1.0-beta.36 — 2026-11-25
 
 - Valida a identidade localizada do Jardim em UI/Dungeon.bin, aceitando português e inglês em vez de comparar o hash de todos os textos.

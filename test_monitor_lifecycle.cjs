@@ -1,6 +1,6 @@
 const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
 const {EventEmitter}=require('node:events');const path=require('node:path');
-const handlers=new Map(),trace=[],children=[];let window;
+const handlers=new Map(),trace=[],children=[];let window,loadError=null;
 class Child extends EventEmitter{
  constructor(mode){super();this.mode=mode;this.stdout=new EventEmitter();this.stderr=new EventEmitter();this.stdin={end:s=>{if(mode==='watch'){trace.push('watch-stop');setImmediate(()=>{trace.push('watch-close');this.emit('close',0);});}else{const p=JSON.parse(s||'{}');setImmediate(()=>{this.stdout.emit('data',Buffer.from(JSON.stringify(p.invalid?{ok:false,message:'invalid'}:{ok:true,data:p})+'\n'));this.emit('close',0);});}},write:s=>{if(JSON.parse(s).command==='stop')setImmediate(()=>this.emit('close',0));}};}
  kill(){this.emit('close',0);}
@@ -10,8 +10,8 @@ class Window extends EventEmitter{
  constructor(){super();window=this;this.destroyed=false;this.webContents=new EventEmitter();this.webContents.setWindowOpenHandler=()=>{};this.webContents.send=()=>{};}
  setMenu(){} loadFile(){setImmediate(()=>this.webContents.emit('did-finish-load'));} isDestroyed(){return this.destroyed;} destroy(){this.destroyed=true;this.emit('closed');} restore(){} show(){} minimize(){}
 }
-const fakefs={mkdirSync(){},appendFileSync(){},writeFileSync(){},renameSync(){}};
-const sandbox={__dirname:path.join(__dirname,'aika_hunt_app'),require:name=>name==='electron'?{app,BrowserWindow:Window,ipcMain:{handle:(k,h)=>handlers.set(k,h)},dialog:{},shell:{}}:name==='node:child_process'?{spawn:(_exe,args,options)=>{const mode=args[2];trace.push(mode+'-spawn');const c=new Child(mode);c.env=options.env;children.push(c);return c;}}:name==='node:fs'?fakefs:name==='./updates.cjs'?()=>({check:async()=>({})}):name==='./runtime.cjs'?()=>({root:'/test',dataRoot:'/test',command:'python',args:['-u','/test/hunt_bridge.py']}):require(name),process:{env:{},on(){}},Buffer,console,clearTimeout,setInterval:()=>({unref(){}}),clearInterval(){},setTimeout:(f,t)=>{const x=setTimeout(f,t);x.unref();return x;}};
+const fakefs={mkdirSync(){},appendFileSync(){},writeFileSync(){trace.push('write-profile');},renameSync(){},existsSync(){return false;},copyFileSync(){}};
+const sandbox={__dirname:path.join(__dirname,'aika_hunt_app'),require:name=>name==='electron'?{app,BrowserWindow:Window,ipcMain:{handle:(k,h)=>handlers.set(k,h)},dialog:{},shell:{}}:name==='node:child_process'?{spawn:(_exe,args,options)=>{const mode=args[2];trace.push(mode+'-spawn');const c=new Child(mode);c.env=options.env;children.push(c);return c;}}:name==='node:fs'?fakefs:name==='./profile-store.cjs'?{loadProfile:async()=>{if(loadError)throw loadError;return {};}}:name==='./updates.cjs'?()=>({check:async()=>({})}):name==='./runtime.cjs'?()=>({root:'/test',dataRoot:'/test',command:'python',args:['-u','/test/hunt_bridge.py']}):require(name),process:{env:{},on(){}},Buffer,console,clearTimeout,setInterval:()=>({unref(){}}),clearInterval(){},setTimeout:(f,t)=>{const x=setTimeout(f,t);x.unref();return x;}};
 const tick=()=>new Promise(r=>setImmediate(r));
 (async()=>{
  vm.runInNewContext(fs.readFileSync(path.join(__dirname,'aika_hunt_app/main.cjs'),'utf8'),sandbox);
@@ -26,6 +26,10 @@ const tick=()=>new Promise(r=>setImmediate(r));
  assert.equal(children.filter(c=>c.mode==='watch').length,2,'Monitor deve voltar depois de parar a caca');
  assert.equal(children.filter(c=>c.mode==='watch').at(-1).env.AIKA_CLIENT_PID,'200');
  const position=await handlers.get('data:position')(null,{client_pid:200,client_hwnd:20});assert.equal(position.client_pid,200);
+ loadError=new Error('Atalho repetido no perfil salvo');const gravacoes=trace.filter(v=>v==='write-profile').length;
+ await assert.rejects(()=>handlers.get('profile:load')(),/arquivo preservado/);
+ await assert.rejects(()=>handlers.get('profile:save')(null,{}),/Perfil preservado/);
+ assert.equal(trace.filter(v=>v==='write-profile').length,gravacoes,'Erro ao carregar nao pode autorizar gravar padroes');
  window.emit('close',{preventDefault(){}});await tick();await tick();
  assert.ok(window.destroyed,'Fechar o painel deve encerrar o monitor');
  console.log('OK: monitor ocioso, validacao, troca para caca, retomada e encerramento.');

@@ -53,6 +53,15 @@ class InterfaceJardim(InterfaceMina):
                 self._controle=dict(acao=acao['acao'],modelo=cv2.cvtColor(tela[y-9:y+9,x-36:x+36],cv2.COLOR_BGR2GRAY).copy())
         return acao
 
+    def grupo_por_texto(self,textos,w,h):
+        titulo=next((t for t in textos if t['nome'] in {'grupodemazmorra','grupodecalabouco','dungeongroup','dungeonparty','partydungeon'}),None)
+        if titulo:
+            x,y=titulo['ponto']
+            botao=next((t for t in textos if t['nome'] in {'entrar','enter','ingresar'}
+                and abs(t['ponto'][0]-x)<w*.3 and h*.15<t['ponto'][1]-y<h*.65),None)
+            return dict(acao='entrar_grupo_mazmorra',ponto=botao['ponto']) if botao else dict(acao='aguardar_mazmorra')
+        return None
+
     def _entrada(self,tela,elite_selecionado=False):
         # A assinatura comum permite reaproveitar o controlador de entrada;
         # o booleano significa que a dificuldade desejada ja foi selecionada.
@@ -65,7 +74,8 @@ class InterfaceJardim(InterfaceMina):
                 x,y=grupo['ponto'];s=grupo['escala']
                 botao=self.achar(tela,'entrar_mazmorra',(x-260*s,y+220*s,x+260*s,y+520*s),.89)
                 if botao:return dict(acao='entrar_grupo_mazmorra',ponto=botao['ponto'])
-                return dict(acao='aguardar_mazmorra')
+                textos_grupo=self.textos_regiao(tela,(w*.15,h*.1,w*.85,h*.87))
+                return self.grupo_por_texto(textos_grupo,w,h) or dict(acao='aguardar_mazmorra')
         if titulo:
             x,y=titulo['ponto'];s=titulo['escala']
             roi=(x-330*s,y+12*s,x+330*s,y+610*s)
@@ -77,10 +87,9 @@ class InterfaceJardim(InterfaceMina):
             b=next((t for t in candidatos if t['nome'] in nomes),None)
             if b:return dict(acao='confirmar_calabouco' if elite_selecionado else 'selecionar_dificil',ponto=b['ponto'])
             return dict(acao='aguardar_calabouco')
-        if getattr(self,'_controle',None) is None:
-            altar=self.achar(tela,'jardim_altar_bin',limiar=.86,binario='verde')
-            if altar:return dict(acao='abrir_portal',ponto=altar['ponto'],duplo=True)
         textos=self.textos_regiao(tela,(w*.15,h*.1,w*.85,h*.87))
+        grupo_texto=self.grupo_por_texto(textos,w,h)
+        if grupo_texto:return grupo_texto
         # Pode estar em outro idioma ou ter escala sem modelo correspondente.
         titulo_texto=next((t for t in textos if t['nome'] in {'calaboucoinstantaneo','instantdungeon','dungeon','calabozo'}),None)
         if titulo_texto:
@@ -96,4 +105,7 @@ class InterfaceJardim(InterfaceMina):
         for t in textos:
             if t['nome'] in {'altardaascensao','altardaascensio','altardeascension','altardelaascension','altarofascension','ascensionaltar'}:
                 return dict(acao='abrir_portal',ponto=t['ponto'],duplo=True)
+        if getattr(self,'_controle',None) is None:
+            altar=self.achar(tela,'jardim_altar_bin',limiar=.86,binario='verde')
+            if altar:return dict(acao='abrir_portal',ponto=altar['ponto'],duplo=True)
         return dict(acao='aguardar_portal')

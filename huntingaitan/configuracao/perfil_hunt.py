@@ -5,7 +5,7 @@ from huntingaitan.combate.reacoes import validar_reacoes
 DEFAULT={
  'client_pid':0,'client_hwnd':0,'background_keys':False,
  'version':3,'data_source':'native','auto_base':True,'base':[2767,846],'radius':20,'no_damage_seconds':5,'patrol_mode':'base',
- 'mina_repeat':False,'mina_cycles':0,'jardim_repeat':True,'jardim_servico_npc':True,'jardim_cycles':0,'auto_ui_scale':True,
+ 'mina_repeat':False,'mina_cycles':0,'jardim_repeat':True,'jardim_servico_npc':True,'jardim_cycles':0,'jardim_goal':'seridunn','auto_ui_scale':True,
  'cancel_normal':False,'combo_key_delay_ms':0,'combo_repeat_ms':0,'stationary_seconds':3,'unstuck_key':"'",'attack_key':'1','action_gap':.7,
  'hp_percent':40,'mp_percent':40,'hp_keys':['8','',''],'mp_keys':['','',''],
  'heal_enabled':True,'heal_key':'7',
@@ -26,6 +26,7 @@ def validar(dados):
  p=copy.deepcopy(DEFAULT)
  if not isinstance(dados,dict):raise ValueError('Configuracao invalida')
  p.update({k:v for k,v in dados.items() if k in p})
+ if p['jardim_goal'] not in ('seridunn','antes_shiraz'):raise ValueError('Objetivo do Jardim invalido')
  for k,limite in [('client_pid',0xffffffff),('client_hwnd',2**53-1)]:
   if isinstance(p[k],bool) or not isinstance(p[k],int) or not 0<=p[k]<=limite:raise ValueError('Cliente selecionado invalido: '+k)
  if bool(p['client_pid'])!=bool(p['client_hwnd']):raise ValueError('Selecione novamente o cliente na lista do painel')
@@ -103,7 +104,7 @@ def validar(dados):
  p['reacoes']=validar_reacoes(p['reacoes'],reservadas=reservadas)
  if p['background_keys']:
   if not p['client_hwnd']:raise ValueError('Segundo plano: selecione o personagem na lista')
-  if p['patrol_mode'] in ('mina_lenfer','jardim_aereo'):raise ValueError('Segundo plano experimental disponivel para caca externa; na DG use o modo normal')
+  if p['patrol_mode']=='mina_lenfer':raise ValueError('Segundo plano ainda nao validado na Mina; use o modo normal nessa DG')
   ativas=list(reservadas)+([p['heal_key']] if p['heal_enabled'] else [])+[r['tecla'] for r in p['reacoes'] if r['ativa']]
   if any('+' in k for k in ativas if k):raise ValueError('Segundo plano: substitua atalhos com Ctrl/Alt/Shift por teclas simples')
  return p

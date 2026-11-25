@@ -9,13 +9,17 @@ def reparar_e_vender(dados,control,emitir,limite=360):
     from huntingaitan.visao.captura_aika import CapturaAika
     from huntingaitan.rotas.interface_npc import InterfaceNPC
     from huntingaitan.entrada.entrada_segura import mover_cursor_fisico,liberar_tecla
-    from huntingaitan.visao.avisos_hunt import DetectorAvisos,reconfirmar
+    from huntingaitan.visao.avisos_hunt import DetectorAvisos,reconfirmar,reconfirmar_imagem
+    segundo_plano=getattr(control,'background_keys',False)
+    if segundo_plano:
+        from huntingaitan.entrada.entrada_janela import EntradaJanela
+        entrada=EntradaJanela(dados.hwnd,dados.pid)
+    from huntingaitan.visao.captura_interface import captura_interface
     fase='inicio';ultima_imagem=None;ultima_verificacao=-10
     ui=InterfaceNPC();avisos=DetectorAvisos();tx=TransacaoNPC();prazo=time.monotonic()+limite;entrada.PAUSE=0
-    def ativo():return not control.stop.is_set() and not keyboard.is_pressed('f12') and not control.pause.is_set() and dados.u.GetForegroundWindow()==dados.hwnd
+    def ativo():return not control.stop.is_set() and not keyboard.is_pressed('f12') and not control.pause.is_set() and (entrada.disponivel() if segundo_plano else dados.u.GetForegroundWindow()==dados.hwnd)
     def log(m,**kw):emitir(dict(event='log',message=m,**kw))
-    with mss.MSS() as sct:
-        cap=CapturaAika(sct)
+    with captura_interface(dados,segundo_plano,mss,CapturaAika) as cap:
         def tela(forcar_avisos=False):
             nonlocal prazo,ultima_imagem,ultima_verificacao
             while True:
@@ -31,8 +35,8 @@ def reparar_e_vender(dados,control,emitir,limite=360):
                 if forcar_avisos or agora-ultima_verificacao>=2.5:
                     aviso=avisos.localizar(im);ultima_verificacao=time.monotonic()
                 if aviso and aviso['tipo'] in ('cte_elter','arena_elter','conversa_amigo'):
-                    ponto=reconfirmar(aviso)
-                    if ponto and ativo() and mover_cursor_fisico(entrada,*ponto):
+                    ponto=reconfirmar_imagem(aviso,cap.capturar(),cap.area) if segundo_plano else reconfirmar(aviso)
+                    if ponto and ativo() and (entrada.mover_sem_cursor(*ponto) if segundo_plano else mover_cursor_fisico(entrada,*ponto)):
                         entrada.mouseDown()
                         try:time.sleep(.06)
                         finally:entrada.mouseUp()
@@ -41,7 +45,7 @@ def reparar_e_vender(dados,control,emitir,limite=360):
                 return im
         def mover(p):
             if not ativo():raise RuntimeError('Aika perdeu o foco antes do movimento do cursor')
-            if not mover_cursor_fisico(entrada,cap.area['left']+p[0],cap.area['top']+p[1]):
+            if not (entrada.mover_sem_cursor(cap.area['left']+p[0],cap.area['top']+p[1]) if segundo_plano else mover_cursor_fisico(entrada,cap.area['left']+p[0],cap.area['top']+p[1])):
                 raise RuntimeError('Windows nao confirmou a posicao fisica do cursor')
             return True
         def clicar(p,botao='left',duplo=False):

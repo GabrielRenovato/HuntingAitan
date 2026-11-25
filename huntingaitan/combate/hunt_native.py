@@ -28,6 +28,7 @@ from huntingaitan.rotas.circuito_cinzas import CircuitoCinzas,dentro_cinzas,conf
 from huntingaitan.rotas.circuito_cinzas_sul import CircuitoCinzasSul,dentro_cinzas_sul,conferir_cinzas_sul
 from huntingaitan.rotas.mina_lenfer import MinaLenfer,dentro_mina
 from huntingaitan.rotas.jardim_aereo import JardimAereo,dentro_jardim,lazapa_protegido,eh_shiraz_infernal
+from huntingaitan.rotas.jardim_seridunn import JardimSeridunn
 from huntingaitan.combate.hunt_core import CadenciaCombate,erro_angular,VerificadorMovimento,AgendaBuffs,executar_buff
 from huntingaitan.entrada.teclas_controladas import TeclasControladas
 
@@ -57,6 +58,8 @@ def alvo_permitido(target,player,base,profile):
     if not target or not target['hostile'] or target['hp']<=0:return False
     if abs(target['height']-player['height'])>5:return False
     regra=REGRAS_AREA.get(profile.get('patrol_mode'))
+    if profile.get('patrol_mode')=='jardim_aereo' and profile.get('jardim_goal','seridunn')=='seridunn':
+        regra=lambda t,pl:dentro_jardim(t['position'])
     if regra is not None:
         if not regra(target,player):return False
     elif math.dist(target['position'],base)>profile['radius']:return False
@@ -197,10 +200,12 @@ def main(profile,event_sink,control,percurso=None):
         elif mina:
             if jardim:
                 from huntingaitan.rotas.jardim_aereo import conferir_dificil
-                if not conferir_dificil(auto_escala=p['auto_ui_scale'],emitir=event_sink,ativo=ativo,parar=parar):return
-            circuito=(JardimAereo if jardim else MinaLenfer)(s['player']['position']);circuito.conferir(dados.caminho.parent);regiao=circuito.contem
+                opcoes_jardim={'janela':(dados.hwnd,dados.pid)} if p['background_keys'] else {}
+                if not conferir_dificil(auto_escala=p['auto_ui_scale'],emitir=event_sink,ativo=ativo,parar=parar,**opcoes_jardim):return
+            classe_jardim=JardimSeridunn if p['jardim_goal']=='seridunn' else JardimAereo
+            circuito=(classe_jardim if jardim else MinaLenfer)(s['player']['position']);circuito.conferir(dados.caminho.parent);regiao=circuito.contem
             mapa_mina=dados.u32(dados.cena_validada()+0x38)
-            log('Jardim Aereo: percurso ate antes dos Shiraz Infernais iniciado.' if jardim else 'Mina LEnfer: caminho direto para Malik iniciado.',entrada=s['player']['position'],mapa=mapa_mina)
+            log(('Jardim: seguindo para Seridunn; combate apenas por bloqueio ou defesa.' if p['jardim_goal']=='seridunn' else 'Jardim Aereo: percurso ate antes dos Shiraz Infernais iniciado.') if jardim else 'Mina LEnfer: caminho direto para Malik iniciado.',entrada=s['player']['position'],mapa=mapa_mina)
         trilha=[base];volta=[];estado='buscar';progresso=None;ultima_tab=0.;fim_busca=0.;ultima_telemetria=0.;inicio=time.monotonic();heading=None;origem_mov=None;falhas_desde=None;espera_na_base=False
         # Com reacoes de cura configuradas, elas substituem a cura prioritaria de tecla unica.
         reacoes=Reacoes(p['reacoes']);confirmacao_reacao=ConfirmacaoReacao();mobs_perto=None;mobs_reacao_em=0.;reacoes_log_em=0.
@@ -294,6 +299,8 @@ def main(profile,event_sink,control,percurso=None):
         # 'continuar' ou 'interromper' (ou None, para seguir a iteracao). O laco decide o
         # que fazer; as variaveis compartilhadas sao declaradas com nonlocal.
         def permitido_na_sessao(t,pl):
+            if isinstance(circuito,JardimSeridunn) and estado!='combater':
+                return bool(alvo_permitido(t,pl,base,p) and circuito.filtrar_mobs([t],pl['position'],p['radius'],defendendo))
             return alvo_permitido(t,pl,base,p) or bool(templa and templa.permite_limpeza(t,pl['position'],pl))
 
         def atualizar_transicoes(lista,instante,planejar=True):
@@ -344,8 +351,8 @@ def main(profile,event_sink,control,percurso=None):
                         if percurso is not None:
                             soltar();control.reason='entrada_alcancada';event_sink(dict(event='cycle',state='entrada_confirmada',position=pos));return 'interromper'
                         soltar();control.reason='jardim_finalizado' if jardim else 'mina_finalizada'
-                        event_sink(dict(event='dungeon_complete',abates=passo['abates'],message='Seridunn abatido com vida zero confirmada e area final limpa.' if jardim else 'Malik abatido com vida zero confirmada e area final limpa.'))
-                        log('Jardim finalizado: Seridunn confirmado e area final limpa.' if jardim else 'Mina finalizada: Malik confirmado e area final limpa.');return 'interromper'
+                        event_sink(dict(event='dungeon_complete',abates=passo['abates'],message='Seridunn abatido com vida zero confirmada.' if jardim else 'Malik abatido com vida zero confirmada e area final limpa.'))
+                        log('Jardim finalizado: abate de Seridunn confirmado.' if jardim else 'Mina finalizada: Malik confirmado e area final limpa.');return 'interromper'
                     if marca!=circuito_log:
                         if mina:
                             msg='Aguardando confirmacao do chefe da sala.' if passo['estado']=='aguardar_chefe' else 'Verificando sala limpa.' if passo['estado'].startswith('aguardar') else 'Percorrendo Jardim Aereo por caminho validado.' if jardim else 'Percorrendo Mina LEnfer por caminho validado.'
@@ -476,6 +483,9 @@ def main(profile,event_sink,control,percurso=None):
         def _estado_combater():
             nonlocal abrir_normal,acao,anterior,aprox_pos,atalho,cancelamento,chefe,combo,dx,dy,em_alcance,enviada,erro,estado,fim_busca,inicio_envio,item,nav,normal_repetido,perfil_normal,pool_em,progresso,r,real,reaprox_id,repetindo_id,repetir_normal,restante,resultado,skill_id,tecla,timing,ultima_tab,v,mobs_regiao
             if estado=='combater':
+                if isinstance(circuito,JardimSeridunn) and target and not circuito.permite_perseguir(target,pos,defendendo):
+                    soltar();estado='percorrer';progresso=None;pool_em=0.
+                    log('Hostil deixou de bloquear a passagem; retomando caminho para Seridunn.');return 'continuar'
                 if templa and target and target['hp']>0 and not verit_mutante(target) and not templa.permite_limpeza(target,pos,player):
                     soltar();estado='buscar';progresso=None;pool_em=0.
                     log('Hostil saiu do raio curto da limpeza; sem perseguir para fora do grupo.');return 'continuar'

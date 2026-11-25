@@ -26,7 +26,8 @@ class EntradaJardim:
         for y in range(y0,y1):
             off=(y*4096+x0)*2;flags.extend(a[off:off+w*2:2]);alturas.extend(struct.unpack_from('<'+'h'*w,h,off+4))
         self.geometria=GeometriaJardim(pasta)
-        self.grade=self.geometria.aplicar(Grade((0,0),(x0,y0),w,y1-y0,bytes(flags),tuple(alturas),1),saida=pos)
+        self.grade_terreno=Grade((0,0),(x0,y0),w,y1-y0,bytes(flags),tuple(alturas),1)
+        self.grade=self.geometria.aplicar(self.grade_terreno,saida=pos)
         self.obstaculos=[];self.revisao=0;self.trecho=0;self.voltas=0;self.indice=0
         self.bloqueadores=set(bloqueadores);self.bloqueio_em=-float('inf')
         self._planejar(pos)
@@ -35,6 +36,7 @@ class EntradaJardim:
         return self.grade.livre(self.grade.celula(pos)) and all(math.dist(pos,c)>1.2 for c in self.obstaculos)
 
     def _planejar(self,pos):
+        self.grade=self.geometria.aplicar(self.grade_terreno,saida=pos)
         rota=self.grade.caminho(pos,self.portal,alcance=3,max_nos=self.grade.largura*self.grade.altura,limite=self.passagem)
         if not rota:raise RuntimeError('Sem passagem validada ate o Altar da Ascensao.')
         self.rota=rota;self.trechos=[dict(ate='entrada_jardim',caminho=rota)];self.indice=0
@@ -67,6 +69,23 @@ class EntradaJardim:
 
     def destino(self,pos,agora):
         if math.dist(pos,self.portal)<=ALCANCE_ENTRADA:return dict(estado='concluido',ponto='entrada_jardim',voltas=0)
-        i=min(range(len(self.rota)),key=lambda i:math.dist(pos,self.rota[i]));self.indice=i
-        destino=self.grade.proximo(pos,self.rota[i:],distancia=5) or self.rota[i]
+        # O deslocamento pode terminar na borda de outra celula da mascara
+        # visual. Reabre apenas a celula ja ocupada, preservando o terreno,
+        # antes de escolher o proximo destino; nao insiste no ponto atras.
+        if not self.grade.livre(self.grade.celula(pos)):self._planejar(pos)
+        for tentativa in range(2):
+            i=min(range(len(self.rota)),key=lambda i:math.dist(pos,self.rota[i]));self.indice=i
+            destino=self.grade.proximo(pos,self.rota[i:],distancia=5) or self.rota[i]
+            if math.dist(pos,destino)<1.5:
+                j=self.rota.index(destino)
+                if j>0:
+                    a=self.rota[j-1];dx,dy=destino[0]-a[0],destino[1]-a[1];d=math.hypot(dx,dy)
+                    if d:
+                        adiante=(destino[0]+dx/d*1.2,destino[1]+dy/d*1.2)
+                        passos=max(1,math.ceil(math.dist(pos,adiante)/.25))
+                        if (self.grade.linha_livre(self.grade.celula(pos),self.grade.celula(adiante))
+                            and all(self.passagem((pos[0]+(adiante[0]-pos[0])*n/passos,pos[1]+(adiante[1]-pos[1])*n/passos)) for n in range(passos+1))):
+                            destino=adiante
+            if math.dist(pos,destino)>=1.5 or tentativa:break
+            self._planejar(pos)
         return dict(estado='andar',ponto='entrada_jardim',voltas=0,destino=destino,chave=('circuito','entrada_jardim',self.revisao))

@@ -4,6 +4,7 @@ const fs=require('node:fs');const path=require('node:path');
 const runtime=require('./runtime.cjs')({app,dirname:__dirname});
 let win,worker=null,quitting=false,stopTimer=null,watcher=null,updates=null;
 let clientSelection={client_pid:0,client_hwnd:0};
+let profileLoadFailure=null;
 const clientEnv=()=>({...process.env,PYTHONUTF8:'1',AIKA_DATA_DIR:runtime.dataRoot,AIKA_CLIENT_PID:String(clientSelection.client_pid||0),AIKA_CLIENT_HWND:String(clientSelection.client_hwnd||0)});
 function registrarPainel(evento,dados={}){
  try{const dir=path.join(runtime.dataRoot,'app_sessions');fs.mkdirSync(dir,{recursive:true});fs.appendFileSync(path.join(dir,'painel.jsonl'),JSON.stringify({t:new Date().toISOString(),evento,...dados})+'\n','utf8');}catch{}
@@ -22,7 +23,7 @@ function utility(mode,data={}){
   child.stdin.end(JSON.stringify(data));
  });
 }
-async function saveProfile(p){const validated=await utility('validate',p);if(worker&&((validated.client_pid||0)!==(clientSelection.client_pid||0)||(validated.client_hwnd||0)!==(clientSelection.client_hwnd||0)))throw new Error('Pare a caça antes de trocar de cliente.');clientSelection={client_pid:validated.client_pid||0,client_hwnd:validated.client_hwnd||0};fs.mkdirSync(path.dirname(profilePath()),{recursive:true});const temp=profilePath()+'.tmp';fs.writeFileSync(temp,JSON.stringify(validated,null,2),'utf8');fs.renameSync(temp,profilePath());return validated;}
+async function saveProfile(p){if(profileLoadFailure)throw new Error('Perfil preservado apos erro de carregamento. Corrija o perfil e reabra o app antes de salvar.');const validated=await utility('validate',p);if(worker&&((validated.client_pid||0)!==(clientSelection.client_pid||0)||(validated.client_hwnd||0)!==(clientSelection.client_hwnd||0)))throw new Error('Pare a caça antes de trocar de cliente.');clientSelection={client_pid:validated.client_pid||0,client_hwnd:validated.client_hwnd||0};fs.mkdirSync(path.dirname(profilePath()),{recursive:true});if(fs.existsSync(profilePath()))fs.copyFileSync(profilePath(),profilePath()+'.bak');const temp=profilePath()+'.tmp';fs.writeFileSync(temp,JSON.stringify(validated,null,2),'utf8');fs.renameSync(temp,profilePath());return validated;}
 function stopWorker(){
  if(!worker)return;
  try{worker.stdin.write(JSON.stringify({command:'stop'})+'\n');}catch{}
@@ -83,6 +84,18 @@ function createWindow(){
       profile=original;render();return {modos:resultados,manual:true,limites:true};
     })()`);
     fs.writeFileSync(path.join(out,'coordenadas.json'),JSON.stringify(coordenadas,null,2));
+    const objetivosJardim=await win.webContents.executeJavaScript(`(async()=>{
+      const original=await window.hunt.load(),resultados=[];
+      for(const objetivo of ['seridunn','antes_shiraz']){
+        profile={...original,patrol_mode:'jardim_aereo',jardim_goal:objetivo};render();
+        if($('jardim-goal').value!==objetivo)throw new Error('Objetivo do Jardim nao renderizado');
+        const salvo=await window.hunt.save(collect()),lido=await window.hunt.load();
+        if(salvo.jardim_goal!==objetivo||lido.jardim_goal!==objetivo)throw new Error('Objetivo do Jardim nao persistiu');
+        resultados.push(objetivo);
+      }
+      await window.hunt.save(original);profile=original;render();return resultados;
+    })()`);
+    fs.writeFileSync(path.join(out,'objetivos-jardim.json'),JSON.stringify(objetivosJardim,null,2));
     await win.webContents.executeJavaScript(`document.querySelector('[data-tab="behavior"]').click()`);
     await new Promise(r=>setTimeout(r,300));
     fs.writeFileSync(path.join(out,'comportamento.png'),(await win.webContents.capturePage()).toPNG());
@@ -99,7 +112,7 @@ function createWindow(){
   });
  }
 }
-ipcMain.handle('profile:load',async()=>{let p;try{p=await utility('validate',JSON.parse(fs.readFileSync(profilePath(),'utf8')));}catch{p=await utility('defaults');}clientSelection={client_pid:p.client_pid||0,client_hwnd:p.client_hwnd||0};await stopWatcher();startWatcher();return p;});
+ipcMain.handle('profile:load',async()=>{let p;try{p=await require('./profile-store.cjs').loadProfile(profilePath(),{validate:p=>utility('validate',p),defaults:()=>utility('defaults')});profileLoadFailure=null;}catch(e){profileLoadFailure=e;registrarPainel('erro-carregar-perfil',{arquivo:profilePath(),erro:e.message});throw new Error('Nao foi possivel carregar suas configuracoes; arquivo preservado. '+e.message);}clientSelection={client_pid:p.client_pid||0,client_hwnd:p.client_hwnd||0};await stopWatcher();startWatcher();return p;});
 ipcMain.handle('profile:save',async(_,p)=>{const v=await saveProfile(p);if(!worker){await stopWatcher();startWatcher();}return v;});
 ipcMain.handle('clients:list',()=>utility('clients'));
 ipcMain.handle('data:position',(_,p)=>utility('position',p||clientSelection));
