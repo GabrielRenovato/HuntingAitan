@@ -1,0 +1,47 @@
+docs/TRANSICOES_TEMPLARIA.md
+  s_edfc50aef2ee58::t_d2f1e8ec8df28a 15-17,30-35
+aika_hunt_app/index.html
+  s_edfc50aef2ee58::t_0f41ac35fe959d 32
+aika_hunt_app/renderer.js
+  s_edfc50aef2ee58::t_0f41ac35fe959d 66,91
+CHANGELOG.md
+  s_edfc50aef2ee58::t_7d2f2c7d767362 3-9
+RELEASE_NOTES.md
+  s_edfc50aef2ee58::t_4bc6ab7689f2d3 1,3,5-8,10,12,14
+aika_hunt_app/main.cjs
+  s_edfc50aef2ee58::t_aedbc1fffd0282 70-85
+aika_hunt_app/package-lock.json
+  s_edfc50aef2ee58::t_3790eff5caebc6 3,9
+aika_hunt_app/package.json
+  s_edfc50aef2ee58::t_4a7312d222662a 3
+huntingaitan/entrada/entrada_motor.py
+  s_edfc50aef2ee58::t_01af01875f371e 69-70
+huntingaitan/rotas/visitas_circuito.py
+  s_edfc50aef2ee58::t_48ac92a49d26c2 8,11,13-16,46
+package-lock.json
+  s_edfc50aef2ee58::t_43cc797574686a 3,9
+package.json
+  s_edfc50aef2ee58::t_540682b42f4a75 3
+tests/test_transicoes_templaria.py
+  s_edfc50aef2ee58::t_8231baf5356876 21-44
+huntingaitan/rotas/circuito_verit_leste.py
+  s_edfc50aef2ee58::t_f1934acc6acb80 37
+tests/test_entrada_motor.py
+  s_edfc50aef2ee58::t_4d8c53ad8945dd 57-64
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.6",
+  "base_commit_sha": "8494a6175fa15935f5bd5e1c882bff901de084d1",
+  "prompts": {},
+  "sessions": {
+    "s_edfc50aef2ee58": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "01a1e01c-4c9b-7e00-b2fb-9c7ef8050eed",
+        "model": "unknown"
+      },
+      "human_author": "Gabriel Renovato <86806861+GabrielRenovato@users.noreply.github.com>"
+    }
+  }
+}
