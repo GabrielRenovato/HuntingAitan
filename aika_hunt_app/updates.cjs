@@ -24,7 +24,7 @@ module.exports=({app,send,isHunting,getWindow,log,updater,dialog})=>{
   if(ready){emit('ready','Atualização baixada. Feche e abra o aplicativo para instalar.');return {ready:true};}
   checking=true;
   try{emit('checking','Verificando atualizações…');await updater.checkForUpdates();return {checked:true};}
-  catch(e){log('checagem-atualizacao',{erro:e.message});emit('error','Verificação indisponível. O aplicativo continua funcionando.');return {error:true};}
+  catch(e){log('checagem-atualizacao',{erro:e.message});const msg=e.message||'';const detail=msg.includes('net::')?' Verifique sua conexão.':msg.includes('403')?' GitHub temporariamente indisponível.':msg.includes('404')?' Release não encontrada.':'';emit('error','Verificação indisponível.'+detail+' O aplicativo continua funcionando.');return {error:true,reason:msg};}
   finally{checking=false;}
  }
  return {check};
