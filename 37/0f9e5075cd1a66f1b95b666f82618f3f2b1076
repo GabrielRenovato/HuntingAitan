@@ -1,0 +1,85 @@
+huntingaitan/dados/circuito_cinzenta_croshu_sul.json
+  s_edfc50aef2ee58::t_f727dc65f4a23e 1-1556
+tools/reabrir_guerreiro_sul.py
+  s_edfc50aef2ee58::t_25abfc2fc13f9f 1-39
+tools/reabrir_guerreiro_cinco.py
+  s_edfc50aef2ee58::t_576372ad7fda69 31
+  s_edfc50aef2ee58::t_3c78ce668379b1 1-30,32-35
+aika_hunt_app/index.html
+  s_edfc50aef2ee58::t_f62af5a27afd92 30
+docs/GRUPO_CROSHU_CINZAS.md
+  s_edfc50aef2ee58::t_fdf0bff3adabba 31
+  s_edfc50aef2ee58::t_c8f4a0bffe1bb8 1,3,5,12-15,21
+docs/CIRCUITO_CROSHU_CINZAS_SUL.md
+  s_edfc50aef2ee58::t_a518fbc797f51f 34-40
+  s_edfc50aef2ee58::t_d2fed11df2746b 30-32
+  s_edfc50aef2ee58::t_2c94a145670b87 1-29,33,41-45
+aika_hunt_app/package.json
+  s_edfc50aef2ee58::t_dce33882d7f1d7 3
+package.json
+  s_edfc50aef2ee58::t_dce33882d7f1d7 3
+huntingaitan/combate/hunt_native.py
+  s_edfc50aef2ee58::t_f62af5a27afd92 155,181-188,353
+  s_edfc50aef2ee58::t_1fcb20dd5b00e1 28,47,653,1010
+CHANGELOG.md
+  s_edfc50aef2ee58::t_73d0104caed9fc 3-11
+docs/TRANSICOES_CROSHU.md
+  s_edfc50aef2ee58::t_9b5d23a042d346 14-25
+  s_edfc50aef2ee58::t_d510d35ab81308 5
+RELEASE_NOTES.md
+  s_edfc50aef2ee58::t_73d0104caed9fc 1,3,5-10,12,14-16
+aika_hunt_app/renderer.js
+  s_edfc50aef2ee58::t_f62af5a27afd92 66,77,116
+huntingaitan/dados/circuito_cinzenta_croshu.json
+  s_edfc50aef2ee58::t_430c07c4ad68bf 26-39,329,336-372,376-377,380-381,384-385,388-389,392-393,396-397,400-401,404-405,408-409,412-413,416-417,420-421,424-425,428-429,432-433,436-437,440-441,444-445,448-449,452-453,456-457,460-461,464-465,468-469,472-473,476-477,480-481,484-485,488-489,492-493,496-497,500-501,504-505,508-509,512-513,516-517,520-521,524-525,528-529,532-533,536-537,540-541,544-545,548-549,552-553,556-557,560-561,564-565,568-569,572-573,576-577,580-2067
+aika_hunt_app/package-lock.json
+  s_edfc50aef2ee58::t_5f8c48e4aa4621 3,9
+hunt_bridge.py
+  s_edfc50aef2ee58::t_d42d4e42a335d5 68-70
+huntingaitan/combate/hunt_core.py
+  s_edfc50aef2ee58::t_a96ff9f3dcc19f 13,31-32,49-55,77,84-85
+package-lock.json
+  s_edfc50aef2ee58::t_a58c4c793e1ab1 3,9
+tests/test_cadencia_rapida.py
+  s_edfc50aef2ee58::t_ce9cd81db0a861 6-17
+tests/test_grupo_croshu_cinzas.py
+  s_edfc50aef2ee58::t_19e78474e6fbdc 32,35-48,56
+tests/test_rebuff.py
+  s_edfc50aef2ee58::t_52e3bf17c060c9 7-20
+huntingaitan/combate/confirmacao_reacao.py
+  s_edfc50aef2ee58::t_1b04664f929b93 24,60-65,71
+huntingaitan/configuracao/perfil_hunt.py
+  s_edfc50aef2ee58::t_64156584f5872e 70,74
+huntingaitan/rotas/circuito_cinzas.py
+  s_edfc50aef2ee58::t_ac7c810ab57498 1,10,15-16,34
+huntingaitan/rotas/circuito_cinzas_sul.py
+  s_edfc50aef2ee58::t_d3c6c5f8c0adc0 1-37
+tests/test_circuito_cinzas_sul.py
+  s_edfc50aef2ee58::t_be9901ed9750c9 1-92
+tests/test_confirmacao_reacao.py
+  s_edfc50aef2ee58::t_40d7b6603371d6 15-35
+tests/test_transicoes_croshu.py
+  s_edfc50aef2ee58::t_7cf15e6e10b293 9,13,30-31
+tools/validar_circuito_cinzas.py
+  s_edfc50aef2ee58::t_5b2c4ee2e39951 1,12-13
+tools/validar_circuito_cinzas_sul.py
+  s_edfc50aef2ee58::t_955b6b346ad0a2 1-25
+tools/validar_croshu_sul_threads.py
+  s_edfc50aef2ee58::t_8ee7a5208030f3 1-84
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.6",
+  "base_commit_sha": "370f9e5075cd1a66f1b95b666f82618f3f2b1076",
+  "prompts": {},
+  "sessions": {
+    "s_edfc50aef2ee58": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "01a1e01c-4c9b-7e00-b2fb-9c7ef8050eed",
+        "model": "unknown"
+      },
+      "human_author": "Gabriel Renovato <86806861+GabrielRenovato@users.noreply.github.com>"
+    }
+  }
+}
