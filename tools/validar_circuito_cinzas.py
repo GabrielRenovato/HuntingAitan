@@ -1,4 +1,4 @@
-"""Valida a busca ativa dos tres Croshus das Cinzas nos pontos 7, 8 e 9."""
+"""Valida os cinco Croshus das Cinzas, incluindo o grupo perto de 2697, 1106."""
 import argparse,hashlib,json,struct
 from pathlib import Path
 from validar_circuito_termes import validar
@@ -9,8 +9,8 @@ def gerar(pasta):
     if nomes[id_*128:(id_+1)*128].split(b'\0')[0].decode('cp1252')!='Croshu Mutante das Cinzas':raise ValueError('Especie divergente')
     reg=posicoes[id_*416:(id_+1)*416]
     if struct.unpack_from('<I',reg)[0]!=id_:raise ValueError('Registro divergente')
-    pontos=[(i,struct.unpack_from('<2i',reg,16+(i-1)*8)) for i in [7,8,9]]
-    if pontos!=[(7,(2881,1189)),(8,(2881,1156)),(9,(2905,1143))]:raise ValueError('Pontos da busca mudaram')
+    pontos=[(i,struct.unpack_from('<2i',reg,16+(i-1)*8)) for i in [7,8,9,11,10]]
+    if pontos!=[(7,(2881,1189)),(8,(2881,1156)),(9,(2905,1143)),(11,(2725,1102)),(10,(2686,1089))]:raise ValueError('Pontos da busca mudaram')
     cadastro=[dict(id=i,pos=pos) for i,pos in pontos]
     # Posicao aproximada indicada pelo usuario em 22/11; o cadastro do
     # cliente continua preservado separadamente, sem inventar outro spawn.

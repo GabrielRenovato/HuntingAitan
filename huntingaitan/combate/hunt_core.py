@@ -10,7 +10,7 @@ class CadenciaCombate:
         self.intervalo=max(.5,float(config.get('intervalo_skills',.7)))
         self.recargas={str(k):max(self.intervalo,float(v)) for k,v in
                        config.get('recargas',{'2':6,'3':8,'4':10,'5':12,'6':15,'7':20}).items()}
-        self.pronta_em={};self.livre_em=0.;self.normal_em=0.;self.ultimo_envio={};self.skills_desde_normal=0;self.ultimo_normal=None
+        self.pronta_em={};self.livre_em=0.;self.normal_em=0.;self.ultimo_envio={};self.ultima_tentativa={};self.skills_desde_normal=0;self.ultimo_normal=None
 
     def escolher(self,agora,alvo_valido,dano_recente,vida,em_alcance=None,recargas_reais=None,iniciar_normal=False,normal_disponivel=True):
         if not alvo_valido or vida<=0 or agora<self.livre_em:return None
@@ -28,8 +28,8 @@ class CadenciaCombate:
                     # Se um comando for recusado, nao monopolizar a fila com repeticoes.
                     pronta=real['ready'] and agora-self.ultimo_envio.get(tecla,-float('inf'))>=max(1.,self.intervalo)
                 else:pronta=agora>=self.pronta_em.get(tecla,0)
-                if pronta:disponiveis.append(tecla)
-            if disponiveis:return min(disponiveis,key=lambda k:self.ultimo_envio.get(k,-float('inf')))
+                if pronta and agora-self.ultima_tentativa.get(tecla,-float('inf'))>=max(1.,self.intervalo):disponiveis.append(tecla)
+            if disponiveis:return min(disponiveis,key=lambda k:max(self.ultimo_envio.get(k,-float('inf')),self.ultima_tentativa.get(k,-float('inf'))))
         return '1' if normal_disponivel and agora>=self.normal_em else None
 
     def registrar(self,tecla,agora,intervalo_normal=None,normal_repetido=False):
@@ -45,6 +45,13 @@ class CadenciaCombate:
             self.livre_em=agora+(min(.12,intervalo) if normal_repetido else .12)
         elif tecla=='8':
             self.livre_em=max(self.livre_em,agora+.5)
+
+    def recusada(self,tecla,agora):
+        # Uma tentativa recusada nao conta como habilidade executada nem
+        # inicia sua recarga, mas deve ceder a vez as demais skills.
+        self.ultima_tentativa[tecla]=agora
+        self.livre_em=max(self.livre_em,agora+.3)
+        if tecla=='1':self.normal_em=max(self.normal_em,agora+.6)
 
 class VerificadorMovimento:
     def __init__(self,limite=3):self.limite=limite;self.origem=None;self.desde=None;self.ultima_acao=-100.
@@ -67,14 +74,15 @@ class AgendaBuffs:
     def vencimento(self):return min(self.vencimentos.values(),default=float('inf'))
     @property
     def em_andamento(self):return self.indice is not None
-    def proximo(self,agora,seguro):
+    def proximo(self,agora,seguro,tipos=None):
         if not self.ativo or not seguro:return None
         if not self.pendentes:
             if agora<self.vencimento:return None
             # Agrupa os slots da mesma sequencia de renovacao. Cada slot
             # conserva seu vencimento; a exclusividade cobre os intervalos.
             limite=agora+self.intervalo*max(0,len(self.teclas)-1)+1
-            self.pendentes=sorted((i for i,k in enumerate(self.teclas) if self.vencimentos[k]<=limite),key=lambda i:self.vencimentos[self.teclas[i]])
+            self.pendentes=sorted((i for i,k in enumerate(self.teclas) if self.vencimentos[k]<=limite and (tipos or {}).get(k)!=0),key=lambda i:self.vencimentos[self.teclas[i]])
+            if not self.pendentes:return None
             self.indice=self.pendentes[0]
         if agora<self.proxima_acao or agora<self.vencimentos[self.teclas[self.indice]]:return None
         return self.teclas[self.indice]

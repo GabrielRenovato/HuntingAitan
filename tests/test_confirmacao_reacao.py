@@ -12,6 +12,27 @@ def controles(cast=False,cd=0,**kw):
     return dict(casting=cast,casting_skill=1088 if cast else None,recargas_grupos=grupos,**kw)
 
 class ConfirmacaoReacaoTest(unittest.TestCase):
+    def test_revitalize_aplicado_confirma_mesmo_recebendo_mais_dano_que_cura(self):
+        v=ConfirmacaoReacao()
+        r=validar_regra(dict(nome='Revitalize',tecla='7',tipo='cura',skill_id=49,hp_max_pct=75))
+        antes=controles(active_skill_ids=[170]);depois=controles(active_skill_ids=[49,170])
+        depois['recargas_grupos'][3]=.99
+        for i in range(2):
+            v.enviada(r,i*300,jogador(72),antes)
+            resultado=v.observar(i*300+.3,jogador(70,4990),depois)
+            self.assertTrue(resultado['ok'])
+            self.assertEqual(v.falhas_cura,0)
+            self.assertFalse(v.recuperando)
+
+    def test_efeito_antigo_ou_sem_inicio_de_recarga_nao_confirma_revitalize(self):
+        r=validar_regra(dict(nome='Revitalize',tecla='7',tipo='cura',skill_id=49))
+        for antigo,cd in ((True,.99),(False,0)):
+            v=ConfirmacaoReacao()
+            antes=controles(active_skill_ids=[49] if antigo else [])
+            depois=controles(active_skill_ids=[49]);depois['recargas_grupos'][3]=cd
+            v.enviada(r,0,jogador(),antes)
+            self.assertIsNone(v.observar(.3,jogador(48),depois))
+
     def test_emergencia_preempta_confirmacao_de_buff_sem_cast_mas_nao_cura_em_execucao(self):
         v=ConfirmacaoReacao();buff=validar_regra(dict(nome='Buff',tecla='3',tipo='buff',skill_id=1146))
         v.enviada(buff,0,jogador(),controles())

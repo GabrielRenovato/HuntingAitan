@@ -67,10 +67,11 @@ def validar(dados):
  if len(set(preenchidos))!=len(preenchidos):raise ValueError('Os buffs preenchidos precisam de atalhos diferentes')
  if p['extra_buffs_enabled'] and set(p['buff_keys']) & set(p['extra_buff_keys']):raise ValueError('Os atalhos adicionais estao reservados; remova-os dos cinco buffs')
  if p['target'] not in ['qualquer','verit','penza','croshu','croshu_ungor','tet','buto','planta']:raise ValueError('Filtro de alvo invalido')
- if p['patrol_mode'] not in ['base','buto_trio','cinzenta_croshu_trio','ungor_plantas','ungor_croshu','termes_penza','termes_verit','termes_verit_leste','mina_lenfer','jardim_aereo']:raise ValueError('Circuito invalido')
+ if p['patrol_mode'] not in ['base','buto_trio','cinzenta_croshu_trio','cinzenta_croshu_sul','ungor_plantas','ungor_croshu','termes_penza','termes_verit','termes_verit_leste','mina_lenfer','jardim_aereo']:raise ValueError('Circuito invalido')
  # O grupo observado corresponde aos slots 1, 6 e 7; o raio exclui os demais spawns cadastrados.
  if p['patrol_mode']=='buto_trio':p.update(target='buto',data_source='native',base=[2711,1292],auto_base=False,radius=30,mina_repeat=False)
  if p['patrol_mode']=='cinzenta_croshu_trio':p.update(target='croshu',data_source='native',base=[2882,1154],auto_base=False,radius=50,mina_repeat=False)
+ if p['patrol_mode']=='cinzenta_croshu_sul':p.update(target='croshu',data_source='native',base=[2955,1311],auto_base=False,radius=50,mina_repeat=False)
  if p['patrol_mode']=='ungor_plantas':p.update(target='planta',data_source='native',base=[2440,1360],auto_base=False,radius=50,mina_repeat=False)
  if p['patrol_mode']=='ungor_croshu':p.update(target='croshu_ungor',data_source='native',base=[1895,1155],auto_base=False,radius=50,mina_repeat=False)
  if p['patrol_mode'] in ('termes_verit','termes_verit_leste'):p.update(target='verit',data_source='native')

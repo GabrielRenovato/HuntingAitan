@@ -21,7 +21,7 @@ class ConfirmacaoReacao:
         grupo=grupo_de_recarga(r['skill_id']);cd=cc.get('recargas_grupos')
         self.pendente=dict(regra=r,em=agora,hp=player['hp']/player['hp_max'],mp=player['mp'],
             cd=cd[grupo] if grupo is not None and cd is not None and len(cd)>grupo else None,
-            cast=False,ultimo_cast=None)
+            cast=False,ultimo_cast=None,efeitos_antes=tuple(cc.get('active_skill_ids') or ()))
 
     def pausar(self,segundos):
         if self.pendente:
@@ -57,12 +57,18 @@ class ConfirmacaoReacao:
         recarga=cd is not None and x['cd'] is not None and cd>x['cd']+.0001
         gasto=player['mp']<x['mp']-max(1,min(15,r['mp_min']*.05))
         subiu=hp>x['hp']+.02
+        # Curas de efeito continuo podem ser aplicadas sem conjuracao e ter
+        # seus ticks compensados pelo dano recebido. Exige efeito novo da
+        # propria skill e inicio da recarga; efeito antigo nao confirma envio.
+        efeito_cura=(eh_cura and not 1073<=r['skill_id']<=1088
+            and r['skill_id'] not in x['efeitos_antes']
+            and r['skill_id'] in (cc.get('active_skill_ids') or ()) and recarga)
         sinal=x['cast'] or recarga or gasto
         terminou=(not cc.get('casting') and (resposta_cliente or x['ultimo_cast'] is None or agora-x['ultimo_cast']>=.2))
         minimo=0. if resposta_cliente and x['cast'] else (2. if 1073<=r['skill_id']<=1088 else .2)
         # Para cura conjurada, o comeco da animacao nao e conclusao: aguarda
         # o termino, sem W/TAB/skills. Dano recebido pode mascarar a subida de HP.
-        ok=terminou and ((subiu and (sinal or r['skill_id']==0)) or
+        ok=terminou and (efeito_cura or (subiu and (sinal or r['skill_id']==0)) or
             (sinal and (not eh_cura or (x['cast'] and tempo>=minimo and (recarga or gasto)))))
         if ok:
             self.pendente=None

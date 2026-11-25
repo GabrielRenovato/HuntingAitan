@@ -29,11 +29,23 @@ class GrupoCroshuCinzasTest(unittest.TestCase):
     def test_busca_fechada_visita_todos_os_pontos(self):
         from huntingaitan.rotas.circuito_cinzas import CircuitoCinzas,plano_cinzas
         c=CircuitoCinzas((2882,1154));visitados=[]
-        for i in range(3):
+        for i in range(5):
             t=c.trechos[c.trecho];fim=t['caminho'][-1];visitados.append(t['ate'])
             self.assertEqual(c.destino(fim,i*6)['estado'],'aguardar');c.destino(fim,i*6+5.1)
-        self.assertEqual(set(visitados),{7,8,9});self.assertEqual(c.voltas,1)
-        self.assertEqual(len(plano_cinzas()['trechos']),3)
+        self.assertEqual(set(visitados),{7,8,9,10,11});self.assertEqual(c.voltas,1)
+        self.assertEqual(len(plano_cinzas()['trechos']),5)
+
+    def test_novo_grupo_e_elegivel_perto_da_coordenada_informada(self):
+        from huntingaitan.rotas.circuito_cinzas import CircuitoCinzas,dentro_cinzas
+        p=validar(dict(patrol_mode='cinzenta_croshu_trio'))
+        player=dict(position=(2697,1106),height=0)
+        self.assertTrue(dentro_cinzas(player['position']))
+        c=CircuitoCinzas(player['position'])
+        self.assertIn(c.trechos[c.trecho]['ate'],(7,10,11))
+        for pos in ((2686,1089),(2725,1102)):
+            mob=dict(position=pos,height=0,hp=100,hostile=True,name='Croshu Mutante das Cinzas')
+            self.assertTrue(alvo_permitido(mob,player,p['base'],p))
+            self.assertFalse(alvo_permitido(dict(mob,name='Croshu das Cinzas'),player,p['base'],p))
 
     def test_terceiro_ponto_visita_coordenada_informada_sem_parar_no_cadastro_antigo(self):
         from huntingaitan.rotas.circuito_cinzas import CircuitoCinzas,plano_cinzas
@@ -41,7 +53,7 @@ class GrupoCroshuCinzasTest(unittest.TestCase):
         self.assertEqual(next(p['pos'] for p in d['pontos'] if p['id']==7),[2885,1196])
         self.assertEqual(next(p['pos'] for p in d['pontos_cadastro'] if p['id']==7),[2881,1189])
         c=CircuitoCinzas((2905,1143))
-        c.trecho=2;c.indice=0
+        c.trecho=next(i for i,t in enumerate(c.trechos) if t['ate']==7);c.indice=0
         passo=c.destino((2881,1189),0)
         self.assertEqual(passo['estado'],'andar')
         self.assertEqual(passo['ponto'],7)

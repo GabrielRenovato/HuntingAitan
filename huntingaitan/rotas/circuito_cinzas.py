@@ -1,4 +1,4 @@
-"""Busca ativa dos tres Croshus das Cinzas, sem abandonar um ponto nao visitado."""
+"""Busca ativa dos cinco Croshus das Cinzas, sem abandonar um ponto nao visitado."""
 import hashlib,json,math
 from functools import lru_cache
 from pathlib import Path
@@ -7,12 +7,13 @@ from huntingaitan.rotas.visitas_circuito import VisitasCircuito
 from huntingaitan.rotas.circuito_termes import CircuitoTermes,distancia_segmento
 
 ARQUIVO=DADOS/'circuito_cinzenta_croshu.json'
+ORDEM=(7,8,9,11,10)
 
 @lru_cache(maxsize=1)
 def plano_cinzas():
     d=json.loads(ARQUIVO.read_text(encoding='utf-8'))
-    if d.get('schema')!=1 or not d.get('fechado') or [p['id'] for p in d['pontos']]!=[7,8,9]:raise RuntimeError('Busca dos tres Croshus invalida')
-    if [(t['de'],t['ate']) for t in d['trechos']]!=[(7,8),(8,9),(9,7)]:raise RuntimeError('Busca dos tres Croshus sem fechamento valido')
+    if d.get('schema')!=1 or not d.get('fechado') or tuple(p['id'] for p in d['pontos'])!=ORDEM:raise RuntimeError('Busca dos cinco Croshus invalida')
+    if [(t['de'],t['ate']) for t in d['trechos']]!=list(zip(ORDEM,ORDEM[1:]+ORDEM[:1])):raise RuntimeError('Busca dos cinco Croshus sem fechamento valido')
     return d
 
 def dentro_cinzas(pos,margem=0):
@@ -30,7 +31,7 @@ class CircuitoCinzas(VisitasCircuito,CircuitoTermes):
     contem=staticmethod(dentro_cinzas)
 
     def __init__(self,pos):
-        if not dentro_cinzas(pos):raise RuntimeError('Comece perto de 2882, 1154 na Floresta Cinzenta para buscar os tres Croshus.')
+        if not dentro_cinzas(pos):raise RuntimeError('Comece perto de 2882, 1154 ou 2697, 1106 na Floresta Cinzenta para buscar os cinco Croshus.')
         self.trechos=plano_cinzas()['trechos'];self.voltas=0;self.espera_ate=None
         _,_,self.trecho,self.indice=min((math.dist(pos,p),j!=0,i,j) for i,t in enumerate(self.trechos) for j,p in enumerate(t['caminho']))
 

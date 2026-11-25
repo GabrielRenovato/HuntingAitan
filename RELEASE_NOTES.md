@@ -1,17 +1,16 @@
-HuntingAitan 0.1.0-beta.33
+HuntingAitan 0.1.0-beta.34
 
-Atualização do motor, configuração de habilidades e circuitos.
+Novos circuitos de Croshus e correções de pausas e uso de habilidades.
 
-- Seletor de cliente para vincular leitura e comandos ao mesmo personagem, com perfis separados para múltiplas instâncias.
-- Modo experimental em segundo plano com câmera, seleção por identidade, habilidades e movimento na thread do cliente compatível. Requer a janela aberta, sem minimizar; Mina e Jardim continuam sem suporte a esse modo.
-- Editor visual de regras de habilidades, importação da barra, validação dos campos e conferência de recargas, efeitos de buffs e resposta de cura.
-- Novos circuitos para Butos, plantas e Croshus; circuito leste dos Verits com filtro por espécie e prioridade aos mutantes. Transições por custo de caminho e limpeza local da templária.
-- Recuperação de colisões corrige a exclusão de passagens quase retas e evita insistir no mesmo trecho. Usa a tecla de destravar configurada quando a habilidade está disponível.
-- Recuperação do mesmo alvo após stun, confirmação de morte e retomada de movimento após habilidades; mudanças compartilhadas com o circuito dos Croshus roxos.
-- Melhorias no ciclo do Jardim, entrada, reconhecimento de dificuldade e serviço de reparo/venda no NPC, com conferência dos itens e saldo.
-- Correção da remoção da ponte durante troca de mapa e do apóstrofo conforme o layout de teclado do cliente.
-- Inclui ferramentas de diagnóstico, reprodução de sessões e testes. Dados extraídos do jogo e capturas completas com chat não são distribuídos no repositório.
+- Amplia o circuito da Floresta Cinzenta para cinco Croshus: 7 → 8 → 9 → 11 → 10, incluindo os dois próximos de 2697, 1106.
+- Adiciona um circuito separado de seis Croshus roxos ao sul, perto de 2955, 1311. A rota anterior permanece disponível.
+- Os circuitos compartilham seleção por identidade, navegação com colisão e transições pela ponte interna quando o segundo plano está habilitado.
+- Uma habilidade recusada pelo cliente cede a vez às demais, sem contar como execução nem iniciar uma recarga fictícia.
+- Corrige a confirmação de curas de efeito contínuo, como Revitalize: efeito novo e início da recarga confirmam a aplicação mesmo quando o dano recebido mascara a recuperação de HP. Curas conjuradas continuam aguardando o término.
+- Buffs em slots confirmados como vazios deixam de suspender o percurso; itens e atalhos sem leitura confirmada são preservados.
 
-Limitações: os testes ao vivo foram curtos e não comprovam farm prolongado sem falhas. O cancelamento de animações permanece desativado no modo interno. A renovação de Giovanni é uma investigação separada, continua desativada e não constitui um ciclo funcional nesta versão.
+Validação: 669 testes Python e verificações Node aprovados, além do teste do motor empacotado. Nos testes curtos da templária, houve três abates por sessão e execução das skills 4 e 5 confirmada por recarga com a janela sem foco.
 
-Instalador: HuntingAitan-Setup-0.1.0-beta.33-x64.exe.
+Limitações: segundo plano segue experimental e exige o Aika aberto, sem minimizar. Mina e Jardim usam o modo normal. Os testes curtos não comprovam estabilidade prolongada ou uma volta completa no circuito sul. A renovação de Giovanni permanece desativada. Perfis pessoais, capturas e diagnósticos locais não acompanham a atualização.
+
+Instalador: HuntingAitan-Setup-0.1.0-beta.34-x64.exe.

@@ -65,7 +65,9 @@ def main():
             from huntingaitan.rotas.circuito_croshu import plano_croshu,dentro_croshu
             if len(plano_croshu()['trechos'])!=3 or not dentro_croshu((1895,1155)):raise RuntimeError('Circuito de Croshu nao incluido no motor')
             from huntingaitan.rotas.circuito_cinzas import plano_cinzas,dentro_cinzas
-            if len(plano_cinzas()['trechos'])!=3 or not dentro_cinzas((2882,1154)):raise RuntimeError('Busca dos tres Croshus nao incluida no motor')
+            if len(plano_cinzas()['trechos'])!=5 or not dentro_cinzas((2882,1154)) or not dentro_cinzas((2697,1106)):raise RuntimeError('Busca dos cinco Croshus nao incluida no motor')
+            from huntingaitan.rotas.circuito_cinzas_sul import plano_cinzas_sul,dentro_cinzas_sul
+            if len(plano_cinzas_sul()['trechos'])!=6 or not dentro_cinzas_sul((2955,1311)):raise RuntimeError('Circuito sul dos seis Croshus nao incluido no motor')
             from huntingaitan.rotas.mina_lenfer import plano_mina,dentro_mina
             if not plano_mina()['trechos'] or not dentro_mina((2850,3344)):raise RuntimeError('Rota da Mina nao incluida no motor')
             from huntingaitan.rotas.interface_mina import InterfaceMina

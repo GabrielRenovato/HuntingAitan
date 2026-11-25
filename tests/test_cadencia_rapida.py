@@ -3,6 +3,18 @@ from huntingaitan.combate.hunt_core import CadenciaCombate
 from huntingaitan.configuracao.perfil_hunt import validar,DEFAULT
 
 class CadenciaRapidaTeste(unittest.TestCase):
+ def test_skill_recusada_cede_vez_sem_fingir_execucao_ou_recarga(self):
+  c=CadenciaCombate({'recargas':{'2':150,'3':150,'4':150}})
+  reais={k:{'ready':True} for k in ('2','3','4')}
+  def escolher(t):return c.escolher(t,True,True,1,True,recargas_reais=reais,normal_disponivel=False)
+  self.assertEqual(escolher(0),'2');c.recusada('2',0)
+  self.assertIsNone(escolher(.1))
+  self.assertEqual(escolher(.31),'3');c.recusada('3',.31)
+  self.assertEqual(escolher(.62),'4');c.recusada('4',.62)
+  self.assertEqual(c.ultimo_envio,{})
+  self.assertEqual(c.pronta_em,{})
+  self.assertEqual(c.skills_desde_normal,0)
+  self.assertEqual(escolher(1.01),'2')
  def test_abertura_normal_tem_prioridade_em_alcance_sem_ignorar_intervalo(self):
   c=CadenciaCombate({'recargas':{'2':150}})
   self.assertEqual(c.escolher(0,True,False,1,em_alcance=True,iniciar_normal=True),'1')

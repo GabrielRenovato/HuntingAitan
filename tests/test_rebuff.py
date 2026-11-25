@@ -4,6 +4,20 @@ from huntingaitan.configuracao.perfil_hunt import DEFAULT,validar
 K=['ctrl+1','ctrl+2','ctrl+3','ctrl+4','ctrl+5']
 
 class TesteRebuff(unittest.TestCase):
+ def test_slots_vazios_nao_suspendem_percurso_nem_enviam_buffs(self):
+  a=AgendaBuffs(0,K)
+  tipos={k:0 for k in K}
+  for t in (0,30,60):
+   self.assertIsNone(a.proximo(t,True,tipos))
+   self.assertFalse(a.em_andamento)
+  tipos['ctrl+3']=2
+  self.assertEqual(a.proximo(61,True,tipos),'ctrl+3')
+  a.confirmar(61)
+  self.assertFalse(a.em_andamento)
+ def test_filtro_de_slots_preserva_itens_e_leitura_desconhecida(self):
+  a=AgendaBuffs(0,['f3','f7'])
+  self.assertEqual(a.proximo(0,True,{'f3':6}),'f3');a.confirmar(0)
+  self.assertEqual(a.proximo(2,True,{'f3':6}),'f7')
  def test_f3_trinta_minutos_e_sem_ctrl(self):
   a=AgendaBuffs(0,['f3'],periodos={'f3':1800})
   self.assertEqual(a.proximo(0,True),'f3');a.confirmar(0)

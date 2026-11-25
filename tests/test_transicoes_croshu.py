@@ -6,11 +6,11 @@ from huntingaitan.combate.escolha_por_caminho import EscolhaPorCaminho
 from huntingaitan.combate.caca_templaria import CacaTemplaria
 
 class CroshuTransicoesTeste(unittest.TestCase):
-    def test_compartilha_componentes_sem_mudar_rota_dos_tres_croshus(self):
+    def test_compartilha_componentes_e_inclui_os_dois_novos_croshus(self):
         self.assertTrue(issubclass(CircuitoCinzas,VisitasCircuito))
         self.assertTrue(issubclass(CircuitoVeritLeste,VisitasCircuito))
         self.assertTrue(issubclass(CacaTemplaria,EscolhaPorCaminho))
-        self.assertEqual([(t['de'],t['ate']) for t in plano_cinzas()['trechos']],[(7,8),(8,9),(9,7)])
+        self.assertEqual([(t['de'],t['ate']) for t in plano_cinzas()['trechos']],[(7,8),(8,9),(9,11),(11,10),(10,7)])
 
     def test_revisita_vazia_muda_de_trecho_sem_parar_no_ponto(self):
         c=CircuitoCinzas((2882,1154));c.inteligente=True;t=c.trecho
@@ -27,7 +27,8 @@ class CroshuTransicoesTeste(unittest.TestCase):
         self.assertEqual(c.trecho,t)
 
     def test_primeira_visita_continua_verificando_o_terceiro_ponto(self):
-        c=CircuitoCinzas((2882,1154));c.inteligente=True;c.trecho=2;c.indice=0
+        c=CircuitoCinzas((2882,1154));c.inteligente=True
+        c.trecho=next(i for i,t in enumerate(c.trechos) if t['ate']==7);c.indice=0
         self.assertEqual(c.destino((2881,1189),0)['estado'],'andar')
         c.observar([],(2885,1196),1)
         self.assertEqual(c.destino((2885,1196),1)['estado'],'aguardar')

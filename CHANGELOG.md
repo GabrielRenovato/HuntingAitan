@@ -1,5 +1,14 @@
 # Alterações
 
+## 0.1.0-beta.34 — 2026-11-25
+
+- Amplia o circuito dos Croshus das Cinzas para cinco pontos e acrescenta uma rota separada de seis Croshus ao sul, sem substituir a anterior.
+- Compartilha seleção e deslocamento pela ponte interna quando o segundo plano está habilitado.
+- Impede que uma skill recusada monopolize a fila, sem registrar execução ou recarga fictícias.
+- Confirma curas de efeito contínuo por efeito novo e início da recarga, corrigindo falsas falhas de Revitalize sob dano e preservando a espera por curas conjuradas.
+- Ignora slots de buff confirmados como vazios para não bloquear o percurso.
+- Validação: 669 testes Python, verificações Node e smoke do motor empacotado aprovados; sessões curtas da templária com três abates e execução das skills 4 e 5 confirmada sem foco.
+
 ## 0.1.0-beta.33 — 2026-11-24
 
 - Consolida a organização do motor, layouts por hash e gravação/reprodução de leituras para diagnóstico.

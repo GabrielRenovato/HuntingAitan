@@ -25,6 +25,7 @@ from huntingaitan.rotas.circuito_verit_leste import CircuitoVeritLeste,dentro_le
 from huntingaitan.rotas.circuito_plantas import CircuitoPlantas,dentro_plantas,conferir_plantas
 from huntingaitan.rotas.circuito_croshu import CircuitoCroshu,dentro_croshu,longe_menores,conferir_croshu
 from huntingaitan.rotas.circuito_cinzas import CircuitoCinzas,dentro_cinzas,conferir_cinzas
+from huntingaitan.rotas.circuito_cinzas_sul import CircuitoCinzasSul,dentro_cinzas_sul,conferir_cinzas_sul
 from huntingaitan.rotas.mina_lenfer import MinaLenfer,dentro_mina
 from huntingaitan.rotas.jardim_aereo import JardimAereo,dentro_jardim,lazapa_protegido,eh_shiraz_infernal
 from huntingaitan.combate.hunt_core import CadenciaCombate,erro_angular,VerificadorMovimento,AgendaBuffs,executar_buff
@@ -43,6 +44,7 @@ def nome_normal(s):return re.sub('[^a-z]','',unicodedata.normalize('NFKD',s.lowe
 # Regras de area por modo de patrulha. Modos fora da tabela usam o raio em torno da base.
 REGRAS_AREA={
     'cinzenta_croshu_trio':lambda t,pl:dentro_cinzas(t['position']),
+    'cinzenta_croshu_sul':lambda t,pl:dentro_cinzas_sul(t['position']),
     'ungor_croshu':lambda t,pl:dentro_croshu(t['position']) and longe_menores(t['position']),
     'ungor_plantas':lambda t,pl:dentro_plantas(t['position']),
     'termes_penza':lambda t,pl:dentro_regiao(t['position']),
@@ -150,7 +152,7 @@ def main(profile,event_sink,control,percurso=None):
                 raise RuntimeError('Comece perto de 2711, 1292 na Floresta Cinzenta para cacar o grupo de Butos.')
             log('Grupo de Butos ativado: somente Buto Mutante a ate 30 unidades de 2711, 1292. Busca outro apos o abate; retorna quando a area estiver sem alvos acessiveis.')
         event_sink(dict(event='base',base=base));log('Base capturada por dados internos.',posicao=base)
-        circuito=None;circuito_log=None;circuito_replanejar_em=0.;regiao=dentro_regiao;verit=p['patrol_mode']=='termes_verit';plantas=p['patrol_mode']=='ungor_plantas';croshu=p['patrol_mode']=='ungor_croshu';cinzas=p['patrol_mode']=='cinzenta_croshu_trio';mina=p['patrol_mode'] in ('mina_lenfer','jardim_aereo');jardim=p['patrol_mode']=='jardim_aereo';mapa_mina=None
+        circuito=None;circuito_log=None;circuito_replanejar_em=0.;regiao=dentro_regiao;verit=p['patrol_mode']=='termes_verit';plantas=p['patrol_mode']=='ungor_plantas';croshu=p['patrol_mode']=='ungor_croshu';cinzas=p['patrol_mode'] in ('cinzenta_croshu_trio','cinzenta_croshu_sul');mina=p['patrol_mode'] in ('mina_lenfer','jardim_aereo');jardim=p['patrol_mode']=='jardim_aereo';mapa_mina=None
         if percurso is not None:
             circuito=percurso;regiao=percurso.contem
             log('Retorno ao portal de '+getattr(percurso,'nome','Mina')+' iniciado por coordenadas e colisao; buffs aguardam a entrada na DG.')
@@ -176,9 +178,14 @@ def main(profile,event_sink,control,percurso=None):
             conferir_croshu(dados.caminho.parent)
             log('Circuito de Croshu de Ungor ativado: 6, 3, 7 e volta ao 6. Ponto 5 excluido; afastamento de 10 unidades dos Croshus menores.')
         elif cinzas:
-            circuito=CircuitoCinzas(s['player']['position']);regiao=dentro_cinzas
-            conferir_cinzas(dados.caminho.parent)
-            log('Busca ativa dos tres Croshus das Cinzas: visita os pontos 7, 8 e 9 e repete. Alcance de selecao 50; sem retornar antes de conferir os pontos.')
+            if p['patrol_mode']=='cinzenta_croshu_sul':
+                circuito=CircuitoCinzasSul(s['player']['position']);regiao=dentro_cinzas_sul
+                conferir_cinzas_sul(dados.caminho.parent)
+                log('Circuito sul dos seis Croshus das Cinzas: 6, 2, 1, 3, 5 e 4. Inicio perto de 2955, 1311; alcance de selecao 50.')
+            else:
+                circuito=CircuitoCinzas(s['player']['position']);regiao=dentro_cinzas
+                conferir_cinzas(dados.caminho.parent)
+                log('Busca ativa dos cinco Croshus das Cinzas: visita 7, 8, 9, 11 e 10 e repete. Alcance de selecao 50; inclui o grupo perto de 2697, 1106.')
             if p['background_keys']:
                 from huntingaitan.combate.escolha_por_caminho import EscolhaPorCaminho
                 seletor=EscolhaPorCaminho();circuito.inteligente=True
@@ -343,7 +350,7 @@ def main(profile,event_sink,control,percurso=None):
                         if mina:
                             msg='Aguardando confirmacao do chefe da sala.' if passo['estado']=='aguardar_chefe' else 'Verificando sala limpa.' if passo['estado'].startswith('aguardar') else 'Percorrendo Jardim Aereo por caminho validado.' if jardim else 'Percorrendo Mina LEnfer por caminho validado.'
                         elif percurso is not None:msg='Seguindo caminho ate a entrada de '+getattr(percurso,'nome','Mina')+'.'
-                        else:msg=('Conferindo Croshu das Cinzas por 5s no ponto.' if cinzas else 'Procurando Croshus Mutantes por 5s no ponto.' if croshu else 'Procurando Plantas por 5s no ponto.' if plantas else 'Procurando Verits por 5s no ponto.' if verit else 'Procurando Penzas por 5s no ponto.') if passo['estado']=='aguardar' else ('Buscando o proximo dos tres Croshus das Cinzas.' if cinzas else 'Percorrendo 6, 3 e 7 com desvio dos Croshus menores.' if croshu else 'Percorrendo as quatro Plantas de Ungor por caminho validado.' if plantas else 'Percorrendo circuito Verit de Termes por caminho validado.' if verit else 'Percorrendo circuito de Termes por caminho validado.')
+                        else:msg=('Conferindo Croshu das Cinzas por 5s no ponto.' if cinzas else 'Procurando Croshus Mutantes por 5s no ponto.' if croshu else 'Procurando Plantas por 5s no ponto.' if plantas else 'Procurando Verits por 5s no ponto.' if verit else 'Procurando Penzas por 5s no ponto.') if passo['estado']=='aguardar' else ('Buscando o proximo Croshu das Cinzas do circuito.' if cinzas else 'Percorrendo 6, 3 e 7 com desvio dos Croshus menores.' if croshu else 'Percorrendo as quatro Plantas de Ungor por caminho validado.' if plantas else 'Percorrendo circuito Verit de Termes por caminho validado.' if verit else 'Percorrendo circuito de Termes por caminho validado.')
                         log(msg,ponto=passo['ponto'],voltas=passo['voltas'],chefe=passo.get('chefe'));circuito_log=marca
                     if passo['estado'].startswith('aguardar'):soltar();esperar(.03);return 'continuar'
                     nav=seguir_grade(passo['destino'],passo['chave'],.9)
@@ -643,8 +650,7 @@ def main(profile,event_sink,control,percurso=None):
                     resposta=entrada.ultima_resposta or {}
                     if resposta.get('motivo')=='recusado_pelo_cliente':
                         metricas['recusas']+=1;vigia_ataque.enviado()
-                        cadencia.livre_em=max(cadencia.livre_em,agora+.3)
-                        if tecla=='1':cadencia.normal_em=max(cadencia.normal_em,agora+.6)
+                        cadencia.recusada(tecla,agora)
                         event_sink(dict(event='action_rejected',**resposta,target_id=target['id']))
                 if repetir_normal:
                     restante=max(cadencia.normal_em,cadencia.livre_em)-time.monotonic()
@@ -1001,7 +1007,7 @@ def main(profile,event_sink,control,percurso=None):
                           and agora-ultimo_ferimento>=.5 and agora>=cadencia.livre_em
                           and agora>=buffs.vencimento+5)
             seguro_buff=buffs.em_andamento or tranquilo or janela_curta
-            buff=buffs.proximo(agora,seguro_buff)
+            buff=buffs.proximo(agora,seguro_buff,cc.get('tipos_atalhos'))
             if (buffs.em_andamento or agora<reconhecer_buff_ate) and buff_pausa_desde is None:
                 buff_pausa_desde=agora
                 log('Ciclo de buffs iniciado; ataque, TAB e movimento suspensos.')
