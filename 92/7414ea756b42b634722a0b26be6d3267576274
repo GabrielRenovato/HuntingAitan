@@ -1,0 +1,31 @@
+aika_hunt_app/package.json
+  s_584910f7c1e27f::t_3ecb70fab7a171 3
+huntingaitan/dados/native_layout.json
+  s_584910f7c1e27f::t_0c90e26d53ff1c 77
+  s_584910f7c1e27f::t_e48f4e0c336f3e 51
+  s_584910f7c1e27f::t_659b0c1d0668a2 25-26
+huntingaitan/rotas/interacao_altar.py
+  s_584910f7c1e27f::t_7f14eaf3a3d88b 38-41
+  s_584910f7c1e27f::t_ab253dc4ba8b40 42
+  s_584910f7c1e27f::t_c0546bbc972a3f 10-11
+huntingaitan/leitura/dados_internos.py
+  s_584910f7c1e27f::t_d9dbec77a9c872 14
+package.json
+  s_584910f7c1e27f::t_2b4d344a26f33a 3
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.6",
+  "base_commit_sha": "927414ea756b42b634722a0b26be6d3267576274",
+  "prompts": {},
+  "sessions": {
+    "s_584910f7c1e27f": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "764d1c0c-78a7-4639-a7b2-8e651e7e4374",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Gabriel Renovato <86806861+GabrielRenovato@users.noreply.github.com>"
+    }
+  }
+}
