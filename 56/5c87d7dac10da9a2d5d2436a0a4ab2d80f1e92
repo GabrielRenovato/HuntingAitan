@@ -1,0 +1,27 @@
+package.json
+  s_584910f7c1e27f::t_8ddc87c7eaff80 3
+aika_hunt_app/package.json
+  s_584910f7c1e27f::t_4fdea815ec6d4c 3
+aika_hunt_app/updates.cjs
+  s_584910f7c1e27f::t_23c458ef8e79a2 27
+aika_hunt_app/package-lock.json
+  s_584910f7c1e27f::t_21d52386eb7af8 3,9,182
+package-lock.json
+  s_584910f7c1e27f::t_31a0a0b3d1d54e 3,9,4040
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.6",
+  "base_commit_sha": "565c87d7dac10da9a2d5d2436a0a4ab2d80f1e92",
+  "prompts": {},
+  "sessions": {
+    "s_584910f7c1e27f": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "764d1c0c-78a7-4639-a7b2-8e651e7e4374",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Gabriel Renovato <86806861+GabrielRenovato@users.noreply.github.com>"
+    }
+  }
+}
