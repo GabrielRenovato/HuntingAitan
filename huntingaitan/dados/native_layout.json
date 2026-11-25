@@ -22,7 +22,8 @@
       "ent_pos": 28,
       "ent_status": 308,
       "ent_hpmp": 1176,
-      "ent_nome": 6572
+      "ent_nome": 6572,
+      "cursor_manager_rva": 49602960
     },
     {
       "sha256": "e286c435100b7e03ec326fba6ae4ec94ea4f9ed17c3e473a2c37a2f3651834b3",
@@ -47,6 +48,7 @@
       "ent_status": 308,
       "ent_hpmp": 1176,
       "ent_nome": 6572,
+      "cursor_manager_rva": 49602960,
       "description": "Copia local de teste: unico byte diferente em 0x5627; estruturas de dados preservadas."
     },
     {
@@ -72,6 +74,7 @@
       "ent_status": 308,
       "ent_hpmp": 1176,
       "ent_nome": 6572,
+      "cursor_manager_rva": 49602960,
       "description": "Atualizacao do cliente em 2026-11-25. Offsets validados em campo."
     }
   ]

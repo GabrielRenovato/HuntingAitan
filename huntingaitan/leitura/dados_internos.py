@@ -11,6 +11,7 @@ P=DADOS
 PADROES={
     'context_rva':0x2f9b1e0-0x400000,'bar_manager_rva':0x322669c-0x400000,
     'effect_table_rva':0xf9c1f4-0x400000,'mob_flag_rva':0x2f9e08c-0x400000,
+    'cursor_manager_rva':0x2f4cd90,'hover_entity_offset':0x108,
     'ent_id':4,'ent_rot':0x28,'ent_pos':0x1c,'ent_status':0x134,'ent_hpmp':0x498,'ent_nome':0x19ac,'ent_template':0x474,
 }
 

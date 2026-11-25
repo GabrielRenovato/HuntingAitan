@@ -7,7 +7,8 @@ NOMES={'altardaascensao','altardaascensio','altardeascension','altardelaascensio
 
 
 def altar_sob_cursor(dados):
-    cena=dados.cena_validada();ref=dados.u32(cena+0x108)
+    hover_off=dados.cfg('hover_entity_offset') if hasattr(dados,'cfg') else 0x108
+    cena=dados.cena_validada();ref=dados.u32(cena+hover_off)
     if not ref:return None
     nome=dados.read(ref+0x19ac,128).split(b'\0')[0].decode('cp1252',errors='replace')
     if normalizar(nome) not in NOMES:return None
@@ -34,8 +35,11 @@ def pontos_busca(ponto,largura,altura,atual=None):
 
 def localizar_altar_clicavel(dados,entrada,cap,ponto,ativo,*,limite=6,relogio=time.monotonic,dormir=time.sleep):
     cap.capturar();area=cap.area.copy();fim=relogio()+limite
-    gerente=dados.u32(dados.base+0x2f4cd90)
-    atual=struct.unpack('<2h',dados.read(gerente+0x3c,4))
+    atual=None
+    try:
+        gerente=dados.u32(dados.base+dados.cfg('cursor_manager_rva'))
+        if gerente:atual=struct.unpack('<2h',dados.read(gerente+0x3c,4))
+    except (RuntimeError,KeyError,AttributeError,struct.error):pass
     for p in pontos_busca(ponto,area['width'],area['height'],atual):
         if not ativo() or relogio()>=fim:return None
         if not entrada.mover_sem_cursor(area['left']+p[0],area['top']+p[1]):return None
