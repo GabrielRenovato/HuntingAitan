@@ -1,5 +1,12 @@
 # Alterações
 
+## 0.1.0-beta.36 — 2026-11-25
+
+- Valida a identidade localizada do Jardim em UI/Dungeon.bin, aceitando português e inglês em vez de comparar o hash de todos os textos.
+- Preserva a conferência por hash do terreno, alturas, objetos e cadastro da DG.
+- Atualiza o gerador de rota para a mesma regra de idioma.
+- Validação: 677 testes Python e verificações Node; arquivos locais reconferidos. Validação no PC do amigo pendente após atualizar.
+
 ## 0.1.0-beta.35 — 2026-11-25
 
 - Reduz a espera por pontos vazios no circuito leste dos sete Verits com duas leituras recentes durante a aproximação, preservando a verificação de alvos e a área da rota.

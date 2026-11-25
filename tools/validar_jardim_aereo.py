@@ -3,6 +3,7 @@ import argparse,hashlib,json,math,struct,sys
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from huntingaitan.rotas.navegacao_grade import Grade
+from huntingaitan.rotas.jardim_aereo import conferir_nome_jardim
 
 def carregar_grade(pasta):
     p=Path(pasta)/'Env';a=[(p/f'z01{t}12.att').read_bytes() for t in [13,14]]
@@ -17,7 +18,7 @@ def validar(pasta):
     p=Path(pasta);b=(p/'UI/Dun.bin').read_bytes();r=[struct.unpack_from('<14H',b,i*28) for i in range(20,24)]
     if any(v[1:5]!=(3328,3072,3351,3295) for v in r):raise ValueError('Entrada do Jardim diferente da identificada')
     descricao=(p/'UI/Dungeon.bin').read_bytes()
-    if b'Jardim A' not in descricao[320:384] or b'Seridunn' not in descricao:raise ValueError('Identidade da DG nao confirmada')
+    conferir_nome_jardim(descricao)
     objetos=(p/'Env/z011412.dat').read_bytes()
     if objetos[:2]!=bytes((14,12)) or (len(objetos)-2)%40:raise ValueError('Objetos do Jardim divergentes')
     altares=[struct.unpack_from('<3f',objetos,o+4) for o in range(2,len(objetos),40) if struct.unpack_from('<I',objetos,o)[0]==3721]

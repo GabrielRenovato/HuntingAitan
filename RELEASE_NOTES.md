@@ -1,14 +1,14 @@
-HuntingAitan 0.1.0-beta.35
+HuntingAitan 0.1.0-beta.36
 
-Menos paradas no circuito leste dos sete Verits e correção da validação de coordenadas.
+Corrige o bloqueio do Jardim em clientes com outro idioma.
 
-- O circuito leste confere pontos vazios durante a aproximação. Duas leituras recentes, sem alvo próximo, permitem seguir para o próximo trecho sem esperar cinco segundos, inclusive na primeira visita. Leituras antigas ou um mob reaparecendo impedem essa transição.
-- Selecionar um alvo por ID pela ponte interna preserva o deslocamento. Habilidades, pausas e encerramento continuam com suas paradas explícitas.
-- Corrige os erros de X/Y causados por campos de coordenadas escondidos: a base manual só é validada quando está em uso.
-- Coordenadas decimais lidas do jogo preenchem a base manual com valores inteiros. A validação de limites permanece ativa.
+- UI/Dungeon.bin passa a ser validado pelo formato da tabela e pelo nome do Jardim no registro esperado, aceitando Jardim Aéreo de Mirza e Kynari Aviary.
+- Diferenças nos textos localizados deixam de exigir a revalidação da rota inteira.
+- Arquivos de terreno, alturas, objetos e cadastro da DG continuam sujeitos à conferência por hash. A alteração de um desses arquivos ainda bloqueia o percurso e informa qual precisa de revalidação.
+- O gerador de rota também reconhece as duas traduções.
 
-Validação: 673 testes Python e verificações Node aprovados, além do teste no painel Electron e do motor empacotado. Uma sessão de 90 segundos da templária terminou normalmente com dois abates; a espera observada num ponto vazio foi de aproximadamente 0,17 segundo, contra 5,2 segundos num registro anterior. São sessões distintas, não um benchmark controlado.
+Validação: 677 testes Python e verificações Node. Regressões cobrem português/inglês, outra DG, tabela vazia ou truncada, arquivo ausente e terreno alterado. Os arquivos locais do Jardim foram reconferidos. O PC do amigo ainda precisa confirmar o funcionamento após atualizar.
 
-Limitações: segundo plano continua experimental, exige a opção ativa no perfil e o Aika aberto, sem minimizar. Mina e Jardim usam o modo normal. A passagem antecipada na primeira visita foi aplicada ao circuito leste dos sete Verits; os outros circuitos mantêm sua regra anterior. O teste curto não valida uma volta completa nem farm prolongado.
+Mantém as correções da beta.35 para pausas dos sete Verits e campos X/Y. Jardim e Mina continuam exigindo o modo normal, com o jogo em primeiro plano.
 
-Instalador: HuntingAitan-Setup-0.1.0-beta.35-x64.exe.
+Instalador: HuntingAitan-Setup-0.1.0-beta.36-x64.exe.

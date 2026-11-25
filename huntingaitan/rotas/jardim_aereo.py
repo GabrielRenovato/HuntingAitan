@@ -9,6 +9,25 @@ from huntingaitan.rotas.navegacao_grade import Grade
 @lru_cache(maxsize=1)
 def plano_jardim():return json.loads((DADOS/'jardim_aereo_rota.json').read_text(encoding='utf-8'))
 
+def conferir_nome_jardim(descricao):
+    # Dungeon.bin contem textos localizados. O registro 5 identifica o Jardim;
+    # os dados usados para navegar sao conferidos separadamente por hash.
+    if len(descricao)<384 or len(descricao)%64:
+        raise RuntimeError('UI/Dungeon.bin: formato da tabela de nomes nao reconhecido.')
+    nome=descricao[320:384].split(b'\0')[0].decode('cp1252',errors='replace')
+    if normalizar(nome) not in ('jardimaereodemirza','kynariaviary'):
+        raise RuntimeError('UI/Dungeon.bin: nome do Jardim nao reconhecido no registro 5: '+nome)
+    return nome
+
+def conferir_fontes_jardim(pasta):
+    p=Path(pasta)
+    for nome,sha in plano_jardim()['fontes'].items():
+        if nome=='UI/Dungeon.bin':
+            conferir_nome_jardim((p/nome).read_bytes())
+            continue
+        with (p/nome).open('rb') as f:atual=hashlib.file_digest(f,'sha256').hexdigest()
+        if atual!=sha:raise RuntimeError('Dados do Jardim mudaram; revalide a rota: '+nome)
+
 def dentro_jardim(pos,margem=0):
     x0,y0,x1,y1=plano_jardim()['limites']
     return x0-margem<=pos[0]<x1+margem and y0-margem<=pos[1]<y1+margem
@@ -146,9 +165,7 @@ class JardimAereo(MinaLenfer):
 
     def conferir(self,pasta):
         p=Path(pasta)
-        for nome,sha in plano_jardim()['fontes'].items():
-            with (p/nome).open('rb') as f:atual=hashlib.file_digest(f,'sha256').hexdigest()
-            if atual!=sha:raise RuntimeError('Dados do Jardim mudaram; revalide a rota: '+nome)
+        conferir_fontes_jardim(pasta)
         a=[(p/f'Env/z01{t}12.att').read_bytes() for t in [13,14]];h=[struct.unpack('<65536h',(p/f'Env/z01{t}12.hgt').read_bytes()) for t in [13,14]]
         flags=bytearray();alturas=[]
         for y in range(256):
