@@ -1,5 +1,12 @@
 # Alterações
 
+## 0.1.0-beta.35 — 2026-11-25
+
+- Reduz a espera por pontos vazios no circuito leste dos sete Verits com duas leituras recentes durante a aproximação, preservando a verificação de alvos e a área da rota.
+- Preserva o deslocamento durante a seleção de alvo por ID; habilidades e paradas explícitas continuam respeitadas.
+- Corrige a validação indevida de X/Y ocultos e arredonda a leitura decimal ao preencher a base manual, mantendo os limites.
+- Validação: 673 testes Python, verificações Node, teste no painel Electron e smoke do motor empacotado aprovados. Sessão curta com dois abates; volta completa e estabilidade prolongada não validadas.
+
 ## 0.1.0-beta.34 — 2026-11-25
 
 - Amplia o circuito dos Croshus das Cinzas para cinco pontos e acrescenta uma rota separada de seis Croshus ao sul, sem substituir a anterior.

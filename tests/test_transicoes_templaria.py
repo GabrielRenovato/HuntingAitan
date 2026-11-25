@@ -18,6 +18,30 @@ class TransicoesTeste(unittest.TestCase):
         fim=c.trechos[t]['caminho'][-1];c.observar([],fim,1)
         self.assertEqual(c.destino(fim,1)['estado'],'aguardar');self.assertEqual(c.trecho,t)
 
+    def test_duas_leituras_vazias_frescas_liberam_primeira_visita_sem_cinco_segundos(self):
+        c=CircuitoVeritLeste((2957,825));c.inteligente=True;t=c.trecho
+        fim=c.trechos[t]['caminho'][-1]
+        c.observar([],fim,1);self.assertEqual(c.destino(fim,1)['estado'],'aguardar')
+        c.observar([],fim,1.4);r=c.destino(fim,1.4)
+        self.assertEqual(r['estado'],'andar');self.assertNotEqual(c.trecho,t)
+
+    def test_leitura_antiga_ou_mob_reaparecendo_impede_pular_primeira_visita(self):
+        for caso in ('atraso','mob'):
+            c=CircuitoVeritLeste((2957,825));c.inteligente=True;t=c.trecho;fim=c.trechos[t]['caminho'][-1]
+            c.observar([],fim,1)
+            if caso=='atraso':c.observar([],fim,2)
+            else:c.observar([dict(id=1,position=fim)],fim,1.4)
+            self.assertEqual(c.destino(fim,2 if caso=='atraso' else 1.4)['estado'],'aguardar')
+            self.assertEqual(c.trecho,t)
+
+    def test_confere_ponto_vazio_durante_aproximacao_sem_parar_no_centro(self):
+        c=CircuitoVeritLeste((2957,825));c.inteligente=True;t=c.trecho;fim=c.trechos[t]['caminho'][-1]
+        c.observar([],(fim[0],fim[1]-7),1)
+        c.observar([],(fim[0],fim[1]-5),1.4)
+        pos=(fim[0],fim[1]-3.2)
+        r=c.destino(pos,1.7)
+        self.assertEqual(r['estado'],'andar');self.assertNotEqual(c.trecho,t)
+
     def test_recalcula_alternativa_no_mesmo_instante_do_bloqueio(self):
         g=Grade((0,0),(0,0),8,8,bytes(64),(0,)*64,1)
         n=NavegadorLocal(leitor=lambda *args:g);pos=(3.5,1.5);dest=(3.5,6.5)

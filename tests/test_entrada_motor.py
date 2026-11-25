@@ -54,6 +54,14 @@ class EntradaTeste(unittest.TestCase):
         e,d,u=self.criar();self.assertTrue(e.recuperar_alvo(dict(id=2049)))
         self.assertEqual(e.ponte.acoes,[('focar',2049)]);self.assertFalse(u.envios)
 
+    def test_selecao_por_id_preserva_deslocamento_ate_habilidade_ou_parada(self):
+        e,d,u=self.criar();e.mover_para((10,4),0)
+        self.assertTrue(e.recuperar_alvo(dict(id=2049)))
+        self.assertTrue(e.movendo);self.assertEqual(e.destino,(10,4))
+        self.assertEqual(e.ponte.acoes,[('mover',10,4),('focar',2049)])
+        e.keyDown('f4')
+        self.assertEqual(e.ponte.acoes[-2:],[('mover',3,4),('skill',1088)])
+
     def test_barreira_de_modal_e_parada_bloqueia_todas_as_novas_acoes(self):
         e,d,u=self.criar();e.permitido=lambda:False
         self.assertFalse(e.keyDown('f4'));self.assertFalse(e.keyDown('tab'))

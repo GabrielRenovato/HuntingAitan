@@ -66,7 +66,8 @@ class EntradaMotor(EntradaJanela):
 
     def recuperar_alvo(self,alvo):
         if not self.ponte or not self.permitido():return False
-        self.parar_movimento()
+        # Selecionar uma identidade nao e um ataque. Preserva o destino
+        # enquanto o alvo e conferido; a habilidade para o movimento depois.
         return bool(self.ponte.focar(alvo).get('resultado'))
 
     def mover_para(self,ponto,agora,forcar=False):

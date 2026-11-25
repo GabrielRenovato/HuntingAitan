@@ -34,6 +34,7 @@ class CircuitoVeritLeste(VisitasCircuito,CircuitoTermes):
         self.trechos=plano_leste()['trechos'];self.voltas=0;self.espera_ate=None
         _,_,self.trecho,self.indice=min((math.dist(pos,p),j!=0,i,j) for i,t in enumerate(self.trechos) for j,p in enumerate(t['caminho']))
         self.iniciar_visitas(plano_leste()['pontos'])
+        self.primeira_vazia_continua=True
 
     def aplicar_grade(self,grade,pos):
         from huntingaitan.rotas.evitar_mobs import aplicar_zonas

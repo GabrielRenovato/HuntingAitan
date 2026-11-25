@@ -12,7 +12,9 @@ Na confirmacao rapida da templaria, o fim de um cast observado junto de gasto/re
 
 ## Pontos vazios
 
-Uma revisita vazia com leitura recente pode mudar para o proximo trecho a ate 3,5 unidades da parada, sem mandar parar no centro do ponto. Primeira visita desconhecida continua buscando por cinco segundos. Mob reaparecido remove a marca de vazio e tem prioridade sobre o percurso; leitura antiga nao libera passagem antecipada.
+Uma revisita vazia com leitura recente pode mudar para o proximo trecho a ate 3,5 unidades da parada, sem mandar parar no centro do ponto. No circuito leste dos sete Verits, duas leituras consecutivas e recentes da lista, feitas durante a aproximacao (ate 10 unidades da parada) e sem alvo ate 20 unidades do personagem, tambem liberam a primeira visita sem esperar cinco segundos. A troca de trecho continua limitada a 3,5 unidades da parada. Uma leitura isolada, antiga ou com alvo proximo nao basta. Mob reaparecido remove a marca de vazio e tem prioridade sobre o percurso. Os outros circuitos conservam a espera na primeira visita.
+
+A selecao de um ID pela ponte preserva o deslocamento ja confirmado. O envio de habilidade continua parando o movimento; pausa, modal e encerramento tambem conservam suas paradas explicitas.
 
 ## Bloqueio
 
@@ -25,3 +27,9 @@ Os testes verificam duas selecoes imediatas apos os tres abates da limpeza, tran
 A suite completa passou com 637 testes e verificacoes Node. O backend empacotado tambem passou no smoke test. No teste real `build/teste_templaria_20261123_200102`, cerca de 180 segundos terminaram com codigo zero: 10 abates confirmados, quatro limpezas locais, uma recuperacao de alvo, um buff confirmado e um desvio com alternativa encontrada no mesmo ciclo. Quatro trocas diretas registraram 15, 16, 31 e 32 ms; nao sao garantia para outras maquinas ou situacoes. HP minimo: 61,89%, com recuperacao durante a sessao. Nao houve abandono por falta de dano. Foram registradas 170 recusas de chamadas pelo cliente; elas continuam distinguindo tentativa de acao aceita.
 
 O teste nao completou uma volta inteira e nao valida farm prolongado. A compilacao local desse teste foi `build/templaria-transicoes-local/win-unpacked`; a compilacao que acrescenta as mesmas transicoes aos Croshus esta descrita em `TRANSICOES_CROSHU.md`.
+
+Em 25/11/2026, o teste de 90 segundos da passagem continua terminou com codigo
+zero, dois abates, uma recuperacao de alvo, HP minimo de 73,56% e movimento
+sem foco. A primeira parada vazia conferida mudou de trecho em aproximadamente
+0,17 segundo entre amostras de telemetria; o log anterior tinha uma parada vazia
+de 5,2 segundos. Sao observacoes de sessoes distintas, nao um benchmark controlado.

@@ -5,9 +5,15 @@ class VisitasCircuito:
     def iniciar_visitas(self,pontos):
         self.pontos_observados=pontos
         self.inteligente=False;self.observacao_em=-100.;self.mobs=[];self.limpos={};self.reaparecimentos={};self.ultimo_abate={};self.vistos=set()
+        self.primeira_vazia_continua=False;self.vazios_seguidos={}
 
     def observar(self,mobs,pos,agora):
+        recente=0<agora-self.observacao_em<=.8
         self.observacao_em=agora;self.observacao_pos=tuple(pos);self.mobs=list(mobs)
+        if self.primeira_vazia_continua:
+            perto=any(math.dist(m['position'],pos)<=20 for m in mobs)
+            self.vazios_seguidos={p['id']:(self.vazios_seguidos.get(p['id'],0) if recente else 0)+1
+                for p in self.pontos_observados if not perto and math.dist(p['pos'],pos)<=10}
         ids={m['id'] for m in mobs};retornos=[]
         for m in mobs:
             ponto=min(self.pontos_observados,key=lambda p:math.dist(p['pos'],m['position']))
@@ -37,7 +43,7 @@ class VisitasCircuito:
         if math.dist(pos,t['caminho'][-1])<=3.5 and agora-self.observacao_em<.8 and math.dist(pos,self.observacao_pos)<=2:
             perto=any(math.dist(m['position'],pos)<=20 for m in self.mobs)
             if not perto:
-                if i in self.limpos or i in self.ultimo_abate:
+                if i in self.limpos or i in self.ultimo_abate or (self.primeira_vazia_continua and self.vazios_seguidos.get(i,0)>=2):
                     # Faz a transicao antes de chegar ao ponto final para nao
                     # mandar parar e arrancar de novo numa revisita vazia.
                     self.limpos[i]=agora;self.trecho=(self.trecho+1)%len(self.trechos)

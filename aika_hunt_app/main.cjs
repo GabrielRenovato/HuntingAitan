@@ -67,6 +67,22 @@ function createWindow(){
     fs.writeFileSync(path.join(out,'filtro-verit.json'),JSON.stringify(filtro,null,2));
     const saved=await win.webContents.executeJavaScript(`window.hunt.load().then(p=>window.hunt.save(p)).then(p=>({auto:p.auto_base,source:p.data_source,radius:p.radius}))`);
     fs.writeFileSync(path.join(out,'perfil-salvo.json'),JSON.stringify(saved,null,2));
+    const coordenadas=await win.webContents.executeJavaScript(`(async()=>{
+      const original=await window.hunt.load(),resultados=[];
+      const errosBase=()=>errosDoFormulario(profile).filter(e=>e.fields.some(f=>['base-x','base-y'].includes(f.element?.id)));
+      for(const [modo,auto] of [['base',true],['termes_verit_leste',false]]){
+        profile={...original,patrol_mode:modo,auto_base:auto,base:[2859.75,829.25]};render();
+        $('base-x').value='2859.75';$('base-y').value='829.25';
+        if(!$('base-x').disabled||!$('base-y').disabled||errosBase().length)throw new Error('Base automatica/rota validou coordenadas ocultas');
+        resultados.push(modo);
+      }
+      profile={...original,patrol_mode:'base',auto_base:false,base:[2859.75,829.25]};render();
+      if($('base-x').disabled||$('base-x').value!=='2860'||$('base-y').value!=='829'||errosBase().length)throw new Error('Leitura decimal nao preencheu a base manual com inteiros');
+      $('base-x').value='2859.75';if(!errosBase().length)throw new Error('Base manual fracionaria foi aceita');
+      $('base-x').value='10000';if(!errosBase().length)throw new Error('Base manual fora do mapa foi aceita');
+      profile=original;render();return {modos:resultados,manual:true,limites:true};
+    })()`);
+    fs.writeFileSync(path.join(out,'coordenadas.json'),JSON.stringify(coordenadas,null,2));
     await win.webContents.executeJavaScript(`document.querySelector('[data-tab="behavior"]').click()`);
     await new Promise(r=>setTimeout(r,300));
     fs.writeFileSync(path.join(out,'comportamento.png'),(await win.webContents.capturePage()).toPNG());
