@@ -1,0 +1,24 @@
+huntingaitan/dados/native_layout.json
+  s_584910f7c1e27f::t_57aee8e696320a 75
+  s_584910f7c1e27f::t_80ed063cc6e766 51-74
+package.json
+  s_584910f7c1e27f::t_f273fad54b3592 3
+aika_hunt_app/package.json
+  s_584910f7c1e27f::t_f5add35f65f8ab 3
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.6",
+  "base_commit_sha": "0c3e5cf093905cf4a5df740730d332f53217130a",
+  "prompts": {},
+  "sessions": {
+    "s_584910f7c1e27f": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "764d1c0c-78a7-4639-a7b2-8e651e7e4374",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Gabriel Renovato <86806861+GabrielRenovato@users.noreply.github.com>"
+    }
+  }
+}
