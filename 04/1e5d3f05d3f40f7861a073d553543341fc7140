@@ -1,0 +1,35 @@
+CHANGELOG.md
+  s_edfc50aef2ee58::t_cf323141bf4ecc 3-9
+RELEASE_NOTES.md
+  s_edfc50aef2ee58::t_454137892af72a 1,3,5-8,10,12,14
+aika_hunt_app/package-lock.json
+  s_edfc50aef2ee58::t_70ec3246ee62d8 3,9
+aika_hunt_app/package.json
+  s_edfc50aef2ee58::t_6911bc481b36a4 3
+package-lock.json
+  s_edfc50aef2ee58::t_274d0780549d66 3,9
+package.json
+  s_edfc50aef2ee58::t_a6d74982e5c0fa 3
+huntingaitan/rotas/jardim_aereo.py
+  s_edfc50aef2ee58::t_8d1b6f5b41cae1 12-30,168
+tests/test_jardim_idioma.py
+  s_edfc50aef2ee58::t_d56f42530b4fdf 1-34
+tools/validar_jardim_aereo.py
+  s_edfc50aef2ee58::t_3ceaf427e2347d 6,21
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.6",
+  "base_commit_sha": "041e5d3f05d3f40f7861a073d553543341fc7140",
+  "prompts": {},
+  "sessions": {
+    "s_edfc50aef2ee58": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "01a1e01c-4c9b-7e00-b2fb-9c7ef8050eed",
+        "model": "unknown"
+      },
+      "human_author": "Gabriel Renovato <86806861+GabrielRenovato@users.noreply.github.com>"
+    }
+  }
+}
