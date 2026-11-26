@@ -1,0 +1,57 @@
+huntingaitan/rotas/operacoes_npc.py
+  s_edfc50aef2ee58::t_bfd8426de05889 37,39-42
+aika_hunt_app/package.json
+  s_edfc50aef2ee58::t_9ab52699f30e44 3
+huntingaitan/combate/hunt_native.py
+  s_edfc50aef2ee58::t_bfd8426de05889 733,740-745
+package.json
+  s_edfc50aef2ee58::t_9ab52699f30e44 3
+huntingaitan/dados/native_layout.json
+  s_edfc50aef2ee58::t_6d027efc4941af 26-27,53-54,59,61,64-65,69-72,80-81
+RELEASE_NOTES.md
+  s_edfc50aef2ee58::t_eb2f0249bde8f6 1,3,5-8,10,12,14
+huntingaitan/rotas/operacoes_mina.py
+  s_edfc50aef2ee58::t_bfd8426de05889 49,51-54,155,157-160
+CHANGELOG.md
+  s_edfc50aef2ee58::t_eb2f0249bde8f6 1-6
+huntingaitan/visao/vigiar_janelas.py
+  s_edfc50aef2ee58::t_bfd8426de05889 36,42-46
+aika_hunt_app/package-lock.json
+  s_edfc50aef2ee58::t_c81668d1a0c9dd 3,9,182
+docs/CLIENTE_20261125.md
+  s_edfc50aef2ee58::t_13490278a21105 1-22
+huntingaitan/entrada/entrada_janela.py
+  s_edfc50aef2ee58::t_f90f3c0392628e 12
+huntingaitan/entrada/entrada_motor.py
+  s_edfc50aef2ee58::t_f0ce71b538fb95 35-37
+huntingaitan/visao/avisos_hunt.py
+  s_edfc50aef2ee58::t_c2f97553b6cc50 40-41,44-47,71-73
+huntingaitan/visao/season_pass.py
+  s_edfc50aef2ee58::t_b7e452a1a4af05 1-41
+package-lock.json
+  s_edfc50aef2ee58::t_edaa5aa21a84a3 3,9,4040
+huntingaitan/leitura/dados_internos.py
+  s_edfc50aef2ee58::t_1a492ea07b93e7 193-199
+tests/test_entrada_motor.py
+  s_edfc50aef2ee58::t_6f33ffdfc07937 26-30
+tests/test_layout_cliente_atualizado.py
+  s_edfc50aef2ee58::t_d450d9b89c0434 1-37
+tests/test_season_pass.py
+  s_edfc50aef2ee58::t_f97fdaf8c7dac4 1-53
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.6",
+  "base_commit_sha": "fb8402ae631256ba110a6ae72df74a1c9970f477",
+  "prompts": {},
+  "sessions": {
+    "s_edfc50aef2ee58": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "01a1e01c-4c9b-7e00-b2fb-9c7ef8050eed",
+        "model": "unknown"
+      },
+      "human_author": "Gabriel Renovato <86806861+GabrielRenovato@users.noreply.github.com>"
+    }
+  }
+}
