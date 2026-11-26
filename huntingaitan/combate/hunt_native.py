@@ -730,14 +730,19 @@ def main(profile,event_sink,control,percurso=None):
                         ultima_telemetria=agora_modal
                         if pm['hp']<=0:
                             control.reason='personagem_sem_vida';log('Personagem sem vida com janela bloqueante aberta; caca encerrada.');break
-                conhecido=aviso and aviso['tipo'] in ('cte_elter','arena_elter','conversa_amigo')
+                conhecido=aviso and aviso['tipo'] in ('cte_elter','arena_elter','conversa_amigo','season_pass')
                 if conhecido and agora_modal-aviso['capturado']<=1. and agora_modal>=clique_modal_em:
                     from huntingaitan.visao.avisos_hunt import reconfirmar
                     try:ponto=monitor.reconfirmar(aviso) if p['background_keys'] else reconfirmar(aviso)
                     except Exception as e:
                         log('Nao consegui reconfirmar o aviso.',detail=str(e));ponto=None
                     clique_modal_em=agora_modal+.6
-                    if ponto and ativo():
+                    if ponto and ativo() and aviso['tipo']=='season_pass':
+                        from huntingaitan.visao.season_pass import fechar_com_escape
+                        if fechar_com_escape(entrada,ativo,esperar):
+                            cliques_modal+=1
+                            log('Season Pass: ESC enviado; aguardando fechamento.',tentativa=cliques_modal)
+                    elif ponto and ativo():
                         entrada.moveTo(*ponto)
                         if ativo():
                             entrada.mouseDown()

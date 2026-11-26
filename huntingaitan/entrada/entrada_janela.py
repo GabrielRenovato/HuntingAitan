@@ -9,7 +9,7 @@ def codigo_tecla(tecla):
     tecla=str(tecla).lower()
     if len(tecla)==1 and tecla.isascii() and tecla.isalnum():return ord(tecla.upper())
     if tecla.startswith('f') and tecla[1:].isdigit() and 1<=int(tecla[1:])<=11:return 111+int(tecla[1:])
-    especiais={'tab':9,'enter':13,'space':32,"'":0xde}
+    especiais={'tab':9,'enter':13,'space':32,'esc':27,"'":0xde}
     if tecla in especiais:return especiais[tecla]
     raise ValueError('Segundo plano aceita teclas simples; atalho nao suportado: '+tecla)
 

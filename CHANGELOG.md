@@ -1,3 +1,9 @@
+# 0.1.0-beta.41
+
+- Corrige globais do leitor por hash para o cliente atualizado; distingue login e enriquece os diagnosticos de cena.
+- Fecha o Season Pass reconhecido com ESC, reconfirmacao visual e pausa do combate.
+- Mantem a ponte do novo executavel bloqueada ate validacao; veja docs/CLIENTE_20261125.md.
+
 # Alterações
 
 ## 0.1.0-beta.37 — 2026-11-25

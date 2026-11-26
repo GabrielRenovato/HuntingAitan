@@ -23,6 +23,11 @@ class DadosFake:
     def snapshot(self):return dict(player=dict(position=(3,4)))
 
 class EntradaTeste(unittest.TestCase):
+    def test_escape_do_passe_funciona_com_combate_suspenso_sem_usar_skill(self):
+        e,d,u=self.criar();e.permitido=lambda:False
+        self.assertTrue(e.keyDown('esc'));e.keyUp('esc')
+        self.assertEqual([x[:3] for x in u.envios],[(10,0x100,27),(10,0x101,27)])
+        self.assertFalse(e.ponte.acoes)
     def criar(self):
         u=User32();d=DadosFake();e=EntradaMotor(10,20,u);e.conectar(d,PonteFake);return e,d,u
     def test_skill_e_tab_usam_motor_sem_teclas_globais_ou_mensagens_de_teclado(self):

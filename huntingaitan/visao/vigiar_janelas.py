@@ -33,12 +33,17 @@ def main(emitir,entrada_controle):
             if not monitor.bloqueio.is_set():
                 if clicou:log('Fechamento do aviso confirmado em duas capturas.');clicou=False
                 continue
-            if not aviso or aviso['tipo'] not in ('cte_elter','arena_elter','conversa_amigo'):continue
+            if not aviso or aviso['tipo'] not in ('cte_elter','arena_elter','conversa_amigo','season_pass'):continue
             if agora<proximo_clique or agora-aviso['capturado']>1.:continue
             proximo_clique=agora+.6
             try:
                 ponto=reconfirmar(aviso)
                 if not ponto or fim.is_set() or not foco():continue
+                if aviso['tipo']=='season_pass':
+                    from huntingaitan.visao.season_pass import fechar_com_escape
+                    clicou=fechar_com_escape(entrada,foco,fim.wait)
+                    if clicou:log('Season Pass: ESC enviado; aguardando fechamento.')
+                    continue
                 entrada.moveTo(*ponto)
                 if fim.is_set() or not foco():continue
                 entrada.mouseDown()

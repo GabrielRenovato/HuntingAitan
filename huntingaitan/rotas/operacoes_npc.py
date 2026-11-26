@@ -34,9 +34,12 @@ def reparar_e_vender(dados,control,emitir,limite=360):
                 agora=time.monotonic();aviso=None
                 if forcar_avisos or agora-ultima_verificacao>=2.5:
                     aviso=avisos.localizar(im);ultima_verificacao=time.monotonic()
-                if aviso and aviso['tipo'] in ('cte_elter','arena_elter','conversa_amigo'):
+                if aviso and aviso['tipo'] in ('cte_elter','arena_elter','conversa_amigo','season_pass'):
                     ponto=reconfirmar_imagem(aviso,cap.capturar(),cap.area) if segundo_plano else reconfirmar(aviso)
-                    if ponto and ativo() and (entrada.mover_sem_cursor(*ponto) if segundo_plano else mover_cursor_fisico(entrada,*ponto)):
+                    if ponto and aviso['tipo']=='season_pass':
+                        from huntingaitan.visao.season_pass import fechar_com_escape
+                        fechar_com_escape(entrada,ativo,time.sleep)
+                    elif ponto and ativo() and (entrada.mover_sem_cursor(*ponto) if segundo_plano else mover_cursor_fisico(entrada,*ponto)):
                         entrada.mouseDown()
                         try:time.sleep(.06)
                         finally:entrada.mouseUp()

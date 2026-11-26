@@ -46,9 +46,12 @@ def sair_grupo(dados,control,emitir,limite=120,dentro=dentro_mina,nome='Mina'):
             if time.monotonic()<acao_em:time.sleep(.1);continue
             try:
                 tela=cap.capturar();aviso=avisos.localizar(tela)
-                if aviso and aviso['tipo'] in ['cte_elter','arena_elter','conversa_amigo']:
+                if aviso and aviso['tipo'] in ['cte_elter','arena_elter','conversa_amigo','season_pass']:
                     ponto=reconfirmar_imagem(aviso,cap.capturar(),cap.area) if segundo_plano else reconfirmar(aviso)
-                    if ponto:clicar(ponto)
+                    if ponto and aviso['tipo']=='season_pass':
+                        from huntingaitan.visao.season_pass import fechar_com_escape
+                        fechar_com_escape(entrada,ativo,time.sleep)
+                    elif ponto:clicar(ponto)
                     time.sleep(.2);continue
                 acao=detector.saida(tela)
                 if acao['acao']!=ultimo:
@@ -149,9 +152,12 @@ def entrar_dungeon(dados,control,emitir,limite=120,*,portal=None,dentro=dentro_m
                         emitir(dict(event='cycle',state='liberar_entrada',message='Acesso ao portal sem progresso e recebendo dano; combatendo somente os hostis junto da entrada.'));return False
                 if time.monotonic()<acao_em:time.sleep(.1);continue
                 aviso=avisos.localizar(tela)
-                if aviso and aviso['tipo'] in ['cte_elter','arena_elter','conversa_amigo']:
+                if aviso and aviso['tipo'] in ['cte_elter','arena_elter','conversa_amigo','season_pass']:
                     ponto=reconfirmar_imagem(aviso,cap.capturar(),cap.area) if segundo_plano else reconfirmar(aviso)
-                    if ponto:clicar(ponto)
+                    if ponto and aviso['tipo']=='season_pass':
+                        from huntingaitan.visao.season_pass import fechar_com_escape
+                        fechar_com_escape(entrada,ativo,time.sleep)
+                    elif ponto:clicar(ponto)
                     time.sleep(.2);continue
                 acao=detector.entrada(tela,elite)
                 if acao['acao']!=ultimo:

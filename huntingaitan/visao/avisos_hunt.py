@@ -37,8 +37,14 @@ class DetectorConversa:
 class DetectorAvisos:
     def __init__(self):
         from huntingaitan.visao.dialogos_evento import DetectorEventos
+        from huntingaitan.visao.season_pass import DetectorSeasonPass
+        self.season=DetectorSeasonPass()
         self.elter=DetectorElter();self.conversa=DetectorConversa();self.eventos=DetectorEventos()
     def localizar(self,tela,ao_bloquear=None):
+        ponto=self.season.localizar(tela)
+        if ponto:
+            if ao_bloquear:ao_bloquear()
+            return dict(tipo='season_pass',ponto=ponto)
         ponto=self.elter.localizar(tela)
         if ponto:
             if ao_bloquear:ao_bloquear()
@@ -62,6 +68,9 @@ def reconfirmar(aviso):
 
 def reconfirmar_imagem(aviso,tela,area):
     ponto=None
+    if aviso['tipo']=='season_pass':
+        from huntingaitan.visao.season_pass import DetectorSeasonPass
+        ponto=DetectorSeasonPass().localizar(tela)
     if aviso['tipo']=='cte_elter' and 'referencia' not in aviso:ponto=DetectorElter().localizar(tela)
     elif aviso['tipo']=='conversa_amigo':ponto=DetectorConversa().localizar(tela)
     elif aviso['tipo'] in ('cte_elter','arena_elter') and 'referencia' in aviso:

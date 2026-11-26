@@ -32,6 +32,9 @@ class EntradaMotor(EntradaJanela):
     def keyDown(self,tecla,_pause=False):
         self.ultima_resposta=None
         self.validar()
+        # O combate fica suspenso enquanto o passe esta aberto. O fechamento
+        # autorizado usa a mensagem de teclado da janela, sem consultar skills.
+        if tecla.lower()=='esc':return super().keyDown(tecla,_pause)
         if not self.ponte:raise RuntimeError('Motor interno ainda nao conectado')
         if not self.permitido():return False
         if not self.modificadores_livres():return False

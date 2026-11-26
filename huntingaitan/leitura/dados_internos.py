@@ -190,8 +190,13 @@ class DadosInternos:
         # 0x44c774 ativa a cena neste global. O cache context+0x8d2b0
         # e zerado em 0x44c791 e nao deve ser usado como cena ativa.
         scene=self.u32(self.base+self.layout['active_scene_rva'])
-        if not scene:raise RuntimeError('Cena do jogo ainda nao carregada. Entre no mapa e tente Ler dados novamente.')
-        if self.u32(scene)!=self.base+self.layout['scene_vtable_rva']:raise RuntimeError('Cena ativa nao corresponde ao layout validado. Entre no mapa com o personagem.')
+        diagnostico=f"PID {getattr(self,'pid','?')}; SHA-256 {getattr(self,'sha256','?')}; global {self.base+self.layout['active_scene_rva']:#x}"
+        if not scene:raise RuntimeError('Cena do jogo ainda nao carregada. Entre no mapa e tente Ler dados novamente. '+diagnostico)
+        vtable=self.u32(scene)
+        login=self.layout.get('login_scene_vtable_rva')
+        if login is not None and vtable==self.base+login:
+            raise RuntimeError('Cliente selecionado esta na tela de login. Entre com o personagem e atualize a lista. '+diagnostico)
+        if vtable!=self.base+self.layout['scene_vtable_rva']:raise RuntimeError(f'Cena ativa nao corresponde ao layout validado. Entre no mapa com o personagem. {diagnostico}; cena {scene:#x}; vtable {vtable:#x}')
         player=self.entidade(self.u32(scene+self.layout['player_offset']))
         if not player:raise RuntimeError('Personagem ainda nao carregado.')
         try:target=self.entidade(self.u32(scene+self.layout['target_offset']))
