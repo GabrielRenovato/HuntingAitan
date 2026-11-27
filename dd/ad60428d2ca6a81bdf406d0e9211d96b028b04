@@ -1,0 +1,50 @@
+huntingaitan/combate/hunt_native.py
+  s_584910f7c1e27f::t_6502e92b4e30b7 200-203
+  s_584910f7c1e27f::t_25d6e09233382a 214,241-244,492,630-636,791-799
+aika_hunt_app/index.html
+  s_edfc50aef2ee58::t_d00eea02b7f8ef 42
+aika_hunt_app/main.cjs
+  s_edfc50aef2ee58::t_d101f134130f41 5-13,152
+aika_hunt_app/package-lock.json
+  s_edfc50aef2ee58::t_776b383abfcfc3 3,9
+aika_hunt_app/preload.cjs
+  s_edfc50aef2ee58::t_a0c1283dc36f5e 8
+aika_hunt_app/renderer.js
+  s_edfc50aef2ee58::t_786d999d036f28 60,91,114
+package-lock.json
+  s_edfc50aef2ee58::t_1476cd13ba0b81 3,9
+CHANGELOG.md
+  s_edfc50aef2ee58::t_fbf1b264386d31 1-7
+RELEASE_NOTES.md
+  s_edfc50aef2ee58::t_4288e674bf43fe 1-14
+aika_hunt_app/package.json
+  s_584910f7c1e27f::t_7b848927dcfa5a 3
+huntingaitan/configuracao/perfil_hunt.py
+  s_584910f7c1e27f::t_ab20b418007033 9,13,41,56
+package.json
+  s_584910f7c1e27f::t_4f21ea4c442423 3
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.6",
+  "base_commit_sha": "ddad60428d2ca6a81bdf406d0e9211d96b028b04",
+  "prompts": {},
+  "sessions": {
+    "s_584910f7c1e27f": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "764d1c0c-78a7-4639-a7b2-8e651e7e4374",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Gabriel Renovato <86806861+GabrielRenovato@users.noreply.github.com>"
+    },
+    "s_edfc50aef2ee58": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "01a1e01c-4c9b-7e00-b2fb-9c7ef8050eed",
+        "model": "unknown"
+      },
+      "human_author": "Gabriel Renovato <86806861+GabrielRenovato@users.noreply.github.com>"
+    }
+  }
+}
