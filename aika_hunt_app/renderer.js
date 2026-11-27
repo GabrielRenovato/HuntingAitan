@@ -57,6 +57,7 @@ function renderClients(){
  const chosen=openClients.find(c=>`${c.pid}:${c.hwnd}`===value);
  $('client-state').textContent=chosen?(chosen.ready?`Personagem: ${chosen.name} · ${chosen.exe}`:chosen.error||'Leitura indisponível'):(value==='0'?'Escolha a conta desejada se houver mais de um Aika.':'O cliente salvo não está aberto. Atualize e selecione novamente.');
  if(chosen?.ready)$('player-read').textContent=chosen.name;
+ if(typeof window!=='undefined'&&window.hunt?.setTitle)window.hunt.setTitle(chosen?.ready?chosen.name:'HuntingAitan');
 }
 async function refreshClients(){
  if(running)throw new Error('Pare a caça antes de atualizar os clientes.');
@@ -87,7 +88,7 @@ function render(){
  $('extra-buffs-enabled').checked=profile.extra_buffs_enabled;$('extra-buff-minutes').value=profile.extra_buff_minutes;
  $('buff-enabled').checked=profile.buffs_enabled;$('buff-minutes').value=profile.buff_minutes;$('buff-gap').value=profile.buff_gap;profile.buff_keys.forEach((k,i)=>$('buff-key-'+i).value=k);$('buff-next').textContent=profile.buffs_enabled?'Ao iniciar e a cada '+profile.buff_minutes+' minutos':'Desativado';
  $('hp-percent').value=profile.hp_percent;$('mp-percent').value=profile.mp_percent;
- for(const [id,key] of Object.entries({gap:'action_gap',attack:'attack_key',duration:'duration_minutes',radius:'radius',target:'target','no-damage':'no_damage_seconds',stationary:'stationary_seconds',unstuck:'unstuck_key'}))$(id).value=profile[key];
+ for(const [id,key] of Object.entries({gap:'action_gap',attack:'attack_key',duration:'duration_minutes',radius:'radius',target:'target','no-damage':'no_damage_seconds',stationary:'stationary_seconds',unstuck:'unstuck_key','moving-target':'moving_target_key'}))$(id).value=profile[key]||'';
  $('auto-base').checked=profile.auto_base;$('minimize-start').checked=profile.minimize_on_start;$('base-x').value=Math.round(profile.base[0]);$('base-y').value=Math.round(profile.base[1]);
  $('action-gap').textContent=String(profile.action_gap).replace('.',',')+'seg';$('time-left').textContent=profile.duration_minutes?profile.duration_minutes+'min':'Sem limite';baseLabel();renderSlots();
 }
@@ -110,7 +111,7 @@ function collect(){
  if(['termes_verit','termes_verit_leste'].includes(profile.patrol_mode))$('target').value='verit';
  if(profile.patrol_mode==='termes_penza')$('target').value='penza';
  if(['mina_lenfer','jardim_aereo'].includes(profile.patrol_mode))$('target').value='qualquer';
- profile.attack_key=$('attack').value.trim().toLowerCase();profile.unstuck_key=$('unstuck').value.trim().toLowerCase();profile.target=$('target').value;profile.auto_base=$('auto-base').checked;profile.minimize_on_start=$('minimize-start').checked;
+ profile.attack_key=$('attack').value.trim().toLowerCase();profile.unstuck_key=$('unstuck').value.trim().toLowerCase();profile.moving_target_key=$('moving-target').value.trim().toLowerCase();profile.target=$('target').value;profile.auto_base=$('auto-base').checked;profile.minimize_on_start=$('minimize-start').checked;
  if(!profile.auto_base)profile.base=[Number($('base-x').value),Number($('base-y').value)];
  if(profile.patrol_mode==='buto_trio'){profile.target='buto';profile.base=[2711,1292];profile.auto_base=false;profile.radius=30;profile.data_source='native';profile.mina_repeat=false;}
  if(profile.patrol_mode==='cinzenta_croshu_sul'){profile.target='croshu';profile.base=[2955,1311];profile.auto_base=false;profile.radius=50;profile.data_source='native';profile.mina_repeat=false;}

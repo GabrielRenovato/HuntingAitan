@@ -6,11 +6,11 @@ DEFAULT={
  'client_pid':0,'client_hwnd':0,'background_keys':False,
  'version':3,'data_source':'native','auto_base':True,'base':[2767,846],'radius':20,'no_damage_seconds':5,'patrol_mode':'base',
  'mina_repeat':False,'mina_cycles':0,'jardim_repeat':True,'jardim_servico_npc':True,'jardim_cycles':0,'jardim_goal':'seridunn','auto_ui_scale':True,
- 'cancel_normal':False,'combo_key_delay_ms':0,'combo_repeat_ms':0,'stationary_seconds':3,'unstuck_key':"'",'attack_key':'1','action_gap':.7,
+ 'cancel_normal':False,'combo_key_delay_ms':0,'combo_repeat_ms':0,'stationary_seconds':3,'unstuck_key':"'",'moving_target_key':'','attack_key':'1','action_gap':.7,
  'hp_percent':40,'mp_percent':40,'hp_keys':['8','',''],'mp_keys':['','',''],
  'heal_enabled':True,'heal_key':'7',
  'return_key':'','duration_minutes':240,'target':'qualquer','minimize_on_start':True,
- 'periodic_item_key':'f3','extra_buff_keys':['ctrl+6','ctrl+8'],'f3_enabled':True,'f3_minutes':30,'extra_buffs_enabled':True,'extra_buff_minutes':11,'buffs_enabled':True,'buff_minutes':9,'buff_gap':2,'buff_keys':['ctrl+1','ctrl+2','ctrl+3','ctrl+4','ctrl+5'],
+ 'periodic_item_key':'f3','extra_buff_keys':['ctrl+6','ctrl+8'],'f3_enabled':True,'f3_minutes':30,'extra_buffs_enabled':True,'extra_buff_minutes':11,'buffs_enabled':True,'buff_minutes':9,'buff_gap':2,'target_recovery_interval':.5,'buff_keys':['ctrl+1','ctrl+2','ctrl+3','ctrl+4','ctrl+5'],
  'skills':[{'key':str(i+2) if i<6 else '', 'seconds':[6,8,10,12,15,20,17,52,0,0][i],
              'enabled':i<6,'icon':i if i<8 else None,'native_id':None} for i in range(10)],
  'items':[{'key':'','seconds':0,'enabled':False} for _ in range(5)],
@@ -38,7 +38,7 @@ def validar(dados):
   if isinstance(p[k],bool):raise ValueError(k+': valor invalido')
   p[k]=float(p[k])
   if not 0<=p[k]<=limite:raise ValueError(k+': valor fora do intervalo')
- for k,a,b in [('radius',10,50),('no_damage_seconds',1,60),('stationary_seconds',1,20),('hp_percent',1,99),('mp_percent',1,99),('duration_minutes',0,1440),('action_gap',.4,10),('f3_minutes',1,120),('extra_buff_minutes',1,120),('buff_minutes',1,120),('buff_gap',.5,10)]:
+ for k,a,b in [('radius',10,50),('no_damage_seconds',1,60),('stationary_seconds',1,20),('hp_percent',1,99),('mp_percent',1,99),('duration_minutes',0,1440),('action_gap',.4,10),('f3_minutes',1,120),('extra_buff_minutes',1,120),('buff_minutes',1,120),('buff_gap',.5,10),('target_recovery_interval',.15,2)]:
   p[k]=float(p[k])
   if not a<=p[k]<=b:raise ValueError(k+': valor fora do intervalo')
  if p['data_source'] not in ['native','visual']:raise ValueError('Fonte de dados invalida')
@@ -53,7 +53,7 @@ def validar(dados):
  for k in ['hp_keys','mp_keys']:
   if len(p[k])!=3:raise ValueError('Sao necessarios tres slots')
   p[k]=[tecla(v) for v in p[k]]
- p['attack_key']=tecla(p['attack_key'],False);p['unstuck_key']=tecla(p['unstuck_key']);p['return_key']=tecla(p['return_key'])
+ p['attack_key']=tecla(p['attack_key'],False);p['unstuck_key']=tecla(p['unstuck_key']);p['moving_target_key']=tecla(p['moving_target_key']);p['return_key']=tecla(p['return_key'])
  p['heal_key']=tecla(p['heal_key'],False)
  if p['heal_enabled'] and p['heal_key']==p['attack_key']:raise ValueError('Cura e ataque normal precisam de teclas diferentes')
  if len(p['buff_keys'])!=5:raise ValueError('Configure cinco atalhos de buff')

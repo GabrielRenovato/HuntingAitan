@@ -1,3 +1,17 @@
+HuntingAitan 0.1.0-beta.42
+
+Correção do início da caça e isolamento dos perfis.
+
+- Corrige a falha `alvo_tecla_enviada` que impedia iniciar a caça com a opção de alvo em movimento.
+- Mantém Domination, alfeim e SweThc separados na barra de tarefas e identifica cada janela pelo personagem.
+- Compatibiliza a identificação de perfil com os testes e ambientes sem argumentos do processo.
+
+Validação: 718 testes Python e verificações Node aprovados localmente.
+
+Instalador: HuntingAitan-Setup-0.1.0-beta.42-x64.exe.
+
+---
+
 HuntingAitan 0.1.0-beta.41
 
 Correcao do leitor do cliente atualizado e fechamento do Season Pass.

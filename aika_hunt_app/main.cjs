@@ -2,6 +2,15 @@ const {app,BrowserWindow,ipcMain,dialog,shell,screen}=require('electron');
 const {spawn}=require('node:child_process');
 const fs=require('node:fs');const path=require('node:path');
 const runtime=require('./runtime.cjs')({app,dirname:__dirname});
+// Cada perfil recebe uma identidade própria no Windows para não agrupar as
+// três instâncias do Hunting no mesmo ícone da barra de tarefas.
+const perfilAumid=(()=>{
+ const argumentos=Array.isArray(process.argv)?process.argv:[];
+ const arg=argumentos.find(v=>v.startsWith('--user-data-dir='));
+ const nome=arg?path.basename(arg.slice('--user-data-dir='.length)):'padrao';
+ return 'HuntingAitan.'+(nome.replace(/[^a-zA-Z0-9_-]/g,'')||'padrao');
+})();
+if(typeof app.setAppUserModelId==='function')app.setAppUserModelId(perfilAumid);
 let win,worker=null,quitting=false,stopTimer=null,watcher=null,updates=null;
 let clientSelection={client_pid:0,client_hwnd:0};
 let profileLoadFailure=null;
@@ -140,6 +149,7 @@ ipcMain.handle('hunt:start',async(_,p)=>{
 ipcMain.handle('hunt:stop',()=>{stopWorker();return true;});
 ipcMain.handle('hunt:pause',(_,paused)=>{if(worker)worker.stdin.write(JSON.stringify({command:paused?'pause':'resume'})+'\n');return !!worker;});
 ipcMain.handle('window:minimize',()=>win.minimize());
+ipcMain.handle('window:title',(_,title)=>{const nome=String(title||'').trim().slice(0,80);win.setTitle(nome||'Caça automática');return true;});
 let boundsAntesFluxo=null;
 ipcMain.handle('window:flow-editor',(_,aberto)=>{
  if(typeof aberto!=='boolean')throw new Error('Estado do editor invalido.');

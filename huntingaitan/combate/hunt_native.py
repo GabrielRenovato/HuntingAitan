@@ -197,6 +197,10 @@ def main(profile,event_sink,control,percurso=None):
             circuito=CircuitoTermes(s['player']['position'])
             conferir_arquivos(dados.caminho.parent)
             log('Circuito Termes ativado: 6, 5, 4, 7, 8, 9 e volta pelo mesmo corredor. Apenas Penza Poderosa Mutante.')
+            if p['background_keys']:
+                from huntingaitan.combate.escolha_por_caminho import EscolhaPorCaminho
+                seletor=EscolhaPorCaminho()
+                log('Penza: troca direta apos abate e confirmacao pelo cliente ativadas.')
         elif mina:
             if jardim:
                 from huntingaitan.rotas.jardim_aereo import conferir_dificil
@@ -207,6 +211,7 @@ def main(profile,event_sink,control,percurso=None):
             mapa_mina=dados.u32(dados.cena_validada()+0x38)
             log(('Jardim: seguindo para Seridunn; combate apenas por bloqueio ou defesa.' if p['jardim_goal']=='seridunn' else 'Jardim Aereo: percurso ate antes dos Shiraz Infernais iniciado.') if jardim else 'Mina LEnfer: caminho direto para Malik iniciado.',entrada=s['player']['position'],mapa=mapa_mina)
         trilha=[base];volta=[];estado='buscar';progresso=None;ultima_tab=0.;fim_busca=0.;ultima_telemetria=0.;inicio=time.monotonic();heading=None;origem_mov=None;falhas_desde=None;espera_na_base=False
+        alvo_pos_anterior=None;alvo_pos_anterior_id=None;alvo_movel_ate=0.;alvo_tecla_enviada=-100.
         # Com reacoes de cura configuradas, elas substituem a cura prioritaria de tecla unica.
         reacoes=Reacoes(p['reacoes']);confirmacao_reacao=ConfirmacaoReacao();mobs_perto=None;mobs_reacao_em=0.;reacoes_log_em=0.
         tecla_cura=p['heal_key'] if p['heal_enabled'] and not reacoes.tem_cura() else ''
@@ -233,7 +238,10 @@ def main(profile,event_sink,control,percurso=None):
         regional=BuscaRegional(prazo_aproximar=2.5,prazo_trocar=2.,intervalo_tab=.2,intervalo_giro=.35) if mina else BuscaRegional()
         indisponiveis={};ignorados_selecao=set();mobs_regiao=None;pool_em=0.;nativo_em=0.;nativo_pausou=False;pool_erro_em=-100.
         busca_destino=None;busca_ate=0.;reconhecer_buff_ate=0.;retorno_busca=False;buff_pausa_desde=None
-        recuperacao=RecuperacaoAlvo()
+        # Revalidacao de alvo curta: evita deixar o guerreiro parado por
+        # varios segundos quando o cliente perde a selecao durante um stun,
+        # sem aumentar a frequencia de TAB alem do limite de tentativas.
+        recuperacao=RecuperacaoAlvo(intervalo=float(p.get('target_recovery_interval',.5)))
         cancelamento=CancelamentoNormal(p['cancel_normal'])
         ritmo=configurar_ritmo(p);repetindo_id=None
         log('Ritmo do padrao configurado.',ativo=p['cancel_normal'],**ritmo)
@@ -481,7 +489,7 @@ def main(profile,event_sink,control,percurso=None):
                     log('Aproximacao de busca concluida; reconfirmando alvo.',alvo_id=candidato['id'])
                 return 'continuar'
         def _estado_combater():
-            nonlocal abrir_normal,acao,anterior,aprox_pos,atalho,cancelamento,chefe,combo,dx,dy,em_alcance,enviada,erro,estado,fim_busca,inicio_envio,item,nav,normal_repetido,perfil_normal,pool_em,progresso,r,real,reaprox_id,repetindo_id,repetir_normal,restante,resultado,skill_id,tecla,timing,ultima_tab,v,mobs_regiao
+            nonlocal abrir_normal,acao,anterior,aprox_pos,atalho,alvo_tecla_enviada,cancelamento,chefe,combo,dx,dy,em_alcance,enviada,erro,estado,fim_busca,inicio_envio,item,nav,normal_repetido,perfil_normal,pool_em,progresso,r,real,reaprox_id,repetindo_id,repetir_normal,restante,resultado,skill_id,tecla,timing,ultima_tab,v,mobs_regiao
             if estado=='combater':
                 if isinstance(circuito,JardimSeridunn) and target and not circuito.permite_perseguir(target,pos,defendendo):
                     soltar();estado='percorrer';progresso=None;pool_em=0.
@@ -619,6 +627,13 @@ def main(profile,event_sink,control,percurso=None):
                     cadencia.normal_em=min(cadencia.normal_em,agora)
                 if verificador.observar(pos,agora,not progresso.dano and math.dist(pos,target['position'])>3):pulso(p['unstuck_key']);log('Sem deslocamento; tecla de recuperacao enviada.')
                 em_alcance=math.dist(pos,target['position'])<=2.4
+                tecla_alvo_movel=p.get('moving_target_key','')
+                if (tecla_alvo_movel and agora<alvo_movel_ate and agora-alvo_tecla_enviada>=.8
+                        and em_alcance and (not templa or templa.normal.permitir(agora))):
+                    if pulso(tecla_alvo_movel):
+                        alvo_tecla_enviada=agora
+                        log('Tecla do alvo em movimento enviada.',tecla=tecla_alvo_movel,alvo_id=progresso.id)
+                        cadencia.livre_em=max(cadencia.livre_em,agora+p['action_gap'])
                 abrir_normal=mina and not progresso.abertura_enviada and cc.get('normal_ready') is not False
                 if abrir_normal and em_alcance and cc.get('normal_ready') is True:cadencia.normal_em=min(cadencia.normal_em,agora)
                 perfil_normal=perfil_combo('1',True,cc.get('normal_skill'))
@@ -773,6 +788,15 @@ def main(profile,event_sink,control,percurso=None):
                 if agora-falhas_desde>5:raise
                 esperar(.1);continue
             player=s['player'];pos=tuple(player['position']);target=s['target']
+            # Janela curta para uma tecla configuravel quando o alvo acabou de
+            # se mover; evita perder o primeiro ataque por cancelamento do jogo.
+            if target and target.get('position') is not None:
+                tpos=tuple(target['position']);tid=target.get('id')
+                if tid==alvo_pos_anterior_id and alvo_pos_anterior is not None and math.dist(tpos,alvo_pos_anterior)>=.35:
+                    alvo_movel_ate=agora+.8
+                alvo_pos_anterior=tpos;alvo_pos_anterior_id=tid
+            else:
+                alvo_pos_anterior=None;alvo_pos_anterior_id=None;alvo_movel_ate=0.
             if percurso is not None:base=pos
             if percurso is not None and target and not percurso.permite_combate(target['id'],pos,target):target=None
             if mina and dados.u32(dados.cena_validada()+0x38)!=mapa_mina:

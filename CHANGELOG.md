@@ -1,3 +1,10 @@
+# 0.1.0-beta.42
+
+- Corrige o início da caça quando a tecla opcional para alvo em movimento está configurada, inicializando o estado antes do combate.
+- Mantém os três perfis independentes na barra de tarefas e atualiza o título da janela para o personagem selecionado.
+- Torna a identificação dos perfis compatível com os testes e ambientes sem `argv` ou APIs completas do Electron.
+- Validação: 718 testes Python e verificações Node aprovados.
+
 # 0.1.0-beta.41
 
 - Corrige globais do leitor por hash para o cliente atualizado; distingue login e enriquece os diagnosticos de cena.
