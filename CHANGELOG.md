@@ -1,3 +1,9 @@
+# 0.1.0-beta.43
+
+- Impede o envio repetido de `Esc` ao fechar o Season Pass, evitando abrir o menu Sistema e travar o combate.
+- Só libera a caça após duas capturas confirmarem que o passe desapareceu.
+- Validação: 12 testes de avisos e Season Pass aprovados, além da compilação do motor.
+
 # 0.1.0-beta.42
 
 - Corrige o início da caça quando a tecla opcional para alvo em movimento está configurada, inicializando o estado antes do combate.

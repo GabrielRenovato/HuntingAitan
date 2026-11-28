@@ -266,7 +266,7 @@ def main(profile,event_sink,control,percurso=None):
         log('Preparando reconhecimento de janelas antes de iniciar o monitor.')
         monitor.iniciar()
         log('Monitor CTE e Arena Elter: prioridade de fechamento ativa.')
-        modal_desde=None;clique_modal_em=0.;cliques_modal=0;modal_log_em=-100.
+        modal_desde=None;clique_modal_em=0.;cliques_modal=0;modal_log_em=-100.;season_pass_esc_enviado=False
         abrir_normal=None
         acao=None
         anterior=None
@@ -752,9 +752,10 @@ def main(profile,event_sink,control,percurso=None):
                     except Exception as e:
                         log('Nao consegui reconfirmar o aviso.',detail=str(e));ponto=None
                     clique_modal_em=agora_modal+.6
-                    if ponto and ativo() and aviso['tipo']=='season_pass':
+                    if ponto and ativo() and aviso['tipo']=='season_pass' and not season_pass_esc_enviado:
                         from huntingaitan.visao.season_pass import fechar_com_escape
                         if fechar_com_escape(entrada,ativo,esperar):
+                            season_pass_esc_enviado=True
                             cliques_modal+=1
                             log('Season Pass: ESC enviado; aguardando fechamento.',tentativa=cliques_modal)
                     elif ponto and ativo():
@@ -780,6 +781,7 @@ def main(profile,event_sink,control,percurso=None):
                 cancelamento=CancelamentoNormal(p['cancel_normal'])
                 log('Fechamento confirmado em duas capturas; retomando combate.',cliques=cliques_modal,segundos=round(duracao,2))
                 modal_desde=None
+                season_pass_esc_enviado=False
             agora=time.monotonic()
             try:s=dados.snapshot();ultima[0]=time.monotonic();falhas_desde=None
             except RuntimeError:

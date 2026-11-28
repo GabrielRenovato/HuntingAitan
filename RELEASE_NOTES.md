@@ -1,3 +1,16 @@
+HuntingAitan 0.1.0-beta.43
+
+Correção do fechamento do Season Pass.
+
+- Envia apenas um `Esc` por aparição do passe.
+- Aguarda duas capturas sem o passe antes de retomar o combate, evitando abrir o menu Sistema com um segundo `Esc`.
+
+Validação: 12 testes de avisos e Season Pass aprovados.
+
+Instalador: HuntingAitan-Setup-0.1.0-beta.43-x64.exe.
+
+---
+
 HuntingAitan 0.1.0-beta.42
 
 Correção do início da caça e isolamento dos perfis.
