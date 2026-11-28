@@ -1,3 +1,8 @@
+# 0.1.0-beta.44
+
+- Ajusta o fechamento do Season Pass para enviar no máximo dois `Esc`, que é o fluxo exigido pelo cliente, sem chegar ao terceiro e abrir o menu Sistema.
+- Validação: 12 testes de avisos e Season Pass aprovados.
+
 # 0.1.0-beta.43
 
 - Impede o envio repetido de `Esc` ao fechar o Season Pass, evitando abrir o menu Sistema e travar o combate.
